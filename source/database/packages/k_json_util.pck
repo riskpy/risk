@@ -119,7 +119,7 @@ CREATE OR REPLACE PACKAGE BODY k_json_util AS
 
   FUNCTION f_contiene_valores(i_valores IN VARCHAR2,
                               i_json    IN CLOB) RETURN VARCHAR2 IS
-    l_json_obj  json_object_t := json_object_t.parse(i_json);
+    l_json_obj  json_object_t := json_object_t.parse(nvl(i_json, '{}'));
     l_token     VARCHAR2(100);
     l_pos       PLS_INTEGER := 1;
     l_faltantes VARCHAR2(4000);

@@ -500,7 +500,9 @@ CREATE OR REPLACE PACKAGE BODY k_importacion IS
     l_id_importacion t_importaciones.id_importacion%TYPE;
   BEGIN
     -- Busca importación
-    l_id_importacion := k_operacion.f_id_operacion('I', i_nombre, i_dominio);
+    l_id_importacion := k_operacion.f_id_operacion(k_operacion.c_tipo_importacion,
+                                                   i_nombre,
+                                                   i_dominio);
     -- Procesa importación
     IF nvl(i_transaccion_autonoma, FALSE) THEN
       l_rsp := f_procesar_importacion_autonoma(l_id_importacion,

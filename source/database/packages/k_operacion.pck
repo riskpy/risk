@@ -1075,9 +1075,9 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
     l_inserts := l_inserts || l_insert;
     --
     lp_comentar('T_IMPORTACION_PARAMETROS');
-    l_insert  := fn_gen_inserts('SELECT * FROM t_importacion_parametros WHERE id_operacion = ' ||
+    l_insert  := fn_gen_inserts('SELECT a.id_importacion, a.nombre, a.version, a.posicion_inicial, a.longitud, a.posicion_decimal, a.mapeador FROM t_importacion_parametros a, t_operacion_parametros b WHERE a.id_importacion = ' ||
                                 to_char(i_operacion.id_operacion) ||
-                                ' ORDER BY version, orden',
+                                ' AND b.id_operacion=a.id_importacion AND b.nombre=a.nombre AND b.version=a.version ORDER BY b.version, b.orden',
                                 't_importacion_parametros');
     l_inserts := l_inserts || l_insert;
     --
