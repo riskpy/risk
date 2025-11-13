@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE k_operacion IS
 
   /**
-  Agrupa operaciones relacionadas con las Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos)
+  Agrupa operaciones relacionadas con las Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos, Importaciones)
   
   %author jtsoya539 27/3/2020 16:42:26
   */
@@ -31,11 +31,12 @@ CREATE OR REPLACE PACKAGE k_operacion IS
   */
 
   -- Tipos de Operaciones
-  c_tipo_servicio   CONSTANT CHAR(1) := 'S';
-  c_tipo_reporte    CONSTANT CHAR(1) := 'R';
-  c_tipo_trabajo    CONSTANT CHAR(1) := 'T';
-  c_tipo_monitoreo  CONSTANT CHAR(1) := 'M';
-  c_tipo_parametros CONSTANT CHAR(1) := 'P';
+  c_tipo_servicio    CONSTANT CHAR(1) := 'S';
+  c_tipo_reporte     CONSTANT CHAR(1) := 'R';
+  c_tipo_trabajo     CONSTANT CHAR(1) := 'T';
+  c_tipo_monitoreo   CONSTANT CHAR(1) := 'M';
+  c_tipo_importacion CONSTANT CHAR(1) := 'M';
+  c_tipo_parametros  CONSTANT CHAR(1) := 'P';
 
   -- Tipos de Implementaciones
   c_tipo_implementacion_paquete CONSTANT CHAR(1) := 'K';
@@ -1067,6 +1068,19 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
                                 't_monitoreos');
     l_inserts := l_inserts || l_insert;
     --
+    lp_comentar('T_IMPORTACIONES');
+    l_insert  := fn_gen_inserts('SELECT id_importacion, separador_campos, delimitador_campo, linea_inicial, nombre_tabla, truncar_tabla, proceso_previo, proceso_posterior FROM t_importaciones WHERE id_importacion = ' ||
+                                to_char(i_operacion.id_operacion),
+                                't_importaciones');
+    l_inserts := l_inserts || l_insert;
+    --
+    lp_comentar('T_IMPORTACION_PARAMETROS');
+    l_insert  := fn_gen_inserts('SELECT * FROM t_importacion_parametros WHERE id_operacion = ' ||
+                                to_char(i_operacion.id_operacion) ||
+                                ' ORDER BY version, orden',
+                                't_importacion_parametros');
+    l_inserts := l_inserts || l_insert;
+    --
     lp_comentar('T_ROL_PERMISOS');
     l_insert  := fn_gen_inserts('SELECT * FROM t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(' ||
                                 to_char(i_operacion.id_operacion) ||
@@ -1115,6 +1129,12 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
     l_deletes := l_deletes ||
                  'DELETE t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(' ||
                  to_char(i_operacion.id_operacion) || ');' || utl_tcp.crlf;
+    l_deletes := l_deletes ||
+                 'DELETE t_importacion_parametros WHERE id_operacion = ' ||
+                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
+    l_deletes := l_deletes ||
+                 'DELETE t_importaciones WHERE id_importacion = ' ||
+                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
     l_deletes := l_deletes || 'DELETE t_monitoreos WHERE id_monitoreo = ' ||
                  to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
     l_deletes := l_deletes || 'DELETE t_trabajos WHERE id_trabajo = ' ||

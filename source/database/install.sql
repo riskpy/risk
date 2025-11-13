@@ -94,7 +94,7 @@ prompt
 @@tables/t_monitoreos.tab
 @@tables/t_monitoreo_ejecuciones.tab
 @@tables/t_importaciones.tab
-@@tables/t_importacion_parametrios.tab
+@@tables/t_importacion_parametros.tab
 @@tables/t_dispositivos.tab
 @@tables/t_dispositivo_ubicaciones.tab
 @@tables/t_sesiones.tab
