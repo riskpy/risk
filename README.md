@@ -11,7 +11,7 @@ RISK es un mini framework que sigue el paradigma ["SmartDB"](https://asktom.orac
 Consiste en una colección de objetos de Base de Datos Oracle (paquetes, types, tablas, entre otros) y una API web ASP.NET Core.
 
 # Características
-* Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos): Parámetros, Logs, Paginación
+* Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos, Importaciones): Parámetros, Logs, Paginación
 * Configuración: Módulos, Dominios, Aplicaciones, Parámetros, Significados, Archivos, Datos Adicionales, Migraciones
 * Autenticación: Personas, Usuarios, Claves, Sesiones, Dispositivos
 * Autorización: Roles, Permisos

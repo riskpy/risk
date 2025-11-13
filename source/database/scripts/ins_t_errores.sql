@@ -37,4 +37,7 @@ values ('ser0003', 'Operación no autorizada', 'API');
 insert into t_errores (CLAVE, MENSAJE, ID_DOMINIO)
 values ('ser9999', 'Error inesperado [@1@]', 'API');
 
+insert into t_errores (CLAVE, MENSAJE, ID_DOMINIO)
+values ('import0001', 'Error al importar archivo en las líneas: [@1@]. Verifique.', 'GEN');
+
 prompt Done.

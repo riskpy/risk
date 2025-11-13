@@ -57,6 +57,11 @@ drop package oos_util_totp;
 drop package zt_qr;
 drop package zt_word;
 drop function fn_gen_inserts;
+drop type lob_rows;
+drop type lob_row;
+drop type lob_columns;
+drop type lob_column;
+drop package lob2table;
 @@dependencies/drop_console_objects.sql
 @@dependencies/om_tapigen_uninstall.sql
 @@dependencies/plex_uninstall.sql

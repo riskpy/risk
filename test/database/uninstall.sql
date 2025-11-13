@@ -66,6 +66,7 @@ drop package test_k_dispositivo;
 drop package test_k_dominio;
 drop package test_k_error;
 drop package test_k_html;
+drop package test_k_importacion;
 drop package test_k_mensajeria;
 drop package test_k_modulo;
 drop package test_k_operacion;
