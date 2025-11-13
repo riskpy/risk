@@ -96,6 +96,27 @@ GRANT EXECUTE ON &v_code_user..k_servicio TO &v_access_user;
 GRANT EXECUTE ON &v_code_user..k_reporte TO &v_access_user;
 CREATE OR REPLACE SYNONYM &v_access_user..k_servicio FOR &v_code_user..k_servicio;
 CREATE OR REPLACE SYNONYM &v_access_user..k_reporte FOR &v_code_user..k_reporte;
+-- Grant object privileges to util user
+GRANT SELECT ON &v_code_user..t_operaciones TO &v_util_user;
+GRANT SELECT ON &v_code_user..t_operacion_parametros TO &v_util_user;
+GRANT SELECT ON &v_code_user..t_servicios TO &v_util_user;
+GRANT SELECT ON &v_code_user..t_reportes TO &v_util_user;
+GRANT SELECT ON &v_code_user..t_trabajos TO &v_util_user;
+GRANT SELECT ON &v_code_user..t_monitoreos TO &v_util_user;
+GRANT SELECT ON &v_code_user..t_importaciones TO &v_util_user;
+GRANT SELECT ON &v_code_user..t_importacion_parametros TO &v_util_user;
+GRANT SELECT ON &v_code_user..t_rol_permisos TO &v_util_user;
+GRANT EXECUTE ON &v_code_user..k_operacion TO &v_util_user;
+CREATE OR REPLACE SYNONYM &v_util_user..t_operaciones FOR &v_code_user..t_operaciones;
+CREATE OR REPLACE SYNONYM &v_util_user..t_operacion_parametros FOR &v_code_user..t_operacion_parametros;
+CREATE OR REPLACE SYNONYM &v_util_user..t_servicios FOR &v_code_user..t_servicios;
+CREATE OR REPLACE SYNONYM &v_util_user..t_reportes FOR &v_code_user..t_reportes;
+CREATE OR REPLACE SYNONYM &v_util_user..t_trabajos FOR &v_code_user..t_trabajos;
+CREATE OR REPLACE SYNONYM &v_util_user..t_monitoreos FOR &v_code_user..t_monitoreos;
+CREATE OR REPLACE SYNONYM &v_util_user..t_importaciones FOR &v_code_user..t_importaciones;
+CREATE OR REPLACE SYNONYM &v_util_user..t_importacion_parametros FOR &v_code_user..t_importacion_parametros;
+CREATE OR REPLACE SYNONYM &v_util_user..t_rol_permisos FOR &v_code_user..t_rol_permisos;
+CREATE OR REPLACE SYNONYM &v_util_user..k_operacion FOR &v_code_user..k_operacion;
 --
 
 spool off
