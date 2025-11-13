@@ -82,6 +82,7 @@ drop package k_modulo;
 drop package k_sistema;
 drop package k_significado;
 drop package k_cadena;
+drop package k_lob_util;
 drop package k_json_util;
 drop package k_util;
 
