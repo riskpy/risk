@@ -132,6 +132,8 @@ drop table t_usuario_claves cascade constraints;
 drop table t_sesiones cascade constraints;
 drop table t_dispositivo_ubicaciones cascade constraints;
 drop table t_dispositivos cascade constraints;
+drop table t_importacion_parametros cascade constraints;
+drop table t_importaciones cascade constraints;
 drop table t_monitoreo_ejecuciones cascade constraints;
 drop table t_monitoreos cascade constraints;
 drop table t_trabajos cascade constraints;
