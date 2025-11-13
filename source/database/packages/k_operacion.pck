@@ -35,7 +35,7 @@ CREATE OR REPLACE PACKAGE k_operacion IS
   c_tipo_reporte     CONSTANT CHAR(1) := 'R';
   c_tipo_trabajo     CONSTANT CHAR(1) := 'T';
   c_tipo_monitoreo   CONSTANT CHAR(1) := 'M';
-  c_tipo_importacion CONSTANT CHAR(1) := 'M';
+  c_tipo_importacion CONSTANT CHAR(1) := 'I';
   c_tipo_parametros  CONSTANT CHAR(1) := 'P';
 
   -- Tipos de Implementaciones
