@@ -60,6 +60,7 @@ drop package k_servicio_glo;
 drop package k_servicio_gen;
 drop package k_servicio_aut;
 drop package k_monitoreo;
+drop package k_importacion;
 drop package k_trabajo;
 drop package k_reporte;
 drop package k_servicio;
@@ -81,6 +82,7 @@ drop package k_modulo;
 drop package k_sistema;
 drop package k_significado;
 drop package k_cadena;
+drop package k_json_util;
 drop package k_util;
 
 prompt

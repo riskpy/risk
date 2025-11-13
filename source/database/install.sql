@@ -122,6 +122,7 @@ prompt
 @@types/y_objetos.typ
 
 @@packages/k_util.pck
+@@packages/k_json_util.pck
 @@packages/k_cadena.pck
 @@packages/k_significado.pck
 @@packages/k_sistema.pck
@@ -169,6 +170,7 @@ prompt
 @@packages/k_servicio.pck
 @@packages/k_reporte.pck
 @@packages/k_trabajo.pck
+@@packages/k_importacion.pck
 @@packages/k_monitoreo.pck
 @@packages/k_servicio_aut.pck
 @@packages/k_servicio_gen.pck
