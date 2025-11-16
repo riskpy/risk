@@ -67,6 +67,7 @@ prompt
 @@packages/test_k_dominio.pck
 @@packages/test_k_error.pck
 @@packages/test_k_html.pck
+@@packages/test_k_importacion.pck
 @@packages/test_k_mensajeria.pck
 @@packages/test_k_modulo.pck
 @@packages/test_k_operacion.pck

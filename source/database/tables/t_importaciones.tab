@@ -1,0 +1,41 @@
+create table T_IMPORTACIONES
+(
+  id_importacion    NUMBER not null,  
+  separador_campos  VARCHAR2(1),
+  delimitador_campo VARCHAR2(1),
+  linea_inicial     NUMBER(3),
+  nombre_tabla      VARCHAR2(50),
+  truncar_tabla     VARCHAR2(1),
+  proceso_previo    VARCHAR2(100),
+  proceso_posterior VARCHAR2(100)
+);
+comment on table T_IMPORTACIONES
+  is 'Importaciones de archivos';
+comment on column T_IMPORTACIONES.id_importacion
+  is 'Identificador de la importación';
+comment on column T_IMPORTACIONES.separador_campos
+  is 'Caracter separador de campos en el archivo de importación. Si es nulo significa que el archivo es de campos fijos. Ejemplos: ,;';
+comment on column T_IMPORTACIONES.delimitador_campo
+  is 'Caracter delimitador de un campo en el archivo de importación. Aplica solo a archivos con campos separados por caracter. Ejemplos: "''';
+comment on column T_IMPORTACIONES.linea_inicial
+  is 'Línea inicial de lectura de la importación';
+comment on column T_IMPORTACIONES.nombre_tabla
+  is 'Nombre de la tabla a cargar en la importación';
+comment on column T_IMPORTACIONES.truncar_tabla
+  is 'Indica si la tabla se va a truncar o no previo a la importación. Valores posibles: S-Sí, N-No';
+comment on column T_IMPORTACIONES.proceso_previo
+  is 'Proceso previo la importación';
+comment on column T_IMPORTACIONES.proceso_posterior
+  is 'Proceso posterior a la importación';
+alter table T_IMPORTACIONES
+  add constraint PK_T_IMPORTACIONES primary key (ID_IMPORTACION);
+alter table T_IMPORTACIONES
+  add constraint FK_IMPORTACIONES_OPERACIONES foreign key (ID_IMPORTACION)
+  references T_OPERACIONES (ID_OPERACION);
+alter table T_IMPORTACIONES
+  add constraint CK_T_IMPORTACIONES_LINEA_INICIAL
+  check (LINEA_INICIAL BETWEEN 1 AND 999);
+alter table T_IMPORTACIONES
+  add constraint CK_T_IMPORTACIONES_TRUNCAR_TABLA
+  check (TRUNCAR_TABLA IN ('S', 'N'));
+

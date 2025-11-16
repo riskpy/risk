@@ -70,6 +70,22 @@ CREATE OR REPLACE PACKAGE k_cadena IS
     RETURN VARCHAR2;
 
   /**
+  Retorna una tabla de cadenas contenidas en delimitadores dentro de un texto dado
+  
+  %author dmezac 22/6/2025 18:05:15
+  %param i_texto Texto a partir del cuál se hará la búsqueda de cadenas
+  %param i_encapsulador_inicial Caracter delimitador inicial. Por defecto ':'
+  %param i_encapsulador_final Caracter delimitador final. Por defecto ' '
+  %return Tabla de cadenas
+  */
+  FUNCTION f_extraer_cadenas(i_texto                IN VARCHAR2,
+                             i_encapsulador_inicial IN VARCHAR2 := ':',
+                             i_encapsulador_final   IN VARCHAR2 := ' ',
+                             i_limpio               IN VARCHAR2 := 'N')
+    RETURN y_cadenas
+    PIPELINED;
+
+  /**
   Retorna el valor que se encuenta en la posicion indicada dentro de una cadena
   Si la posicion se encuentra fuera de rango retorna el valor mas cercano (primer valor o ultimo valor)
   
@@ -92,6 +108,22 @@ CREATE OR REPLACE PACKAGE k_cadena IS
   FUNCTION f_procesar_plantilla(i_plantilla IN CLOB,
                                 i_variables IN t_assoc_array DEFAULT null_assoc_array,
                                 i_wrap_char IN VARCHAR2 DEFAULT '@')
+    RETURN CLOB;
+
+  FUNCTION f_buscar_cadena(pin_buscar    VARCHAR2,
+                           pin_cadena    VARCHAR2,
+                           pin_separador VARCHAR2 DEFAULT ',')
+    RETURN VARCHAR2;
+
+  FUNCTION f_formatear_cadena(p_lista_campos     IN VARCHAR2, -- lista separada por comas
+                              p_patron           IN VARCHAR2, -- texto plantilla, usar "#" como placeholder
+                              p_separador_salida IN VARCHAR2 DEFAULT chr(10) -- salto de línea o coma
+                              ) RETURN CLOB;
+
+  FUNCTION f_reemplazar_etiquetas(i_cadena       IN CLOB,
+                                  i_etiquetas    IN y_cadenas,
+                                  i_valores      IN y_cadenas,
+                                  i_encapsulador IN VARCHAR2 DEFAULT '#')
     RETURN CLOB;
 
 END;
@@ -213,6 +245,47 @@ CREATE OR REPLACE PACKAGE BODY k_cadena IS
                                  l_longitud_valor);
     END IF;
     RETURN l_valor;
+  END;
+
+  FUNCTION f_extraer_cadenas(i_texto                IN VARCHAR2,
+                             i_encapsulador_inicial IN VARCHAR2 := ':',
+                             i_encapsulador_final   IN VARCHAR2 := ' ',
+                             i_limpio               IN VARCHAR2 := 'N')
+    RETURN y_cadenas
+    PIPELINED IS
+    l_limpio CHAR(1) := nvl(substr(i_limpio, 1, 1), 'N');
+    --
+    l_pos         PLS_INTEGER := 1;
+    l_start       PLS_INTEGER;
+    l_end         PLS_INTEGER;
+    l_placeholder VARCHAR2(32767);
+    l_len_ini     PLS_INTEGER := length(i_encapsulador_inicial);
+    l_len_fin     PLS_INTEGER := length(i_encapsulador_final);
+  BEGIN
+    LOOP
+      l_start := instr(i_texto, i_encapsulador_inicial, l_pos);
+      EXIT WHEN l_start = 0;
+    
+      l_end := instr(i_texto, i_encapsulador_final, l_start + l_len_ini);
+      EXIT WHEN l_end = 0;
+    
+      IF l_limpio = 'S' THEN
+        -- Solo el contenido interno, sin delimitadores
+        l_placeholder := TRIM(substr(i_texto,
+                                     l_start + l_len_ini,
+                                     l_end - l_start - l_len_ini));
+      ELSE
+        -- Placeholder completo con delimitadores
+        l_placeholder := TRIM(substr(i_texto,
+                                     l_start,
+                                     l_end - l_start + l_len_fin));
+      END IF;
+    
+      PIPE ROW(l_placeholder);
+      l_pos := l_end + l_len_fin;
+    END LOOP;
+  
+    RETURN;
   END;
 
   FUNCTION f_reemplazar_acentos(i_cadena IN VARCHAR2) RETURN VARCHAR2 IS
@@ -344,6 +417,68 @@ CREATE OR REPLACE PACKAGE BODY k_cadena IS
   
     RETURN l_retorno;
   END;
+
+  FUNCTION f_buscar_cadena(pin_buscar    VARCHAR2,
+                           pin_cadena    VARCHAR2,
+                           pin_separador VARCHAR2 DEFAULT ',')
+    RETURN VARCHAR2 IS
+    vl_encontrado VARCHAR2(1) := 'N';
+  BEGIN
+    BEGIN
+      SELECT 'S'
+        INTO vl_encontrado
+        FROM k_cadena.f_separar_cadenas(pin_cadena, pin_separador)
+       WHERE TRIM(column_value) = pin_buscar;
+    EXCEPTION
+      WHEN no_data_found THEN
+        vl_encontrado := 'N';
+      WHEN too_many_rows THEN
+        vl_encontrado := 'S';
+    END;
+  
+    RETURN vl_encontrado;
+  END f_buscar_cadena;
+
+  FUNCTION f_formatear_cadena(p_lista_campos     IN VARCHAR2, -- lista separada por comas
+                              p_patron           IN VARCHAR2, -- texto plantilla, usar "#" como placeholder
+                              p_separador_salida IN VARCHAR2 DEFAULT chr(10) -- salto de línea o coma
+                              ) RETURN CLOB IS
+    v_resultado CLOB := empty_clob();
+    v_token     VARCHAR2(4000);
+    v_pos       PLS_INTEGER := 1;
+    v_lista     VARCHAR2(32767) := p_lista_campos || ',';
+  BEGIN
+    LOOP
+      v_token := regexp_substr(v_lista, '[^,]+', 1, v_pos);
+      EXIT WHEN v_token IS NULL;
+    
+      v_resultado := v_resultado || REPLACE(p_patron, '#', TRIM(v_token));
+    
+      -- Agregar separador si no es el último elemento
+      IF regexp_substr(v_lista, '[^,]+', 1, v_pos + 1) IS NOT NULL THEN
+        v_resultado := v_resultado || p_separador_salida;
+      END IF;
+    
+      v_pos := v_pos + 1;
+    END LOOP;
+  
+    RETURN v_resultado;
+  END f_formatear_cadena;
+
+  FUNCTION f_reemplazar_etiquetas(i_cadena       IN CLOB,
+                                  i_etiquetas    IN y_cadenas,
+                                  i_valores      IN y_cadenas,
+                                  i_encapsulador IN VARCHAR2 DEFAULT '#')
+    RETURN CLOB IS
+    l_result CLOB := i_cadena;
+  BEGIN
+    FOR i IN 1 .. i_etiquetas.count LOOP
+      l_result := REPLACE(l_result,
+                          i_encapsulador || i_etiquetas(i) || i_encapsulador,
+                          nvl(i_valores(i), ''));
+    END LOOP;
+    RETURN l_result;
+  END f_reemplazar_etiquetas;
 
 END;
 /
