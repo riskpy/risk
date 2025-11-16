@@ -2,6 +2,8 @@ prompt
 prompt Instalando operaciones...
 prompt -----------------------------------
 prompt
+@@scripts/operations/importacion/gen/importar_ciudades_separados_por_coma.sql
+@@scripts/operations/importacion/gen/importar_paises_campos_fijos.sql
 @@scripts/operations/monitoreo/aut/sesiones_expiradas.sql
 @@scripts/operations/parametros/_/contexto.sql
 @@scripts/operations/parametros/_/parametros_automaticos.sql

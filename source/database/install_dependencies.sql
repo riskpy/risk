@@ -63,6 +63,7 @@ prompt
 @@dependencies/ZT_WORD.pks
 @@dependencies/ZT_WORD.pkb
 @@dependencies/fn_gen_inserts.sql
+@@dependencies/lob2table.sql
 @@dependencies/create_console_objects.sql
 @@dependencies/om_tapigen_install.sql
 @@dependencies/plex_install.sql
