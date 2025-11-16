@@ -25,18 +25,30 @@ SOFTWARE.
 set serveroutput on size unlimited
 
 declare
-  cursor cr_usuarios is
-    select distinct o.owner as username
+  cursor cr_objetos is
+    select 'create or replace public synonym ' || object_name || ' for ' ||
+           owner || '.' || object_name as sentencia
       from all_objects o
-     where o.owner in ('RISK', sys_context('USERENV', 'CURRENT_SCHEMA'))
-       and o.status = 'INVALID'
-       and o.owner not in ('SYS');
+     where owner in ('RISK')
+       and object_type in ('FUNCTION',
+                           'PACKAGE',
+                           'PROCEDURE',
+                           'SEQUENCE',
+                           'TABLE',
+                           'VIEW',
+                           'TYPE',
+                           'TRIGGER',
+                           'JAVA SOURCE')
+       and not exists (select 1
+              from all_synonyms s
+             where s.owner = 'PUBLIC'
+               and s.synonym_name = o.object_name);
 begin
-  for u in cr_usuarios loop
-    dbms_output.put_line('Compiling invalid objects for schema ' ||
-                         upper(u.username) || '...');
-    dbms_output.put_line('-----------------------------------');
-    dbms_utility.compile_schema(schema => u.username, compile_all => false);
+  dbms_output.put_line('Creating public synonyms...');
+  dbms_output.put_line('-----------------------------------');
+  for t in cr_objetos loop
+    --dbms_output.put_line(t.sentencia);
+    execute immediate t.sentencia;
   end loop;
 end;
 /

@@ -25,18 +25,30 @@ SOFTWARE.
 set serveroutput on size unlimited
 
 declare
-  cursor cr_usuarios is
-    select distinct o.owner as username
-      from all_objects o
-     where o.owner in ('RISK', sys_context('USERENV', 'CURRENT_SCHEMA'))
-       and o.status = 'INVALID'
-       and o.owner not in ('SYS');
+  cursor cr_objetos is
+    select s.owner as syn_owner,
+           s.synonym_name as syn_name,
+           s.table_owner as obj_owner,
+           s.table_name as obj_name,
+           case
+             when o.owner is null then
+              'MISSING'
+             else
+              o.status
+           end as obj_status,
+           'drop public synonym ' || s.synonym_name as sentencia
+      from all_synonyms s
+      left join all_objects o
+        on s.table_owner = o.owner
+       and s.table_name = o.object_name
+     where o.owner is null
+       and s.table_owner in ('RISK');
 begin
-  for u in cr_usuarios loop
-    dbms_output.put_line('Compiling invalid objects for schema ' ||
-                         upper(u.username) || '...');
-    dbms_output.put_line('-----------------------------------');
-    dbms_utility.compile_schema(schema => u.username, compile_all => false);
+  dbms_output.put_line('Dropping public synonyms...');
+  dbms_output.put_line('-----------------------------------');
+  for t in cr_objetos loop
+    --dbms_output.put_line(t.sentencia);
+    execute immediate t.sentencia;
   end loop;
 end;
 /

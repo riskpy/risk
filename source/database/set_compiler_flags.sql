@@ -22,23 +22,39 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-set serveroutput on size unlimited
+set define on
 
+--accept v_module char default 'risk'
+DEFINE v_module = '&1'
+
+prompt - Set compiler flags
 declare
-  cursor cr_usuarios is
-    select distinct o.owner as username
-      from all_objects o
-     where o.owner in ('RISK', sys_context('USERENV', 'CURRENT_SCHEMA'))
-       and o.status = 'INVALID'
-       and o.owner not in ('SYS');
+  l_module        varchar2(30) := '&v_module';
+  l_plsql_ccflags varchar2(4000);
 begin
-  for u in cr_usuarios loop
-    dbms_output.put_line('Compiling invalid objects for schema ' ||
-                         upper(u.username) || '...');
-    dbms_output.put_line('-----------------------------------');
-    dbms_utility.compile_schema(schema => u.username, compile_all => false);
-  end loop;
+  begin
+    select plsql_ccflags
+      into l_plsql_ccflags
+      from all_plsql_object_settings
+     where type = 'PACKAGE'
+       and owner = 'RISK'
+       and name = 'K_MODULO';
+  exception
+    when no_data_found then
+      l_plsql_ccflags := null;
+  end;
+
+  if l_module is not null then
+    if l_plsql_ccflags is null then
+      l_plsql_ccflags := 'mi_' || l_module || ':true';
+    else
+      l_plsql_ccflags := l_plsql_ccflags || ',mi_' || l_module || ':true';
+    end if;
+  
+    execute immediate 'alter session set plsql_ccflags = ''' ||
+                      l_plsql_ccflags || '''';
+  end if;
 end;
 /
 
-set serveroutput off
+set define off

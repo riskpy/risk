@@ -31,92 +31,65 @@ set define on
 DEFINE v_app_name = '&1'
 DEFINE v_password = '&2'
 
-DEFINE v_data_user = '&v_app_name._data'
-DEFINE v_util_user = '&v_app_name._util'
-DEFINE v_code_user = '&v_app_name.'
-DEFINE v_access_user = '&v_app_name._access'
+-- Create roles
+DEFINE v_data_role = '&v_app_name._data_role'
+DEFINE v_code_role = '&v_app_name._code_role'
+DEFINE v_dev_role = '&v_app_name._dev_role'
+DEFINE v_access_role = '&v_app_name._access_role'
+
+CREATE ROLE &v_data_role;
+CREATE ROLE &v_code_role;
+CREATE ROLE &v_dev_role;
+CREATE ROLE &v_access_role;
+
+-- Grant system privileges
+GRANT CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW, CREATE ANY PROCEDURE, CREATE PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE, CREATE ANY TRIGGER, CREATE TYPE, CREATE VIEW TO &v_data_role, &v_code_role;
+GRANT DEBUG CONNECT SESSION TO &v_data_role, &v_code_role;
+-- Grant object privileges
+
+-- Grant system privileges
+GRANT CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW, CREATE ANY PROCEDURE, CREATE PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE, CREATE ANY TRIGGER, CREATE TYPE, CREATE VIEW TO &v_dev_role;
+GRANT DEBUG CONNECT SESSION TO &v_dev_role;
+GRANT ALL PRIVILEGES TO &v_dev_role;
+-- Grant object privileges
+
+-- Grant system privileges
+GRANT CREATE SESSION TO &v_access_role;
+-- Grant object privileges
 
 -- Create users
-@@create_data_user.sql &v_data_user &v_password
-@@create_code_user.sql &v_util_user &v_password
-@@create_code_user.sql &v_code_user &v_password
-@@create_access_user.sql &v_access_user &v_password
+DEFINE v_dev_user = '&v_app_name.'
+DEFINE v_access_user = '&v_app_name._access'
 
--- Install dependencies
-exec execute immediate 'ALTER SESSION SET CURRENT_SCHEMA=&v_util_user'
-@@install_dependencies.sql
-set define on
--- Grant object privileges to code user
-GRANT EXECUTE ON &v_util_user..as_crypto TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..as_pdf TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..as_xlsx TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..as_zip TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..csv TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..oos_util_totp TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..zt_qr TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..zt_word TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..fn_gen_inserts TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..console TO &v_code_user;
-GRANT SELECT ON &v_util_user..console_conf TO &v_code_user;
-GRANT SELECT ON &v_util_user..console_logs TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..om_tapigen TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..plex TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..lob_row TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..lob_rows TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..lob_column TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..lob_columns TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..lob2table TO &v_code_user;
-CREATE OR REPLACE SYNONYM &v_code_user..as_crypto FOR &v_util_user..as_crypto;
-CREATE OR REPLACE SYNONYM &v_code_user..as_pdf FOR &v_util_user..as_pdf;
-CREATE OR REPLACE SYNONYM &v_code_user..as_xlsx FOR &v_util_user..as_xlsx;
-CREATE OR REPLACE SYNONYM &v_code_user..as_zip FOR &v_util_user..as_zip;
-CREATE OR REPLACE SYNONYM &v_code_user..csv FOR &v_util_user..csv;
-CREATE OR REPLACE SYNONYM &v_code_user..oos_util_totp FOR &v_util_user..oos_util_totp;
-CREATE OR REPLACE SYNONYM &v_code_user..zt_qr FOR &v_util_user..zt_qr;
-CREATE OR REPLACE SYNONYM &v_code_user..zt_word FOR &v_util_user..zt_word;
-CREATE OR REPLACE SYNONYM &v_code_user..fn_gen_inserts FOR &v_util_user..fn_gen_inserts;
-CREATE OR REPLACE SYNONYM &v_code_user..console FOR &v_util_user..console;
-CREATE OR REPLACE SYNONYM &v_code_user..console_conf FOR &v_util_user..console_conf;
-CREATE OR REPLACE SYNONYM &v_code_user..console_logs FOR &v_util_user..console_logs;
-CREATE OR REPLACE SYNONYM &v_code_user..om_tapigen FOR &v_util_user..om_tapigen;
-CREATE OR REPLACE SYNONYM &v_code_user..plex FOR &v_util_user..plex;
-CREATE OR REPLACE SYNONYM &v_code_user..lob_row FOR &v_util_user..lob_row;
-CREATE OR REPLACE SYNONYM &v_code_user..lob_rows FOR &v_util_user..lob_rows;
-CREATE OR REPLACE SYNONYM &v_code_user..lob_column FOR &v_util_user..lob_column;
-CREATE OR REPLACE SYNONYM &v_code_user..lob_columns FOR &v_util_user..lob_columns;
-CREATE OR REPLACE SYNONYM &v_code_user..lob2table FOR &v_util_user..lob2table;
+CREATE USER &v_dev_user IDENTIFIED BY &v_password;
+-- Grant roles
+GRANT &v_dev_role TO &v_dev_user;
+-- Grant system privileges
+-- Grant object privileges
+GRANT SELECT  ON sys.v_$session  TO &v_dev_user;
+GRANT SELECT  ON sys.v_$sesstat  TO &v_dev_user;
+GRANT SELECT  ON sys.v_$statname TO &v_dev_user;
+GRANT EXECUTE ON sys.dbms_crypto TO &v_dev_user;
 --
-
--- Install source
-exec execute immediate 'ALTER SESSION SET CURRENT_SCHEMA=&v_code_user'
-@@install.sql
-set define on
--- Grant object privileges to access user
-GRANT EXECUTE ON &v_code_user..k_servicio TO &v_access_user;
-GRANT EXECUTE ON &v_code_user..k_reporte TO &v_access_user;
-CREATE OR REPLACE SYNONYM &v_access_user..k_servicio FOR &v_code_user..k_servicio;
-CREATE OR REPLACE SYNONYM &v_access_user..k_reporte FOR &v_code_user..k_reporte;
--- Grant object privileges to util user
-GRANT SELECT ON &v_code_user..t_operaciones TO &v_util_user;
-GRANT SELECT ON &v_code_user..t_operacion_parametros TO &v_util_user;
-GRANT SELECT ON &v_code_user..t_servicios TO &v_util_user;
-GRANT SELECT ON &v_code_user..t_reportes TO &v_util_user;
-GRANT SELECT ON &v_code_user..t_trabajos TO &v_util_user;
-GRANT SELECT ON &v_code_user..t_monitoreos TO &v_util_user;
-GRANT SELECT ON &v_code_user..t_importaciones TO &v_util_user;
-GRANT SELECT ON &v_code_user..t_importacion_parametros TO &v_util_user;
-GRANT SELECT ON &v_code_user..t_rol_permisos TO &v_util_user;
-GRANT EXECUTE ON &v_code_user..k_operacion TO &v_util_user;
-CREATE OR REPLACE SYNONYM &v_util_user..t_operaciones FOR &v_code_user..t_operaciones;
-CREATE OR REPLACE SYNONYM &v_util_user..t_operacion_parametros FOR &v_code_user..t_operacion_parametros;
-CREATE OR REPLACE SYNONYM &v_util_user..t_servicios FOR &v_code_user..t_servicios;
-CREATE OR REPLACE SYNONYM &v_util_user..t_reportes FOR &v_code_user..t_reportes;
-CREATE OR REPLACE SYNONYM &v_util_user..t_trabajos FOR &v_code_user..t_trabajos;
-CREATE OR REPLACE SYNONYM &v_util_user..t_monitoreos FOR &v_code_user..t_monitoreos;
-CREATE OR REPLACE SYNONYM &v_util_user..t_importaciones FOR &v_code_user..t_importaciones;
-CREATE OR REPLACE SYNONYM &v_util_user..t_importacion_parametros FOR &v_code_user..t_importacion_parametros;
-CREATE OR REPLACE SYNONYM &v_util_user..t_rol_permisos FOR &v_code_user..t_rol_permisos;
-CREATE OR REPLACE SYNONYM &v_util_user..k_operacion FOR &v_code_user..k_operacion;
+CREATE USER &v_access_user IDENTIFIED BY &v_password;
+-- Grant roles
+GRANT &v_access_role TO &v_access_user;
+-- Grant system privileges
+-- Grant object privileges
+GRANT SELECT  ON sys.v_$session  TO &v_access_user;
+GRANT SELECT  ON sys.v_$sesstat  TO &v_access_user;
+GRANT SELECT  ON sys.v_$statname TO &v_access_user;
 --
+-- CREATE USER RISK IDENTIFIED BY &v_password;
+-- Grant roles
+GRANT &v_code_role TO RISK;
+-- Grant system privileges
+GRANT UNLIMITED TABLESPACE TO RISK;
+GRANT CREATE JOB TO RISK;
+-- Grant object privileges
+GRANT SELECT  ON sys.v_$session  TO RISK;
+GRANT SELECT  ON sys.v_$sesstat  TO RISK;
+GRANT SELECT  ON sys.v_$statname TO RISK;
+GRANT EXECUTE ON sys.dbms_crypto TO RISK;
 
 spool off

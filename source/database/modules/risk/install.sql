@@ -214,7 +214,7 @@ prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
-@@compile_schema.sql
+@@../../compile_schema.sql
 @@scripts/ins_t_modulos.sql
 @@scripts/ins_t_dominios.sql
 @@scripts/ins_t_aplicaciones.sql
