@@ -45,46 +45,70 @@ prompt ===================================
 prompt
 
 prompt
-prompt Creating types tests...
+prompt Creating package specs...
 prompt -----------------------------------
 prompt
-@@types/test_y_dato.pck
-@@types/test_y_respuesta.pck
+@@package_specs/test_gb_personas.spc
+--
+@@package_specs/test_k_aplicacion.spc
+@@package_specs/test_k_archivo.spc
+@@package_specs/test_k_auditoria.spc
+@@package_specs/test_k_autenticacion.spc
+@@package_specs/test_k_autorizacion.spc
+@@package_specs/test_k_cadena.spc
+@@package_specs/test_k_clave.spc
+@@package_specs/test_k_dato.spc
+@@package_specs/test_k_dispositivo.spc
+@@package_specs/test_k_dominio.spc
+@@package_specs/test_k_error.spc
+@@package_specs/test_k_html.spc
+@@package_specs/test_k_mensajeria.spc
+@@package_specs/test_k_modulo.spc
+@@package_specs/test_k_operacion.spc
+@@package_specs/test_k_reporte.spc
+@@package_specs/test_k_servicio.spc
+@@package_specs/test_k_sesion.spc
+@@package_specs/test_k_significado.spc
+@@package_specs/test_k_sistema.spc
+@@package_specs/test_k_trabajo.spc
+@@package_specs/test_k_usuario.spc
+@@package_specs/test_k_util.spc
+--
+@@package_specs/test_y_dato.spc
+@@package_specs/test_y_respuesta.spc
 
 prompt
-prompt Creating packages tests...
+prompt Creating package bodies...
 prompt -----------------------------------
 prompt
-@@packages/test_k_aplicacion.pck
-@@packages/test_k_archivo.pck
-@@packages/test_k_auditoria.pck
-@@packages/test_k_autenticacion.pck
-@@packages/test_k_autorizacion.pck
-@@packages/test_k_cadena.pck
-@@packages/test_k_clave.pck
-@@packages/test_k_dato.pck
-@@packages/test_k_dispositivo.pck
-@@packages/test_k_dominio.pck
-@@packages/test_k_error.pck
-@@packages/test_k_html.pck
-@@packages/test_k_importacion.pck
-@@packages/test_k_mensajeria.pck
-@@packages/test_k_modulo.pck
-@@packages/test_k_operacion.pck
-@@packages/test_k_reporte.pck
-@@packages/test_k_servicio.pck
-@@packages/test_k_sesion.pck
-@@packages/test_k_significado.pck
-@@packages/test_k_sistema.pck
-@@packages/test_k_trabajo.pck
-@@packages/test_k_usuario.pck
-@@packages/test_k_util.pck
-
-prompt
-prompt Creating triggers tests...
-prompt -----------------------------------
-prompt
-@@triggers/test_gb_personas.pck
+@@package_bodies/test_gb_personas.bdy
+--
+@@package_bodies/test_k_aplicacion.bdy
+@@package_bodies/test_k_archivo.bdy
+@@package_bodies/test_k_auditoria.bdy
+@@package_bodies/test_k_autenticacion.bdy
+@@package_bodies/test_k_autorizacion.bdy
+@@package_bodies/test_k_cadena.bdy
+@@package_bodies/test_k_clave.bdy
+@@package_bodies/test_k_dato.bdy
+@@package_bodies/test_k_dispositivo.bdy
+@@package_bodies/test_k_dominio.bdy
+@@package_bodies/test_k_error.bdy
+@@package_bodies/test_k_html.bdy
+@@package_bodies/test_k_mensajeria.bdy
+@@package_bodies/test_k_modulo.bdy
+@@package_bodies/test_k_operacion.bdy
+@@package_bodies/test_k_reporte.bdy
+@@package_bodies/test_k_servicio.bdy
+@@package_bodies/test_k_sesion.bdy
+@@package_bodies/test_k_significado.bdy
+@@package_bodies/test_k_sistema.bdy
+@@package_bodies/test_k_trabajo.bdy
+@@package_bodies/test_k_usuario.bdy
+@@package_bodies/test_k_util.bdy
+--
+@@package_bodies/test_y_dato.bdy
+@@package_bodies/test_y_respuesta.bdy
 
 prompt
 prompt ===================================

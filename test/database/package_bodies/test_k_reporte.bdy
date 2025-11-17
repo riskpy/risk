@@ -1,0 +1,9 @@
+CREATE OR REPLACE PACKAGE BODY test_k_reporte IS
+
+  PROCEDURE test IS
+  BEGIN
+    NULL;
+  END;
+
+END;
+/

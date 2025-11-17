@@ -1,0 +1,9 @@
+CREATE OR REPLACE PACKAGE BODY test_k_dispositivo IS
+
+  PROCEDURE test IS
+  BEGIN
+    NULL;
+  END;
+
+END;
+/
