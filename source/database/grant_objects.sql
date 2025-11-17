@@ -76,14 +76,19 @@ begin
                            'VIEW',
                            'TYPE',
                            'JAVA SOURCE')
-  /*and not exists (select 1
-   from all_tab_privs p
-  where p.grantor = o.owner
-    and p.table_name = o.object_name)*/
-  /*and exists (select 1
-   from all_synonyms s
-  where s.owner = 'PUBLIC'
-    and s.table_name = o.object_name)*/
+        /*and not exists (select 1
+         from all_tab_privs p
+        where p.grantor = o.owner
+          and p.table_name = o.object_name)*/
+        /*and exists (select 1
+         from all_synonyms s
+        where s.owner = 'PUBLIC'
+          and s.table_name = o.object_name)*/
+     and trim((select listagg(u.username, ',') within group(order by u.username)
+                from all_users u
+               where u.username in ('RISK')
+                 and u.username not in
+                     (o.owner, sys_context('USERENV', 'CURRENT_SCHEMA')))) is not null
    order by decode(o.owner, 'RISK', 1, 99),
             o.owner,
             o.object_type,
