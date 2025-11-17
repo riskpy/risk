@@ -28,9 +28,12 @@ La documentación está disponible en la carpeta [docs](/docs/) del repositorio,
 * **[/source/](/source/)** Archivos de código fuente separados en Base de Datos y Back-End
 * **[/test/](/test/)** Archivos de pruebas unitarias y extras
 
-# Autores
-* Javier Meza ([github.com/jtsoya539](https://github.com/jtsoya539))
-* Damián Meza ([github.com/DamyGenius](https://github.com/DamyGenius))
+# Colaboradores
+<a href="https://github.com/riskpy/risk/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=riskpy/risk" />
+</a>
+
+Hecho con [contrib.rocks](https://contrib.rocks).
 
 # Sugerencias
 Si tenés alguna duda o consulta, o querés reportar un error en el código o en la documentación, creá un nuevo [issue](https://github.com/riskpy/risk/issues).
