@@ -11,6 +11,8 @@ set FILE_LIST=%ROOT_DIR%\beautify_list.sql
 :: Clear previous list
 if exist "%FILE_LIST%" del "%FILE_LIST%"
 
+echo set beautifierrules %ROOT_DIR%\rules.br>>"%FILE_LIST%"
+
 :: File extensions to include
 set EXTENSIONS=spc bdy fnc prc trg tps tpb
 
