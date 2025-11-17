@@ -31,7 +31,7 @@ DECLARE
      WHERE lower(table_name) LIKE 't\_%' ESCAPE '\';
 BEGIN
   FOR t IN cr_tablas LOOP
-    dbms_output.put_line('Droping audit triggers for table ' ||
+    dbms_output.put_line('Dropping audit triggers for table ' ||
                          upper(t.tabla) || '...');
     dbms_output.put_line('-----------------------------------');
     BEGIN
@@ -41,7 +41,7 @@ BEGIN
         dbms_output.put_line(SQLERRM);
     END;
   
-    dbms_output.put_line('Droping audit columns for table ' ||
+    dbms_output.put_line('Dropping audit columns for table ' ||
                          upper(t.tabla) || '...');
     dbms_output.put_line('-----------------------------------');
     BEGIN
