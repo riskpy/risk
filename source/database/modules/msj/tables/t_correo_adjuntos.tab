@@ -12,7 +12,4 @@ comment on column T_CORREO_ADJUNTOS.id_correo
   is 'Identificador del correo electrónico';
 alter table T_CORREO_ADJUNTOS
   add constraint PK_CORREO_ADJUNTOS primary key (ID_CORREO_ADJUNTO);
-alter table T_CORREO_ADJUNTOS
-  add constraint FK_CORREO_ADJUNTO_CORREOS foreign key (ID_CORREO)
-  references T_CORREOS (ID_CORREO);
 

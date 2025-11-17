@@ -40,9 +40,6 @@ comment on column T_NOTIFICACIONES.datos_extra
 alter table T_NOTIFICACIONES
   add constraint PK_NOTIFICACIONES primary key (ID_NOTIFICACION);
 alter table T_NOTIFICACIONES
-  add constraint FK_NOTIFICACIONES_USUARIOS foreign key (ID_USUARIO)
-  references T_USUARIOS (ID_USUARIO);
-alter table T_NOTIFICACIONES
   add constraint CK_NOTIFICACIONES_DATOS_EXTRA
   check (DATOS_EXTRA IS JSON);
 

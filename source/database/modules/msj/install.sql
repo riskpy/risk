@@ -59,18 +59,25 @@ prompt
 prompt Creating tables...
 prompt -----------------------------------
 prompt
-@@tables/t_correos.tab
 @@tables/t_correo_adjuntos.tab
-@@tables/t_mensajes.tab
-@@tables/t_notificaciones.tab
-@@tables/t_notificacion_plantillas.tab
+@@tables/t_correos.tab
 @@tables/t_dispositivo_suscripciones.tab
+@@tables/t_mensajes.tab
+@@tables/t_notificacion_plantillas.tab
+@@tables/t_notificaciones.tab
 @@tables/t_usuario_suscripciones.tab
 
 prompt
 prompt Creating foreign keys...
 prompt -----------------------------------
 prompt
+@@foreign_keys/fk_correo_adjuntos.sql
+@@foreign_keys/fk_correos.sql
+@@foreign_keys/fk_dispositivo_suscripciones.sql
+@@foreign_keys/fk_mensajes.sql
+@@foreign_keys/fk_notificacion_plantillas.sql
+@@foreign_keys/fk_notificaciones.sql
+@@foreign_keys/fk_usuario_suscripciones.sql
 
 prompt
 prompt Creating views...

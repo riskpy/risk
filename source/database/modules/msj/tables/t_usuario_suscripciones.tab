@@ -15,6 +15,3 @@ comment on column T_USUARIO_SUSCRIPCIONES.fecha_expiracion
   is 'Fecha de expiración de la suscripción';
 alter table T_USUARIO_SUSCRIPCIONES
   add constraint PK_USUARIO_SUSCRIPCIONES primary key (ID_USUARIO, SUSCRIPCION);
-alter table T_USUARIO_SUSCRIPCIONES
-  add constraint FK_USU_SUS_USUARIOS foreign key (ID_USUARIO)
-  references T_USUARIOS (ID_USUARIO);

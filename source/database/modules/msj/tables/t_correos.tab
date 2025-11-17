@@ -48,7 +48,4 @@ comment on column T_CORREOS.prioridad_envio
   is 'Prioridad de envío';
 alter table T_CORREOS
   add constraint PK_CORREOS primary key (ID_CORREO);
-alter table T_CORREOS
-  add constraint FK_CORREOS_USUARIOS foreign key (ID_USUARIO)
-  references T_USUARIOS (ID_USUARIO);
 

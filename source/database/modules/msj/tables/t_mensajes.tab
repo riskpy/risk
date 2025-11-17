@@ -33,7 +33,4 @@ comment on column T_MENSAJES.prioridad_envio
   is 'Prioridad de envío';
 alter table T_MENSAJES
   add constraint PK_MENSAJES primary key (ID_MENSAJE);
-alter table T_MENSAJES
-  add constraint FK_MENSAJES_USUARIOS foreign key (ID_USUARIO)
-  references T_USUARIOS (ID_USUARIO);
 
