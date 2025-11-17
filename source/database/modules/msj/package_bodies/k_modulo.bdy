@@ -1,0 +1,4 @@
+CREATE OR REPLACE PACKAGE BODY k_modulo IS
+
+END;
+/

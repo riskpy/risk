@@ -43,6 +43,8 @@ prompt ===================================
 prompt Installation started
 prompt ===================================
 prompt
+@@../../set_compiler_flags.sql msj
+@@../risk/package_specs/k_modulo.spc
 
 prompt
 prompt Creating sequences...
@@ -66,50 +68,95 @@ prompt
 @@tables/t_usuario_suscripciones.tab
 
 prompt
+prompt Creating foreign keys...
+prompt -----------------------------------
+prompt
+
+prompt
 prompt Creating views...
 prompt -----------------------------------
 prompt
 
 prompt
-prompt Creating types...
+prompt Creating type specs...
 prompt -----------------------------------
 prompt
-@@types/y_correo.typ
-@@types/y_mensaje.typ
-@@types/y_notificacion.typ
+@@type_specs/y_correo.tps
+@@type_specs/y_mensaje.tps
+@@type_specs/y_notificacion.tps
 
 prompt
-prompt Creating packages...
+prompt Creating type bodies...
 prompt -----------------------------------
 prompt
-@@packages/k_mensajeria.pck
-@@packages/k_servicio_msj.pck
+@@type_bodies/y_correo.tpb
+@@type_bodies/y_mensaje.tpb
+@@type_bodies/y_notificacion.tpb
+
+prompt
+prompt Creating java sources...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating functions...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating procedures...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating package specs...
+prompt -----------------------------------
+prompt
+@@package_specs/k_mensajeria.spc
+@@package_specs/k_modulo.spc
+@@package_specs/k_servicio_msj.spc
+
+prompt
+prompt Creating package bodies...
+prompt -----------------------------------
+prompt
+@@package_bodies/k_mensajeria.bdy
+@@package_bodies/k_modulo.bdy
+@@package_bodies/k_servicio_msj.bdy
 
 prompt
 prompt Creating triggers...
 prompt -----------------------------------
 prompt
-@@triggers/gs_correos.trg
+@@triggers/gb_mensajes.trg
 @@triggers/gs_correo_adjuntos.trg
+@@triggers/gs_correos.trg
 @@triggers/gs_mensajes.trg
 @@triggers/gs_notificaciones.trg
-@@triggers/gb_mensajes.trg
+
+@@../../compile_schema.sql
 
 prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
-@@packages/k_modulo.pck
-@@../../compile_schema.sql
 @@scripts/ins_t_modulos.sql
 @@scripts/ins_t_dominios.sql
 @@scripts/ins_t_significado_dominios.sql
 @@scripts/ins_t_significados.sql
+@@scripts/ins_t_parametro_definiciones.sql
 @@scripts/ins_t_parametros.sql
-@@scripts/ins_t_notificacion_plantillas.sql
 @@scripts/ins_t_aplicaciones.sql
-@@scripts/ins_t_archivo_definiciones.sql
+@@scripts/ins_t_errores.sql
 @@scripts/operations/install.sql
+commit;
+/
+
+prompt
+prompt Running additional scripts...
+prompt -----------------------------------
+prompt
+@@install_scripts.sql
 commit;
 /
 

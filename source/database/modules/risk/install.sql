@@ -43,24 +43,25 @@ prompt ===================================
 prompt Installation started
 prompt ===================================
 prompt
+@@../../set_compiler_flags.sql risk
 
 prompt
 prompt Creating sequences...
 prompt -----------------------------------
 prompt
-@@sequences/s_id_pais.seq
-@@sequences/s_id_departamento.seq
-@@sequences/s_id_ciudad.seq
 @@sequences/s_id_barrio.seq
-@@sequences/s_id_idioma.seq
-@@sequences/s_id_persona.seq
-@@sequences/s_id_rol.seq
-@@sequences/s_id_operacion_log.seq
-@@sequences/s_id_monitoreo_ejecucion.seq
-@@sequences/s_id_sesion.seq
-@@sequences/s_id_usuario.seq
+@@sequences/s_id_ciudad.seq
+@@sequences/s_id_departamento.seq
 @@sequences/s_id_dispositivo.seq
 @@sequences/s_id_error.seq
+@@sequences/s_id_idioma.seq
+@@sequences/s_id_monitoreo_ejecucion.seq
+@@sequences/s_id_operacion_log.seq
+@@sequences/s_id_pais.seq
+@@sequences/s_id_persona.seq
+@@sequences/s_id_rol.seq
+@@sequences/s_id_sesion.seq
+@@sequences/s_id_usuario.seq
 
 prompt
 prompt Creating tables...
@@ -107,6 +108,11 @@ prompt
 @@tables/t_migraciones.tab
 
 prompt
+prompt Creating foreign keys...
+prompt -----------------------------------
+prompt
+
+prompt
 prompt Creating views...
 prompt -----------------------------------
 prompt
@@ -114,126 +120,200 @@ prompt
 @@views/v_operacion_logs.vw
 
 prompt
-prompt Creating types...
+prompt Creating type specs...
 prompt -----------------------------------
 prompt
-@@types/y_cadenas.typ
-@@types/y_objeto.typ
-@@types/y_objetos.typ
-
-@@packages/k_util.pck
-@@packages/k_json_util.pck
-@@packages/k_lob_util.pck
-@@packages/k_cadena.pck
-@@packages/k_significado.pck
-@@packages/k_sistema.pck
-
-@@types/y_dato.typ
-@@types/y_datos.typ
-@@types/y_error.typ
-@@types/y_archivo.typ
-@@types/y_archivos.typ
-@@types/y_parametro.typ
-@@types/y_parametros.typ
-@@types/y_respuesta.typ
-@@types/y_rol.typ
-@@types/y_usuario.typ
-@@types/y_sesion.typ
-@@types/y_dispositivo.typ
-@@types/y_pagina.typ
-@@types/y_pagina_parametros.typ
-@@types/y_significado.typ
-@@types/y_plantilla.typ
-@@types/y_pais.typ
-@@types/y_departamento.typ
-@@types/y_ciudad.typ
-@@types/y_barrio.typ
+@@type_specs/y_archivo.tps
+@@type_specs/y_archivos.tps
+@@type_specs/y_barrio.tps
+@@type_specs/y_cadenas.tps
+@@type_specs/y_ciudad.tps
+@@type_specs/y_dato.tps
+@@type_specs/y_datos.tps
+@@type_specs/y_departamento.tps
+@@type_specs/y_dispositivo.tps
+@@type_specs/y_error.tps
+@@type_specs/y_objeto.tps
+@@type_specs/y_objetos.tps
+@@type_specs/y_pagina.tps
+@@type_specs/y_pagina_parametros.tps
+@@type_specs/y_pais.tps
+@@type_specs/y_parametro.tps
+@@type_specs/y_parametros.tps
+@@type_specs/y_plantilla.tps
+@@type_specs/y_respuesta.tps
+@@type_specs/y_rol.tps
+@@type_specs/y_sesion.tps
+@@type_specs/y_significado.tps
+@@type_specs/y_usuario.tps
 
 prompt
-prompt Creating packages...
+prompt Creating type bodies...
 prompt -----------------------------------
 prompt
-@@packages/k_modulo.pck
-@@packages/k_dominio.pck
-@@packages/k_auditoria.pck
-@@packages/k_archivo.pck
-@@packages/k_html.pck
-@@packages/k_dato.pck
-@@packages/k_aplicacion.pck
-@@packages/k_usuario.pck
-@@packages/k_dispositivo.pck
-@@packages/k_sesion.pck
-@@packages/k_error.pck
-@@packages/k_clave.pck
-@@packages/k_autenticacion.pck
-@@packages/k_autorizacion.pck
-@@packages/k_operacion.pck
-@@packages/k_servicio.pck
-@@packages/k_reporte.pck
-@@packages/k_trabajo.pck
-@@packages/k_importacion.pck
-@@packages/k_monitoreo.pck
-@@packages/k_servicio_aut.pck
-@@packages/k_servicio_gen.pck
-@@packages/k_servicio_glo.pck
-@@packages/k_reporte_gen.pck
-@@packages/k_monitoreo_aut.pck
+@@type_bodies/y_archivo.tpb
+@@type_bodies/y_barrio.tpb
+@@type_bodies/y_ciudad.tpb
+@@type_bodies/y_dato.tpb
+@@type_bodies/y_departamento.tpb
+@@type_bodies/y_dispositivo.tpb
+@@type_bodies/y_error.tpb
+@@type_bodies/y_pagina.tpb
+@@type_bodies/y_pagina_parametros.tpb
+@@type_bodies/y_pais.tpb
+@@type_bodies/y_parametro.tpb
+@@type_bodies/y_plantilla.tpb
+@@type_bodies/y_respuesta.tpb
+@@type_bodies/y_rol.tpb
+@@type_bodies/y_sesion.tpb
+@@type_bodies/y_significado.tpb
+@@type_bodies/y_usuario.tpb
+
+prompt
+prompt Creating java sources...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating functions...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating procedures...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating package specs...
+prompt -----------------------------------
+prompt
+@@package_specs/k_aplicacion.spc
+@@package_specs/k_archivo.spc
+@@package_specs/k_auditoria.spc
+@@package_specs/k_autenticacion.spc
+@@package_specs/k_autorizacion.spc
+@@package_specs/k_cadena.spc
+@@package_specs/k_clave.spc
+@@package_specs/k_dato.spc
+@@package_specs/k_dispositivo.spc
+@@package_specs/k_dominio.spc
+@@package_specs/k_error.spc
+@@package_specs/k_html.spc
+@@package_specs/k_importacion.spc
+@@package_specs/k_json_util.spc
+@@package_specs/k_lob_util.spc
+@@package_specs/k_modulo.spc
+@@package_specs/k_monitoreo.spc
+@@package_specs/k_monitoreo_aut.spc
+@@package_specs/k_operacion.spc
+@@package_specs/k_reporte.spc
+@@package_specs/k_reporte_gen.spc
+@@package_specs/k_servicio.spc
+@@package_specs/k_servicio_aut.spc
+@@package_specs/k_servicio_gen.spc
+@@package_specs/k_servicio_glo.spc
+@@package_specs/k_sesion.spc
+@@package_specs/k_significado.spc
+@@package_specs/k_sistema.spc
+@@package_specs/k_trabajo.spc
+@@package_specs/k_usuario.spc
+@@package_specs/k_util.spc
+
+prompt
+prompt Creating package bodies...
+prompt -----------------------------------
+prompt
+@@package_bodies/k_aplicacion.bdy
+@@package_bodies/k_archivo.bdy
+@@package_bodies/k_auditoria.bdy
+@@package_bodies/k_autenticacion.bdy
+@@package_bodies/k_autorizacion.bdy
+@@package_bodies/k_cadena.bdy
+@@package_bodies/k_clave.bdy
+@@package_bodies/k_dato.bdy
+@@package_bodies/k_dispositivo.bdy
+@@package_bodies/k_dominio.bdy
+@@package_bodies/k_error.bdy
+@@package_bodies/k_html.bdy
+@@package_bodies/k_importacion.bdy
+@@package_bodies/k_json_util.bdy
+@@package_bodies/k_lob_util.bdy
+@@package_bodies/k_modulo.bdy
+@@package_bodies/k_monitoreo.bdy
+@@package_bodies/k_monitoreo_aut.bdy
+@@package_bodies/k_operacion.bdy
+@@package_bodies/k_reporte.bdy
+@@package_bodies/k_reporte_gen.bdy
+@@package_bodies/k_servicio.bdy
+@@package_bodies/k_servicio_aut.bdy
+@@package_bodies/k_servicio_gen.bdy
+@@package_bodies/k_servicio_glo.bdy
+@@package_bodies/k_sesion.bdy
+@@package_bodies/k_significado.bdy
+@@package_bodies/k_sistema.bdy
+@@package_bodies/k_trabajo.bdy
+@@package_bodies/k_usuario.bdy
+@@package_bodies/k_util.bdy
 
 prompt
 prompt Creating triggers...
 prompt -----------------------------------
 prompt
-@@triggers/gs_paises.trg
-@@triggers/gs_departamentos.trg
-@@triggers/gs_ciudades.trg
-@@triggers/gs_barrios.trg
-@@triggers/gs_idiomas.trg
-@@triggers/gs_personas.trg
-@@triggers/gs_roles.trg
-@@triggers/gs_operaciones.trg
-@@triggers/gs_operacion_logs.trg
-@@triggers/gs_monitoreo_ejecuciones.trg
-@@triggers/gs_sesiones.trg
-@@triggers/gs_usuarios.trg
-@@triggers/gs_dispositivos.trg
-@@triggers/gs_errores.trg
-@@triggers/gb_operaciones.trg
+@@triggers/gb_archivos.trg
+@@triggers/gb_datos.trg
 @@triggers/gb_operacion_parametros.trg
+@@triggers/gb_operaciones.trg
+@@triggers/gb_personas.trg
 @@triggers/gb_reportes.trg
 @@triggers/gb_servicios.trg
+@@triggers/gb_sesiones.trg
 @@triggers/gb_trabajos.trg
 @@triggers/gb_usuarios.trg
-@@triggers/gb_sesiones.trg
-@@triggers/gb_personas.trg
-@@triggers/gb_datos.trg
-@@triggers/gb_archivos.trg
 @@triggers/gf_archivos.trg
 @@triggers/gf_operaciones.trg
+@@triggers/gs_barrios.trg
+@@triggers/gs_ciudades.trg
+@@triggers/gs_departamentos.trg
+@@triggers/gs_dispositivos.trg
+@@triggers/gs_errores.trg
+@@triggers/gs_idiomas.trg
+@@triggers/gs_monitoreo_ejecuciones.trg
+@@triggers/gs_operacion_logs.trg
+@@triggers/gs_operaciones.trg
+@@triggers/gs_paises.trg
+@@triggers/gs_personas.trg
+@@triggers/gs_roles.trg
+@@triggers/gs_sesiones.trg
+@@triggers/gs_usuarios.trg
+
+@@../../compile_schema.sql
 
 prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
-@@../../compile_schema.sql
 @@scripts/ins_t_modulos.sql
 @@scripts/ins_t_dominios.sql
-@@scripts/ins_t_aplicaciones.sql
 @@scripts/ins_t_significado_dominios.sql
 @@scripts/ins_t_significados.sql
-@@scripts/ins_t_errores.sql
+@@scripts/ins_t_parametro_definiciones.sql
 @@scripts/ins_t_parametros.sql
+@@scripts/ins_t_aplicaciones.sql
+@@scripts/ins_t_errores.sql
+@@scripts/ins_t_autenticacion_origenes.sql
 @@scripts/ins_t_roles.sql
-@@scripts/ins_t_archivo_definiciones.sql
-@@scripts/ins_t_archivos.sql
 @@scripts/operations/install.sql
 commit;
 /
 
 prompt
-prompt Creating jobs...
+prompt Running additional scripts...
 prompt -----------------------------------
 prompt
-@@jobs/create_monitoreo_conflictos.sql
+@@install_scripts.sql
+commit;
+/
 
 prompt
 prompt ===================================
