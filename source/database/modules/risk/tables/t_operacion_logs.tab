@@ -33,6 +33,3 @@ comment on column T_OPERACION_LOGS.duracion
   is 'Duración de la ejecución de la operación';
 alter table T_OPERACION_LOGS
   add constraint PK_OPERACION_LOGS primary key (ID_OPERACION_LOG);
-alter table T_OPERACION_LOGS
-  add constraint FK_OPERACION_LOGS_OPERACIONES foreign key (ID_OPERACION)
-  references T_OPERACIONES (ID_OPERACION);

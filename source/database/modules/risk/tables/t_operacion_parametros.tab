@@ -51,9 +51,6 @@ alter table T_OPERACION_PARAMETROS
 alter table T_OPERACION_PARAMETROS
   add constraint UK_OPE_PAR_ID_OPE_ORD_VERSION unique (ID_OPERACION, ORDEN, VERSION);
 alter table T_OPERACION_PARAMETROS
-  add constraint FK_OPE_PARAMETROS_OPERACIONES foreign key (ID_OPERACION)
-  references T_OPERACIONES (ID_OPERACION);
-alter table T_OPERACION_PARAMETROS
   add constraint CK_OPE_PAR_ACTIVO
   check (ACTIVO IN ('S', 'N'));
 alter table T_OPERACION_PARAMETROS

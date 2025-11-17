@@ -22,8 +22,5 @@ comment on column T_DOMINIOS.id_modulo
 alter table T_DOMINIOS
   add constraint PK_DOMINIOS primary key (ID_DOMINIO);
 alter table T_DOMINIOS
-  add constraint FK_DOMINIOS_MODULOS foreign key (ID_MODULO)
-  references T_MODULOS (ID_MODULO);
-alter table T_DOMINIOS
   add constraint CK_DOMINIOS_ACTIVO
   check (ACTIVO IN ('S', 'N'));

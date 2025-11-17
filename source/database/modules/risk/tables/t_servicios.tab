@@ -25,9 +25,6 @@ comment on column T_SERVICIOS.sql_ultima_ejecucion
 alter table T_SERVICIOS
   add constraint PK_SERVICIOS primary key (ID_SERVICIO);
 alter table T_SERVICIOS
-  add constraint FK_SERVICIOS_OPERACIONES foreign key (ID_SERVICIO)
-  references T_OPERACIONES (ID_OPERACION);
-alter table T_SERVICIOS
   add constraint CK_SERVICIOS_TIPO_CONSULTA_SQL
   check (TIPO <> 'C' OR (TIPO = 'C' AND CONSULTA_SQL IS NOT NULL));
 

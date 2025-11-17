@@ -30,9 +30,6 @@ comment on column T_IMPORTACIONES.proceso_posterior
 alter table T_IMPORTACIONES
   add constraint PK_T_IMPORTACIONES primary key (ID_IMPORTACION);
 alter table T_IMPORTACIONES
-  add constraint FK_IMPORTACIONES_OPERACIONES foreign key (ID_IMPORTACION)
-  references T_OPERACIONES (ID_OPERACION);
-alter table T_IMPORTACIONES
   add constraint CK_T_IMPORTACIONES_LINEA_INICIAL
   check (LINEA_INICIAL BETWEEN 1 AND 999);
 alter table T_IMPORTACIONES

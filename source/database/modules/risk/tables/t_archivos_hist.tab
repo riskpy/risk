@@ -36,7 +36,4 @@ comment on column T_ARCHIVOS_HIST.extension
   is 'Extensión del archivo';
 alter table T_ARCHIVOS_HIST
   add constraint PK_ARCHIVOS_HIST primary key (TABLA, CAMPO, REFERENCIA, VERSION);
-alter table T_ARCHIVOS_HIST
-  add constraint FK_ARC_HIS_ARC_DEFINICIONES foreign key (TABLA, CAMPO)
-  references T_ARCHIVO_DEFINICIONES (TABLA, CAMPO);
 

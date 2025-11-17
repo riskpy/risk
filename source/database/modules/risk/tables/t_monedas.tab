@@ -28,9 +28,6 @@ comment on column T_MONEDAS.codigo_iso
 alter table T_MONEDAS
   add constraint PK_MONEDAS primary key (ID_MONEDA);
 alter table T_MONEDAS
-  add constraint FK_MONEDAS_PAISES foreign key (ID_PAIS)
-  references T_PAISES (ID_PAIS);
-alter table T_MONEDAS
   add constraint CK_MONEDAS_ACTIVO
   check (ACTIVO IN ('S', 'N'));
 

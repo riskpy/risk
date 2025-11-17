@@ -18,6 +18,3 @@ comment on column T_MONITOREO_EJECUCIONES.datos
   is 'Datos del conflicto';
 alter table T_MONITOREO_EJECUCIONES
   add constraint PK_MONITOREO_EJECUCIONES primary key (ID_MONITOREO_EJECUCION, ID_MONITOREO);
-alter table T_MONITOREO_EJECUCIONES
-  add constraint FK_MONITOREO_EJECUCIONES_OPERACIONES foreign key (ID_MONITOREO)
-  references T_MONITOREOS (ID_MONITOREO);

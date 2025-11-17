@@ -36,7 +36,4 @@ comment on column T_USUARIO_CLAVES.fecha_ultima_autenticacion
   is 'Fecha de la última autenticación exitosa';
 alter table T_USUARIO_CLAVES
   add constraint PK_USUARIO_CLAVES primary key (ID_USUARIO, TIPO, ORDEN);
-alter table T_USUARIO_CLAVES
-  add constraint FK_USUARIO_CLAVES_USUARIOS foreign key (ID_USUARIO)
-  references T_USUARIOS (ID_USUARIO);
 

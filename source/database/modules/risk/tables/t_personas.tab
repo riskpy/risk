@@ -33,7 +33,4 @@ comment on column T_PERSONAS.fecha_nacimiento
   is 'Fecha de nacimiento de la persona';
 alter table T_PERSONAS
   add constraint PK_PERSONAS primary key (ID_PERSONA);
-alter table T_PERSONAS
-  add constraint FK_PERSONAS_PAISES foreign key (ID_PAIS)
-  references T_PAISES (ID_PAIS);
 

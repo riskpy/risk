@@ -1,0 +1,3 @@
+alter table T_OPERACION_LOGS
+  add constraint FK_OPERACION_LOGS_OPERACIONES foreign key (ID_OPERACION)
+  references T_OPERACIONES (ID_OPERACION);

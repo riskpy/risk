@@ -40,8 +40,5 @@ comment on column T_TRABAJOS.programa
 alter table T_TRABAJOS
   add constraint PK_TRABAJOS primary key (ID_TRABAJO);
 alter table T_TRABAJOS
-  add constraint FK_TRABAJOS_OPERACIONES foreign key (ID_TRABAJO)
-  references T_OPERACIONES (ID_OPERACION);
-alter table T_TRABAJOS
   add constraint CK_TRABAJOS_TIPO
   check (TIPO IN ('PLSQL_BLOCK', 'STORED_PROCEDURE', 'EXECUTABLE', 'CHAIN', 'EXTERNAL_SCRIPT', 'SQL_SCRIPT', 'BACKUP_SCRIPT'));

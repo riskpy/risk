@@ -49,9 +49,6 @@ comment on column T_MONITOREOS.comentarios
 alter table T_MONITOREOS
   add constraint PK_MONITOREOS primary key (ID_MONITOREO);
 alter table T_MONITOREOS
-  add constraint FK_MONITOREOS_OPERACIONES foreign key (ID_MONITOREO)
-  references T_OPERACIONES (ID_OPERACION);
-alter table T_MONITOREOS
   add constraint CK_MONITOREOS_PRIORIDAD
   check (PRIORIDAD IN (1, 2, 3, 4, 5));
 alter table T_MONITOREOS

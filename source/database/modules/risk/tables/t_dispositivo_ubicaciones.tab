@@ -21,7 +21,4 @@ comment on column T_DISPOSITIVO_UBICACIONES.longitud
   is 'Longitud de la ubicación';
 alter table T_DISPOSITIVO_UBICACIONES
   add constraint PK_DISPOSITIVO_UBICACIONES primary key (ID_DISPOSITIVO, ORDEN);
-alter table T_DISPOSITIVO_UBICACIONES
-  add constraint FK_DIS_UBI_DISPOSITIVOS foreign key (ID_DISPOSITIVO)
-  references T_DISPOSITIVOS (ID_DISPOSITIVO);
 

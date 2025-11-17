@@ -25,12 +25,6 @@ comment on column T_ROL_PERMISOS.eliminar
 alter table T_ROL_PERMISOS
   add constraint PK_ROL_PERMISOS primary key (ID_ROL, ID_PERMISO);
 alter table T_ROL_PERMISOS
-  add constraint FK_ROL_PERMISOS_PERMISOS foreign key (ID_PERMISO)
-  references T_PERMISOS (ID_PERMISO);
-alter table T_ROL_PERMISOS
-  add constraint FK_ROL_PERMISOS_ROLES foreign key (ID_ROL)
-  references T_ROLES (ID_ROL);
-alter table T_ROL_PERMISOS
   add constraint CK_ROL_PERMISOS_ACTUALIZAR
   check (ACTUALIZAR IN ('S', 'N'));
 alter table T_ROL_PERMISOS

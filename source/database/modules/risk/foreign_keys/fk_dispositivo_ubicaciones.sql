@@ -1,0 +1,3 @@
+alter table T_DISPOSITIVO_UBICACIONES
+  add constraint FK_DIS_UBI_DISPOSITIVOS foreign key (ID_DISPOSITIVO)
+  references T_DISPOSITIVOS (ID_DISPOSITIVO);

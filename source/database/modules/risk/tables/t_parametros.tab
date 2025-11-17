@@ -18,6 +18,3 @@ comment on column T_PARAMETROS.id_dominio
   is 'Dominio del parámetro';
 alter table T_PARAMETROS
   add constraint PK_PARAMETROS primary key (ID_PARAMETRO);
-alter table T_PARAMETROS
-  add constraint FK_PARAMETROS_DOMINIOS foreign key (ID_DOMINIO)
-  references T_DOMINIOS (ID_DOMINIO);

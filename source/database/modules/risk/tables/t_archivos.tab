@@ -36,7 +36,4 @@ comment on column T_ARCHIVOS.version_actual
   is 'Versión actual del archivo';
 alter table T_ARCHIVOS
   add constraint PK_ARCHIVOS primary key (TABLA, CAMPO, REFERENCIA);
-alter table T_ARCHIVOS
-  add constraint FK_ARC_ARCHIVO_DEFINICIONES foreign key (TABLA, CAMPO)
-  references T_ARCHIVO_DEFINICIONES (TABLA, CAMPO);
 
