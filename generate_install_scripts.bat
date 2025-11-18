@@ -534,6 +534,170 @@ for /d %%d in ("%BASE_DIR%\*") do (
 ) > "%%d\uninstall.sql"
 )
 
+:: Generate tests install/uninstall scripts (only package specs / bodies)
+set TEST_DIR=%~dp0test\database
+if exist "%TEST_DIR%" (
+    echo Generating tests install script...
+(
+    echo /*
+    echo --------------------------------- MIT License ---------------------------------
+    echo Copyright ^(c^) 2019 jtsoya539
+    echo.
+    echo Permission is hereby granted, free of charge, to any person obtaining a copy
+    echo of this software and associated documentation files ^(the ^"Software^"^), to deal
+    echo in the Software without restriction, including without limitation the rights
+    echo to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    echo copies of the Software, and to permit persons to whom the Software is
+    echo furnished to do so, subject to the following conditions:
+    echo.
+    echo The above copyright notice and this permission notice shall be included in all
+    echo copies or substantial portions of the Software.
+    echo.
+    echo THE SOFTWARE IS PROVIDED ^"AS IS^", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    echo IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    echo FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    echo AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    echo LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    echo OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    echo SOFTWARE.
+    echo -------------------------------------------------------------------------------
+    echo */
+    echo.
+    echo spool install.log
+    echo.
+    echo set feedback off
+    echo set define off
+    echo.
+    echo prompt ###################################
+    echo prompt #   _____   _____   _____  _  __  #
+    echo prompt #  ^|  __ \ ^|_   _^| / ____^|^| ^|/ /  #
+    echo prompt #  ^| ^|__^) ^|  ^| ^|  ^| ^(___  ^| ' /   #
+    echo prompt #  ^|  _  /   ^| ^|   \___ \ ^|  ^<    #
+    echo prompt #  ^| ^| \ \  _^| ^|_  ____^) ^|^| . \   #
+    echo prompt #  ^|_^|  \_\^|_____^|^|_____/ ^|_^|\_\  #
+    echo prompt #                                 #
+    echo prompt #            jtsoya539            #
+    echo prompt ###################################
+    echo.
+    echo prompt
+    echo prompt ===================================
+    echo prompt Tests installation started
+    echo prompt ===================================
+    echo prompt
+    echo.
+    echo prompt
+    echo prompt Creating package specs...
+    echo prompt -----------------------------------
+    echo prompt
+    if exist "%TEST_DIR%\package_specs\*.spc" (
+        dir /b "%TEST_DIR%\package_specs\*.spc" > "%TEMP_DIR%\tests_package_specs.txt"
+        sort "%TEMP_DIR%\tests_package_specs.txt" /o "%TEMP_DIR%\tests_package_specs_sorted.txt"
+        for /f "tokens=*" %%f in (%TEMP_DIR%\tests_package_specs_sorted.txt) do (
+            echo @@package_specs/%%f
+        )
+    )
+
+    echo.
+    echo prompt
+    echo prompt Creating package bodies...
+    echo prompt -----------------------------------
+    echo prompt
+    if exist "%TEST_DIR%\package_bodies\*.bdy" (
+        dir /b "%TEST_DIR%\package_bodies\*.bdy" > "%TEMP_DIR%\tests_package_bodies.txt"
+        sort "%TEMP_DIR%\tests_package_bodies.txt" /o "%TEMP_DIR%\tests_package_bodies_sorted.txt"
+        for /f "tokens=*" %%f in (%TEMP_DIR%\tests_package_bodies_sorted.txt) do (
+            echo @@package_bodies/%%f
+        )
+    )
+
+    echo.
+    echo prompt
+    echo prompt ===================================
+    echo prompt Tests installation completed
+    echo prompt ===================================
+    echo prompt
+    echo.
+    echo spool off
+) > "%TEST_DIR%\install.sql"
+
+    echo Generating tests uninstall script...
+(
+    echo /*
+    echo --------------------------------- MIT License ---------------------------------
+    echo Copyright ^(c^) 2019 jtsoya539
+    echo.
+    echo Permission is hereby granted, free of charge, to any person obtaining a copy
+    echo of this software and associated documentation files ^(the ^"Software^"^), to deal
+    echo in the Software without restriction, including without limitation the rights
+    echo to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    echo copies of the Software, and to permit persons to whom the Software is
+    echo furnished to do so, subject to the following conditions:
+    echo.
+    echo The above copyright notice and this permission notice shall be included in all
+    echo copies or substantial portions of the Software.
+    echo.
+    echo THE SOFTWARE IS PROVIDED ^"AS IS^", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    echo IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    echo FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    echo AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    echo LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    echo OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    echo SOFTWARE.
+    echo -------------------------------------------------------------------------------
+    echo */
+    echo.
+    echo spool uninstall.log
+    echo.
+    echo set feedback off
+    echo set define off
+    echo.
+    echo prompt ###################################
+    echo prompt #   _____   _____   _____  _  __  #
+    echo prompt #  ^|  __ \ ^|_   _^| / ____^|^| ^|/ /  #
+    echo prompt #  ^| ^|__^) ^|  ^| ^|  ^| ^(___  ^| ' /   #
+    echo prompt #  ^|  _  /   ^| ^|   \___ \ ^|  ^<    #
+    echo prompt #  ^| ^| \ \  _^| ^|_  ____^) ^|^| . \   #
+    echo prompt #  ^|_^|  \_\^|_____^|^|_____/ ^|_^|\_\  #
+    echo prompt #                                 #
+    echo prompt #            jtsoya539            #
+    echo prompt ###################################
+    echo.
+    echo prompt
+    echo prompt ===================================
+    echo prompt Tests uninstallation started
+    echo prompt ===================================
+    echo prompt
+    echo.
+    echo prompt
+    echo prompt Dropping packages...
+    echo prompt -----------------------------------
+    echo prompt
+    if exist "%TEST_DIR%\package_bodies\*.bdy" (
+        dir /b "%TEST_DIR%\package_bodies\*.bdy" > "%TEMP_DIR%\tests_package_bodies_uninstall.txt"
+        sort "%TEMP_DIR%\tests_package_bodies_uninstall.txt" /o "%TEMP_DIR%\tests_package_bodies_uninstall_sorted.txt"
+        for /f "tokens=*" %%f in (%TEMP_DIR%\tests_package_bodies_uninstall_sorted.txt) do (
+            for /f "tokens=1* delims=." %%a in ("%%~nf") do echo drop package %%a;
+        )
+    )
+
+    echo.
+    echo prompt
+    echo prompt Purging recycle bin...
+    echo prompt -----------------------------------
+    echo prompt
+    echo purge recyclebin;
+
+    echo.
+    echo prompt
+    echo prompt ===================================
+    echo prompt Tests uninstallation completed
+    echo prompt ===================================
+    echo prompt
+    echo.
+    echo spool off
+) > "%TEST_DIR%\uninstall.sql"
+)
+
 :: Clean up temporary directory
 rmdir /s /q "%TEMP_DIR%"
 

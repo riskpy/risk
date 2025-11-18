@@ -49,7 +49,6 @@ prompt Creating package specs...
 prompt -----------------------------------
 prompt
 @@package_specs/test_gb_personas.spc
---
 @@package_specs/test_k_aplicacion.spc
 @@package_specs/test_k_archivo.spc
 @@package_specs/test_k_auditoria.spc
@@ -62,6 +61,7 @@ prompt
 @@package_specs/test_k_dominio.spc
 @@package_specs/test_k_error.spc
 @@package_specs/test_k_html.spc
+@@package_specs/test_k_importacion.spc
 @@package_specs/test_k_mensajeria.spc
 @@package_specs/test_k_modulo.spc
 @@package_specs/test_k_operacion.spc
@@ -73,7 +73,6 @@ prompt
 @@package_specs/test_k_trabajo.spc
 @@package_specs/test_k_usuario.spc
 @@package_specs/test_k_util.spc
---
 @@package_specs/test_y_dato.spc
 @@package_specs/test_y_respuesta.spc
 
@@ -82,7 +81,6 @@ prompt Creating package bodies...
 prompt -----------------------------------
 prompt
 @@package_bodies/test_gb_personas.bdy
---
 @@package_bodies/test_k_aplicacion.bdy
 @@package_bodies/test_k_archivo.bdy
 @@package_bodies/test_k_auditoria.bdy
@@ -95,6 +93,7 @@ prompt
 @@package_bodies/test_k_dominio.bdy
 @@package_bodies/test_k_error.bdy
 @@package_bodies/test_k_html.bdy
+@@package_bodies/test_k_importacion.bdy
 @@package_bodies/test_k_mensajeria.bdy
 @@package_bodies/test_k_modulo.bdy
 @@package_bodies/test_k_operacion.bdy
@@ -106,7 +105,6 @@ prompt
 @@package_bodies/test_k_trabajo.bdy
 @@package_bodies/test_k_usuario.bdy
 @@package_bodies/test_k_util.bdy
---
 @@package_bodies/test_y_dato.bdy
 @@package_bodies/test_y_respuesta.bdy
 

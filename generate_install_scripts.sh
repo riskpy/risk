@@ -659,3 +659,176 @@ for module_dir in "$BASE_DIR"/*/ ; do
     fi
 done
 echo "Done!"
+
+# Generate tests install/uninstall scripts (only package specs / bodies)
+TEST_DIR="$SCRIPT_DIR/test/database"
+if [ -d "$TEST_DIR" ]; then
+    echo "Generating tests install script..."
+    cat > "$TEST_DIR/install.sql" <<'TEST_INSTALL_EOF'
+/*
+--------------------------------- MIT License ---------------------------------
+Copyright (c) 2019 jtsoya539
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-------------------------------------------------------------------------------
+*/
+
+spool install.log
+
+set feedback off
+set define off
+
+prompt ###################################
+prompt #   _____   _____   _____  _  __  #
+prompt #  |  __ \ |_   _| / ____|| |/ /  #
+prompt #  | |__) |  | |  | (___  | ' /   #
+prompt #  |  _  /   | |   \___ \ |  <    #
+prompt #  | | \ \  _| |_  ____) || . \   #
+prompt #  |_|  \_\|_____||_____/ |_|\_\  #
+prompt #                                 #
+prompt #            jtsoya539            #
+prompt ###################################
+
+prompt
+prompt ===================================
+prompt Tests installation started
+prompt ===================================
+prompt
+
+prompt
+prompt Creating package specs...
+prompt -----------------------------------
+prompt
+TEST_INSTALL_EOF
+
+    # package specs
+    if [ -d "$TEST_DIR/package_specs" ]; then
+        find "$TEST_DIR/package_specs" -name "*.spc" -type f -printf "%f
+" | LC_ALL=C sort | while read -r f; do
+            echo "@@package_specs/$f" >> "$TEST_DIR/install.sql"
+        done
+    fi
+
+    cat >> "$TEST_DIR/install.sql" <<'TEST_INSTALL_EOF'
+
+prompt
+prompt Creating package bodies...
+prompt -----------------------------------
+prompt
+TEST_INSTALL_EOF
+
+    # package bodies
+    if [ -d "$TEST_DIR/package_bodies" ]; then
+        find "$TEST_DIR/package_bodies" -name "*.bdy" -type f -printf "%f
+" | LC_ALL=C sort | while read -r f; do
+            echo "@@package_bodies/$f" >> "$TEST_DIR/install.sql"
+        done
+    fi
+
+    cat >> "$TEST_DIR/install.sql" <<'TEST_INSTALL_EOF'
+
+prompt
+prompt ===================================
+prompt Tests installation completed
+prompt ===================================
+prompt
+
+spool off
+TEST_INSTALL_EOF
+
+    echo "Generating tests uninstall script..."
+    cat > "$TEST_DIR/uninstall.sql" <<'TEST_UNINSTALL_EOF'
+/*
+--------------------------------- MIT License ---------------------------------
+Copyright (c) 2019 jtsoya539
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-------------------------------------------------------------------------------
+*/
+
+spool uninstall.log
+
+set feedback off
+set define off
+
+prompt ###################################
+prompt #   _____   _____   _____  _  __  #
+prompt #  |  __ \ |_   _| / ____|| |/ /  #
+prompt #  | |__) |  | |  | (___  | ' /   #
+prompt #  |  _  /   | |   \___ \ |  <    #
+prompt #  | | \ \  _| |_  ____) || . \   #
+prompt #  |_|  \_\|_____||_____/ |_|\_\  #
+prompt #                                 #
+prompt #            jtsoya539            #
+prompt ###################################
+
+prompt
+prompt ===================================
+prompt Tests uninstallation started
+prompt ===================================
+prompt
+
+prompt
+prompt Dropping packages...
+prompt -----------------------------------
+prompt
+TEST_UNINSTALL_EOF
+
+    # drop package for each .bdy
+    if [ -d "$TEST_DIR/package_bodies" ]; then
+        find "$TEST_DIR/package_bodies" -name "*.bdy" -type f -printf "%f
+" | LC_ALL=C sort | while read -r f; do
+            name=${f%%.*}
+            echo "drop package $name;" >> "$TEST_DIR/uninstall.sql"
+        done
+    fi
+
+    cat >> "$TEST_DIR/uninstall.sql" <<'TEST_UNINSTALL_EOF'
+
+prompt
+prompt Purging recycle bin...
+prompt -----------------------------------
+prompt
+purge recyclebin;
+
+prompt
+prompt ===================================
+prompt Tests uninstallation completed
+prompt ===================================
+prompt
+
+spool off
+TEST_UNINSTALL_EOF
+fi

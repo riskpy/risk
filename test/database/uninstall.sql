@@ -45,15 +45,10 @@ prompt ===================================
 prompt
 
 prompt
-prompt Dropping triggers tests...
+prompt Dropping packages...
 prompt -----------------------------------
 prompt
 drop package test_gb_personas;
-
-prompt
-prompt Dropping packages tests...
-prompt -----------------------------------
-prompt
 drop package test_k_aplicacion;
 drop package test_k_archivo;
 drop package test_k_auditoria;
@@ -66,6 +61,7 @@ drop package test_k_dispositivo;
 drop package test_k_dominio;
 drop package test_k_error;
 drop package test_k_html;
+drop package test_k_importacion;
 drop package test_k_mensajeria;
 drop package test_k_modulo;
 drop package test_k_operacion;
@@ -77,11 +73,6 @@ drop package test_k_sistema;
 drop package test_k_trabajo;
 drop package test_k_usuario;
 drop package test_k_util;
-
-prompt
-prompt Dropping types tests...
-prompt -----------------------------------
-prompt
 drop package test_y_dato;
 drop package test_y_respuesta;
 
