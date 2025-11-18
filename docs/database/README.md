@@ -42,6 +42,7 @@ Dependencia|Descripción
 [as_xlsx](https://github.com/antonscheffer/as_xlsx)|Genera archivos en formato XLSX
 [as_zip](https://github.com/antonscheffer/as_zip)|Comprime y descomprime archivos en formato ZIP
 [csv](https://oracle-base.com/dba/script?category=miscellaneous&file=csv.sql)|Genera archivos en formato CSV
+[LOB2Table](https://sourceforge.net/projects/lob2table/)|Importa archivos en formato CSV o columnas fijas
 [oos_util_totp](https://github.com/OraOpenSource/oos-utils)|Genera y valida códigos con el algoritmo TOTP
 [zt_qr](https://github.com/zorantica/plsql-qr-code)|Genera códigos QR
 [zt_word](https://github.com/zorantica/plsql-word)|Genera archivos en formato DOCX
