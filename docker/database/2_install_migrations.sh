@@ -11,7 +11,7 @@ for dir in /usr/src/risk/source/migrations/mig_*/
 do
     echo $dir;
     export SQLPATH="$dir:$SQLPATH"
-    sqlplus risk/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
+    sqlplus $RISK_DEV_USER[$RISK_CODE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
 done
 
 export SQLPATH="/usr/src/risk/source/:$SQLPATH"

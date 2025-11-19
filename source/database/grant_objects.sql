@@ -25,6 +25,8 @@ SOFTWARE.
 set serveroutput on size unlimited
 
 declare
+  v_app_name varchar2(100) := 'RISK';
+
   type objeto_rt is record(
     owner       all_objects.owner%type,
     object_name all_objects.object_name%type,
@@ -57,7 +59,8 @@ begin
                 o.owner || '.' || o.object_name) || ' to ' ||
          (select listagg(u.username, ',') within group(order by u.username)
             from all_users u
-           where u.username in ('RISK')
+           where u.username in
+                 (v_app_name || '_DATA', v_app_name || '_UTIL', v_app_name)
              and u.username not in
                  (o.owner, sys_context('USERENV', 'CURRENT_SCHEMA'))) ||
          ' with grant option' as sentencia,
@@ -67,7 +70,8 @@ begin
     from all_objects o, all_types t
    where t.owner(+) = o.owner
      and t.type_name(+) = o.object_name
-     and o.owner in ('RISK')
+     and o.owner in
+         (v_app_name || '_DATA', v_app_name || '_UTIL', v_app_name)
      and o.object_type in ('FUNCTION',
                            'PACKAGE',
                            'PROCEDURE',
@@ -86,10 +90,12 @@ begin
           and s.table_name = o.object_name)*/
      and trim((select listagg(u.username, ',') within group(order by u.username)
                 from all_users u
-               where u.username in ('RISK')
+               where u.username in (v_app_name || '_DATA',
+                                    v_app_name || '_UTIL',
+                                    v_app_name)
                  and u.username not in
                      (o.owner, sys_context('USERENV', 'CURRENT_SCHEMA')))) is not null
-   order by decode(o.owner, 'RISK', 1, 99),
+   order by decode(o.owner, v_app_name, 1, 99),
             o.owner,
             o.object_type,
             o.object_name;

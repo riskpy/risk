@@ -7,6 +7,6 @@ else
 
     # Install tests
     export SQLPATH="/usr/src/risk/test/:$SQLPATH"
-    sqlplus risk/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
+    sqlplus $RISK_DEV_USER[$RISK_CODE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
 
 fi;

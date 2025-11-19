@@ -13,6 +13,6 @@ else
     unzip utPLSQL-cli.zip
 
     # export JAVA_TOOL_OPTIONS='-Dfile.encoding=utf8'
-    utPLSQL-cli/bin/utplsql run risk/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME -f=ut_documentation_reporter -f=ut_junit_reporter -o=report.xml || true
+    utPLSQL-cli/bin/utplsql run $RISK_DEV_USER[$RISK_CODE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME -f=ut_documentation_reporter -f=ut_junit_reporter -o=report.xml || true
 
 fi;

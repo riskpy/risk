@@ -25,11 +25,14 @@ SOFTWARE.
 set serveroutput on size unlimited
 
 declare
+  v_app_name varchar2(100) := 'RISK';
+
   cursor cr_objetos is
     select 'create or replace public synonym ' || object_name || ' for ' ||
            owner || '.' || object_name as sentencia
       from all_objects o
-     where owner in ('RISK')
+     where owner in
+           (v_app_name || '_DATA', v_app_name || '_UTIL', v_app_name)
        and object_type in ('FUNCTION',
                            'PACKAGE',
                            'PROCEDURE',

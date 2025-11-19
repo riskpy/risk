@@ -25,6 +25,8 @@ SOFTWARE.
 set serveroutput on size unlimited
 
 declare
+  v_app_name varchar2(100) := 'RISK';
+
   cursor cr_objetos is
     select s.owner as syn_owner,
            s.synonym_name as syn_name,
@@ -42,7 +44,8 @@ declare
         on s.table_owner = o.owner
        and s.table_name = o.object_name
      where o.owner is null
-       and s.table_owner in ('RISK');
+       and s.table_owner in
+           (v_app_name || '_DATA', v_app_name || '_UTIL', v_app_name);
 begin
   dbms_output.put_line('Dropping public synonyms...');
   dbms_output.put_line('-----------------------------------');
