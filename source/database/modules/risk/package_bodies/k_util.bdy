@@ -28,7 +28,7 @@ CREATE OR REPLACE PACKAGE BODY k_util IS
 BEGIN
   /*
   --------------------------------- MIT License ---------------------------------
-  Copyright (c) 2019 jtsoya539
+  Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
   
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -142,7 +142,7 @@ Agrupa datos de ' || l_comments || '.
 
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
