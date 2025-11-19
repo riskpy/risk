@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_mensaje UNDER y_objeto
+create or replace type y_mensaje under y_objeto
 (
 /**
 Agrupa datos de un mensaje de texto (SMS).
@@ -31,11 +31,11 @@ SOFTWARE.
 */
 
 /** Identificador del mensaje de texto */
-  id_mensaje NUMBER,
+  id_mensaje number,
 /** Número de teléfono destino del mensaje de texto */
-  numero_telefono VARCHAR2(160),
+  numero_telefono varchar2(160),
 /** Contenido del mensaje de texto */
-  contenido VARCHAR2(160),
+  contenido varchar2(160),
 
 /**
 Constructor del objeto sin parámetros.
@@ -43,9 +43,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_mensaje.
 */
-  CONSTRUCTOR FUNCTION y_mensaje RETURN SELF AS RESULT,
+  constructor function y_mensaje return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -53,6 +53,6 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

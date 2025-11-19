@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_usuario UNDER y_objeto
+create or replace type y_usuario under y_objeto
 (
 /**
 Agrupa datos de un usuario.
@@ -31,25 +31,25 @@ SOFTWARE.
 */
 
 /** Identificador del usuario */
-  id_usuario NUMBER(10),
+  id_usuario number(10),
 /** Alias del usuario (identificador para autenticacion) */
-  alias VARCHAR2(300),
+  alias varchar2(300),
 /** Nombre de la persona */
-  nombre VARCHAR2(100),
+  nombre varchar2(100),
 /** Apellido de la persona */
-  apellido VARCHAR2(100),
+  apellido varchar2(100),
 /** Tipo de la persona */
-  tipo_persona CHAR(1),
+  tipo_persona char(1),
 /** Estado del usuario */
-  estado CHAR(1),
+  estado char(1),
 /** Direccion de correo electronico principal del usuario */
-  direccion_correo VARCHAR2(320),
+  direccion_correo varchar2(320),
 /** Numero de telefono principal del usuario */
-  numero_telefono VARCHAR2(160),
+  numero_telefono varchar2(160),
 /** Version del avatar del usuario */
-  version_avatar NUMBER(10),
+  version_avatar number(10),
 /** Origen del usuario */
-  origen CHAR(1),
+  origen char(1),
 /** Roles del usuario */
   roles y_objetos,
 
@@ -59,9 +59,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_usuario.
 */
-  CONSTRUCTOR FUNCTION y_usuario RETURN SELF AS RESULT,
+  constructor function y_usuario return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -69,6 +69,6 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

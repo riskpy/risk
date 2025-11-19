@@ -1,56 +1,56 @@
-CREATE OR REPLACE PACKAGE BODY k_operacion IS
+create or replace package body k_operacion is
 
-  PROCEDURE p_inicializar_log(i_id_operacion IN NUMBER) IS
-    l_nivel_log t_operaciones.nivel_log%TYPE;
-  BEGIN
-    BEGIN
-      SELECT nivel_log
-        INTO l_nivel_log
-        FROM t_operaciones
-       WHERE id_operacion = i_id_operacion;
-    EXCEPTION
-      WHEN OTHERS THEN
+  procedure p_inicializar_log(i_id_operacion in number) is
+    l_nivel_log t_operaciones.nivel_log%type;
+  begin
+    begin
+      select nivel_log
+        into l_nivel_log
+        from t_operaciones
+       where id_operacion = i_id_operacion;
+    exception
+      when others then
         l_nivel_log := 0;
-    END;
+    end;
   
-    IF l_nivel_log > 0 THEN
+    if l_nivel_log > 0 then
       k_sistema.p_definir_parametro_number(c_id_log,
                                            s_id_operacion_log.nextval);
       k_sistema.p_definir_parametro_string(c_fecha_hora_inicio_log,
                                            to_char(current_timestamp,
                                                    'YYYY-MM-DD HH24:MI:SS.FF'));
-    END IF;
-  EXCEPTION
-    WHEN OTHERS THEN
-      NULL;
-  END;
+    end if;
+  exception
+    when others then
+      null;
+  end;
 
-  PROCEDURE p_registrar_log(i_id_operacion     IN NUMBER,
-                            i_parametros       IN CLOB,
-                            i_codigo_respuesta IN VARCHAR2,
-                            i_respuesta        IN CLOB,
-                            i_contexto         IN CLOB DEFAULT NULL,
-                            i_version          IN VARCHAR2 DEFAULT NULL) IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-    l_nivel_log         t_operaciones.nivel_log%TYPE;
-    l_fecha_hora_inicio t_operacion_logs.fecha_hora_inicio%TYPE;
-  BEGIN
-    BEGIN
-      SELECT nivel_log
-        INTO l_nivel_log
-        FROM t_operaciones
-       WHERE id_operacion = i_id_operacion;
-    EXCEPTION
-      WHEN OTHERS THEN
+  procedure p_registrar_log(i_id_operacion     in number,
+                            i_parametros       in clob,
+                            i_codigo_respuesta in varchar2,
+                            i_respuesta        in clob,
+                            i_contexto         in clob default null,
+                            i_version          in varchar2 default null) is
+    pragma autonomous_transaction;
+    l_nivel_log         t_operaciones.nivel_log%type;
+    l_fecha_hora_inicio t_operacion_logs.fecha_hora_inicio%type;
+  begin
+    begin
+      select nivel_log
+        into l_nivel_log
+        from t_operaciones
+       where id_operacion = i_id_operacion;
+    exception
+      when others then
         l_nivel_log := 0;
-    END;
+    end;
   
-    IF (l_nivel_log > 1 AND i_codigo_respuesta = c_ok) OR
-       (l_nivel_log > 0 AND i_codigo_respuesta <> c_ok) THEN
+    if (l_nivel_log > 1 and i_codigo_respuesta = c_ok) or
+       (l_nivel_log > 0 and i_codigo_respuesta <> c_ok) then
       l_fecha_hora_inicio := nvl(to_timestamp(k_sistema.f_valor_parametro_string(c_fecha_hora_inicio_log),
                                               'YYYY-MM-DD HH24:MI:SS.FF'),
                                  current_timestamp);
-      INSERT INTO t_operacion_logs
+      insert into t_operacion_logs
         (id_operacion_log,
          id_operacion,
          contexto,
@@ -60,7 +60,7 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
          fecha_hora_inicio,
          fecha_hora_fin,
          duracion)
-      VALUES
+      values
         (k_sistema.f_valor_parametro_number(c_id_log),
          i_id_operacion,
          i_contexto,
@@ -70,94 +70,94 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
          l_fecha_hora_inicio,
          current_timestamp,
          current_timestamp - l_fecha_hora_inicio);
-    END IF;
+    end if;
   
-    COMMIT;
-  EXCEPTION
-    WHEN OTHERS THEN
-      ROLLBACK;
-  END;
+    commit;
+  exception
+    when others then
+      rollback;
+  end;
 
-  PROCEDURE p_respuesta_ok(io_respuesta IN OUT NOCOPY y_respuesta,
-                           i_datos      IN y_objeto DEFAULT NULL) IS
-  BEGIN
+  procedure p_respuesta_ok(io_respuesta in out nocopy y_respuesta,
+                           i_datos      in y_objeto default null) is
+  begin
     io_respuesta.codigo     := c_ok;
     io_respuesta.mensaje    := 'OK';
-    io_respuesta.mensaje_bd := NULL;
-    io_respuesta.lugar      := NULL;
+    io_respuesta.mensaje_bd := null;
+    io_respuesta.lugar      := null;
     io_respuesta.datos      := i_datos;
-  END;
+  end;
 
-  PROCEDURE p_respuesta_error(io_respuesta IN OUT NOCOPY y_respuesta,
-                              i_codigo     IN VARCHAR2,
-                              i_mensaje    IN VARCHAR2 DEFAULT NULL,
-                              i_mensaje_bd IN VARCHAR2 DEFAULT NULL,
-                              i_datos      IN y_objeto DEFAULT NULL) IS
-    l_mensaje VARCHAR2(32767) := substr(i_mensaje, 1, 32767);
-  BEGIN
-    IF i_codigo = c_ok THEN
+  procedure p_respuesta_error(io_respuesta in out nocopy y_respuesta,
+                              i_codigo     in varchar2,
+                              i_mensaje    in varchar2 default null,
+                              i_mensaje_bd in varchar2 default null,
+                              i_datos      in y_objeto default null) is
+    l_mensaje varchar2(32767) := substr(i_mensaje, 1, 32767);
+  begin
+    if i_codigo = c_ok then
       io_respuesta.codigo := c_error_general;
-    ELSE
+    else
       io_respuesta.codigo := substr(i_codigo, 1, 10);
-    END IF;
+    end if;
     io_respuesta.mensaje    := substr(k_error.f_mensaje_excepcion(nvl(l_mensaje,
                                                                       k_error.f_mensaje_error(i_codigo))),
                                       1,
                                       4000);
     io_respuesta.mensaje_bd := substr(i_mensaje_bd, 1, 4000);
     io_respuesta.datos      := i_datos;
-  END;
+  end;
 
-  PROCEDURE p_respuesta_excepcion(io_respuesta   IN OUT NOCOPY y_respuesta,
-                                  i_error_number IN NUMBER,
-                                  i_error_msg    IN VARCHAR2,
-                                  i_error_stack  IN VARCHAR2) IS
-  BEGIN
-    IF k_error.f_tipo_excepcion(i_error_number) =
-       k_error.c_user_defined_error THEN
+  procedure p_respuesta_excepcion(io_respuesta   in out nocopy y_respuesta,
+                                  i_error_number in number,
+                                  i_error_msg    in varchar2,
+                                  i_error_stack  in varchar2) is
+  begin
+    if k_error.f_tipo_excepcion(i_error_number) =
+       k_error.c_user_defined_error then
       p_respuesta_error(io_respuesta,
                         c_error_general,
                         i_error_msg,
                         i_error_stack);
-    ELSIF k_error.f_tipo_excepcion(i_error_number) =
-          k_error.c_oracle_predefined_error THEN
+    elsif k_error.f_tipo_excepcion(i_error_number) =
+          k_error.c_oracle_predefined_error then
       p_respuesta_error(io_respuesta,
                         c_error_inesperado,
                         k_error.f_mensaje_error(c_error_inesperado,
                                                 to_char(nvl(k_sistema.f_valor_parametro_number(c_id_log),
                                                             0))),
                         i_error_stack);
-    END IF;
-  END;
+    end if;
+  end;
 
-  PROCEDURE p_validar_parametro(io_respuesta IN OUT NOCOPY y_respuesta,
-                                i_expresion  IN BOOLEAN,
-                                i_mensaje    IN VARCHAR2) IS
-  BEGIN
-    IF NOT nvl(i_expresion, FALSE) THEN
+  procedure p_validar_parametro(io_respuesta in out nocopy y_respuesta,
+                                i_expresion  in boolean,
+                                i_mensaje    in varchar2) is
+  begin
+    if not nvl(i_expresion, false) then
       p_respuesta_error(io_respuesta,
                         c_error_parametro,
                         nvl(i_mensaje,
                             k_error.f_mensaje_error(c_error_parametro)));
-      RAISE ex_error_parametro;
-    END IF;
-  END;
+      raise ex_error_parametro;
+    end if;
+  end;
 
-  PROCEDURE p_definir_parametros(i_id_operacion IN NUMBER,
-                                 i_contexto     IN y_parametros) IS
-    l_id_sesion      t_sesiones.id_sesion%TYPE;
-    l_id_dispositivo t_dispositivos.id_dispositivo%TYPE;
+  procedure p_definir_parametros(i_id_operacion in number,
+                                 i_contexto     in y_parametros) is
+    l_id_sesion      t_sesiones.id_sesion%type;
+    l_id_dispositivo t_dispositivos.id_dispositivo%type;
     l_dispositivo    y_dispositivo;
-  BEGIN
-    DECLARE
-      l_nombre_operacion  t_operaciones.nombre%TYPE;
-      l_dominio_operacion t_operaciones.dominio%TYPE;
-    BEGIN
-      IF i_id_operacion IS NOT NULL THEN
-        SELECT upper(o.nombre), o.dominio
-          INTO l_nombre_operacion, l_dominio_operacion
-          FROM t_operaciones o
-         WHERE o.id_operacion = i_id_operacion;
+  begin
+    declare
+      l_nombre_operacion  t_operaciones.nombre%type;
+      l_dominio_operacion t_operaciones.dominio%type;
+    begin
+      if i_id_operacion is not null then
+        select upper(o.nombre), o.dominio
+          into l_nombre_operacion, l_dominio_operacion
+          from t_operaciones o
+         where o.id_operacion = i_id_operacion;
       
         k_sistema.p_definir_parametro_number(k_sistema.c_id_operacion,
                                              i_id_operacion);
@@ -165,11 +165,11 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
                                              l_nombre_operacion);
         k_sistema.p_definir_parametro_string(k_sistema.c_dominio_operacion,
                                              l_dominio_operacion);
-      END IF;
-    EXCEPTION
-      WHEN OTHERS THEN
-        NULL;
-    END;
+      end if;
+    exception
+      when others then
+        null;
+    end;
     --
     k_sistema.p_definir_parametro_string(k_sistema.c_direccion_ip,
                                          k_operacion.f_valor_parametro_string(i_contexto,
@@ -192,169 +192,169 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
     l_id_dispositivo := k_dispositivo.f_id_dispositivo(k_operacion.f_valor_parametro_string(i_contexto,
                                                                                             'token_dispositivo'));
   
-    IF l_id_dispositivo IS NULL AND l_id_sesion IS NOT NULL THEN
+    if l_id_dispositivo is null and l_id_sesion is not null then
       l_id_dispositivo := k_sesion.f_dispositivo_sesion(l_id_sesion);
-    END IF;
+    end if;
   
     k_sistema.p_definir_parametro_number(k_sistema.c_id_dispositivo,
                                          l_id_dispositivo);
   
-    IF l_id_dispositivo IS NOT NULL THEN
+    if l_id_dispositivo is not null then
       l_dispositivo := k_dispositivo.f_datos_dispositivo(l_id_dispositivo);
     
-      DECLARE
-        l_id_pais t_paises.id_pais%TYPE;
-      BEGIN
-        IF l_dispositivo.id_pais_iso2 IS NOT NULL THEN
-          SELECT p.id_pais
-            INTO l_id_pais
-            FROM t_paises p
-           WHERE p.iso_alpha_2 = l_dispositivo.id_pais_iso2;
+      declare
+        l_id_pais t_paises.id_pais%type;
+      begin
+        if l_dispositivo.id_pais_iso2 is not null then
+          select p.id_pais
+            into l_id_pais
+            from t_paises p
+           where p.iso_alpha_2 = l_dispositivo.id_pais_iso2;
           k_sistema.p_definir_parametro_number(k_sistema.c_id_pais,
                                                l_id_pais);
-        END IF;
-      EXCEPTION
-        WHEN OTHERS THEN
-          NULL;
-      END;
+        end if;
+      exception
+        when others then
+          null;
+      end;
     
-      IF l_dispositivo.zona_horaria IS NOT NULL THEN
+      if l_dispositivo.zona_horaria is not null then
         k_sistema.p_definir_parametro_string(k_sistema.c_zona_horaria,
                                              l_dispositivo.zona_horaria);
-      END IF;
+      end if;
     
-      DECLARE
-        l_id_idioma t_idiomas.id_idioma%TYPE;
-      BEGIN
-        IF l_dispositivo.id_idioma_iso369_1 IS NOT NULL THEN
-          SELECT i.id_idioma
-            INTO l_id_idioma
-            FROM t_idiomas i
-           WHERE i.iso_639_1 = l_dispositivo.id_idioma_iso369_1;
+      declare
+        l_id_idioma t_idiomas.id_idioma%type;
+      begin
+        if l_dispositivo.id_idioma_iso369_1 is not null then
+          select i.id_idioma
+            into l_id_idioma
+            from t_idiomas i
+           where i.iso_639_1 = l_dispositivo.id_idioma_iso369_1;
           k_sistema.p_definir_parametro_number(k_sistema.c_id_idioma,
                                                l_id_idioma);
-        END IF;
-      EXCEPTION
-        WHEN OTHERS THEN
-          NULL;
-      END;
-    END IF;
-  END;
+        end if;
+      exception
+        when others then
+          null;
+      end;
+    end if;
+  end;
 
-  FUNCTION f_operacion(i_id_operacion IN NUMBER) RETURN t_operaciones%ROWTYPE IS
-    rw_operacion t_operaciones%ROWTYPE;
-  BEGIN
-    BEGIN
-      SELECT a.*
-        INTO rw_operacion
-        FROM t_operaciones a
-       WHERE a.id_operacion = i_id_operacion;
-    EXCEPTION
-      WHEN no_data_found THEN
-        rw_operacion := NULL;
-      WHEN OTHERS THEN
-        rw_operacion := NULL;
-    END;
-    RETURN rw_operacion;
-  END;
+  function f_operacion(i_id_operacion in number) return t_operaciones%rowtype is
+    rw_operacion t_operaciones%rowtype;
+  begin
+    begin
+      select a.*
+        into rw_operacion
+        from t_operaciones a
+       where a.id_operacion = i_id_operacion;
+    exception
+      when no_data_found then
+        rw_operacion := null;
+      when others then
+        rw_operacion := null;
+    end;
+    return rw_operacion;
+  end;
 
-  FUNCTION f_id_operacion(i_tipo    IN VARCHAR2,
-                          i_nombre  IN VARCHAR2,
-                          i_dominio IN VARCHAR2) RETURN NUMBER IS
-    l_id_operacion t_operaciones.id_operacion%TYPE;
-  BEGIN
-    BEGIN
-      SELECT a.id_operacion
-        INTO l_id_operacion
-        FROM t_operaciones a
-       WHERE a.tipo = i_tipo
-         AND a.nombre = i_nombre
-         AND a.dominio = i_dominio;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_operacion := NULL;
-      WHEN OTHERS THEN
-        l_id_operacion := NULL;
-    END;
-    RETURN l_id_operacion;
-  END;
+  function f_id_operacion(i_tipo    in varchar2,
+                          i_nombre  in varchar2,
+                          i_dominio in varchar2) return number is
+    l_id_operacion t_operaciones.id_operacion%type;
+  begin
+    begin
+      select a.id_operacion
+        into l_id_operacion
+        from t_operaciones a
+       where a.tipo = i_tipo
+         and a.nombre = i_nombre
+         and a.dominio = i_dominio;
+    exception
+      when no_data_found then
+        l_id_operacion := null;
+      when others then
+        l_id_operacion := null;
+    end;
+    return l_id_operacion;
+  end;
 
-  FUNCTION f_id_permiso(i_id_operacion IN NUMBER) RETURN VARCHAR2 IS
-    l_id_permiso t_permisos.id_permiso%TYPE;
-  BEGIN
-    BEGIN
-      SELECT p.id_permiso
-        INTO l_id_permiso
-        FROM t_permisos p, t_operaciones a
-       WHERE upper(p.id_permiso) =
+  function f_id_permiso(i_id_operacion in number) return varchar2 is
+    l_id_permiso t_permisos.id_permiso%type;
+  begin
+    begin
+      select p.id_permiso
+        into l_id_permiso
+        from t_permisos p, t_operaciones a
+       where upper(p.id_permiso) =
              upper(k_significado.f_significado_codigo('TIPO_OPERACION',
                                                       a.tipo) || ':' ||
                    a.dominio || ':' || a.nombre)
-         AND a.id_operacion = i_id_operacion;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_permiso := NULL;
-      WHEN OTHERS THEN
-        l_id_permiso := NULL;
-    END;
-    RETURN l_id_permiso;
-  END;
+         and a.id_operacion = i_id_operacion;
+    exception
+      when no_data_found then
+        l_id_permiso := null;
+      when others then
+        l_id_permiso := null;
+    end;
+    return l_id_permiso;
+  end;
 
-  FUNCTION f_id_modulo(i_id_operacion IN NUMBER) RETURN VARCHAR2 IS
-    l_id_modulo t_modulos.id_modulo%TYPE;
-  BEGIN
-    BEGIN
-      SELECT m.id_modulo
-        INTO l_id_modulo
-        FROM t_operaciones a, t_dominios d, t_modulos m
-       WHERE d.id_dominio = nvl(a.dominio, 'API')
-         AND m.id_modulo = d.id_modulo
-         AND a.id_operacion = i_id_operacion;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_modulo := NULL;
-      WHEN OTHERS THEN
-        l_id_modulo := NULL;
-    END;
-    RETURN l_id_modulo;
-  END;
+  function f_id_modulo(i_id_operacion in number) return varchar2 is
+    l_id_modulo t_modulos.id_modulo%type;
+  begin
+    begin
+      select m.id_modulo
+        into l_id_modulo
+        from t_operaciones a, t_dominios d, t_modulos m
+       where d.id_dominio = nvl(a.dominio, 'API')
+         and m.id_modulo = d.id_modulo
+         and a.id_operacion = i_id_operacion;
+    exception
+      when no_data_found then
+        l_id_modulo := null;
+      when others then
+        l_id_modulo := null;
+    end;
+    return l_id_modulo;
+  end;
 
-  FUNCTION f_validar_permiso_aplicacion(i_id_aplicacion IN VARCHAR2,
-                                        i_id_operacion  IN NUMBER)
-    RETURN BOOLEAN IS
-    l_permiso    VARCHAR2(1);
-    rw_operacion t_operaciones%ROWTYPE;
-  BEGIN
+  function f_validar_permiso_aplicacion(i_id_aplicacion in varchar2,
+                                        i_id_operacion  in number)
+    return boolean is
+    l_permiso    varchar2(1);
+    rw_operacion t_operaciones%rowtype;
+  begin
     rw_operacion := f_operacion(i_id_operacion);
   
-    SELECT decode(nvl(COUNT(*), 0), 0, 'N', 'S')
-      INTO l_permiso
-      FROM t_aplicaciones a
-     WHERE a.id_aplicacion = i_id_aplicacion
-       AND (rw_operacion.aplicaciones_permitidas IS NULL OR
-           (rw_operacion.aplicaciones_permitidas IS NOT NULL AND
-           upper(a.id_aplicacion) IN
-           (SELECT upper(TRIM(column_value))
-                FROM k_cadena.f_separar_cadenas(rw_operacion.aplicaciones_permitidas,
+    select decode(nvl(count(*), 0), 0, 'N', 'S')
+      into l_permiso
+      from t_aplicaciones a
+     where a.id_aplicacion = i_id_aplicacion
+       and (rw_operacion.aplicaciones_permitidas is null or
+           (rw_operacion.aplicaciones_permitidas is not null and
+           upper(a.id_aplicacion) in
+           (select upper(trim(column_value))
+                from k_cadena.f_separar_cadenas(rw_operacion.aplicaciones_permitidas,
                                                 ','))));
   
-    RETURN k_util.string_to_bool(l_permiso);
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN FALSE;
-  END;
+    return k_util.string_to_bool(l_permiso);
+  exception
+    when others then
+      return false;
+  end;
 
-  FUNCTION f_procesar_parametros(i_id_operacion IN NUMBER,
-                                 i_parametros   IN CLOB,
-                                 i_version      IN VARCHAR2 DEFAULT NULL)
-    RETURN y_parametros IS
+  function f_procesar_parametros(i_id_operacion in number,
+                                 i_parametros   in clob,
+                                 i_version      in varchar2 default null)
+    return y_parametros is
     l_parametros   y_parametros;
     l_parametro    y_parametro;
     l_json_object  json_object_t;
     l_json_element json_element_t;
   
-    CURSOR cr_parametros IS
-      SELECT op.id_operacion,
+    cursor cr_parametros is
+      select op.id_operacion,
              lower(op.nombre) nombre,
              op.orden,
              op.activo,
@@ -367,14 +367,14 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
              op.detalle,
              op.valores_posibles,
              op.encriptado
-        FROM t_operacion_parametros op, t_operaciones o
-       WHERE o.id_operacion = op.id_operacion
-         AND op.activo = 'S'
-         AND op.id_operacion = i_id_operacion
-         AND op.version = nvl(i_version, o.version_actual)
-      UNION
+        from t_operacion_parametros op, t_operaciones o
+       where o.id_operacion = op.id_operacion
+         and op.activo = 'S'
+         and op.id_operacion = i_id_operacion
+         and op.version = nvl(i_version, o.version_actual)
+      union
       -- Parámetros automáticos
-      SELECT op.id_operacion,
+      select op.id_operacion,
              lower(op.nombre) nombre,
              op.orden,
              op.activo,
@@ -387,487 +387,487 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
              op.detalle,
              op.valores_posibles,
              op.encriptado
-        FROM t_operacion_parametros op
-       WHERE op.activo = 'S'
-         AND op.id_operacion = c_id_ope_par_automaticos
-         AND EXISTS (SELECT 1
-                FROM t_operaciones o
-               WHERE lower(op.nombre) IN
-                     (SELECT lower(TRIM(column_value))
-                        FROM k_cadena.f_separar_cadenas(o.parametros_automaticos,
+        from t_operacion_parametros op
+       where op.activo = 'S'
+         and op.id_operacion = c_id_ope_par_automaticos
+         and exists (select 1
+                from t_operaciones o
+               where lower(op.nombre) in
+                     (select lower(trim(column_value))
+                        from k_cadena.f_separar_cadenas(o.parametros_automaticos,
                                                         ','))
-                 AND o.id_operacion = i_id_operacion)
-       ORDER BY orden;
-  BEGIN
+                 and o.id_operacion = i_id_operacion)
+       order by orden;
+  begin
     -- Inicializa respuesta
-    l_parametros := NEW y_parametros();
+    l_parametros := new y_parametros();
   
-    IF i_parametros IS NULL OR dbms_lob.getlength(i_parametros) = 0 THEN
+    if i_parametros is null or dbms_lob.getlength(i_parametros) = 0 then
       l_json_object := json_object_t.parse('{}');
-    ELSE
+    else
       l_json_object := json_object_t.parse(i_parametros);
-    END IF;
+    end if;
   
-    FOR par IN cr_parametros LOOP
-      l_parametro        := NEW y_parametro();
+    for par in cr_parametros loop
+      l_parametro        := new y_parametro();
       l_parametro.nombre := par.nombre;
     
       l_json_element := l_json_object.get(par.nombre);
     
-      IF par.obligatorio = 'S' THEN
-        IF NOT l_json_object.has(par.nombre) THEN
+      if par.obligatorio = 'S' then
+        if not l_json_object.has(par.nombre) then
           raise_application_error(-20000,
                                   k_error.f_mensaje_error('ora0003',
                                                           nvl(par.etiqueta,
                                                               par.nombre)));
-        ELSE
-          IF l_json_element.is_null THEN
+        else
+          if l_json_element.is_null then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0004',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
-        END IF;
-      END IF;
+          end if;
+        end if;
+      end if;
     
-      CASE par.tipo_dato
+      case par.tipo_dato
       
-        WHEN 'S' THEN
+        when 'S' then
           -- String
-          IF l_json_element IS NOT NULL AND NOT l_json_element.is_null AND
-             NOT l_json_element.is_string THEN
+          if l_json_element is not null and not l_json_element.is_null and
+             not l_json_element.is_string then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0005',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
-          IF par.encriptado = 'S' THEN
-            BEGIN
+          if par.encriptado = 'S' then
+            begin
               l_parametro.valor := anydata.convertvarchar2(k_util.decrypt(l_json_object.get_string(par.nombre)));
-            EXCEPTION
-              WHEN value_error THEN
+            exception
+              when value_error then
                 raise_application_error(-20000,
                                         k_error.f_mensaje_error('ora0008',
                                                                 nvl(par.etiqueta,
                                                                     par.nombre)));
-              WHEN OTHERS THEN
+              when others then
                 raise_application_error(-20000,
                                         k_error.f_mensaje_error('ora0009',
                                                                 nvl(par.etiqueta,
                                                                     par.nombre)));
-            END;
-          ELSE
+            end;
+          else
             l_parametro.valor := anydata.convertvarchar2(l_json_object.get_string(par.nombre));
-          END IF;
-          IF l_parametro.valor.accessvarchar2 IS NULL AND
-             par.valor_defecto IS NOT NULL THEN
+          end if;
+          if l_parametro.valor.accessvarchar2 is null and
+             par.valor_defecto is not null then
             l_parametro.valor := anydata.convertvarchar2(par.valor_defecto);
-          END IF;
-          IF l_parametro.valor.accessvarchar2 IS NULL AND
-             par.obligatorio = 'S' THEN
+          end if;
+          if l_parametro.valor.accessvarchar2 is null and
+             par.obligatorio = 'S' then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0004',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
-          IF par.longitud_maxima IS NOT NULL AND
+          end if;
+          if par.longitud_maxima is not null and
              nvl(length(l_parametro.valor.accessvarchar2), 0) >
-             par.longitud_maxima THEN
+             par.longitud_maxima then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0006',
                                                             nvl(par.etiqueta,
                                                                 par.nombre),
                                                             to_char(par.longitud_maxima)));
-          END IF;
-          IF par.valores_posibles IS NOT NULL AND
-             l_parametro.valor.accessvarchar2 IS NOT NULL AND NOT
+          end if;
+          if par.valores_posibles is not null and
+             l_parametro.valor.accessvarchar2 is not null and not
               k_significado.f_existe_codigo(par.valores_posibles,
-                                                                                             l_parametro.valor.accessvarchar2) THEN
+                                                                                             l_parametro.valor.accessvarchar2) then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0007',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
-        WHEN 'N' THEN
+        when 'N' then
           -- Number
-          IF l_json_element IS NOT NULL AND NOT l_json_element.is_null AND
-             NOT l_json_element.is_number THEN
+          if l_json_element is not null and not l_json_element.is_null and
+             not l_json_element.is_number then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0005',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
           l_parametro.valor := anydata.convertnumber(l_json_object.get_number(par.nombre));
-          IF l_parametro.valor.accessnumber IS NULL AND
-             par.valor_defecto IS NOT NULL THEN
+          if l_parametro.valor.accessnumber is null and
+             par.valor_defecto is not null then
             l_parametro.valor := anydata.convertnumber(to_number(par.valor_defecto));
-          END IF;
-          IF l_parametro.valor.accessnumber IS NULL AND
-             par.obligatorio = 'S' THEN
+          end if;
+          if l_parametro.valor.accessnumber is null and
+             par.obligatorio = 'S' then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0004',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
-          IF par.longitud_maxima IS NOT NULL AND
+          end if;
+          if par.longitud_maxima is not null and
              nvl(length(to_char(abs(trunc(l_parametro.valor.accessnumber)))),
-                 0) > par.longitud_maxima THEN
+                 0) > par.longitud_maxima then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0006',
                                                             nvl(par.etiqueta,
                                                                 par.nombre),
                                                             to_char(par.longitud_maxima)));
-          END IF;
-          IF par.valores_posibles IS NOT NULL AND
-             l_parametro.valor.accessnumber IS NOT NULL AND NOT
+          end if;
+          if par.valores_posibles is not null and
+             l_parametro.valor.accessnumber is not null and not
               k_significado.f_existe_codigo(par.valores_posibles,
-                                                                                           to_char(l_parametro.valor.accessnumber)) THEN
+                                                                                           to_char(l_parametro.valor.accessnumber)) then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0007',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
-        WHEN 'B' THEN
+        when 'B' then
           -- Boolean
-          IF l_json_element IS NOT NULL AND NOT l_json_element.is_null AND
-             NOT l_json_element.is_boolean THEN
+          if l_json_element is not null and not l_json_element.is_null and
+             not l_json_element.is_boolean then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0005',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
           l_parametro.valor := anydata.convertnumber(sys.diutil.bool_to_int(l_json_object.get_boolean(par.nombre)));
-          IF l_parametro.valor.accessnumber IS NULL AND
-             par.valor_defecto IS NOT NULL THEN
+          if l_parametro.valor.accessnumber is null and
+             par.valor_defecto is not null then
             l_parametro.valor := anydata.convertnumber(to_number(par.valor_defecto));
-          END IF;
-          IF l_parametro.valor.accessnumber IS NULL AND
-             par.obligatorio = 'S' THEN
+          end if;
+          if l_parametro.valor.accessnumber is null and
+             par.obligatorio = 'S' then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0004',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
-        WHEN 'D' THEN
+        when 'D' then
           -- Date
-          IF l_json_element IS NOT NULL AND NOT l_json_element.is_null AND
-             NOT l_json_element.is_string /*l_json_element.is_date*/
-           THEN
+          if l_json_element is not null and not l_json_element.is_null and
+             not l_json_element.is_string /*l_json_element.is_date*/
+           then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0005',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
           l_parametro.valor := anydata.convertdate(l_json_object.get_date(par.nombre));
-          IF l_parametro.valor.accessdate IS NULL AND
-             par.valor_defecto IS NOT NULL THEN
+          if l_parametro.valor.accessdate is null and
+             par.valor_defecto is not null then
             l_parametro.valor := anydata.convertdate(to_date(par.valor_defecto,
                                                              par.formato));
-          END IF;
-          IF l_parametro.valor.accessdate IS NULL AND par.obligatorio = 'S' THEN
+          end if;
+          if l_parametro.valor.accessdate is null and par.obligatorio = 'S' then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0004',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
-        WHEN 'O' THEN
+        when 'O' then
           -- Object
-          IF l_json_element IS NOT NULL AND NOT l_json_element.is_null AND
-             NOT l_json_element.is_object THEN
+          if l_json_element is not null and not l_json_element.is_null and
+             not l_json_element.is_object then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0005',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
-          IF l_json_element IS NOT NULL AND l_json_element.is_object THEN
+          if l_json_element is not null and l_json_element.is_object then
             l_parametro.valor := k_util.json_to_objeto(l_json_element.to_clob,
                                                        par.formato);
-          END IF;
+          end if;
         
-          IF l_parametro.valor IS NULL AND par.valor_defecto IS NOT NULL THEN
+          if l_parametro.valor is null and par.valor_defecto is not null then
             l_parametro.valor := k_util.json_to_objeto(par.valor_defecto,
                                                        par.formato);
-          END IF;
-          IF l_parametro.valor IS NULL AND par.obligatorio = 'S' THEN
+          end if;
+          if l_parametro.valor is null and par.obligatorio = 'S' then
             raise_application_error(-20000,
                                     k_error.f_mensaje_error('ora0004',
                                                             nvl(par.etiqueta,
                                                                 par.nombre)));
-          END IF;
+          end if;
         
-        ELSE
+        else
           raise_application_error(-20000,
                                   k_error.f_mensaje_error('ora0002',
                                                           'parámetro',
                                                           nvl(par.etiqueta,
                                                               par.nombre)));
         
-      END CASE;
+      end case;
     
       l_parametros.extend;
       l_parametros(l_parametros.count) := l_parametro;
-    END LOOP;
-    RETURN l_parametros;
-  END;
+    end loop;
+    return l_parametros;
+  end;
 
-  FUNCTION f_nombre_programa(i_id_operacion IN NUMBER,
-                             i_version      IN VARCHAR2 DEFAULT NULL)
-    RETURN VARCHAR2 IS
-    l_nombre_programa     VARCHAR2(4000);
-    l_tipo_operacion      t_operaciones.tipo%TYPE;
-    l_nombre_operacion    t_operaciones.nombre%TYPE;
-    l_dominio_operacion   t_operaciones.dominio%TYPE;
-    l_version_actual      t_operaciones.version_actual%TYPE;
-    l_tipo_implementacion t_operaciones.tipo_implementacion%TYPE;
-  BEGIN
+  function f_nombre_programa(i_id_operacion in number,
+                             i_version      in varchar2 default null)
+    return varchar2 is
+    l_nombre_programa     varchar2(4000);
+    l_tipo_operacion      t_operaciones.tipo%type;
+    l_nombre_operacion    t_operaciones.nombre%type;
+    l_dominio_operacion   t_operaciones.dominio%type;
+    l_version_actual      t_operaciones.version_actual%type;
+    l_tipo_implementacion t_operaciones.tipo_implementacion%type;
+  begin
   
-    BEGIN
-      SELECT o.tipo,
+    begin
+      select o.tipo,
              upper(o.nombre),
              upper(o.dominio),
              o.version_actual,
              nvl(o.tipo_implementacion, c_tipo_implementacion_paquete)
-        INTO l_tipo_operacion,
+        into l_tipo_operacion,
              l_nombre_operacion,
              l_dominio_operacion,
              l_version_actual,
              l_tipo_implementacion
-        FROM t_operaciones o
-       WHERE o.id_operacion = i_id_operacion;
-    EXCEPTION
-      WHEN no_data_found THEN
+        from t_operaciones o
+       where o.id_operacion = i_id_operacion;
+    exception
+      when no_data_found then
         raise_application_error(-20000, 'Operación inexistente');
-    END;
+    end;
   
-    IF l_tipo_implementacion IN
+    if l_tipo_implementacion in
        (k_operacion.c_tipo_implementacion_paquete,
-        k_operacion.c_tipo_implementacion_funcion) THEN
+        k_operacion.c_tipo_implementacion_funcion) then
       l_nombre_programa := k_significado.f_referencia_codigo('TIPO_IMPLEMENTACION',
                                                              l_tipo_implementacion) || '_' ||
                            k_significado.f_significado_codigo('TIPO_OPERACION',
                                                               l_tipo_operacion) || '_' ||
                            l_dominio_operacion ||
-                           CASE l_tipo_implementacion
-                             WHEN c_tipo_implementacion_paquete THEN
+                           case l_tipo_implementacion
+                             when c_tipo_implementacion_paquete then
                               '.'
-                             ELSE
+                             else
                               '_'
-                           END || l_nombre_operacion;
-    ELSIF l_tipo_implementacion = k_operacion.c_tipo_implementacion_bloque THEN
+                           end || l_nombre_operacion;
+    elsif l_tipo_implementacion = k_operacion.c_tipo_implementacion_bloque then
       l_nombre_programa := l_nombre_operacion;
-    END IF;
+    end if;
   
-    IF nvl(i_version, l_version_actual) <> l_version_actual THEN
+    if nvl(i_version, l_version_actual) <> l_version_actual then
       l_nombre_programa := l_nombre_programa || '_' ||
-                           REPLACE(i_version, '.', '_');
-    END IF;
+                           replace(i_version, '.', '_');
+    end if;
   
-    RETURN l_nombre_programa;
-  END;
+    return l_nombre_programa;
+  end;
 
-  FUNCTION f_filtros_sql(i_parametros      IN y_parametros,
-                         i_nombres_excluir IN y_cadenas DEFAULT NULL)
-    RETURN CLOB IS
-    l_filtros_sql     CLOB;
-    i                 INTEGER;
+  function f_filtros_sql(i_parametros      in y_parametros,
+                         i_nombres_excluir in y_cadenas default null)
+    return clob is
+    l_filtros_sql     clob;
+    i                 integer;
     l_typeinfo        anytype;
-    l_typecode        PLS_INTEGER;
-    l_seen_one        BOOLEAN := FALSE;
-    l_existe          VARCHAR2(1);
+    l_typecode        pls_integer;
+    l_seen_one        boolean := false;
+    l_existe          varchar2(1);
     l_nombres_excluir y_cadenas;
-  BEGIN
-    IF i_parametros IS NOT NULL THEN
+  begin
+    if i_parametros is not null then
     
-      IF i_nombres_excluir IS NOT NULL THEN
+      if i_nombres_excluir is not null then
         l_nombres_excluir := i_nombres_excluir;
-      ELSE
-        l_nombres_excluir := NEW y_cadenas();
-      END IF;
+      else
+        l_nombres_excluir := new y_cadenas();
+      end if;
     
       -- Carga la lista de nombres a excluir
-      SELECT x.nombre
-        BULK COLLECT
-        INTO l_nombres_excluir
-        FROM (SELECT lower(p.nombre) nombre
-                FROM t_operacion_parametros p
-               WHERE p.id_operacion = c_id_ope_par_automaticos
-              UNION
-              SELECT lower(column_value)
-                FROM TABLE(l_nombres_excluir)) x;
+      select x.nombre
+        bulk collect
+        into l_nombres_excluir
+        from (select lower(p.nombre) nombre
+                from t_operacion_parametros p
+               where p.id_operacion = c_id_ope_par_automaticos
+              union
+              select lower(column_value)
+                from table(l_nombres_excluir)) x;
     
       i := i_parametros.first;
-      WHILE i IS NOT NULL LOOP
+      while i is not null loop
       
         -- Busca si existe en la lista de nombres a excluir
-        BEGIN
-          SELECT 'S'
-            INTO l_existe
-            FROM TABLE(l_nombres_excluir)
-           WHERE lower(column_value) = lower(i_parametros(i).nombre);
-        EXCEPTION
-          WHEN no_data_found THEN
+        begin
+          select 'S'
+            into l_existe
+            from table(l_nombres_excluir)
+           where lower(column_value) = lower(i_parametros(i).nombre);
+        exception
+          when no_data_found then
             l_existe := 'N';
-          WHEN too_many_rows THEN
+          when too_many_rows then
             l_existe := 'S';
-        END;
+        end;
       
         -- Sólo si no existe en la lista de nombres a excluir
-        IF l_existe = 'N' THEN
-          IF i_parametros(i).valor IS NOT NULL THEN
+        if l_existe = 'N' then
+          if i_parametros(i).valor is not null then
             l_typecode := i_parametros(i).valor.gettype(l_typeinfo);
           
-            IF l_typecode = dbms_types.typecode_varchar2 THEN
-              IF anydata.accessvarchar2(i_parametros(i).valor) IS NOT NULL THEN
-                l_filtros_sql := l_filtros_sql || CASE l_seen_one
-                                   WHEN TRUE THEN
+            if l_typecode = dbms_types.typecode_varchar2 then
+              if anydata.accessvarchar2(i_parametros(i).valor) is not null then
+                l_filtros_sql := l_filtros_sql || case l_seen_one
+                                   when true then
                                     ' AND '
-                                   ELSE
+                                   else
                                     ' WHERE '
-                                 END || i_parametros(i).nombre || ' = ' ||
+                                 end || i_parametros(i).nombre || ' = ' ||
                                  dbms_assert.enquote_literal('''' ||
-                                                             REPLACE(anydata.accessvarchar2(i_parametros(i).valor),
+                                                             replace(anydata.accessvarchar2(i_parametros(i).valor),
                                                                      '''',
                                                                      '''''') || '''');
-                l_seen_one    := TRUE;
-              END IF;
-            ELSIF l_typecode = dbms_types.typecode_number THEN
-              IF anydata.accessnumber(i_parametros(i).valor) IS NOT NULL THEN
-                l_filtros_sql := l_filtros_sql || CASE l_seen_one
-                                   WHEN TRUE THEN
+                l_seen_one    := true;
+              end if;
+            elsif l_typecode = dbms_types.typecode_number then
+              if anydata.accessnumber(i_parametros(i).valor) is not null then
+                l_filtros_sql := l_filtros_sql || case l_seen_one
+                                   when true then
                                     ' AND '
-                                   ELSE
+                                   else
                                     ' WHERE '
-                                 END || 'to_char(' || i_parametros(i).nombre ||
+                                 end || 'to_char(' || i_parametros(i).nombre ||
                                  ', ''TM'', ''NLS_NUMERIC_CHARACTERS = ''''.,'''''') = ' ||
                                  dbms_assert.enquote_literal('''' ||
                                                              to_char(anydata.accessnumber(i_parametros(i).valor),
                                                                      'TM',
                                                                      'NLS_NUMERIC_CHARACTERS = ''.,''') || '''');
-                l_seen_one    := TRUE;
-              END IF;
-            ELSIF l_typecode = dbms_types.typecode_date THEN
-              IF anydata.accessdate(i_parametros(i).valor) IS NOT NULL THEN
-                l_filtros_sql := l_filtros_sql || CASE l_seen_one
-                                   WHEN TRUE THEN
+                l_seen_one    := true;
+              end if;
+            elsif l_typecode = dbms_types.typecode_date then
+              if anydata.accessdate(i_parametros(i).valor) is not null then
+                l_filtros_sql := l_filtros_sql || case l_seen_one
+                                   when true then
                                     ' AND '
-                                   ELSE
+                                   else
                                     ' WHERE '
-                                 END || 'to_char(' || i_parametros(i).nombre ||
+                                 end || 'to_char(' || i_parametros(i).nombre ||
                                  ', ''YYYY-MM-DD'') = ' ||
                                  dbms_assert.enquote_literal('''' ||
                                                              to_char(anydata.accessdate(i_parametros(i).valor),
                                                                      'YYYY-MM-DD') || '''');
-                l_seen_one    := TRUE;
-              END IF;
-            ELSE
+                l_seen_one    := true;
+              end if;
+            else
               raise_application_error(-20000,
                                       k_error.f_mensaje_error('ora0002',
                                                               'filtro',
                                                               i_parametros(i).nombre));
-            END IF;
-          END IF;
-        END IF;
+            end if;
+          end if;
+        end if;
       
         i := i_parametros.next(i);
-      END LOOP;
-    END IF;
+      end loop;
+    end if;
   
-    RETURN l_filtros_sql;
-  EXCEPTION
-    WHEN value_error THEN
+    return l_filtros_sql;
+  exception
+    when value_error then
       raise_application_error(-20000, k_error.f_mensaje_error('ora0001'));
-  END;
+  end;
 
-  FUNCTION f_valor_parametro(i_parametros IN y_parametros,
-                             i_nombre     IN VARCHAR2) RETURN anydata IS
+  function f_valor_parametro(i_parametros in y_parametros,
+                             i_nombre     in varchar2) return anydata is
     l_valor anydata;
-    i       INTEGER;
-  BEGIN
-    IF i_parametros IS NOT NULL THEN
+    i       integer;
+  begin
+    if i_parametros is not null then
       -- Busca el parámetro en la lista
       i := i_parametros.first;
-      WHILE i IS NOT NULL AND l_valor IS NULL LOOP
-        IF lower(i_parametros(i).nombre) = lower(i_nombre) THEN
+      while i is not null and l_valor is null loop
+        if lower(i_parametros(i).nombre) = lower(i_nombre) then
           l_valor := i_parametros(i).valor;
-        END IF;
+        end if;
         i := i_parametros.next(i);
-      END LOOP;
-    END IF;
+      end loop;
+    end if;
   
     -- Si el parámetro no se encuentra en la lista carga un valor nulo de tipo
     -- VARCHAR2 para evitar el error ORA-30625 al acceder al valor a través de
     -- AnyData.Access*
-    IF l_valor IS NULL THEN
-      l_valor := anydata.convertvarchar2(NULL);
-    END IF;
+    if l_valor is null then
+      l_valor := anydata.convertvarchar2(null);
+    end if;
   
-    RETURN l_valor;
-  END;
+    return l_valor;
+  end;
 
-  FUNCTION f_valor_parametro_string(i_parametros IN y_parametros,
-                                    i_nombre     IN VARCHAR2) RETURN VARCHAR2 IS
-  BEGIN
-    RETURN anydata.accessvarchar2(f_valor_parametro(i_parametros, i_nombre));
-  END;
+  function f_valor_parametro_string(i_parametros in y_parametros,
+                                    i_nombre     in varchar2) return varchar2 is
+  begin
+    return anydata.accessvarchar2(f_valor_parametro(i_parametros, i_nombre));
+  end;
 
-  FUNCTION f_valor_parametro_number(i_parametros IN y_parametros,
-                                    i_nombre     IN VARCHAR2) RETURN NUMBER IS
-  BEGIN
-    RETURN anydata.accessnumber(f_valor_parametro(i_parametros, i_nombre));
-  END;
+  function f_valor_parametro_number(i_parametros in y_parametros,
+                                    i_nombre     in varchar2) return number is
+  begin
+    return anydata.accessnumber(f_valor_parametro(i_parametros, i_nombre));
+  end;
 
-  FUNCTION f_valor_parametro_boolean(i_parametros IN y_parametros,
-                                     i_nombre     IN VARCHAR2) RETURN BOOLEAN IS
-  BEGIN
-    RETURN sys.diutil.int_to_bool(anydata.accessnumber(f_valor_parametro(i_parametros,
+  function f_valor_parametro_boolean(i_parametros in y_parametros,
+                                     i_nombre     in varchar2) return boolean is
+  begin
+    return sys.diutil.int_to_bool(anydata.accessnumber(f_valor_parametro(i_parametros,
                                                                          i_nombre)));
-  END;
+  end;
 
-  FUNCTION f_valor_parametro_date(i_parametros IN y_parametros,
-                                  i_nombre     IN VARCHAR2) RETURN DATE IS
-  BEGIN
-    RETURN anydata.accessdate(f_valor_parametro(i_parametros, i_nombre));
-  END;
+  function f_valor_parametro_date(i_parametros in y_parametros,
+                                  i_nombre     in varchar2) return date is
+  begin
+    return anydata.accessdate(f_valor_parametro(i_parametros, i_nombre));
+  end;
 
-  FUNCTION f_valor_parametro_object(i_parametros IN y_parametros,
-                                    i_nombre     IN VARCHAR2) RETURN y_objeto IS
+  function f_valor_parametro_object(i_parametros in y_parametros,
+                                    i_nombre     in varchar2) return y_objeto is
     l_objeto   y_objeto;
     l_anydata  anydata;
-    l_result   PLS_INTEGER;
+    l_result   pls_integer;
     l_typeinfo anytype;
-    l_typecode PLS_INTEGER;
-  BEGIN
+    l_typecode pls_integer;
+  begin
     l_anydata := f_valor_parametro(i_parametros, i_nombre);
   
     l_typecode := l_anydata.gettype(l_typeinfo);
-    IF l_typecode = dbms_types.typecode_object THEN
+    if l_typecode = dbms_types.typecode_object then
       l_result := l_anydata.getobject(l_objeto);
-    END IF;
+    end if;
   
-    RETURN l_objeto;
-  END;
+    return l_objeto;
+  end;
 
-  FUNCTION f_inserts_operacion(i_operacion IN t_operaciones%ROWTYPE)
-    RETURN CLOB IS
-    l_inserts CLOB;
-    l_insert  CLOB;
+  function f_inserts_operacion(i_operacion in t_operaciones%rowtype)
+    return clob is
+    l_inserts clob;
+    l_insert  clob;
   
-    PROCEDURE lp_comentar(i_comentario IN VARCHAR2) IS
-    BEGIN
+    procedure lp_comentar(i_comentario in varchar2) is
+    begin
       l_inserts := l_inserts || '/* ' || lpad('=', 20, '=') || ' ' ||
                    upper(i_comentario) || ' ' || lpad('=', 20, '=') ||
                    ' */' || utl_tcp.crlf;
-    END;
-  BEGIN
+    end;
+  begin
     lp_comentar('T_OPERACIONES');
     l_insert  := fn_gen_inserts('SELECT * FROM t_operaciones WHERE id_operacion = ' ||
                                 to_char(i_operacion.id_operacion),
@@ -925,42 +925,42 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
                                 't_rol_permisos');
     l_inserts := l_inserts || l_insert;
     --
-    IF i_operacion.tipo_implementacion = c_tipo_implementacion_funcion THEN
+    if i_operacion.tipo_implementacion = c_tipo_implementacion_funcion then
       lp_comentar('FUNCTION');
       l_insert  := dbms_metadata.get_ddl('FUNCTION',
                                          upper(f_nombre_programa(i_operacion.id_operacion)));
-      l_insert  := TRIM(utl_tcp.crlf FROM l_insert);
-      l_insert  := TRIM(' ' FROM l_insert);
+      l_insert  := trim(utl_tcp.crlf from l_insert);
+      l_insert  := trim(' ' from l_insert);
       l_insert  := l_insert || utl_tcp.crlf || '/';
       l_inserts := l_inserts || l_insert;
-    END IF;
+    end if;
   
-    RETURN l_inserts;
-  END;
+    return l_inserts;
+  end;
 
-  FUNCTION f_inserts_operacion(i_id_operacion IN NUMBER) RETURN CLOB IS
-  BEGIN
-    RETURN f_inserts_operacion(f_operacion(i_id_operacion));
-  END;
+  function f_inserts_operacion(i_id_operacion in number) return clob is
+  begin
+    return f_inserts_operacion(f_operacion(i_id_operacion));
+  end;
 
-  FUNCTION f_inserts_operacion(i_tipo    IN VARCHAR2,
-                               i_nombre  IN VARCHAR2,
-                               i_dominio IN VARCHAR2) RETURN CLOB IS
-  BEGIN
-    RETURN f_inserts_operacion(f_id_operacion(i_tipo, i_nombre, i_dominio));
-  END;
+  function f_inserts_operacion(i_tipo    in varchar2,
+                               i_nombre  in varchar2,
+                               i_dominio in varchar2) return clob is
+  begin
+    return f_inserts_operacion(f_id_operacion(i_tipo, i_nombre, i_dominio));
+  end;
 
-  FUNCTION f_deletes_operacion(i_operacion IN t_operaciones%ROWTYPE)
-    RETURN CLOB IS
-    l_deletes CLOB;
+  function f_deletes_operacion(i_operacion in t_operaciones%rowtype)
+    return clob is
+    l_deletes clob;
   
-    PROCEDURE lp_comentar(i_comentario IN VARCHAR2) IS
-    BEGIN
+    procedure lp_comentar(i_comentario in varchar2) is
+    begin
       l_deletes := l_deletes || '/* ' || lpad('=', 20, '=') || ' ' ||
                    upper(i_comentario) || ' ' || lpad('=', 20, '=') ||
                    ' */' || utl_tcp.crlf;
-    END;
-  BEGIN
+    end;
+  begin
     lp_comentar('ID_OPERACION = ' || to_char(i_operacion.id_operacion));
     --
     l_deletes := l_deletes ||
@@ -986,52 +986,52 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
     l_deletes := l_deletes || 'DELETE t_operaciones WHERE id_operacion = ' ||
                  to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
     --
-    IF i_operacion.tipo_implementacion = c_tipo_implementacion_funcion THEN
+    if i_operacion.tipo_implementacion = c_tipo_implementacion_funcion then
       l_deletes := l_deletes || 'DROP FUNCTION ' ||
                    lower(f_nombre_programa(i_operacion.id_operacion)) || ';' ||
                    utl_tcp.crlf;
-    END IF;
+    end if;
   
-    RETURN l_deletes;
-  END;
+    return l_deletes;
+  end;
 
-  FUNCTION f_deletes_operacion(i_id_operacion IN NUMBER) RETURN CLOB IS
-  BEGIN
-    RETURN f_deletes_operacion(f_operacion(i_id_operacion));
-  END;
+  function f_deletes_operacion(i_id_operacion in number) return clob is
+  begin
+    return f_deletes_operacion(f_operacion(i_id_operacion));
+  end;
 
-  FUNCTION f_deletes_operacion(i_tipo    IN VARCHAR2,
-                               i_nombre  IN VARCHAR2,
-                               i_dominio IN VARCHAR2) RETURN CLOB IS
-  BEGIN
-    RETURN f_deletes_operacion(f_id_operacion(i_tipo, i_nombre, i_dominio));
-  END;
+  function f_deletes_operacion(i_tipo    in varchar2,
+                               i_nombre  in varchar2,
+                               i_dominio in varchar2) return clob is
+  begin
+    return f_deletes_operacion(f_id_operacion(i_tipo, i_nombre, i_dominio));
+  end;
 
-  FUNCTION f_scripts_operaciones(i_id_modulo IN VARCHAR2 DEFAULT NULL)
-    RETURN BLOB IS
-    l_zip       BLOB;
-    l_inserts   CLOB;
-    l_deletes   CLOB;
-    l_install   CLOB;
-    l_uninstall CLOB;
+  function f_scripts_operaciones(i_id_modulo in varchar2 default null)
+    return blob is
+    l_zip       blob;
+    l_inserts   clob;
+    l_deletes   clob;
+    l_install   clob;
+    l_uninstall clob;
   
-    CURSOR c_modulos IS
-      SELECT m.id_modulo
-        FROM t_modulos m
-       WHERE m.id_modulo = nvl(i_id_modulo, m.id_modulo);
+    cursor c_modulos is
+      select m.id_modulo
+        from t_modulos m
+       where m.id_modulo = nvl(i_id_modulo, m.id_modulo);
   
-    CURSOR c_operaciones(i_id_modulo IN VARCHAR2) IS
-      SELECT a.id_operacion,
+    cursor c_operaciones(i_id_modulo in varchar2) is
+      select a.id_operacion,
              lower(f_id_modulo(a.id_operacion)) id_modulo,
              lower(k_cadena.f_reemplazar_acentos(k_significado.f_significado_codigo('TIPO_OPERACION',
                                                                                     a.tipo) || '/' ||
                                                  nvl(a.dominio, '_') || '/' ||
                                                  a.nombre)) || '.sql' nombre_archivo
-        FROM t_operaciones a
-       WHERE f_id_modulo(a.id_operacion) = i_id_modulo
-       ORDER BY 3;
-  BEGIN
-    FOR m IN c_modulos LOOP
+        from t_operaciones a
+       where f_id_modulo(a.id_operacion) = i_id_modulo
+       order by 3;
+  begin
+    for m in c_modulos loop
       l_install := '';
       l_install := l_install || 'prompt' || utl_tcp.crlf;
       l_install := l_install || 'prompt Instalando operaciones...' ||
@@ -1050,7 +1050,7 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
                      utl_tcp.crlf;
       l_uninstall := l_uninstall || 'prompt' || utl_tcp.crlf;
     
-      FOR ope IN c_operaciones(m.id_modulo) LOOP
+      for ope in c_operaciones(m.id_modulo) loop
         l_inserts := f_inserts_operacion(ope.id_operacion);
         l_deletes := f_deletes_operacion(ope.id_operacion);
         --
@@ -1061,7 +1061,7 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
         as_zip.add1file(l_zip,
                         ope.id_modulo || '/' || ope.nombre_archivo,
                         k_util.clob_to_blob(l_inserts));
-      END LOOP;
+      end loop;
     
       as_zip.add1file(l_zip,
                       lower(m.id_modulo) || '/' || 'install.sql',
@@ -1069,14 +1069,14 @@ CREATE OR REPLACE PACKAGE BODY k_operacion IS
       as_zip.add1file(l_zip,
                       lower(m.id_modulo) || '/' || 'uninstall.sql',
                       k_util.clob_to_blob(l_uninstall));
-    END LOOP;
+    end loop;
   
-    IF l_zip IS NOT NULL AND dbms_lob.getlength(l_zip) > 0 THEN
+    if l_zip is not null and dbms_lob.getlength(l_zip) > 0 then
       as_zip.finish_zip(l_zip);
-    END IF;
+    end if;
   
-    RETURN l_zip;
-  END;
+    return l_zip;
+  end;
 
-END;
+end;
 /

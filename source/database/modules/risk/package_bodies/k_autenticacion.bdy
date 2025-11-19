@@ -1,51 +1,51 @@
-CREATE OR REPLACE PACKAGE BODY k_autenticacion IS
+create or replace package body k_autenticacion is
 
   -- Excepciones
-  ex_credenciales_invalidas EXCEPTION;
-  ex_tokens_invalidos       EXCEPTION;
+  ex_credenciales_invalidas exception;
+  ex_tokens_invalidos       exception;
 
-  FUNCTION f_registrar_usuario(i_alias            IN VARCHAR2,
-                               i_clave            IN VARCHAR2,
-                               i_nombre           IN VARCHAR2,
-                               i_apellido         IN VARCHAR2,
-                               i_direccion_correo IN VARCHAR2,
-                               i_numero_telefono  IN VARCHAR2 DEFAULT NULL,
-                               i_origen           IN VARCHAR2 DEFAULT NULL,
-                               i_id_externo       IN VARCHAR2 DEFAULT NULL)
-    RETURN VARCHAR2 IS
-    l_id_persona          t_personas.id_persona%TYPE;
-    l_id_usuario          t_usuarios.id_usuario%TYPE;
-    l_alias               t_usuarios.alias%TYPE := i_alias;
-    l_confirmacion_activa VARCHAR2(1);
-    l_estado_usuario      t_usuarios.estado%TYPE;
-    l_body                CLOB;
-    l_origen              VARCHAR2(1) := nvl(i_origen, c_origen_risk);
-  BEGIN
+  function f_registrar_usuario(i_alias            in varchar2,
+                               i_clave            in varchar2,
+                               i_nombre           in varchar2,
+                               i_apellido         in varchar2,
+                               i_direccion_correo in varchar2,
+                               i_numero_telefono  in varchar2 default null,
+                               i_origen           in varchar2 default null,
+                               i_id_externo       in varchar2 default null)
+    return varchar2 is
+    l_id_persona          t_personas.id_persona%type;
+    l_id_usuario          t_usuarios.id_usuario%type;
+    l_alias               t_usuarios.alias%type := i_alias;
+    l_confirmacion_activa varchar2(1);
+    l_estado_usuario      t_usuarios.estado%type;
+    l_body                clob;
+    l_origen              varchar2(1) := nvl(i_origen, c_origen_risk);
+  begin
     -- Valida que no exista el usuario externo
-    IF l_origen <> c_origen_risk THEN
-      IF k_usuario.f_existe_usuario_externo(l_origen, i_id_externo) THEN
-        RAISE k_usuario.ex_usuario_existente;
-      END IF;
+    if l_origen <> c_origen_risk then
+      if k_usuario.f_existe_usuario_externo(l_origen, i_id_externo) then
+        raise k_usuario.ex_usuario_existente;
+      end if;
     
       l_alias := translate(l_alias,
                            'áéíóúàèìòùäëïöüñÁÉÍÓÚÝÄËÏÖÜÀÈÌÒÙÑ'' ',
                            'aeiouaeiouaeiounAEIOUYAEIOUAEIOUN__');
     
-      SELECT l_alias ||
-             to_char(MAX(to_number(nvl(regexp_substr(a.alias, '\d+'), '0'))) + 1) alias
-        INTO l_alias
-        FROM t_usuarios a
-       WHERE (upper(a.alias) = upper(l_alias) OR
+      select l_alias ||
+             to_char(max(to_number(nvl(regexp_substr(a.alias, '\d+'), '0'))) + 1) alias
+        into l_alias
+        from t_usuarios a
+       where (upper(a.alias) = upper(l_alias) or
              regexp_like(a.alias, '(' || l_alias || ')\d+', 'i'));
-    END IF;
+    end if;
   
     -- Valida políticas
-    IF l_origen = c_origen_risk THEN
+    if l_origen = c_origen_risk then
       k_clave.p_validar_politicas(l_alias, i_clave, k_clave.c_clave_acceso);
-    END IF;
+    end if;
   
     -- Inserta persona
-    INSERT INTO t_personas
+    insert into t_personas
       (nombre,
        apellido,
        nombre_completo,
@@ -54,33 +54,33 @@ CREATE OR REPLACE PACKAGE BODY k_autenticacion IS
        numero_documento,
        id_pais,
        fecha_nacimiento)
-    VALUES
+    values
       (i_nombre,
        i_apellido,
        i_nombre || ' ' || i_apellido,
        'F',
-       NULL,
-       NULL,
-       NULL,
-       NULL)
-    RETURNING id_persona INTO l_id_persona;
+       null,
+       null,
+       null,
+       null)
+    returning id_persona into l_id_persona;
   
-    l_confirmacion_activa := CASE l_origen
-                               WHEN c_origen_risk THEN
+    l_confirmacion_activa := case l_origen
+                               when c_origen_risk then
                                 nvl(k_util.f_valor_parametro('CONFIRMACION_DIRECCION_CORREO'),
                                     'N')
-                               ELSE
+                               else
                                 'N'
-                             END;
-    l_estado_usuario      := CASE l_confirmacion_activa
-                               WHEN 'S' THEN
+                             end;
+    l_estado_usuario      := case l_confirmacion_activa
+                               when 'S' then
                                 'P' -- PENDIENTE DE ACTIVACIÓN
-                               ELSE
+                               else
                                 'A' -- ACTIVO
-                             END;
+                             end;
   
     -- Inserta usuario
-    INSERT INTO t_usuarios
+    insert into t_usuarios
       (alias,
        id_persona,
        estado,
@@ -88,7 +88,7 @@ CREATE OR REPLACE PACKAGE BODY k_autenticacion IS
        numero_telefono,
        origen,
        id_externo)
-    VALUES
+    values
       (l_alias,
        l_id_persona,
        l_estado_usuario,
@@ -96,21 +96,21 @@ CREATE OR REPLACE PACKAGE BODY k_autenticacion IS
        i_numero_telefono,
        l_origen,
        i_id_externo)
-    RETURNING id_usuario INTO l_id_usuario;
+    returning id_usuario into l_id_usuario;
   
-    INSERT INTO t_rol_usuarios
+    insert into t_rol_usuarios
       (id_rol, id_usuario)
-      SELECT id_rol, l_id_usuario
-        FROM t_roles
-       WHERE nombre =
+      select id_rol, l_id_usuario
+        from t_roles
+       where nombre =
              nvl(k_significado.f_referencia_codigo('ESTADO_USUARIO',
                                                    l_estado_usuario),
                  k_util.f_valor_parametro('NOMBRE_ROL_DEFECTO'));
   
     -- Registra clave
-    IF l_origen = c_origen_risk THEN
+    if l_origen = c_origen_risk then
       k_clave.p_registrar_clave(l_alias, i_clave, k_clave.c_clave_acceso);
-    END IF;
+    end if;
   
     $if k_modulo.c_instalado_msj $then
     -- Inserta o actualiza suscripción básica del usuario
@@ -119,7 +119,7 @@ CREATE OR REPLACE PACKAGE BODY k_autenticacion IS
     $end
   
     $if k_modulo.c_instalado_msj $then
-    IF l_confirmacion_activa = 'S' THEN
+    if l_confirmacion_activa = 'S' then
       -- Envía correo de verificación
       l_body := k_mensajeria.f_correo_html('Para activar tu cuenta, por favor verifica tu dirección de correo.' ||
                                            utl_tcp.crlf ||
@@ -130,248 +130,248 @@ CREATE OR REPLACE PACKAGE BODY k_autenticacion IS
                                            f_generar_url_activacion(l_alias),
                                            'Confirmación de correo',
                                            'Confirmación de correo',
-                                           NULL,
+                                           null,
                                            'Confirmar',
                                            f_generar_url_activacion(l_alias));
     
-      IF k_mensajeria.f_enviar_correo('Confirmación de correo',
+      if k_mensajeria.f_enviar_correo('Confirmación de correo',
                                       l_body,
-                                      NULL,
+                                      null,
                                       i_direccion_correo,
-                                      NULL,
-                                      NULL,
-                                      NULL,
-                                      NULL,
+                                      null,
+                                      null,
+                                      null,
+                                      null,
                                       k_mensajeria.c_prioridad_importante) <>
-         k_mensajeria.c_ok THEN
+         k_mensajeria.c_ok then
         raise_application_error(-20000,
                                 'Error al enviar correo de verificación');
-      END IF;
-    END IF;
+      end if;
+    end if;
     $end
   
-    RETURN l_alias;
-  EXCEPTION
-    WHEN dup_val_on_index THEN
+    return l_alias;
+  exception
+    when dup_val_on_index then
       raise_application_error(-20000, 'Usuario ya existe');
-  END;
+  end;
 
-  PROCEDURE p_editar_usuario(i_alias_antiguo    IN VARCHAR2,
-                             i_alias_nuevo      IN VARCHAR2,
-                             i_nombre           IN VARCHAR2,
-                             i_apellido         IN VARCHAR2,
-                             i_direccion_correo IN VARCHAR2,
-                             i_numero_telefono  IN VARCHAR2 DEFAULT NULL) IS
-    l_id_persona t_personas.id_persona%TYPE;
-  BEGIN
+  procedure p_editar_usuario(i_alias_antiguo    in varchar2,
+                             i_alias_nuevo      in varchar2,
+                             i_nombre           in varchar2,
+                             i_apellido         in varchar2,
+                             i_direccion_correo in varchar2,
+                             i_numero_telefono  in varchar2 default null) is
+    l_id_persona t_personas.id_persona%type;
+  begin
     -- Actualiza usuario
-    UPDATE t_usuarios
-       SET alias            = nvl(i_alias_nuevo, alias),
+    update t_usuarios
+       set alias            = nvl(i_alias_nuevo, alias),
            direccion_correo = nvl(i_direccion_correo, direccion_correo),
            numero_telefono  = nvl(i_numero_telefono, numero_telefono)
-     WHERE alias = i_alias_antiguo
-    RETURNING id_persona INTO l_id_persona;
+     where alias = i_alias_antiguo
+    returning id_persona into l_id_persona;
   
-    IF SQL%NOTFOUND THEN
+    if sql%notfound then
       raise_application_error(-20000, 'Usuario inexistente');
-    END IF;
+    end if;
   
     -- Actualiza persona
-    UPDATE t_personas
-       SET nombre          = nvl(i_nombre, nombre),
+    update t_personas
+       set nombre          = nvl(i_nombre, nombre),
            apellido        = nvl(i_apellido, apellido),
            nombre_completo = nvl(i_nombre || ' ' || i_apellido,
                                  nombre_completo)
-     WHERE id_persona = l_id_persona;
+     where id_persona = l_id_persona;
   
-    IF SQL%NOTFOUND THEN
+    if sql%notfound then
       raise_application_error(-20000, 'Persona inexistente');
-    END IF;
-  END;
+    end if;
+  end;
 
-  FUNCTION f_validar_credenciales_risk(i_id_usuario IN NUMBER,
-                                       i_clave      IN VARCHAR2,
-                                       i_tipo_clave IN CHAR DEFAULT 'A')
-    RETURN BOOLEAN IS
-  BEGIN
-    RETURN k_clave.f_validar_clave(i_id_usuario, i_clave, i_tipo_clave);
-  END;
+  function f_validar_credenciales_risk(i_id_usuario in number,
+                                       i_clave      in varchar2,
+                                       i_tipo_clave in char default 'A')
+    return boolean is
+  begin
+    return k_clave.f_validar_clave(i_id_usuario, i_clave, i_tipo_clave);
+  end;
 
   -- https://stackoverflow.com/a/33043760
-  FUNCTION f_validar_credenciales_oracle(i_usuario IN VARCHAR2,
-                                         i_clave   IN VARCHAR2)
-    RETURN BOOLEAN IS
-  BEGIN
-    BEGIN
-      EXECUTE IMMEDIATE 'DROP DATABASE LINK password_test_loopback';
-    EXCEPTION
-      WHEN OTHERS THEN
-        NULL;
-    END;
+  function f_validar_credenciales_oracle(i_usuario in varchar2,
+                                         i_clave   in varchar2)
+    return boolean is
+  begin
+    begin
+      execute immediate 'DROP DATABASE LINK password_test_loopback';
+    exception
+      when others then
+        null;
+    end;
   
-    EXECUTE IMMEDIATE 'CREATE DATABASE LINK password_test_loopback CONNECT TO ' ||
+    execute immediate 'CREATE DATABASE LINK password_test_loopback CONNECT TO ' ||
                       i_usuario || ' IDENTIFIED BY ' || i_clave ||
                       ' USING ''' || k_util.f_base_datos || '''';
   
-    EXECUTE IMMEDIATE 'SELECT * FROM dual@password_test_loopback';
+    execute immediate 'SELECT * FROM dual@password_test_loopback';
   
-    EXECUTE IMMEDIATE 'DROP DATABASE LINK password_test_loopback';
+    execute immediate 'DROP DATABASE LINK password_test_loopback';
   
-    RETURN TRUE;
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN FALSE;
-  END;
+    return true;
+  exception
+    when others then
+      return false;
+  end;
 
-  FUNCTION f_validar_credenciales(i_usuario    IN VARCHAR2,
-                                  i_clave      IN VARCHAR2,
-                                  i_tipo_clave IN CHAR DEFAULT 'A',
-                                  i_metodo     IN VARCHAR2 DEFAULT NULL)
-    RETURN BOOLEAN IS
-    l_id_usuario t_usuarios.id_usuario%TYPE;
-  BEGIN
+  function f_validar_credenciales(i_usuario    in varchar2,
+                                  i_clave      in varchar2,
+                                  i_tipo_clave in char default 'A',
+                                  i_metodo     in varchar2 default null)
+    return boolean is
+    l_id_usuario t_usuarios.id_usuario%type;
+  begin
     -- Busca usuario
     l_id_usuario := k_usuario.f_buscar_id(i_usuario);
   
-    IF l_id_usuario IS NULL THEN
-      RAISE k_usuario.ex_usuario_inexistente;
-    END IF;
+    if l_id_usuario is null then
+      raise k_usuario.ex_usuario_inexistente;
+    end if;
   
-    CASE nvl(i_metodo,
+    case nvl(i_metodo,
          k_util.f_valor_parametro('METODO_VALIDACION_CREDENCIALES'))
-      WHEN c_metodo_validacion_risk THEN
-        IF NOT
-            f_validar_credenciales_risk(l_id_usuario, i_clave, i_tipo_clave) THEN
-          RAISE ex_credenciales_invalidas;
-        END IF;
-      WHEN c_metodo_validacion_oracle THEN
-        IF NOT f_validar_credenciales_oracle(i_usuario, i_clave) THEN
-          RAISE ex_credenciales_invalidas;
-        END IF;
-      ELSE
-        RAISE ex_credenciales_invalidas;
-    END CASE;
+      when c_metodo_validacion_risk then
+        if not
+            f_validar_credenciales_risk(l_id_usuario, i_clave, i_tipo_clave) then
+          raise ex_credenciales_invalidas;
+        end if;
+      when c_metodo_validacion_oracle then
+        if not f_validar_credenciales_oracle(i_usuario, i_clave) then
+          raise ex_credenciales_invalidas;
+        end if;
+      else
+        raise ex_credenciales_invalidas;
+    end case;
   
     k_clave.p_registrar_autenticacion(l_id_usuario, i_tipo_clave);
-    RETURN TRUE;
-  EXCEPTION
-    WHEN k_usuario.ex_usuario_inexistente THEN
-      RETURN FALSE;
-    WHEN ex_credenciales_invalidas THEN
+    return true;
+  exception
+    when k_usuario.ex_usuario_inexistente then
+      return false;
+    when ex_credenciales_invalidas then
       k_clave.p_registrar_intento_fallido(l_id_usuario, i_tipo_clave);
-      RETURN FALSE;
-    WHEN OTHERS THEN
+      return false;
+    when others then
       k_clave.p_registrar_intento_fallido(l_id_usuario, i_tipo_clave);
-      RETURN FALSE;
-  END;
+      return false;
+  end;
 
-  PROCEDURE p_validar_credenciales(i_usuario    IN VARCHAR2,
-                                   i_clave      IN VARCHAR2,
-                                   i_tipo_clave IN CHAR DEFAULT 'A',
-                                   i_metodo     IN VARCHAR2 DEFAULT NULL) IS
-  BEGIN
-    IF NOT
-        f_validar_credenciales(i_usuario, i_clave, i_tipo_clave, i_metodo) THEN
+  procedure p_validar_credenciales(i_usuario    in varchar2,
+                                   i_clave      in varchar2,
+                                   i_tipo_clave in char default 'A',
+                                   i_metodo     in varchar2 default null) is
+  begin
+    if not
+        f_validar_credenciales(i_usuario, i_clave, i_tipo_clave, i_metodo) then
       raise_application_error(-20000, 'Credenciales inválidas');
-    END IF;
-  END;
+    end if;
+  end;
 
-  FUNCTION f_iniciar_sesion(i_id_aplicacion     IN VARCHAR2,
-                            i_usuario           IN VARCHAR2,
-                            i_access_token      IN VARCHAR2,
-                            i_refresh_token     IN VARCHAR2,
-                            i_token_dispositivo IN VARCHAR2 DEFAULT NULL,
-                            i_origen            IN VARCHAR2 DEFAULT NULL,
-                            i_dato_externo      IN VARCHAR2 DEFAULT NULL)
-    RETURN NUMBER IS
-    l_id_sesion                      t_sesiones.id_sesion%TYPE;
-    l_id_usuario                     t_usuarios.id_usuario%TYPE;
-    l_estado_usuario                 t_usuarios.estado%TYPE;
-    l_tipo_aplicacion                t_aplicaciones.tipo%TYPE;
-    l_id_dispositivo                 t_dispositivos.id_dispositivo%TYPE;
-    l_cantidad                       NUMBER(3);
-    l_fecha_expiracion_access_token  DATE;
-    l_fecha_expiracion_refresh_token DATE;
+  function f_iniciar_sesion(i_id_aplicacion     in varchar2,
+                            i_usuario           in varchar2,
+                            i_access_token      in varchar2,
+                            i_refresh_token     in varchar2,
+                            i_token_dispositivo in varchar2 default null,
+                            i_origen            in varchar2 default null,
+                            i_dato_externo      in varchar2 default null)
+    return number is
+    l_id_sesion                      t_sesiones.id_sesion%type;
+    l_id_usuario                     t_usuarios.id_usuario%type;
+    l_estado_usuario                 t_usuarios.estado%type;
+    l_tipo_aplicacion                t_aplicaciones.tipo%type;
+    l_id_dispositivo                 t_dispositivos.id_dispositivo%type;
+    l_cantidad                       number(3);
+    l_fecha_expiracion_access_token  date;
+    l_fecha_expiracion_refresh_token date;
     --
-    l_origen VARCHAR2(1) := nvl(i_origen, c_origen_risk);
-  BEGIN
+    l_origen varchar2(1) := nvl(i_origen, c_origen_risk);
+  begin
     -- Valida aplicacion
-    IF i_id_aplicacion IS NULL THEN
+    if i_id_aplicacion is null then
       raise_application_error(-20000, 'Aplicación inexistente o inactiva');
-    END IF;
+    end if;
   
     -- Busca usuario
     l_id_usuario := k_usuario.f_buscar_id(i_usuario);
   
-    IF l_id_usuario IS NULL THEN
-      RAISE k_usuario.ex_usuario_inexistente;
-    END IF;
+    if l_id_usuario is null then
+      raise k_usuario.ex_usuario_inexistente;
+    end if;
   
     -- Valida estado de usuario
     l_estado_usuario := k_usuario.f_estado(l_id_usuario);
-    BEGIN
-      SELECT TRIM(column_value) estado
-        INTO l_estado_usuario
-        FROM k_cadena.f_separar_cadenas(k_util.f_valor_parametro('ESTADOS_ACTIVOS_USUARIO'),
+    begin
+      select trim(column_value) estado
+        into l_estado_usuario
+        from k_cadena.f_separar_cadenas(k_util.f_valor_parametro('ESTADOS_ACTIVOS_USUARIO'),
                                         ',')
-       WHERE TRIM(column_value) = l_estado_usuario;
-    EXCEPTION
-      WHEN no_data_found THEN
+       where trim(column_value) = l_estado_usuario;
+    exception
+      when no_data_found then
         raise_application_error(-20000,
                                 'Usuario ' ||
                                 k_cadena.f_formatear_titulo(k_significado.f_significado_codigo('ESTADO_USUARIO',
                                                                                                l_estado_usuario)));
-      WHEN OTHERS THEN
-        NULL;
-    END;
+      when others then
+        null;
+    end;
   
     -- Busca dispositivo
     l_id_dispositivo := coalesce(k_sistema.f_valor_parametro_number(k_sistema.c_id_dispositivo),
                                  k_dispositivo.f_id_dispositivo(i_token_dispositivo));
   
     -- Obtiene tipo de aplicacion
-    BEGIN
-      SELECT tipo
-        INTO l_tipo_aplicacion
-        FROM t_aplicaciones
-       WHERE id_aplicacion = i_id_aplicacion;
-    EXCEPTION
-      WHEN OTHERS THEN
-        l_tipo_aplicacion := NULL;
-    END;
+    begin
+      select tipo
+        into l_tipo_aplicacion
+        from t_aplicaciones
+       where id_aplicacion = i_id_aplicacion;
+    exception
+      when others then
+        l_tipo_aplicacion := null;
+    end;
   
     -- Cambia estado de las sesiones expiradas
     k_sesion.p_expirar_sesiones(l_id_usuario);
   
-    IF l_origen = c_origen_risk THEN
+    if l_origen = c_origen_risk then
       -- Si el origen de la sesion es R-RISK
-      IF l_tipo_aplicacion <> 'S' THEN
+      if l_tipo_aplicacion <> 'S' then
         -- Si es de tipo S-SERVICIO no valida cantidad de sesiones activas
       
         -- Obtiene cantidad de sesiones activas del usuario
-        SELECT COUNT(id_sesion)
-          INTO l_cantidad
-          FROM t_sesiones
-         WHERE estado = 'A'
-           AND id_usuario = l_id_usuario;
+        select count(id_sesion)
+          into l_cantidad
+          from t_sesiones
+         where estado = 'A'
+           and id_usuario = l_id_usuario;
       
-        IF l_cantidad >=
-           to_number(k_util.f_valor_parametro('CANTIDAD_MAXIMA_SESIONES_USUARIO')) THEN
+        if l_cantidad >=
+           to_number(k_util.f_valor_parametro('CANTIDAD_MAXIMA_SESIONES_USUARIO')) then
           raise_application_error(-20000,
                                   'Usuario ha alcanzado la cantidad máxima de sesiones activas');
-        END IF;
+        end if;
       
-      END IF;
+      end if;
     
       -- Obtiene la fecha de expiracion del Access Token y Refresh Token
       l_fecha_expiracion_access_token := k_sesion.f_fecha_expiracion_access_token(i_access_token);
-      IF i_refresh_token IS NOT NULL THEN
+      if i_refresh_token is not null then
         l_fecha_expiracion_refresh_token := k_sesion.f_fecha_expiracion_refresh_token(i_id_aplicacion);
-      END IF;
-    END IF;
+      end if;
+    end if;
   
     -- Inserta sesion
-    INSERT INTO t_sesiones
+    insert into t_sesiones
       (id_usuario,
        id_aplicacion,
        estado,
@@ -386,11 +386,11 @@ CREATE OR REPLACE PACKAGE BODY k_autenticacion IS
        id_dispositivo,
        origen,
        dato_externo)
-    VALUES
+    values
       (l_id_usuario,
        i_id_aplicacion,
        'A',
-       SYSDATE,
+       sysdate,
        i_access_token,
        l_fecha_expiracion_access_token,
        i_refresh_token,
@@ -401,109 +401,109 @@ CREATE OR REPLACE PACKAGE BODY k_autenticacion IS
        l_id_dispositivo,
        l_origen,
        i_dato_externo)
-    RETURNING id_sesion INTO l_id_sesion;
+    returning id_sesion into l_id_sesion;
   
     $if k_modulo.c_instalado_msj $then
-    IF l_id_dispositivo IS NOT NULL THEN
+    if l_id_dispositivo is not null then
       -- Inserta o actualiza suscripciones del usuario en el dispositivo
       k_dispositivo.p_suscribir_notificacion_usuario(l_id_dispositivo,
                                                      l_id_usuario);
-    END IF;
+    end if;
     $end
   
-    RETURN l_id_sesion;
-  EXCEPTION
-    WHEN k_usuario.ex_usuario_inexistente THEN
+    return l_id_sesion;
+  exception
+    when k_usuario.ex_usuario_inexistente then
       raise_application_error(-20000, 'Usuario inexistente');
-  END;
+  end;
 
-  FUNCTION f_refrescar_sesion(i_id_aplicacion         IN VARCHAR2,
-                              i_access_token_antiguo  IN VARCHAR2,
-                              i_refresh_token_antiguo IN VARCHAR2,
-                              i_access_token_nuevo    IN VARCHAR2,
-                              i_refresh_token_nuevo   IN VARCHAR2,
-                              i_origen                IN VARCHAR2 DEFAULT NULL,
-                              i_dato_externo          IN VARCHAR2 DEFAULT NULL)
-    RETURN NUMBER IS
-    l_id_sesion                      t_sesiones.id_sesion%TYPE;
-    l_fecha_expiracion_access_token  DATE;
-    l_fecha_expiracion_refresh_token DATE;
+  function f_refrescar_sesion(i_id_aplicacion         in varchar2,
+                              i_access_token_antiguo  in varchar2,
+                              i_refresh_token_antiguo in varchar2,
+                              i_access_token_nuevo    in varchar2,
+                              i_refresh_token_nuevo   in varchar2,
+                              i_origen                in varchar2 default null,
+                              i_dato_externo          in varchar2 default null)
+    return number is
+    l_id_sesion                      t_sesiones.id_sesion%type;
+    l_fecha_expiracion_access_token  date;
+    l_fecha_expiracion_refresh_token date;
     --
-    l_origen VARCHAR2(1) := nvl(i_origen, c_origen_risk);
-  BEGIN
+    l_origen varchar2(1) := nvl(i_origen, c_origen_risk);
+  begin
     -- Valida aplicacion
-    IF i_id_aplicacion IS NULL THEN
+    if i_id_aplicacion is null then
       raise_application_error(-20000, 'Aplicación inexistente o inactiva');
-    END IF;
+    end if;
   
     -- Busca sesion
     l_id_sesion := k_sesion.f_id_sesion(i_access_token_antiguo);
   
-    IF l_id_sesion IS NULL THEN
-      RAISE ex_tokens_invalidos;
-    END IF;
+    if l_id_sesion is null then
+      raise ex_tokens_invalidos;
+    end if;
   
-    IF l_origen = c_origen_risk THEN
+    if l_origen = c_origen_risk then
       -- Obtiene la fecha de expiracion del Access Token y Refresh Token
       l_fecha_expiracion_access_token := k_sesion.f_fecha_expiracion_access_token(i_access_token_nuevo);
-      IF i_refresh_token_nuevo IS NOT NULL THEN
+      if i_refresh_token_nuevo is not null then
         l_fecha_expiracion_refresh_token := k_sesion.f_fecha_expiracion_refresh_token(i_id_aplicacion);
-      END IF;
+      end if;
     
       -- Actualiza sesion
-      UPDATE t_sesiones
-         SET access_token                   = i_access_token_nuevo,
+      update t_sesiones
+         set access_token                   = i_access_token_nuevo,
              refresh_token                  = i_refresh_token_nuevo,
              fecha_expiracion_access_token  = l_fecha_expiracion_access_token,
              fecha_expiracion_refresh_token = l_fecha_expiracion_refresh_token,
              estado                         = 'A',
-             fecha_estado                   = SYSDATE
-       WHERE id_sesion = l_id_sesion
-         AND access_token = i_access_token_antiguo
-         AND refresh_token = i_refresh_token_antiguo
-         AND estado IN ('A', 'X')
-         AND fecha_expiracion_refresh_token >= SYSDATE;
-      IF SQL%NOTFOUND THEN
-        RAISE ex_tokens_invalidos;
-      END IF;
+             fecha_estado                   = sysdate
+       where id_sesion = l_id_sesion
+         and access_token = i_access_token_antiguo
+         and refresh_token = i_refresh_token_antiguo
+         and estado in ('A', 'X')
+         and fecha_expiracion_refresh_token >= sysdate;
+      if sql%notfound then
+        raise ex_tokens_invalidos;
+      end if;
     
-    ELSE
+    else
     
       -- Actualiza sesion
-      UPDATE t_sesiones
-         SET access_token = i_access_token_nuevo,
+      update t_sesiones
+         set access_token = i_access_token_nuevo,
              estado       = 'A',
-             fecha_estado = SYSDATE,
+             fecha_estado = sysdate,
              dato_externo = i_dato_externo
-       WHERE id_sesion = l_id_sesion
-         AND access_token = i_access_token_antiguo
-         AND estado IN ('A', 'X')
-         AND origen = l_origen;
-      IF SQL%NOTFOUND THEN
-        RAISE ex_tokens_invalidos;
-      END IF;
+       where id_sesion = l_id_sesion
+         and access_token = i_access_token_antiguo
+         and estado in ('A', 'X')
+         and origen = l_origen;
+      if sql%notfound then
+        raise ex_tokens_invalidos;
+      end if;
     
-    END IF;
+    end if;
   
-    RETURN l_id_sesion;
-  EXCEPTION
-    WHEN ex_tokens_invalidos THEN
+    return l_id_sesion;
+  exception
+    when ex_tokens_invalidos then
       raise_application_error(-20000, 'Tokens inválidos');
-  END;
+  end;
 
-  FUNCTION f_generar_url_activacion(i_alias IN VARCHAR2) RETURN VARCHAR2 IS
+  function f_generar_url_activacion(i_alias in varchar2) return varchar2 is
     l_json_object json_object_t;
-    l_key         VARCHAR2(1000);
-  BEGIN
-    l_json_object := NEW json_object_t();
+    l_key         varchar2(1000);
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('usuario', i_alias);
     l_json_object.put('hash', k_util.f_hash(i_alias, as_crypto.hash_sh1));
   
     l_key := utl_url.escape(k_util.base64encode(k_util.clob_to_blob(l_json_object.to_clob)),
-                            TRUE);
+                            true);
   
-    RETURN k_util.f_valor_parametro('URL_SERVICIOS_PRODUCCION') || '/Aut/ActivarUsuario?key=' || l_key;
-  END;
+    return k_util.f_valor_parametro('URL_SERVICIOS_PRODUCCION') || '/Aut/ActivarUsuario?key=' || l_key;
+  end;
 
-END;
+end;
 /

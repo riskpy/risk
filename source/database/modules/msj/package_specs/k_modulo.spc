@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_modulo IS
+create or replace package k_modulo is
 
   /**
   Agrupa operaciones relacionadas con los módulos
@@ -31,8 +31,8 @@ CREATE OR REPLACE PACKAGE k_modulo IS
   */
 
   -- Constantes
-  c_instalado_risk CONSTANT BOOLEAN := TRUE;
-  c_instalado_msj  CONSTANT BOOLEAN := TRUE;
+  c_instalado_risk constant boolean := true;
+  c_instalado_msj  constant boolean := true;
 
-END;
+end;
 /

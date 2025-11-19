@@ -1,322 +1,322 @@
-CREATE OR REPLACE PACKAGE BODY k_clave IS
+create or replace package body k_clave is
 
-  c_algoritmo      CONSTANT PLS_INTEGER := as_crypto.hmac_sh1;
-  c_iteraciones    CONSTANT PLS_INTEGER := 128; -- 4096
-  c_longitud_bytes CONSTANT PLS_INTEGER := 32;
+  c_algoritmo      constant pls_integer := as_crypto.hmac_sh1;
+  c_iteraciones    constant pls_integer := 128; -- 4096
+  c_longitud_bytes constant pls_integer := 32;
 
   -- Excepciones
-  ex_credenciales_invalidas EXCEPTION;
-  ex_tokens_invalidos       EXCEPTION;
+  ex_credenciales_invalidas exception;
+  ex_tokens_invalidos       exception;
 
   -- https://mikepargeter.wordpress.com/2012/11/26/pbkdf2-in-oracle
   -- https://www.ietf.org/rfc/rfc6070.txt
-  FUNCTION pbkdf2(p_password   IN VARCHAR2,
-                  p_salt       IN VARCHAR2,
-                  p_count      IN INTEGER,
-                  p_key_length IN INTEGER) RETURN VARCHAR2 IS
-    l_block_count INTEGER;
-    l_last        RAW(32767);
-    l_xorsum      RAW(32767);
-    l_result      RAW(32767);
-  BEGIN
+  function pbkdf2(p_password   in varchar2,
+                  p_salt       in varchar2,
+                  p_count      in integer,
+                  p_key_length in integer) return varchar2 is
+    l_block_count integer;
+    l_last        raw(32767);
+    l_xorsum      raw(32767);
+    l_result      raw(32767);
+  begin
     -- SHA-1   ==> 20 bytes
     -- SHA-256 ==> 32 bytes
     l_block_count := ceil(p_key_length / 20);
-    FOR i IN 1 .. l_block_count LOOP
+    for i in 1 .. l_block_count loop
       l_last   := utl_raw.concat(utl_raw.cast_to_raw(p_salt),
                                  utl_raw.cast_from_binary_integer(i,
                                                                   utl_raw.big_endian));
-      l_xorsum := NULL;
-      FOR j IN 1 .. p_count LOOP
+      l_xorsum := null;
+      for j in 1 .. p_count loop
         l_last := as_crypto.mac(l_last,
                                 c_algoritmo,
                                 utl_raw.cast_to_raw(p_password));
-        IF l_xorsum IS NULL THEN
+        if l_xorsum is null then
           l_xorsum := l_last;
-        ELSE
+        else
           l_xorsum := utl_raw.bit_xor(l_xorsum, l_last);
-        END IF;
-      END LOOP;
+        end if;
+      end loop;
       l_result := utl_raw.concat(l_result, l_xorsum);
-    END LOOP;
-    RETURN rawtohex(utl_raw.substr(l_result, 1, p_key_length));
-  END;
+    end loop;
+    return rawtohex(utl_raw.substr(l_result, 1, p_key_length));
+  end;
 
-  FUNCTION f_randombytes_hex RETURN VARCHAR2 IS
-  BEGIN
-    RETURN rawtohex(as_crypto.randombytes(c_longitud_bytes));
-  END;
+  function f_randombytes_hex return varchar2 is
+  begin
+    return rawtohex(as_crypto.randombytes(c_longitud_bytes));
+  end;
 
-  FUNCTION f_randombytes_base64 RETURN VARCHAR2 IS
-  BEGIN
-    RETURN utl_raw.cast_to_varchar2(utl_encode.base64_encode(as_crypto.randombytes(c_longitud_bytes)));
-  END;
+  function f_randombytes_base64 return varchar2 is
+  begin
+    return utl_raw.cast_to_varchar2(utl_encode.base64_encode(as_crypto.randombytes(c_longitud_bytes)));
+  end;
 
-  FUNCTION f_salt RETURN VARCHAR2 IS
-  BEGIN
-    RETURN f_randombytes_hex;
-  END;
+  function f_salt return varchar2 is
+  begin
+    return f_randombytes_hex;
+  end;
 
-  FUNCTION f_hash(i_clave IN VARCHAR2,
-                  i_salt  IN VARCHAR2) RETURN VARCHAR2 IS
-  BEGIN
-    RETURN pbkdf2(i_clave, i_salt, c_iteraciones, c_longitud_bytes);
-  END;
+  function f_hash(i_clave in varchar2,
+                  i_salt  in varchar2) return varchar2 is
+  begin
+    return pbkdf2(i_clave, i_salt, c_iteraciones, c_longitud_bytes);
+  end;
 
-  FUNCTION f_validar_clave(i_id_usuario IN NUMBER,
-                           i_clave      IN VARCHAR2,
-                           i_tipo_clave IN CHAR DEFAULT 'A') RETURN BOOLEAN IS
-    l_hash        t_usuario_claves.hash%TYPE;
-    l_salt        t_usuario_claves.salt%TYPE;
-    l_iteraciones t_usuario_claves.iteraciones%TYPE;
-  BEGIN
-    BEGIN
-      SELECT c.hash, c.salt, c.iteraciones
-        INTO l_hash, l_salt, l_iteraciones
-        FROM t_usuario_claves c
-       WHERE c.id_usuario = i_id_usuario
-         AND c.tipo = i_tipo_clave
-         AND orden = (SELECT MAX(uc2.orden)
-                        FROM t_usuario_claves uc2
-                       WHERE uc2.id_usuario = c.id_usuario
-                         AND uc2.tipo = c.tipo)
-         AND c.estado IN ('N', 'A');
-    EXCEPTION
-      WHEN OTHERS THEN
-        RAISE ex_credenciales_invalidas;
-    END;
+  function f_validar_clave(i_id_usuario in number,
+                           i_clave      in varchar2,
+                           i_tipo_clave in char default 'A') return boolean is
+    l_hash        t_usuario_claves.hash%type;
+    l_salt        t_usuario_claves.salt%type;
+    l_iteraciones t_usuario_claves.iteraciones%type;
+  begin
+    begin
+      select c.hash, c.salt, c.iteraciones
+        into l_hash, l_salt, l_iteraciones
+        from t_usuario_claves c
+       where c.id_usuario = i_id_usuario
+         and c.tipo = i_tipo_clave
+         and orden = (select max(uc2.orden)
+                        from t_usuario_claves uc2
+                       where uc2.id_usuario = c.id_usuario
+                         and uc2.tipo = c.tipo)
+         and c.estado in ('N', 'A');
+    exception
+      when others then
+        raise ex_credenciales_invalidas;
+    end;
   
-    IF l_hash <> pbkdf2(i_clave,
+    if l_hash <> pbkdf2(i_clave,
                         l_salt,
                         l_iteraciones,
-                        utl_raw.length(hextoraw(l_hash))) THEN
-      RAISE ex_credenciales_invalidas;
-    END IF;
+                        utl_raw.length(hextoraw(l_hash))) then
+      raise ex_credenciales_invalidas;
+    end if;
   
-    RETURN TRUE;
-  EXCEPTION
-    WHEN ex_credenciales_invalidas THEN
-      RETURN FALSE;
-    WHEN OTHERS THEN
-      RETURN FALSE;
-  END;
+    return true;
+  exception
+    when ex_credenciales_invalidas then
+      return false;
+    when others then
+      return false;
+  end;
 
-  PROCEDURE p_registrar_intento_fallido(i_id_usuario IN NUMBER,
-                                        i_tipo_clave IN CHAR DEFAULT 'A') IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-    l_cantidad_intentos_permitidos PLS_INTEGER;
-  BEGIN
+  procedure p_registrar_intento_fallido(i_id_usuario in number,
+                                        i_tipo_clave in char default 'A') is
+    pragma autonomous_transaction;
+    l_cantidad_intentos_permitidos pls_integer;
+  begin
     l_cantidad_intentos_permitidos := to_number(k_util.f_valor_parametro('AUTENTICACION_CANTIDAD_INTENTOS_PERMITIDOS'));
-    UPDATE t_usuario_claves a
-       SET cantidad_intentos_fallidos = CASE
-                                          WHEN nvl(cantidad_intentos_fallidos,
+    update t_usuario_claves a
+       set cantidad_intentos_fallidos = case
+                                          when nvl(cantidad_intentos_fallidos,
                                                    0) >=
-                                               l_cantidad_intentos_permitidos THEN
+                                               l_cantidad_intentos_permitidos then
                                            cantidad_intentos_fallidos
-                                          ELSE
+                                          else
                                            nvl(cantidad_intentos_fallidos, 0) + 1
-                                        END,
-           estado = CASE
-                      WHEN nvl(cantidad_intentos_fallidos, 0) >=
-                           l_cantidad_intentos_permitidos THEN
+                                        end,
+           estado = case
+                      when nvl(cantidad_intentos_fallidos, 0) >=
+                           l_cantidad_intentos_permitidos then
                        'B'
-                      ELSE
+                      else
                        estado
-                    END
-     WHERE id_usuario = i_id_usuario
-       AND tipo = i_tipo_clave
-       AND orden = (SELECT MAX(uc2.orden)
-                      FROM t_usuario_claves uc2
-                     WHERE uc2.id_usuario = a.id_usuario
-                       AND uc2.tipo = a.tipo);
-    COMMIT;
-  EXCEPTION
-    WHEN OTHERS THEN
-      ROLLBACK;
-  END;
+                    end
+     where id_usuario = i_id_usuario
+       and tipo = i_tipo_clave
+       and orden = (select max(uc2.orden)
+                      from t_usuario_claves uc2
+                     where uc2.id_usuario = a.id_usuario
+                       and uc2.tipo = a.tipo);
+    commit;
+  exception
+    when others then
+      rollback;
+  end;
 
-  PROCEDURE p_registrar_autenticacion(i_id_usuario IN NUMBER,
-                                      i_tipo_clave IN CHAR DEFAULT 'A') IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-  BEGIN
-    UPDATE t_usuario_claves a
-       SET cantidad_intentos_fallidos = 0,
-           fecha_ultima_autenticacion = SYSDATE,
-           estado = CASE
-                      WHEN nvl(estado, 'N') = 'N' THEN
+  procedure p_registrar_autenticacion(i_id_usuario in number,
+                                      i_tipo_clave in char default 'A') is
+    pragma autonomous_transaction;
+  begin
+    update t_usuario_claves a
+       set cantidad_intentos_fallidos = 0,
+           fecha_ultima_autenticacion = sysdate,
+           estado = case
+                      when nvl(estado, 'N') = 'N' then
                        'A'
-                      ELSE
+                      else
                        estado
-                    END
-     WHERE id_usuario = i_id_usuario
-       AND tipo = i_tipo_clave
-       AND orden = (SELECT MAX(uc2.orden)
-                      FROM t_usuario_claves uc2
-                     WHERE uc2.id_usuario = a.id_usuario
-                       AND uc2.tipo = a.tipo);
-    COMMIT;
-  EXCEPTION
-    WHEN OTHERS THEN
-      ROLLBACK;
-  END;
+                    end
+     where id_usuario = i_id_usuario
+       and tipo = i_tipo_clave
+       and orden = (select max(uc2.orden)
+                      from t_usuario_claves uc2
+                     where uc2.id_usuario = a.id_usuario
+                       and uc2.tipo = a.tipo);
+    commit;
+  exception
+    when others then
+      rollback;
+  end;
 
-  PROCEDURE p_validar_politicas(i_alias      IN VARCHAR2,
-                                i_clave      IN VARCHAR2,
-                                i_tipo_clave IN CHAR DEFAULT 'A') IS
-    l_dominio               t_significados.dominio%TYPE;
-    l_caracteres_prohibidos t_significados.significado%TYPE;
-    l_lon_clave             NUMBER(6) := 0;
-    l_can_letras            NUMBER(6) := 0;
-    l_can_letras_may        NUMBER(6) := 0;
-    l_can_letras_min        NUMBER(6) := 0;
-    l_can_numeros           NUMBER(6) := 0;
-    l_can_otros             NUMBER(6) := 0;
-    l_can_repeticiones      NUMBER(6) := 0;
-    l_caracter              VARCHAR2(1);
-  BEGIN
+  procedure p_validar_politicas(i_alias      in varchar2,
+                                i_clave      in varchar2,
+                                i_tipo_clave in char default 'A') is
+    l_dominio               t_significados.dominio%type;
+    l_caracteres_prohibidos t_significados.significado%type;
+    l_lon_clave             number(6) := 0;
+    l_can_letras            number(6) := 0;
+    l_can_letras_may        number(6) := 0;
+    l_can_letras_min        number(6) := 0;
+    l_can_numeros           number(6) := 0;
+    l_can_otros             number(6) := 0;
+    l_can_repeticiones      number(6) := 0;
+    l_caracter              varchar2(1);
+  begin
     l_dominio   := 'POLITICA_VALIDACION_CLAVE_' ||
                    k_significado.f_significado_codigo('TIPO_CLAVE',
                                                       i_tipo_clave);
     l_lon_clave := length(i_clave);
   
     -- Valida la longitud de la clave
-    IF l_lon_clave <
+    if l_lon_clave <
        to_number(k_significado.f_significado_codigo(l_dominio,
-                                                    'LONGITUD_MINIMA')) THEN
+                                                    'LONGITUD_MINIMA')) then
       raise_application_error(-20000,
                               'La clave debe contener al menos ' ||
                               k_significado.f_significado_codigo(l_dominio,
                                                                  'LONGITUD_MINIMA') ||
                               ' caracteres');
-    END IF;
+    end if;
   
-    FOR i IN 1 .. l_lon_clave LOOP
+    for i in 1 .. l_lon_clave loop
       l_caracter := substr(i_clave, i, 1);
     
       -- Cuenta la cantidad de mayusculas, minusculas, numeros y caracteres especiales
-      IF l_caracter BETWEEN 'A' AND 'Z' THEN
+      if l_caracter between 'A' and 'Z' then
         l_can_letras_may := l_can_letras_may + 1;
-      ELSIF l_caracter BETWEEN 'a' AND 'z' THEN
+      elsif l_caracter between 'a' and 'z' then
         l_can_letras_min := l_can_letras_min + 1;
-      ELSIF l_caracter BETWEEN '0' AND '9' THEN
+      elsif l_caracter between '0' and '9' then
         l_can_numeros := l_can_numeros + 1;
-      ELSE
+      else
         l_can_otros := l_can_otros + 1;
-      END IF;
+      end if;
     
       -- Valida la cantidad de repeticiones de un mismo caracter
       l_can_repeticiones := 0;
-      FOR j IN i .. l_lon_clave LOOP
-        IF l_caracter = substr(i_clave, j, 1) THEN
+      for j in i .. l_lon_clave loop
+        if l_caracter = substr(i_clave, j, 1) then
           l_can_repeticiones := l_can_repeticiones + 1;
-        END IF;
-      END LOOP;
-      IF l_can_repeticiones >
+        end if;
+      end loop;
+      if l_can_repeticiones >
          to_number(k_significado.f_significado_codigo(l_dominio,
-                                                      'CAN_MAX_CARACTERES_IGUALES')) THEN
+                                                      'CAN_MAX_CARACTERES_IGUALES')) then
         raise_application_error(-20000,
                                 'La clave no puede contener más de ' ||
                                 k_significado.f_significado_codigo(l_dominio,
                                                                    'CAN_MAX_CARACTERES_IGUALES') ||
                                 ' caracteres iguales');
-      END IF;
-    END LOOP;
+      end if;
+    end loop;
   
     l_can_letras := l_can_letras_min + l_can_letras_may;
   
     -- Valida que la clave no sea igual al usuario
-    IF k_util.string_to_bool(k_significado.f_significado_codigo(l_dominio,
-                                                                'VAL_ALIAS_IGUAL')) AND
-       upper(i_clave) = upper(i_alias) THEN
+    if k_util.string_to_bool(k_significado.f_significado_codigo(l_dominio,
+                                                                'VAL_ALIAS_IGUAL')) and
+       upper(i_clave) = upper(i_alias) then
       raise_application_error(-20000,
                               'La clave no puede ser igual al usuario');
-    END IF;
+    end if;
     -- Valida que la clave no contenga el usuario
-    IF k_util.string_to_bool(k_significado.f_significado_codigo(l_dominio,
-                                                                'VAL_ALIAS_CONTENIDO')) AND
-       instr(upper(i_clave), upper(i_alias)) > 0 THEN
+    if k_util.string_to_bool(k_significado.f_significado_codigo(l_dominio,
+                                                                'VAL_ALIAS_CONTENIDO')) and
+       instr(upper(i_clave), upper(i_alias)) > 0 then
       raise_application_error(-20000,
                               'La clave no debe contener el usuario');
-    END IF;
+    end if;
   
     -- Valida la cantidad de letras
-    IF l_can_letras <
+    if l_can_letras <
        to_number(k_significado.f_significado_codigo(l_dominio,
-                                                    'CAN_MIN_LETRAS_ABECEDARIO')) THEN
+                                                    'CAN_MIN_LETRAS_ABECEDARIO')) then
       raise_application_error(-20000,
                               'La clave debe contener al menos ' ||
                               k_significado.f_significado_codigo(l_dominio,
                                                                  'CAN_MIN_LETRAS_ABECEDARIO') ||
                               ' letras del abecedario');
-    END IF;
+    end if;
     -- Valida la cantidad de letras mayusculas
-    IF l_can_letras_may <
+    if l_can_letras_may <
        to_number(k_significado.f_significado_codigo(l_dominio,
-                                                    'CAN_MIN_MAYUSCULAS')) THEN
+                                                    'CAN_MIN_MAYUSCULAS')) then
       raise_application_error(-20000,
                               'La clave debe contener al menos ' ||
                               k_significado.f_significado_codigo(l_dominio,
                                                                  'CAN_MIN_MAYUSCULAS') ||
                               ' letra mayúscula');
-    END IF;
+    end if;
     -- Valida la cantidad de letras minusculas
-    IF l_can_letras_min <
+    if l_can_letras_min <
        to_number(k_significado.f_significado_codigo(l_dominio,
-                                                    'CAN_MIN_MINUSCULAS')) THEN
+                                                    'CAN_MIN_MINUSCULAS')) then
       raise_application_error(-20000,
                               'La clave debe contener al menos ' ||
                               k_significado.f_significado_codigo(l_dominio,
                                                                  'CAN_MIN_MINUSCULAS') ||
                               ' letra minúscula');
-    END IF;
+    end if;
     -- Valida la cantidad de numeros
-    IF l_can_numeros <
+    if l_can_numeros <
        to_number(k_significado.f_significado_codigo(l_dominio,
-                                                    'CAN_MIN_NUMEROS')) THEN
+                                                    'CAN_MIN_NUMEROS')) then
       raise_application_error(-20000,
                               'La clave debe contener al menos ' ||
                               k_significado.f_significado_codigo(l_dominio,
                                                                  'CAN_MIN_NUMEROS') ||
                               ' número');
-    END IF;
+    end if;
     -- Valida la cantidad de caracteres especiales
-    IF l_can_otros <
+    if l_can_otros <
        to_number(k_significado.f_significado_codigo(l_dominio,
-                                                    'CAN_MIN_CARACTERES_ESPECIALES')) THEN
+                                                    'CAN_MIN_CARACTERES_ESPECIALES')) then
       raise_application_error(-20000,
                               'La clave debe contener al menos ' ||
                               k_significado.f_significado_codigo(l_dominio,
                                                                  'CAN_MIN_CARACTERES_ESPECIALES') ||
                               ' caracter especial');
-    END IF;
+    end if;
   
     -- Valida caracteres prohibidos
     l_caracteres_prohibidos := k_significado.f_significado_codigo(l_dominio,
                                                                   'CARACTERES_PROHIBIDOS');
-    FOR i IN 1 .. length(l_caracteres_prohibidos) LOOP
+    for i in 1 .. length(l_caracteres_prohibidos) loop
       l_caracter := substr(l_caracteres_prohibidos, i, 1);
-      IF instr(i_clave, l_caracter) > 0 THEN
+      if instr(i_clave, l_caracter) > 0 then
         raise_application_error(-20000,
                                 'La clave no puede contener el caracter "' ||
                                 l_caracter || '"');
-      END IF;
-    END LOOP;
-  END;
+      end if;
+    end loop;
+  end;
 
-  PROCEDURE p_registrar_clave(i_alias      IN VARCHAR2,
-                              i_clave      IN VARCHAR2,
-                              i_tipo_clave IN CHAR DEFAULT 'A') IS
-    l_id_usuario t_usuarios.id_usuario%TYPE;
-    l_orden      t_usuario_claves.orden%TYPE;
-    l_hash       t_usuario_claves.hash%TYPE;
-    l_salt       t_usuario_claves.salt%TYPE;
-  BEGIN
+  procedure p_registrar_clave(i_alias      in varchar2,
+                              i_clave      in varchar2,
+                              i_tipo_clave in char default 'A') is
+    l_id_usuario t_usuarios.id_usuario%type;
+    l_orden      t_usuario_claves.orden%type;
+    l_hash       t_usuario_claves.hash%type;
+    l_salt       t_usuario_claves.salt%type;
+  begin
     -- Busca usuario
     l_id_usuario := k_usuario.f_id_usuario(i_alias);
   
-    IF l_id_usuario IS NULL THEN
-      RAISE k_usuario.ex_usuario_inexistente;
-    END IF;
+    if l_id_usuario is null then
+      raise k_usuario.ex_usuario_inexistente;
+    end if;
   
     -- Valida políticas
     p_validar_politicas(i_alias, i_clave, i_tipo_clave);
@@ -326,25 +326,25 @@ CREATE OR REPLACE PACKAGE BODY k_clave IS
     -- Genera hash
     l_hash := f_hash(i_clave, l_salt);
   
-    SELECT nvl(MAX(c.orden), 0) + 1
-      INTO l_orden
-      FROM t_usuario_claves c
-     WHERE c.id_usuario = l_id_usuario
-       AND c.tipo = i_tipo_clave;
+    select nvl(max(c.orden), 0) + 1
+      into l_orden
+      from t_usuario_claves c
+     where c.id_usuario = l_id_usuario
+       and c.tipo = i_tipo_clave;
   
     -- Inserta clave de usuario
-    INSERT INTO t_usuario_claves
+    insert into t_usuario_claves
       (id_usuario,
        tipo,
        orden,
        estado,
-       HASH,
+       hash,
        salt,
        algoritmo,
        iteraciones,
        cantidad_intentos_fallidos,
        fecha_ultima_autenticacion)
-    VALUES
+    values
       (l_id_usuario,
        i_tipo_clave,
        l_orden,
@@ -354,59 +354,59 @@ CREATE OR REPLACE PACKAGE BODY k_clave IS
        c_algoritmo,
        c_iteraciones,
        0,
-       NULL);
-  EXCEPTION
-    WHEN k_usuario.ex_usuario_inexistente THEN
+       null);
+  exception
+    when k_usuario.ex_usuario_inexistente then
       raise_application_error(-20000, 'Usuario inexistente');
-    WHEN dup_val_on_index THEN
+    when dup_val_on_index then
       raise_application_error(-20000,
                               'Usuario ya tiene una clave registrada');
-  END;
+  end;
 
-  PROCEDURE p_desbloquear_clave(i_alias      IN VARCHAR2,
-                                i_tipo_clave IN CHAR DEFAULT 'A') IS
-    l_id_usuario t_usuarios.id_usuario%TYPE;
-  BEGIN
+  procedure p_desbloquear_clave(i_alias      in varchar2,
+                                i_tipo_clave in char default 'A') is
+    l_id_usuario t_usuarios.id_usuario%type;
+  begin
     -- Busca usuario
     l_id_usuario := k_usuario.f_id_usuario(i_alias);
   
-    IF l_id_usuario IS NULL THEN
-      RAISE k_usuario.ex_usuario_inexistente;
-    END IF;
+    if l_id_usuario is null then
+      raise k_usuario.ex_usuario_inexistente;
+    end if;
   
     -- Actualiza clave de usuario
-    UPDATE t_usuario_claves a
-       SET estado                     = 'N',
+    update t_usuario_claves a
+       set estado                     = 'N',
            cantidad_intentos_fallidos = 0,
-           fecha_ultima_autenticacion = NULL
-     WHERE id_usuario = l_id_usuario
-       AND tipo = i_tipo_clave
-       AND orden = (SELECT MAX(uc2.orden)
-                      FROM t_usuario_claves uc2
-                     WHERE uc2.id_usuario = a.id_usuario
-                       AND uc2.tipo = a.tipo);
+           fecha_ultima_autenticacion = null
+     where id_usuario = l_id_usuario
+       and tipo = i_tipo_clave
+       and orden = (select max(uc2.orden)
+                      from t_usuario_claves uc2
+                     where uc2.id_usuario = a.id_usuario
+                       and uc2.tipo = a.tipo);
   
-    IF SQL%NOTFOUND THEN
+    if sql%notfound then
       raise_application_error(-20000, 'Usuario sin clave registrada');
-    END IF;
-  EXCEPTION
-    WHEN k_usuario.ex_usuario_inexistente THEN
+    end if;
+  exception
+    when k_usuario.ex_usuario_inexistente then
       raise_application_error(-20000, 'Usuario inexistente');
-  END;
+  end;
 
-  PROCEDURE p_restablecer_clave(i_alias      IN VARCHAR2,
-                                i_clave      IN VARCHAR2,
-                                i_tipo_clave IN CHAR DEFAULT 'A') IS
-    l_id_usuario t_usuarios.id_usuario%TYPE;
-    l_hash       t_usuario_claves.hash%TYPE;
-    l_salt       t_usuario_claves.salt%TYPE;
-  BEGIN
+  procedure p_restablecer_clave(i_alias      in varchar2,
+                                i_clave      in varchar2,
+                                i_tipo_clave in char default 'A') is
+    l_id_usuario t_usuarios.id_usuario%type;
+    l_hash       t_usuario_claves.hash%type;
+    l_salt       t_usuario_claves.salt%type;
+  begin
     -- Busca usuario
     l_id_usuario := k_usuario.f_id_usuario(i_alias);
   
-    IF l_id_usuario IS NULL THEN
-      RAISE k_usuario.ex_usuario_inexistente;
-    END IF;
+    if l_id_usuario is null then
+      raise k_usuario.ex_usuario_inexistente;
+    end if;
   
     -- Valida políticas
     p_validar_politicas(i_alias, i_clave, i_tipo_clave);
@@ -417,48 +417,48 @@ CREATE OR REPLACE PACKAGE BODY k_clave IS
     l_hash := f_hash(i_clave, l_salt);
   
     -- Actualiza clave de usuario
-    UPDATE t_usuario_claves a
-       SET HASH                       = l_hash,
+    update t_usuario_claves a
+       set hash                       = l_hash,
            salt                       = l_salt,
            algoritmo                  = c_algoritmo,
            iteraciones                = c_iteraciones,
            estado                     = 'N',
            cantidad_intentos_fallidos = 0,
-           fecha_ultima_autenticacion = NULL
-     WHERE id_usuario = l_id_usuario
-       AND tipo = i_tipo_clave
-       AND orden = (SELECT MAX(uc2.orden)
-                      FROM t_usuario_claves uc2
-                     WHERE uc2.id_usuario = a.id_usuario
-                       AND uc2.tipo = a.tipo);
+           fecha_ultima_autenticacion = null
+     where id_usuario = l_id_usuario
+       and tipo = i_tipo_clave
+       and orden = (select max(uc2.orden)
+                      from t_usuario_claves uc2
+                     where uc2.id_usuario = a.id_usuario
+                       and uc2.tipo = a.tipo);
   
-    IF SQL%NOTFOUND THEN
+    if sql%notfound then
       raise_application_error(-20000, 'Usuario sin clave registrada');
-    END IF;
-  EXCEPTION
-    WHEN k_usuario.ex_usuario_inexistente THEN
+    end if;
+  exception
+    when k_usuario.ex_usuario_inexistente then
       raise_application_error(-20000, 'Usuario inexistente');
-  END;
+  end;
 
-  PROCEDURE p_cambiar_clave(i_alias         IN VARCHAR2,
-                            i_clave_antigua IN VARCHAR2,
-                            i_clave_nueva   IN VARCHAR2,
-                            i_tipo_clave    IN CHAR DEFAULT 'A') IS
-    l_id_usuario t_usuarios.id_usuario%TYPE;
-    l_orden      t_usuario_claves.orden%TYPE;
-    l_hash       t_usuario_claves.hash%TYPE;
-    l_salt       t_usuario_claves.salt%TYPE;
-  BEGIN
+  procedure p_cambiar_clave(i_alias         in varchar2,
+                            i_clave_antigua in varchar2,
+                            i_clave_nueva   in varchar2,
+                            i_tipo_clave    in char default 'A') is
+    l_id_usuario t_usuarios.id_usuario%type;
+    l_orden      t_usuario_claves.orden%type;
+    l_hash       t_usuario_claves.hash%type;
+    l_salt       t_usuario_claves.salt%type;
+  begin
     -- Busca usuario
     l_id_usuario := k_usuario.f_id_usuario(i_alias);
   
-    IF l_id_usuario IS NULL THEN
-      RAISE k_usuario.ex_usuario_inexistente;
-    END IF;
+    if l_id_usuario is null then
+      raise k_usuario.ex_usuario_inexistente;
+    end if;
   
-    IF NOT f_validar_clave(l_id_usuario, i_clave_antigua, i_tipo_clave) THEN
-      RAISE ex_credenciales_invalidas;
-    END IF;
+    if not f_validar_clave(l_id_usuario, i_clave_antigua, i_tipo_clave) then
+      raise ex_credenciales_invalidas;
+    end if;
   
     -- Valida políticas
     p_validar_politicas(i_alias, i_clave_nueva, i_tipo_clave);
@@ -469,39 +469,39 @@ CREATE OR REPLACE PACKAGE BODY k_clave IS
     l_hash := f_hash(i_clave_nueva, l_salt);
   
     -- Actualiza clave de usuario antigua
-    UPDATE t_usuario_claves a
-       SET estado = 'I'
-     WHERE id_usuario = l_id_usuario
-       AND tipo = i_tipo_clave
-       AND orden = (SELECT MAX(uc2.orden)
-                      FROM t_usuario_claves uc2
-                     WHERE uc2.id_usuario = a.id_usuario
-                       AND uc2.tipo = a.tipo)
-       AND estado IN ('N', 'A');
+    update t_usuario_claves a
+       set estado = 'I'
+     where id_usuario = l_id_usuario
+       and tipo = i_tipo_clave
+       and orden = (select max(uc2.orden)
+                      from t_usuario_claves uc2
+                     where uc2.id_usuario = a.id_usuario
+                       and uc2.tipo = a.tipo)
+       and estado in ('N', 'A');
   
-    IF SQL%NOTFOUND THEN
+    if sql%notfound then
       raise_application_error(-20000, 'Usuario sin clave activa');
-    END IF;
+    end if;
   
-    SELECT nvl(MAX(c.orden), 0) + 1
-      INTO l_orden
-      FROM t_usuario_claves c
-     WHERE c.id_usuario = l_id_usuario
-       AND c.tipo = i_tipo_clave;
+    select nvl(max(c.orden), 0) + 1
+      into l_orden
+      from t_usuario_claves c
+     where c.id_usuario = l_id_usuario
+       and c.tipo = i_tipo_clave;
   
     -- Inserta clave de usuario nueva
-    INSERT INTO t_usuario_claves
+    insert into t_usuario_claves
       (id_usuario,
        tipo,
        orden,
        estado,
-       HASH,
+       hash,
        salt,
        algoritmo,
        iteraciones,
        cantidad_intentos_fallidos,
        fecha_ultima_autenticacion)
-    VALUES
+    values
       (l_id_usuario,
        i_tipo_clave,
        l_orden,
@@ -511,13 +511,13 @@ CREATE OR REPLACE PACKAGE BODY k_clave IS
        c_algoritmo,
        c_iteraciones,
        0,
-       NULL);
-  EXCEPTION
-    WHEN k_usuario.ex_usuario_inexistente THEN
+       null);
+  exception
+    when k_usuario.ex_usuario_inexistente then
       raise_application_error(-20000, 'Credenciales inválidas');
-    WHEN ex_credenciales_invalidas THEN
+    when ex_credenciales_invalidas then
       raise_application_error(-20000, 'Credenciales inválidas');
-  END;
+  end;
 
-END;
+end;
 /

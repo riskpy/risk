@@ -1,22 +1,22 @@
-CREATE OR REPLACE PACKAGE BODY k_lob_util IS
+create or replace package body k_lob_util is
 
-  FUNCTION f_obtener_blob_desde_clob(i_clob IN CLOB) RETURN BLOB IS
-    l_blob    BLOB;
-    l_charset VARCHAR2(100);
+  function f_obtener_blob_desde_clob(i_clob in clob) return blob is
+    l_blob    blob;
+    l_charset varchar2(100);
   
-    l_src_off  INTEGER := 1;
-    l_dest_off INTEGER := 1;
-    l_lang_ctx INTEGER := 0;
-    l_warning  INTEGER := 0;
-  BEGIN
+    l_src_off  integer := 1;
+    l_dest_off integer := 1;
+    l_lang_ctx integer := 0;
+    l_warning  integer := 0;
+  begin
     -- 1) Obtener el charset actual de la BD
-    SELECT VALUE
-      INTO l_charset
-      FROM nls_database_parameters
-     WHERE parameter = 'NLS_CHARACTERSET';
+    select value
+      into l_charset
+      from nls_database_parameters
+     where parameter = 'NLS_CHARACTERSET';
   
     -- 2) Crear un BLOB temporal (escribible)
-    dbms_lob.createtemporary(l_blob, TRUE, dbms_lob.session);
+    dbms_lob.createtemporary(l_blob, true, dbms_lob.session);
   
     -- 3) Convertir CLOB --> BLOB usando el charset de la BD
     dbms_lob.converttoblob(dest_lob     => l_blob,
@@ -28,26 +28,26 @@ CREATE OR REPLACE PACKAGE BODY k_lob_util IS
                            lang_context => l_lang_ctx,
                            warning      => l_warning);
   
-    RETURN l_blob;
-  END;
+    return l_blob;
+  end;
 
-  FUNCTION f_obtener_clob_desde_blob(i_blob IN BLOB) RETURN CLOB IS
-    l_clob    CLOB;
-    l_charset VARCHAR2(100);
+  function f_obtener_clob_desde_blob(i_blob in blob) return clob is
+    l_clob    clob;
+    l_charset varchar2(100);
   
-    l_src_off  INTEGER := 1;
-    l_dest_off INTEGER := 1;
-    l_lang_ctx INTEGER := 0;
-    l_warning  INTEGER := 0;
-  BEGIN
+    l_src_off  integer := 1;
+    l_dest_off integer := 1;
+    l_lang_ctx integer := 0;
+    l_warning  integer := 0;
+  begin
     -- 1) Obtener charset de la BD
-    SELECT VALUE
-      INTO l_charset
-      FROM nls_database_parameters
-     WHERE parameter = 'NLS_CHARACTERSET';
+    select value
+      into l_charset
+      from nls_database_parameters
+     where parameter = 'NLS_CHARACTERSET';
   
     -- 2) Crear un CLOB temporal
-    dbms_lob.createtemporary(l_clob, TRUE, dbms_lob.session);
+    dbms_lob.createtemporary(l_clob, true, dbms_lob.session);
   
     -- 3) Convertir BLOB ? CLOB usando el charset de la BD
     dbms_lob.converttoclob(dest_lob     => l_clob,
@@ -59,8 +59,8 @@ CREATE OR REPLACE PACKAGE BODY k_lob_util IS
                            lang_context => l_lang_ctx,
                            warning      => l_warning);
   
-    RETURN l_clob;
-  END;
+    return l_clob;
+  end;
 
-END;
+end;
 /

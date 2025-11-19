@@ -1,111 +1,111 @@
-CREATE OR REPLACE PACKAGE BODY k_error IS
+create or replace package body k_error is
 
-  FUNCTION f_tipo_excepcion(i_sqlcode IN NUMBER) RETURN VARCHAR2 IS
-    l_tipo_error VARCHAR2(3);
-  BEGIN
-    IF abs(i_sqlcode) BETWEEN 20000 AND 20999 THEN
+  function f_tipo_excepcion(i_sqlcode in number) return varchar2 is
+    l_tipo_error varchar2(3);
+  begin
+    if abs(i_sqlcode) between 20000 and 20999 then
       l_tipo_error := c_user_defined_error;
-    ELSE
+    else
       l_tipo_error := c_oracle_predefined_error;
-    END IF;
-    RETURN l_tipo_error;
-  END;
+    end if;
+    return l_tipo_error;
+  end;
 
-  FUNCTION f_mensaje_excepcion(i_sqlerrm IN VARCHAR2) RETURN VARCHAR2 IS
-    l_posicion INTEGER;
-    l_mensaje  VARCHAR2(32767);
-  BEGIN
+  function f_mensaje_excepcion(i_sqlerrm in varchar2) return varchar2 is
+    l_posicion integer;
+    l_mensaje  varchar2(32767);
+  begin
     l_mensaje := i_sqlerrm;
   
     -- ORA-NNNNN:
     l_posicion := regexp_instr(l_mensaje, 'ORA-[0-9]{5}:', 1, 2);
-    IF l_posicion > length('ORA-NNNNN:') THEN
+    if l_posicion > length('ORA-NNNNN:') then
       l_mensaje := regexp_replace(substr(l_mensaje, 1, l_posicion - 1),
                                   'ORA-[0-9]{5}:');
-    ELSE
+    else
       l_mensaje := regexp_replace(l_mensaje, 'ORA-[0-9]{5}:');
-    END IF;
+    end if;
   
     -- PL/SQL:
     l_posicion := instr(l_mensaje, 'PL/SQL:', 1, 2);
-    IF l_posicion > length('PL/SQL:') THEN
-      l_mensaje := REPLACE(substr(l_mensaje, 1, l_posicion - 1), 'PL/SQL:');
-    ELSE
-      l_mensaje := REPLACE(l_mensaje, 'PL/SQL:');
-    END IF;
+    if l_posicion > length('PL/SQL:') then
+      l_mensaje := replace(substr(l_mensaje, 1, l_posicion - 1), 'PL/SQL:');
+    else
+      l_mensaje := replace(l_mensaje, 'PL/SQL:');
+    end if;
   
-    RETURN TRIM(l_mensaje);
-  END;
+    return trim(l_mensaje);
+  end;
 
-  FUNCTION f_mensaje_error(i_clave     IN VARCHAR2,
-                           i_cadenas   IN y_cadenas,
-                           i_wrap_char IN VARCHAR2 DEFAULT c_wrap_char)
-    RETURN VARCHAR2 IS
-    l_mensaje   t_errores.mensaje%TYPE;
-    l_id_idioma t_idiomas.id_idioma%TYPE;
-    l_id_pais   t_paises.id_pais%TYPE;
-  BEGIN
+  function f_mensaje_error(i_clave     in varchar2,
+                           i_cadenas   in y_cadenas,
+                           i_wrap_char in varchar2 default c_wrap_char)
+    return varchar2 is
+    l_mensaje   t_errores.mensaje%type;
+    l_id_idioma t_idiomas.id_idioma%type;
+    l_id_pais   t_paises.id_pais%type;
+  begin
     l_id_idioma := k_sistema.f_idioma;
     l_id_pais   := k_sistema.f_pais;
   
-    BEGIN
-      WITH lv_mensajes AS
-       (SELECT mensaje
-          FROM t_errores
-         WHERE clave = i_clave
-           AND nvl(id_idioma, nvl(l_id_idioma, -1)) = nvl(l_id_idioma, -1)
-           AND nvl(id_pais, nvl(l_id_pais, -1)) = nvl(l_id_pais, -1)
-         ORDER BY decode(clave, NULL, 0, 1) + decode(id_idioma, NULL, 0, 1) +
-                  decode(id_pais, NULL, 0, 1) DESC)
-      SELECT mensaje INTO l_mensaje FROM lv_mensajes WHERE rownum = 1;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      with lv_mensajes as
+       (select mensaje
+          from t_errores
+         where clave = i_clave
+           and nvl(id_idioma, nvl(l_id_idioma, -1)) = nvl(l_id_idioma, -1)
+           and nvl(id_pais, nvl(l_id_pais, -1)) = nvl(l_id_pais, -1)
+         order by decode(clave, null, 0, 1) + decode(id_idioma, null, 0, 1) +
+                  decode(id_pais, null, 0, 1) desc)
+      select mensaje into l_mensaje from lv_mensajes where rownum = 1;
+    exception
+      when no_data_found then
         l_mensaje := 'Error no registrado [' || i_clave || ']';
-    END;
+    end;
   
-    RETURN k_cadena.f_unir_cadenas(l_mensaje,
+    return k_cadena.f_unir_cadenas(l_mensaje,
                                    i_cadenas,
                                    nvl(i_wrap_char, c_wrap_char));
-  END;
+  end;
 
-  FUNCTION f_mensaje_error(i_clave     IN VARCHAR2,
-                           i_cadena1   IN VARCHAR2 DEFAULT NULL,
-                           i_cadena2   IN VARCHAR2 DEFAULT NULL,
-                           i_cadena3   IN VARCHAR2 DEFAULT NULL,
-                           i_cadena4   IN VARCHAR2 DEFAULT NULL,
-                           i_cadena5   IN VARCHAR2 DEFAULT NULL,
-                           i_wrap_char IN VARCHAR2 DEFAULT c_wrap_char)
-    RETURN VARCHAR2 IS
-    l_mensaje   t_errores.mensaje%TYPE;
-    l_id_idioma t_idiomas.id_idioma%TYPE;
-    l_id_pais   t_paises.id_pais%TYPE;
-  BEGIN
+  function f_mensaje_error(i_clave     in varchar2,
+                           i_cadena1   in varchar2 default null,
+                           i_cadena2   in varchar2 default null,
+                           i_cadena3   in varchar2 default null,
+                           i_cadena4   in varchar2 default null,
+                           i_cadena5   in varchar2 default null,
+                           i_wrap_char in varchar2 default c_wrap_char)
+    return varchar2 is
+    l_mensaje   t_errores.mensaje%type;
+    l_id_idioma t_idiomas.id_idioma%type;
+    l_id_pais   t_paises.id_pais%type;
+  begin
     l_id_idioma := k_sistema.f_idioma;
     l_id_pais   := k_sistema.f_pais;
   
-    BEGIN
-      WITH lv_mensajes AS
-       (SELECT mensaje
-          FROM t_errores
-         WHERE clave = i_clave
-           AND nvl(id_idioma, nvl(l_id_idioma, -1)) = nvl(l_id_idioma, -1)
-           AND nvl(id_pais, nvl(l_id_pais, -1)) = nvl(l_id_pais, -1)
-         ORDER BY decode(clave, NULL, 0, 1) + decode(id_idioma, NULL, 0, 1) +
-                  decode(id_pais, NULL, 0, 1) DESC)
-      SELECT mensaje INTO l_mensaje FROM lv_mensajes WHERE rownum = 1;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      with lv_mensajes as
+       (select mensaje
+          from t_errores
+         where clave = i_clave
+           and nvl(id_idioma, nvl(l_id_idioma, -1)) = nvl(l_id_idioma, -1)
+           and nvl(id_pais, nvl(l_id_pais, -1)) = nvl(l_id_pais, -1)
+         order by decode(clave, null, 0, 1) + decode(id_idioma, null, 0, 1) +
+                  decode(id_pais, null, 0, 1) desc)
+      select mensaje into l_mensaje from lv_mensajes where rownum = 1;
+    exception
+      when no_data_found then
         l_mensaje := 'Error no registrado [' || i_clave || ']';
-    END;
+    end;
   
-    RETURN k_cadena.f_unir_cadenas(l_mensaje,
+    return k_cadena.f_unir_cadenas(l_mensaje,
                                    i_cadena1,
                                    i_cadena2,
                                    i_cadena3,
                                    i_cadena4,
                                    i_cadena5,
                                    nvl(i_wrap_char, c_wrap_char));
-  END;
+  end;
 
-END;
+end;
 /

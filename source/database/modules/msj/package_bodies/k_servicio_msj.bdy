@@ -1,44 +1,44 @@
-CREATE OR REPLACE PACKAGE BODY k_servicio_msj IS
+create or replace package body k_servicio_msj is
 
-  FUNCTION lf_adjuntos(i_id_correo IN NUMBER) RETURN y_archivos IS
+  function lf_adjuntos(i_id_correo in number) return y_archivos is
     l_adjuntos y_archivos;
     l_archivo  y_archivo;
   
-    CURSOR cr_elementos IS
-      SELECT id_correo_adjunto
-        FROM t_correo_adjuntos
-       WHERE id_correo = i_id_correo
-       ORDER BY id_correo_adjunto;
-  BEGIN
+    cursor cr_elementos is
+      select id_correo_adjunto
+        from t_correo_adjuntos
+       where id_correo = i_id_correo
+       order by id_correo_adjunto;
+  begin
     -- Inicializa respuesta
-    l_adjuntos := NEW y_archivos();
+    l_adjuntos := new y_archivos();
   
-    FOR ele IN cr_elementos LOOP
-      l_archivo := NEW y_archivo();
+    for ele in cr_elementos loop
+      l_archivo := new y_archivo();
       l_archivo := k_archivo.f_recuperar_archivo('T_CORREO_ADJUNTOS',
                                                  'ARCHIVO',
                                                  to_char(ele.id_correo_adjunto));
-      IF (l_archivo.contenido IS NULL OR
-         dbms_lob.getlength(l_archivo.contenido) = 0) AND
-         l_archivo.url IS NULL THEN
-        CONTINUE;
-      END IF;
+      if (l_archivo.contenido is null or
+         dbms_lob.getlength(l_archivo.contenido) = 0) and
+         l_archivo.url is null then
+        continue;
+      end if;
       l_adjuntos.extend;
       l_adjuntos(l_adjuntos.count) := l_archivo;
-    END LOOP;
+    end loop;
   
-    RETURN l_adjuntos;
-  END;
+    return l_adjuntos;
+  end;
 
-  FUNCTION listar_correos_pendientes(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function listar_correos_pendientes(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp       y_respuesta;
     l_pagina    y_pagina;
     l_elementos y_objetos;
     l_elemento  y_correo;
   
-    CURSOR cr_elementos IS
-      SELECT id_correo,
+    cursor cr_elementos is
+      select id_correo,
              id_usuario,
              mensaje_to,
              mensaje_subject,
@@ -50,24 +50,24 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_msj IS
              estado,
              fecha_envio,
              respuesta_envio
-        FROM t_correos
-       WHERE estado IN ('P', 'R')
+        from t_correos
+       where estado in ('P', 'R')
       -- P-PENDIENTE DE ENVÍO
       -- R-PROCESADO CON ERROR
-       ORDER BY nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
+       order by nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
                 id_correo
-         FOR UPDATE OF estado;
-  BEGIN
+         for update of estado;
+  begin
     -- Inicializa respuesta
-    l_rsp       := NEW y_respuesta();
-    l_elementos := NEW y_objetos();
+    l_rsp       := new y_respuesta();
+    l_elementos := new y_objetos();
   
     l_rsp.lugar := 'Validando parametros';
   
     -- Sólo si está activo el envío
-    IF k_util.string_to_bool(k_util.f_valor_parametro('ENVIO_CORREOS_ACTIVO')) THEN
-      FOR ele IN cr_elementos LOOP
-        l_elemento                  := NEW y_correo();
+    if k_util.string_to_bool(k_util.f_valor_parametro('ENVIO_CORREOS_ACTIVO')) then
+      for ele in cr_elementos loop
+        l_elemento                  := new y_correo();
         l_elemento.id_correo        := ele.id_correo;
         l_elemento.mensaje_to       := ele.mensaje_to;
         l_elemento.mensaje_subject  := ele.mensaje_subject;
@@ -81,57 +81,57 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_msj IS
         l_elementos.extend;
         l_elementos(l_elementos.count) := l_elemento;
       
-        UPDATE t_correos
-           SET estado = 'N' -- N-EN PROCESO DE ENVÍO
-         WHERE CURRENT OF cr_elementos;
-      END LOOP;
-    END IF;
+        update t_correos
+           set estado = 'N' -- N-EN PROCESO DE ENVÍO
+         where current of cr_elementos;
+      end loop;
+    end if;
   
     l_pagina := k_servicio.f_paginar_elementos(l_elementos,
                                                k_servicio.f_pagina_parametros(i_parametros));
   
     k_operacion.p_respuesta_ok(l_rsp, l_pagina);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION listar_mensajes_pendientes(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function listar_mensajes_pendientes(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp       y_respuesta;
     l_pagina    y_pagina;
     l_elementos y_objetos;
     l_elemento  y_mensaje;
   
-    CURSOR cr_elementos IS
-      SELECT id_mensaje, numero_telefono, contenido, estado
-        FROM t_mensajes
-       WHERE estado IN ('P', 'R')
+    cursor cr_elementos is
+      select id_mensaje, numero_telefono, contenido, estado
+        from t_mensajes
+       where estado in ('P', 'R')
       -- P-PENDIENTE DE ENVÍO
       -- R-PROCESADO CON ERROR
-       ORDER BY nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
+       order by nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
                 id_mensaje
-         FOR UPDATE OF estado;
-  BEGIN
+         for update of estado;
+  begin
     -- Inicializa respuesta
-    l_rsp       := NEW y_respuesta();
-    l_elementos := NEW y_objetos();
+    l_rsp       := new y_respuesta();
+    l_elementos := new y_objetos();
   
     l_rsp.lugar := 'Validando parametros';
   
     -- Sólo si está activo el envío
-    IF k_util.string_to_bool(k_util.f_valor_parametro('ENVIO_MENSAJES_ACTIVO')) THEN
-      FOR ele IN cr_elementos LOOP
-        l_elemento                 := NEW y_mensaje();
+    if k_util.string_to_bool(k_util.f_valor_parametro('ENVIO_MENSAJES_ACTIVO')) then
+      for ele in cr_elementos loop
+        l_elemento                 := new y_mensaje();
         l_elemento.id_mensaje      := ele.id_mensaje;
         l_elemento.numero_telefono := ele.numero_telefono;
         l_elemento.contenido       := ele.contenido;
@@ -139,62 +139,62 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_msj IS
         l_elementos.extend;
         l_elementos(l_elementos.count) := l_elemento;
       
-        UPDATE t_mensajes
-           SET estado = 'N' -- N-EN PROCESO DE ENVÍO
-         WHERE CURRENT OF cr_elementos;
-      END LOOP;
-    END IF;
+        update t_mensajes
+           set estado = 'N' -- N-EN PROCESO DE ENVÍO
+         where current of cr_elementos;
+      end loop;
+    end if;
   
     l_pagina := k_servicio.f_paginar_elementos(l_elementos,
                                                k_servicio.f_pagina_parametros(i_parametros));
   
     k_operacion.p_respuesta_ok(l_rsp, l_pagina);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION listar_notificaciones_pendientes(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function listar_notificaciones_pendientes(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp       y_respuesta;
     l_pagina    y_pagina;
     l_elementos y_objetos;
     l_elemento  y_notificacion;
   
-    CURSOR cr_elementos IS
-      SELECT id_notificacion,
+    cursor cr_elementos is
+      select id_notificacion,
              suscripcion,
              titulo,
              contenido,
              estado,
              datos_extra
-        FROM t_notificaciones
-       WHERE estado IN ('P', 'R')
+        from t_notificaciones
+       where estado in ('P', 'R')
       -- P-PENDIENTE DE ENVÍO
       -- R-PROCESADO CON ERROR
-       ORDER BY nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
+       order by nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
                 id_notificacion
-         FOR UPDATE OF estado;
-  BEGIN
+         for update of estado;
+  begin
     -- Inicializa respuesta
-    l_rsp       := NEW y_respuesta();
-    l_elementos := NEW y_objetos();
+    l_rsp       := new y_respuesta();
+    l_elementos := new y_objetos();
   
     l_rsp.lugar := 'Validando parametros';
   
     -- Sólo si está activo el envío
-    IF k_util.string_to_bool(k_util.f_valor_parametro('ENVIO_NOTIFICACIONES_ACTIVO')) THEN
-      FOR ele IN cr_elementos LOOP
-        l_elemento                 := NEW y_notificacion();
+    if k_util.string_to_bool(k_util.f_valor_parametro('ENVIO_NOTIFICACIONES_ACTIVO')) then
+      for ele in cr_elementos loop
+        l_elemento                 := new y_notificacion();
         l_elemento.id_notificacion := ele.id_notificacion;
         l_elemento.suscripcion     := ele.suscripcion;
         l_elemento.titulo          := ele.titulo;
@@ -204,204 +204,204 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_msj IS
         l_elementos.extend;
         l_elementos(l_elementos.count) := l_elemento;
       
-        UPDATE t_notificaciones
-           SET estado = 'N' -- N-EN PROCESO DE ENVÍO
-         WHERE CURRENT OF cr_elementos;
-      END LOOP;
-    END IF;
+        update t_notificaciones
+           set estado = 'N' -- N-EN PROCESO DE ENVÍO
+         where current of cr_elementos;
+      end loop;
+    end if;
   
     l_pagina := k_servicio.f_paginar_elementos(l_elementos,
                                                k_servicio.f_pagina_parametros(i_parametros));
   
     k_operacion.p_respuesta_ok(l_rsp, l_pagina);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION cambiar_estado_mensajeria(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function cambiar_estado_mensajeria(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp                          y_respuesta;
-    l_cantidad_intentos_permitidos PLS_INTEGER;
-  BEGIN
+    l_cantidad_intentos_permitidos pls_integer;
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parámetros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'tipo_mensajeria') IS NOT NULL,
+                                                                         'tipo_mensajeria') is not null,
                                     'Debe ingresar tipo_mensajeria');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'tipo_mensajeria') IN
+                                                                         'tipo_mensajeria') in
                                     ('M', 'S', 'P'),
                                     'Valor no válido para tipo_mensajeria');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_number(i_parametros,
-                                                                         'id_mensajeria') IS NOT NULL,
+                                                                         'id_mensajeria') is not null,
                                     'Debe ingresar id_mensajeria');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'estado') IS NOT NULL,
+                                                                         'estado') is not null,
                                     'Debe ingresar estado');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'respuesta_envio') IS NOT NULL,
+                                                                         'respuesta_envio') is not null,
                                     'Debe ingresar respuesta_envio');
   
     l_cantidad_intentos_permitidos := to_number(k_util.f_valor_parametro('MENSAJERIA_CANTIDAD_INTENTOS_PERMITIDOS'));
   
     l_rsp.lugar := 'Cambiando estado de mensajería';
-    CASE
+    case
      k_operacion.f_valor_parametro_string(i_parametros, 'tipo_mensajeria')
     
-      WHEN 'M' THEN
+      when 'M' then
         -- Mail
-        UPDATE t_correos m
-           SET m.cantidad_intentos_envio = nvl(m.cantidad_intentos_envio, 0) + 1,
-               m.estado                  = CASE
-                                             WHEN k_operacion.f_valor_parametro_string(i_parametros, 'estado') IN
-                                                  ('R') AND
-                                                  nvl(m.cantidad_intentos_envio, 0) >= l_cantidad_intentos_permitidos THEN
+        update t_correos m
+           set m.cantidad_intentos_envio = nvl(m.cantidad_intentos_envio, 0) + 1,
+               m.estado                  = case
+                                             when k_operacion.f_valor_parametro_string(i_parametros, 'estado') in
+                                                  ('R') and
+                                                  nvl(m.cantidad_intentos_envio, 0) >= l_cantidad_intentos_permitidos then
                                               'A' -- ANULADO
-                                             ELSE
+                                             else
                                               k_operacion.f_valor_parametro_string(i_parametros, 'estado')
-                                           END,
+                                           end,
                m.respuesta_envio         = substr(k_operacion.f_valor_parametro_string(i_parametros,
                                                                                        'respuesta_envio'),
                                                   1,
                                                   1000),
-               m.fecha_envio             = CASE
-                                             WHEN k_operacion.f_valor_parametro_string(i_parametros, 'estado') IN
-                                                  ('E', 'R') THEN
-                                              SYSDATE
-                                             ELSE
-                                              NULL
-                                           END
-         WHERE m.id_correo =
+               m.fecha_envio             = case
+                                             when k_operacion.f_valor_parametro_string(i_parametros, 'estado') in
+                                                  ('E', 'R') then
+                                              sysdate
+                                             else
+                                              null
+                                           end
+         where m.id_correo =
                k_operacion.f_valor_parametro_number(i_parametros,
                                                     'id_mensajeria');
       
-      WHEN 'S' THEN
+      when 'S' then
         -- SMS
-        UPDATE t_mensajes m
-           SET m.cantidad_intentos_envio = nvl(m.cantidad_intentos_envio, 0) + 1,
-               m.estado                  = CASE
-                                             WHEN k_operacion.f_valor_parametro_string(i_parametros, 'estado') IN
-                                                  ('R') AND
-                                                  nvl(m.cantidad_intentos_envio, 0) >= l_cantidad_intentos_permitidos THEN
+        update t_mensajes m
+           set m.cantidad_intentos_envio = nvl(m.cantidad_intentos_envio, 0) + 1,
+               m.estado                  = case
+                                             when k_operacion.f_valor_parametro_string(i_parametros, 'estado') in
+                                                  ('R') and
+                                                  nvl(m.cantidad_intentos_envio, 0) >= l_cantidad_intentos_permitidos then
                                               'A' -- ANULADO
-                                             ELSE
+                                             else
                                               k_operacion.f_valor_parametro_string(i_parametros, 'estado')
-                                           END,
+                                           end,
                m.respuesta_envio         = substr(k_operacion.f_valor_parametro_string(i_parametros,
                                                                                        'respuesta_envio'),
                                                   1,
                                                   1000),
-               m.fecha_envio             = CASE
-                                             WHEN k_operacion.f_valor_parametro_string(i_parametros, 'estado') IN
-                                                  ('E', 'R') THEN
-                                              SYSDATE
-                                             ELSE
-                                              NULL
-                                           END
-         WHERE m.id_mensaje =
+               m.fecha_envio             = case
+                                             when k_operacion.f_valor_parametro_string(i_parametros, 'estado') in
+                                                  ('E', 'R') then
+                                              sysdate
+                                             else
+                                              null
+                                           end
+         where m.id_mensaje =
                k_operacion.f_valor_parametro_number(i_parametros,
                                                     'id_mensajeria');
       
-      WHEN 'P' THEN
+      when 'P' then
         -- Push
-        UPDATE t_notificaciones m
-           SET m.cantidad_intentos_envio = nvl(m.cantidad_intentos_envio, 0) + 1,
-               m.estado                  = CASE
-                                             WHEN k_operacion.f_valor_parametro_string(i_parametros, 'estado') IN
-                                                  ('R') AND
-                                                  nvl(m.cantidad_intentos_envio, 0) >= l_cantidad_intentos_permitidos THEN
+        update t_notificaciones m
+           set m.cantidad_intentos_envio = nvl(m.cantidad_intentos_envio, 0) + 1,
+               m.estado                  = case
+                                             when k_operacion.f_valor_parametro_string(i_parametros, 'estado') in
+                                                  ('R') and
+                                                  nvl(m.cantidad_intentos_envio, 0) >= l_cantidad_intentos_permitidos then
                                               'A' -- ANULADO
-                                             ELSE
+                                             else
                                               k_operacion.f_valor_parametro_string(i_parametros, 'estado')
-                                           END,
+                                           end,
                m.respuesta_envio         = substr(k_operacion.f_valor_parametro_string(i_parametros,
                                                                                        'respuesta_envio'),
                                                   1,
                                                   1000),
-               m.fecha_envio             = CASE
-                                             WHEN k_operacion.f_valor_parametro_string(i_parametros, 'estado') IN
-                                                  ('E', 'R') THEN
-                                              SYSDATE
-                                             ELSE
-                                              NULL
-                                           END
-         WHERE m.id_notificacion =
+               m.fecha_envio             = case
+                                             when k_operacion.f_valor_parametro_string(i_parametros, 'estado') in
+                                                  ('E', 'R') then
+                                              sysdate
+                                             else
+                                              null
+                                           end
+         where m.id_notificacion =
                k_operacion.f_valor_parametro_number(i_parametros,
                                                     'id_mensajeria');
       
-    END CASE;
+    end case;
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION activar_desactivar_mensajeria(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function activar_desactivar_mensajeria(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parámetros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'tipo_mensajeria') IS NOT NULL,
+                                                                         'tipo_mensajeria') is not null,
                                     'Debe ingresar tipo_mensajeria');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'tipo_mensajeria') IN
+                                                                         'tipo_mensajeria') in
                                     ('M', 'S', 'P'),
                                     'Valor no válido para tipo_mensajeria');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'estado') IS NOT NULL,
+                                                                         'estado') is not null,
                                     'Debe ingresar estado');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'estado') IN
+                                                                         'estado') in
                                     ('S', 'N'),
                                     'Valor no válido para estado');
   
     l_rsp.lugar := 'Cambiando valor del parámetro';
-    UPDATE t_parametros
-       SET valor = k_operacion.f_valor_parametro_string(i_parametros,
+    update t_parametros
+       set valor = k_operacion.f_valor_parametro_string(i_parametros,
                                                         'estado')
-     WHERE id_parametro =
+     where id_parametro =
            decode(k_operacion.f_valor_parametro_string(i_parametros,
                                                        'tipo_mensajeria'),
                   'M',
@@ -412,19 +412,19 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_msj IS
                   'ENVIO_NOTIFICACIONES_ACTIVO');
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-END;
+end;
 /

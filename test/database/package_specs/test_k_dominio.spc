@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE test_k_dominio IS
+create or replace package test_k_dominio is
 
   --%suite(Tests unitarios del paquete k_dominio)
   --%tags(package)
@@ -7,8 +7,8 @@ CREATE OR REPLACE PACKAGE test_k_dominio IS
   --%name(2)
 
   --%test()
-  PROCEDURE test;
+  procedure test;
   --%endcontext
 
-END;
+end;
 /

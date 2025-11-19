@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_sesion UNDER y_objeto
+create or replace type y_sesion under y_objeto
 (
 /**
 Agrupa datos de una sesión.
@@ -31,17 +31,17 @@ SOFTWARE.
 */
 
 /** Identificador de la sesion */
-  id_sesion NUMBER,
+  id_sesion number,
 /** Estado de la sesion */
-  estado CHAR(1),
+  estado char(1),
 /** Access Token de la sesion */
-  access_token VARCHAR2(4000),
+  access_token varchar2(4000),
 /** Refresh Token de la sesion */
-  refresh_token VARCHAR2(4000),
+  refresh_token varchar2(4000),
 /** Tiempo de expiración del Access Token en segundos */
-  tiempo_expiracion_access_token NUMBER(6),
+  tiempo_expiracion_access_token number(6),
 /** Tiempo de expiración del Refresh Token en horas */
-  tiempo_expiracion_refresh_token NUMBER(6),
+  tiempo_expiracion_refresh_token number(6),
 
 /**
 Constructor del objeto sin parámetros.
@@ -49,9 +49,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_sesion.
 */
-  CONSTRUCTOR FUNCTION y_sesion RETURN SELF AS RESULT,
+  constructor function y_sesion return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -59,6 +59,6 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

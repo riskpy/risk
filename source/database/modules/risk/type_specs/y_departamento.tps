@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_departamento UNDER y_objeto
+create or replace type y_departamento under y_objeto
 (
 /**
 Agrupa datos de Departamentos, estados o provincias.
@@ -31,16 +31,16 @@ SOFTWARE.
 */
 
 /** Identificador del departamento, estado o provincia */
-  id_departamento NUMBER(10),
+  id_departamento number(10),
 /** Nombre del departamento, estado o provincia */
-  nombre VARCHAR2(100),
+  nombre varchar2(100),
 /** País del departamento, estado o provincia */
-  id_pais NUMBER(10),
+  id_pais number(10),
 
-  CONSTRUCTOR FUNCTION y_departamento RETURN SELF AS RESULT,
+  constructor function y_departamento return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

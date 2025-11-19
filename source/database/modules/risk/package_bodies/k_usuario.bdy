@@ -1,155 +1,155 @@
-CREATE OR REPLACE PACKAGE BODY k_usuario IS
+create or replace package body k_usuario is
 
   -- Tiempo de expiración de la suscripción en días
-  c_tiempo_expiracion_suscripcion CONSTANT PLS_INTEGER := 30;
+  c_tiempo_expiracion_suscripcion constant pls_integer := 30;
 
-  FUNCTION f_buscar_id(i_usuario IN VARCHAR2) RETURN NUMBER IS
-    l_id_usuario t_usuarios.id_usuario%TYPE;
-  BEGIN
-    BEGIN
-      SELECT id_usuario
-        INTO l_id_usuario
-        FROM t_usuarios
-       WHERE (upper(alias) = upper(i_usuario) OR
-             upper(direccion_correo) = upper(i_usuario) OR
+  function f_buscar_id(i_usuario in varchar2) return number is
+    l_id_usuario t_usuarios.id_usuario%type;
+  begin
+    begin
+      select id_usuario
+        into l_id_usuario
+        from t_usuarios
+       where (upper(alias) = upper(i_usuario) or
+             upper(direccion_correo) = upper(i_usuario) or
              id_externo = i_usuario);
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_usuario := NULL;
-      WHEN OTHERS THEN
-        l_id_usuario := NULL;
-    END;
-    RETURN l_id_usuario;
-  END;
+    exception
+      when no_data_found then
+        l_id_usuario := null;
+      when others then
+        l_id_usuario := null;
+    end;
+    return l_id_usuario;
+  end;
 
-  FUNCTION f_id_usuario(i_alias IN VARCHAR2) RETURN NUMBER IS
-    l_id_usuario t_usuarios.id_usuario%TYPE;
-  BEGIN
-    BEGIN
-      SELECT id_usuario
-        INTO l_id_usuario
-        FROM t_usuarios
-       WHERE upper(alias) = upper(i_alias);
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_usuario := NULL;
-      WHEN OTHERS THEN
-        l_id_usuario := NULL;
-    END;
-    RETURN l_id_usuario;
-  END;
+  function f_id_usuario(i_alias in varchar2) return number is
+    l_id_usuario t_usuarios.id_usuario%type;
+  begin
+    begin
+      select id_usuario
+        into l_id_usuario
+        from t_usuarios
+       where upper(alias) = upper(i_alias);
+    exception
+      when no_data_found then
+        l_id_usuario := null;
+      when others then
+        l_id_usuario := null;
+    end;
+    return l_id_usuario;
+  end;
 
-  FUNCTION f_id_persona(i_id_usuario IN NUMBER) RETURN NUMBER IS
-    l_id_persona t_usuarios.id_persona%TYPE;
-  BEGIN
-    BEGIN
-      SELECT u.id_persona
-        INTO l_id_persona
-        FROM t_usuarios u
-       WHERE u.id_usuario = i_id_usuario;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_persona := NULL;
-      WHEN OTHERS THEN
-        l_id_persona := NULL;
-    END;
-    RETURN l_id_persona;
-  END;
+  function f_id_persona(i_id_usuario in number) return number is
+    l_id_persona t_usuarios.id_persona%type;
+  begin
+    begin
+      select u.id_persona
+        into l_id_persona
+        from t_usuarios u
+       where u.id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
+        l_id_persona := null;
+      when others then
+        l_id_persona := null;
+    end;
+    return l_id_persona;
+  end;
 
-  FUNCTION f_alias(i_id_usuario IN NUMBER) RETURN VARCHAR2 IS
-    l_alias t_usuarios.alias%TYPE;
-  BEGIN
-    BEGIN
-      SELECT u.alias
-        INTO l_alias
-        FROM t_usuarios u
-       WHERE u.id_usuario = i_id_usuario;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_alias := NULL;
-      WHEN OTHERS THEN
-        l_alias := NULL;
-    END;
-    RETURN l_alias;
-  END;
+  function f_alias(i_id_usuario in number) return varchar2 is
+    l_alias t_usuarios.alias%type;
+  begin
+    begin
+      select u.alias
+        into l_alias
+        from t_usuarios u
+       where u.id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
+        l_alias := null;
+      when others then
+        l_alias := null;
+    end;
+    return l_alias;
+  end;
 
-  FUNCTION f_estado(i_id_usuario IN NUMBER) RETURN VARCHAR2 IS
-    l_estado t_usuarios.estado%TYPE;
-  BEGIN
-    BEGIN
-      SELECT u.estado
-        INTO l_estado
-        FROM t_usuarios u
-       WHERE u.id_usuario = i_id_usuario;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_estado := NULL;
-      WHEN OTHERS THEN
-        l_estado := NULL;
-    END;
-    RETURN l_estado;
-  END;
+  function f_estado(i_id_usuario in number) return varchar2 is
+    l_estado t_usuarios.estado%type;
+  begin
+    begin
+      select u.estado
+        into l_estado
+        from t_usuarios u
+       where u.id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
+        l_estado := null;
+      when others then
+        l_estado := null;
+    end;
+    return l_estado;
+  end;
 
-  FUNCTION f_origen(i_id_usuario IN NUMBER) RETURN VARCHAR2 IS
-    l_origen t_usuarios.origen%TYPE;
-  BEGIN
-    BEGIN
-      SELECT u.origen
-        INTO l_origen
-        FROM t_usuarios u
-       WHERE u.id_usuario = i_id_usuario;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_origen := NULL;
-      WHEN OTHERS THEN
-        l_origen := NULL;
-    END;
-    RETURN l_origen;
-  END;
+  function f_origen(i_id_usuario in number) return varchar2 is
+    l_origen t_usuarios.origen%type;
+  begin
+    begin
+      select u.origen
+        into l_origen
+        from t_usuarios u
+       where u.id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
+        l_origen := null;
+      when others then
+        l_origen := null;
+    end;
+    return l_origen;
+  end;
 
-  FUNCTION f_validar_alias(i_alias VARCHAR2) RETURN BOOLEAN IS
-  BEGIN
-    RETURN nvl(regexp_like(i_alias,
+  function f_validar_alias(i_alias varchar2) return boolean is
+  begin
+    return nvl(regexp_like(i_alias,
                            k_util.f_valor_parametro('REGEXP_VALIDAR_ALIAS_USUARIO')),
-               TRUE);
-  END;
+               true);
+  end;
 
-  FUNCTION f_version_avatar(i_alias IN VARCHAR2) RETURN NUMBER IS
-    l_version t_archivos.version_actual%TYPE;
-  BEGIN
-    BEGIN
-      SELECT k_archivo.f_version_archivo('T_USUARIOS', 'AVATAR', alias)
-        INTO l_version
-        FROM t_usuarios
-       WHERE upper(alias) = upper(i_alias);
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_version := NULL;
-      WHEN OTHERS THEN
-        l_version := NULL;
-    END;
-    RETURN l_version;
-  END;
+  function f_version_avatar(i_alias in varchar2) return number is
+    l_version t_archivos.version_actual%type;
+  begin
+    begin
+      select k_archivo.f_version_archivo('T_USUARIOS', 'AVATAR', alias)
+        into l_version
+        from t_usuarios
+       where upper(alias) = upper(i_alias);
+    exception
+      when no_data_found then
+        l_version := null;
+      when others then
+        l_version := null;
+    end;
+    return l_version;
+  end;
 
-  FUNCTION f_datos_usuario(i_id_usuario IN NUMBER) RETURN y_usuario IS
+  function f_datos_usuario(i_id_usuario in number) return y_usuario is
     l_usuario y_usuario;
     l_roles   y_objetos;
     l_rol     y_rol;
   
-    CURSOR cr_roles(i_id_usuario IN NUMBER) IS
-      SELECT r.id_rol, r.nombre, r.activo, r.detalle
-        FROM t_rol_usuarios ru, t_roles r
-       WHERE r.id_rol = ru.id_rol
-         AND r.activo = 'S'
-         AND ru.id_usuario = i_id_usuario;
-  BEGIN
+    cursor cr_roles(i_id_usuario in number) is
+      select r.id_rol, r.nombre, r.activo, r.detalle
+        from t_rol_usuarios ru, t_roles r
+       where r.id_rol = ru.id_rol
+         and r.activo = 'S'
+         and ru.id_usuario = i_id_usuario;
+  begin
     -- Inicializa respuesta
-    l_usuario := NEW y_usuario();
-    l_roles   := NEW y_objetos();
+    l_usuario := new y_usuario();
+    l_roles   := new y_objetos();
   
     -- Buscando datos del usuario
-    BEGIN
-      SELECT u.id_usuario,
+    begin
+      select u.id_usuario,
              u.alias,
              p.nombre,
              p.apellido,
@@ -159,7 +159,7 @@ CREATE OR REPLACE PACKAGE BODY k_usuario IS
              u.numero_telefono,
              k_archivo.f_version_archivo('T_USUARIOS', 'AVATAR', u.alias),
              u.origen
-        INTO l_usuario.id_usuario,
+        into l_usuario.id_usuario,
              l_usuario.alias,
              l_usuario.nombre,
              l_usuario.apellido,
@@ -169,20 +169,20 @@ CREATE OR REPLACE PACKAGE BODY k_usuario IS
              l_usuario.numero_telefono,
              l_usuario.version_avatar,
              l_usuario.origen
-        FROM t_usuarios u, t_personas p
-       WHERE p.id_persona(+) = u.id_persona
-         AND u.id_usuario = i_id_usuario;
-    EXCEPTION
-      WHEN no_data_found THEN
+        from t_usuarios u, t_personas p
+       where p.id_persona(+) = u.id_persona
+         and u.id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
         raise_application_error(-20000, 'Usuario inexistente');
-      WHEN OTHERS THEN
+      when others then
         raise_application_error(-20000,
                                 'Error al buscar datos del usuario');
-    END;
+    end;
   
     -- Buscando roles del usuario
-    FOR c IN cr_roles(l_usuario.id_usuario) LOOP
-      l_rol         := NEW y_rol();
+    for c in cr_roles(l_usuario.id_usuario) loop
+      l_rol         := new y_rol();
       l_rol.id_rol  := c.id_rol;
       l_rol.nombre  := c.nombre;
       l_rol.activo  := c.activo;
@@ -190,131 +190,131 @@ CREATE OR REPLACE PACKAGE BODY k_usuario IS
     
       l_roles.extend;
       l_roles(l_roles.count) := l_rol;
-    END LOOP;
+    end loop;
     l_usuario.roles := l_roles;
   
-    RETURN l_usuario;
-  END;
+    return l_usuario;
+  end;
 
-  FUNCTION f_existe_usuario_externo(i_origen     IN VARCHAR2,
-                                    i_id_externo IN VARCHAR2) RETURN BOOLEAN IS
-    l_existe_usuario VARCHAR2(1) := 'N';
-  BEGIN
-    SELECT decode(nvl(COUNT(1), 0), 0, 'N', 'S')
-      INTO l_existe_usuario
-      FROM t_usuarios us
-     WHERE us.origen = i_origen
-       AND us.id_externo = i_id_externo;
+  function f_existe_usuario_externo(i_origen     in varchar2,
+                                    i_id_externo in varchar2) return boolean is
+    l_existe_usuario varchar2(1) := 'N';
+  begin
+    select decode(nvl(count(1), 0), 0, 'N', 'S')
+      into l_existe_usuario
+      from t_usuarios us
+     where us.origen = i_origen
+       and us.id_externo = i_id_externo;
   
-    IF l_existe_usuario = 'S' THEN
-      RETURN TRUE;
-    ELSE
-      RETURN FALSE;
-    END IF;
-  END;
+    if l_existe_usuario = 'S' then
+      return true;
+    else
+      return false;
+    end if;
+  end;
 
-  PROCEDURE p_cambiar_estado(i_id_usuario IN NUMBER,
-                             i_estado     IN VARCHAR2) IS
-    l_estado_anterior t_usuarios.estado%TYPE;
-  BEGIN
+  procedure p_cambiar_estado(i_id_usuario in number,
+                             i_estado     in varchar2) is
+    l_estado_anterior t_usuarios.estado%type;
+  begin
     -- Obtiene estado anterior del usuario
-    SELECT estado
-      INTO l_estado_anterior
-      FROM t_usuarios
-     WHERE id_usuario = i_id_usuario;
+    select estado
+      into l_estado_anterior
+      from t_usuarios
+     where id_usuario = i_id_usuario;
   
     -- Actualiza usuario
-    UPDATE t_usuarios
-       SET estado = i_estado
-     WHERE id_usuario = i_id_usuario
-       AND estado <> i_estado;
+    update t_usuarios
+       set estado = i_estado
+     where id_usuario = i_id_usuario
+       and estado <> i_estado;
   
     -- Actualiza rol por defecto para el nuevo estado
-    UPDATE t_rol_usuarios a
-       SET a.id_rol =
-           (SELECT id_rol
-              FROM t_roles
-             WHERE nombre =
+    update t_rol_usuarios a
+       set a.id_rol =
+           (select id_rol
+              from t_roles
+             where nombre =
                    nvl(k_significado.f_referencia_codigo('ESTADO_USUARIO',
                                                          i_estado),
                        k_util.f_valor_parametro('NOMBRE_ROL_DEFECTO')))
-     WHERE a.id_usuario = i_id_usuario
-       AND a.id_rol =
-           (SELECT id_rol
-              FROM t_roles
-             WHERE nombre =
+     where a.id_usuario = i_id_usuario
+       and a.id_rol =
+           (select id_rol
+              from t_roles
+             where nombre =
                    nvl(k_significado.f_referencia_codigo('ESTADO_USUARIO',
                                                          l_estado_anterior),
                        k_util.f_valor_parametro('NOMBRE_ROL_DEFECTO')));
   
     -- Si no existe, inserta rol por defecto para el nuevo estado
-    IF SQL%NOTFOUND THEN
-      BEGIN
-        INSERT INTO t_rol_usuarios
+    if sql%notfound then
+      begin
+        insert into t_rol_usuarios
           (id_rol, id_usuario)
-          SELECT id_rol, i_id_usuario
-            FROM t_roles
-           WHERE nombre =
+          select id_rol, i_id_usuario
+            from t_roles
+           where nombre =
                  nvl(k_significado.f_referencia_codigo('ESTADO_USUARIO',
                                                        i_estado),
                      k_util.f_valor_parametro('NOMBRE_ROL_DEFECTO'));
-      EXCEPTION
-        WHEN dup_val_on_index THEN
-          NULL;
-      END;
-    END IF;
-  END;
+      exception
+        when dup_val_on_index then
+          null;
+      end;
+    end if;
+  end;
 
   $if k_modulo.c_instalado_msj $then
-  PROCEDURE p_suscribir_notificacion(i_id_usuario       IN NUMBER,
-                                     i_suscripcion_alta IN VARCHAR2) IS
-  BEGIN
+  procedure p_suscribir_notificacion(i_id_usuario       in number,
+                                     i_suscripcion_alta in varchar2) is
+  begin
     -- Actualiza suscripción
-    UPDATE t_usuario_suscripciones s
-       SET s.suscripcion      = lower(i_suscripcion_alta),
-           s.fecha_expiracion = SYSDATE + c_tiempo_expiracion_suscripcion
-     WHERE s.id_usuario = i_id_usuario
-       AND lower(s.suscripcion) = lower(i_suscripcion_alta);
+    update t_usuario_suscripciones s
+       set s.suscripcion      = lower(i_suscripcion_alta),
+           s.fecha_expiracion = sysdate + c_tiempo_expiracion_suscripcion
+     where s.id_usuario = i_id_usuario
+       and lower(s.suscripcion) = lower(i_suscripcion_alta);
   
-    IF SQL%NOTFOUND THEN
+    if sql%notfound then
       -- Inserta suscripción
-      INSERT INTO t_usuario_suscripciones
+      insert into t_usuario_suscripciones
         (id_usuario, suscripcion, fecha_expiracion)
-      VALUES
+      values
         (i_id_usuario,
          lower(i_suscripcion_alta),
-         SYSDATE + c_tiempo_expiracion_suscripcion);
-    END IF;
-  END;
+         sysdate + c_tiempo_expiracion_suscripcion);
+    end if;
+  end;
 
-  PROCEDURE p_desuscribir_notificacion(i_id_usuario       IN NUMBER,
-                                       i_suscripcion_baja IN VARCHAR2) IS
-  BEGIN
-    DELETE t_usuario_suscripciones s
-     WHERE s.id_usuario = i_id_usuario
-       AND lower(s.suscripcion) = lower(i_suscripcion_baja);
-  END;
+  procedure p_desuscribir_notificacion(i_id_usuario       in number,
+                                       i_suscripcion_baja in varchar2) is
+  begin
+    delete t_usuario_suscripciones s
+     where s.id_usuario = i_id_usuario
+       and lower(s.suscripcion) = lower(i_suscripcion_baja);
+  end;
   $end
 
-  PROCEDURE p_guardar_dato_string(i_alias IN VARCHAR2,
-                                  i_campo IN VARCHAR2,
-                                  i_dato  IN VARCHAR2) IS
-    l_id_persona t_personas.id_persona%TYPE;
-    l_alias      t_usuarios.alias%TYPE;
-  BEGIN
+  procedure p_guardar_dato_string(i_alias in varchar2,
+                                  i_campo in varchar2,
+                                  i_dato  in varchar2) is
+    l_id_persona t_personas.id_persona%type;
+    l_alias      t_usuarios.alias%type;
+  begin
     -- Verifica que exista usuario
-    BEGIN
-      SELECT alias INTO l_alias FROM t_usuarios WHERE alias = i_alias;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select alias into l_alias from t_usuarios where alias = i_alias;
+    exception
+      when no_data_found then
         raise_application_error(-20000, 'Usuario inexistente');
-    END;
+    end;
   
     -- Guarda dato del usuario
-    IF i_dato IS NOT NULL THEN
+    if i_dato is not null then
       k_dato.p_guardar_dato_string('T_USUARIOS', i_campo, l_alias, i_dato);
-    END IF;
-  END;
+    end if;
+  end;
 
-END;
+end;
 /

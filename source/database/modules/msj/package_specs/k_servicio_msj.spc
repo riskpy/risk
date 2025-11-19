@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_servicio_msj IS
+create or replace package k_servicio_msj is
 
   /**
   Agrupa operaciones relacionadas con los Servicios Web del dominio MSJ
@@ -30,20 +30,20 @@ CREATE OR REPLACE PACKAGE k_servicio_msj IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION listar_correos_pendientes(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function listar_correos_pendientes(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION listar_mensajes_pendientes(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function listar_mensajes_pendientes(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION listar_notificaciones_pendientes(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function listar_notificaciones_pendientes(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION cambiar_estado_mensajeria(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function cambiar_estado_mensajeria(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION activar_desactivar_mensajeria(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function activar_desactivar_mensajeria(i_parametros in y_parametros)
+    return y_respuesta;
 
-END;
+end;
 /

@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_auditoria IS
+create or replace package k_auditoria is
 
   /**
   Agrupa operaciones relacionadas con la auditoria de tablas
@@ -31,14 +31,14 @@ CREATE OR REPLACE PACKAGE k_auditoria IS
   */
 
   -- Nombres de campos de auditoria
-  g_nombre_campo_created_by VARCHAR2(30) := 'USUARIO_INSERCION';
-  g_nombre_campo_created    VARCHAR2(30) := 'FECHA_INSERCION';
-  g_nombre_campo_updated_by VARCHAR2(30) := 'USUARIO_MODIFICACION';
-  g_nombre_campo_updated    VARCHAR2(30) := 'FECHA_MODIFICACION';
+  g_nombre_campo_created_by varchar2(30) := 'USUARIO_INSERCION';
+  g_nombre_campo_created    varchar2(30) := 'FECHA_INSERCION';
+  g_nombre_campo_updated_by varchar2(30) := 'USUARIO_MODIFICACION';
+  g_nombre_campo_updated    varchar2(30) := 'FECHA_MODIFICACION';
 
   -- Prefijos
-  g_prefijo_tabla             VARCHAR2(30) := 't_';
-  g_prefijo_trigger_auditoria VARCHAR2(30) := 'ga_';
+  g_prefijo_tabla             varchar2(30) := 't_';
+  g_prefijo_trigger_auditoria varchar2(30) := 'ga_';
 
   /**
   Genera campos de auditoria para una tabla
@@ -46,8 +46,8 @@ CREATE OR REPLACE PACKAGE k_auditoria IS
   %param i_tabla Tabla
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  PROCEDURE p_generar_campos_auditoria(i_tabla    IN VARCHAR2,
-                                       i_ejecutar IN BOOLEAN DEFAULT TRUE);
+  procedure p_generar_campos_auditoria(i_tabla    in varchar2,
+                                       i_ejecutar in boolean default true);
 
   /**
   Genera trigger de auditoria para una tabla
@@ -56,9 +56,9 @@ CREATE OR REPLACE PACKAGE k_auditoria IS
   %param i_trigger Trigger
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  PROCEDURE p_generar_trigger_auditoria(i_tabla    IN VARCHAR2,
-                                        i_trigger  IN VARCHAR2 DEFAULT NULL,
-                                        i_ejecutar IN BOOLEAN DEFAULT TRUE);
+  procedure p_generar_trigger_auditoria(i_tabla    in varchar2,
+                                        i_trigger  in varchar2 default null,
+                                        i_ejecutar in boolean default true);
 
   /**
   Elimina campos de auditoria para una tabla
@@ -66,8 +66,8 @@ CREATE OR REPLACE PACKAGE k_auditoria IS
   %param i_tabla Tabla
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  PROCEDURE p_eliminar_campos_auditoria(i_tabla    IN VARCHAR2,
-                                        i_ejecutar IN BOOLEAN DEFAULT TRUE);
+  procedure p_eliminar_campos_auditoria(i_tabla    in varchar2,
+                                        i_ejecutar in boolean default true);
 
   /**
   Elimina trigger de auditoria para una tabla
@@ -76,9 +76,9 @@ CREATE OR REPLACE PACKAGE k_auditoria IS
   %param i_trigger Trigger
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  PROCEDURE p_eliminar_trigger_auditoria(i_tabla    IN VARCHAR2,
-                                         i_trigger  IN VARCHAR2 DEFAULT NULL,
-                                         i_ejecutar IN BOOLEAN DEFAULT TRUE);
+  procedure p_eliminar_trigger_auditoria(i_tabla    in varchar2,
+                                         i_trigger  in varchar2 default null,
+                                         i_ejecutar in boolean default true);
 
-END;
+end;
 /

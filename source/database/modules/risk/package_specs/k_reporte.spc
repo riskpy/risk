@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_reporte IS
+create or replace package k_reporte is
 
   /**
   Agrupa operaciones relacionadas con los Reportes del sistema
@@ -31,37 +31,37 @@ CREATE OR REPLACE PACKAGE k_reporte IS
   */
 
   -- Formatos de salida
-  c_formato_pdf  CONSTANT VARCHAR2(10) := 'PDF';
-  c_formato_docx CONSTANT VARCHAR2(10) := 'DOCX';
-  c_formato_xlsx CONSTANT VARCHAR2(10) := 'XLSX';
-  c_formato_csv  CONSTANT VARCHAR2(10) := 'CSV';
-  c_formato_html CONSTANT VARCHAR2(10) := 'HTML';
+  c_formato_pdf  constant varchar2(10) := 'PDF';
+  c_formato_docx constant varchar2(10) := 'DOCX';
+  c_formato_xlsx constant varchar2(10) := 'XLSX';
+  c_formato_csv  constant varchar2(10) := 'CSV';
+  c_formato_html constant varchar2(10) := 'HTML';
 
   -- Orientaciones
-  c_orientacion_vertical   CONSTANT VARCHAR2(10) := 'PORTRAIT';
-  c_orientacion_horizontal CONSTANT VARCHAR2(10) := 'LANDSCAPE';
+  c_orientacion_vertical   constant varchar2(10) := 'PORTRAIT';
+  c_orientacion_horizontal constant varchar2(10) := 'LANDSCAPE';
 
   -- Nombres de metadatos para conversión de reportes HTML a PDF
-  c_meta_format           CONSTANT VARCHAR2(30) := 'risk:format';
-  c_meta_page_size        CONSTANT VARCHAR2(30) := 'risk:page_size';
-  c_meta_page_orientation CONSTANT VARCHAR2(30) := 'risk:page_orientation';
+  c_meta_format           constant varchar2(30) := 'risk:format';
+  c_meta_page_size        constant varchar2(30) := 'risk:page_size';
+  c_meta_page_orientation constant varchar2(30) := 'risk:page_orientation';
 
-  PROCEDURE p_registrar_sql_ejecucion(i_id_reporte IN NUMBER,
-                                      i_sql        IN CLOB);
+  procedure p_registrar_sql_ejecucion(i_id_reporte in number,
+                                      i_sql        in clob);
 
-  PROCEDURE p_limpiar_historial;
+  procedure p_limpiar_historial;
 
-  FUNCTION f_archivo_ok(i_contenido IN BLOB,
-                        i_formato   IN VARCHAR2 DEFAULT NULL,
-                        i_nombre    IN VARCHAR2 DEFAULT NULL)
-    RETURN y_archivo;
+  function f_archivo_ok(i_contenido in blob,
+                        i_formato   in varchar2 default null,
+                        i_nombre    in varchar2 default null)
+    return y_archivo;
 
-  FUNCTION f_archivo_error(i_respuesta IN y_respuesta,
-                           i_formato   IN VARCHAR2 DEFAULT NULL,
-                           i_nombre    IN VARCHAR2 DEFAULT NULL)
-    RETURN y_archivo;
+  function f_archivo_error(i_respuesta in y_respuesta,
+                           i_formato   in varchar2 default null,
+                           i_nombre    in varchar2 default null)
+    return y_archivo;
 
-  FUNCTION f_formato(i_parametros IN y_parametros) RETURN VARCHAR2;
+  function f_formato(i_parametros in y_parametros) return varchar2;
 
   /**
   Agrega encabezado y pie de página al reporte PDF con formato:
@@ -87,34 +87,34 @@ CREATE OR REPLACE PACKAGE k_reporte IS
   %param i_page_nr Número de página actual
   %param i_page_count Número total de páginas
   */
-  PROCEDURE p_agregar_encabezado_pie_pdf(i_encabezado1 IN VARCHAR2 DEFAULT NULL,
-                                         i_encabezado2 IN VARCHAR2 DEFAULT NULL,
-                                         i_encabezado3 IN VARCHAR2 DEFAULT NULL,
-                                         i_encabezado4 IN VARCHAR2 DEFAULT NULL,
-                                         i_pie1        IN VARCHAR2 DEFAULT NULL,
-                                         i_pie2        IN VARCHAR2 DEFAULT NULL,
-                                         i_page_nr     IN NUMBER DEFAULT NULL,
-                                         i_page_count  IN NUMBER DEFAULT NULL);
+  procedure p_agregar_encabezado_pie_pdf(i_encabezado1 in varchar2 default null,
+                                         i_encabezado2 in varchar2 default null,
+                                         i_encabezado3 in varchar2 default null,
+                                         i_encabezado4 in varchar2 default null,
+                                         i_pie1        in varchar2 default null,
+                                         i_pie2        in varchar2 default null,
+                                         i_page_nr     in number default null,
+                                         i_page_count  in number default null);
 
-  FUNCTION f_reporte_sql(i_consulta_sql IN CLOB,
-                         i_formato      IN VARCHAR2 DEFAULT NULL)
-    RETURN y_archivo;
+  function f_reporte_sql(i_consulta_sql in clob,
+                         i_formato      in varchar2 default null)
+    return y_archivo;
 
-  FUNCTION f_reporte_sql(i_id_reporte IN NUMBER,
-                         i_parametros IN y_parametros) RETURN y_archivo;
+  function f_reporte_sql(i_id_reporte in number,
+                         i_parametros in y_parametros) return y_archivo;
 
-  FUNCTION f_procesar_reporte(i_id_reporte IN NUMBER,
-                              i_parametros IN CLOB,
-                              i_contexto   IN CLOB DEFAULT NULL,
-                              i_version    IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_procesar_reporte(i_id_reporte in number,
+                              i_parametros in clob,
+                              i_contexto   in clob default null,
+                              i_version    in varchar2 default null)
+    return clob;
 
-  FUNCTION f_procesar_reporte(i_nombre     IN VARCHAR2,
-                              i_dominio    IN VARCHAR2,
-                              i_parametros IN CLOB,
-                              i_contexto   IN CLOB DEFAULT NULL,
-                              i_version    IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_procesar_reporte(i_nombre     in varchar2,
+                              i_dominio    in varchar2,
+                              i_parametros in clob,
+                              i_contexto   in clob default null,
+                              i_version    in varchar2 default null)
+    return clob;
 
-END;
+end;
 /

@@ -1,31 +1,31 @@
-CREATE OR REPLACE TYPE BODY y_usuario IS
+create or replace type body y_usuario is
 
-  CONSTRUCTOR FUNCTION y_usuario RETURN SELF AS RESULT AS
-  BEGIN
-    self.id_usuario       := NULL;
-    self.alias            := NULL;
-    self.nombre           := NULL;
-    self.apellido         := NULL;
-    self.tipo_persona     := NULL;
-    self.estado           := NULL;
-    self.direccion_correo := NULL;
-    self.numero_telefono  := NULL;
-    self.version_avatar   := NULL;
-    self.origen           := NULL;
-    self.roles            := NEW y_objetos();
-    RETURN;
-  END;
+  constructor function y_usuario return self as result as
+  begin
+    self.id_usuario       := null;
+    self.alias            := null;
+    self.nombre           := null;
+    self.apellido         := null;
+    self.tipo_persona     := null;
+    self.estado           := null;
+    self.direccion_correo := null;
+    self.numero_telefono  := null;
+    self.version_avatar   := null;
+    self.origen           := null;
+    self.roles            := new y_objetos();
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_usuario     y_usuario;
     l_json_object json_object_t;
     l_rol         y_rol;
     l_roles       y_objetos;
     l_json_array  json_array_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_usuario                  := NEW y_usuario();
+    l_usuario                  := new y_usuario();
     l_usuario.id_usuario       := l_json_object.get_number('id_usuario');
     l_usuario.alias            := l_json_object.get_string('alias');
     l_usuario.nombre           := l_json_object.get_string('nombre');
@@ -39,29 +39,29 @@ CREATE OR REPLACE TYPE BODY y_usuario IS
   
     l_json_array := l_json_object.get_array('roles');
   
-    IF l_json_array IS NULL THEN
-      l_usuario.roles := NEW y_objetos();
-    ELSE
-      l_roles := NEW y_objetos();
-      FOR i IN 0 .. l_json_array.get_size - 1 LOOP
-        l_rol := NEW y_rol();
-        l_rol := treat(y_rol.parse_json(l_json_array.get(i).to_clob) AS
+    if l_json_array is null then
+      l_usuario.roles := new y_objetos();
+    else
+      l_roles := new y_objetos();
+      for i in 0 .. l_json_array.get_size - 1 loop
+        l_rol := new y_rol();
+        l_rol := treat(y_rol.parse_json(l_json_array.get(i).to_clob) as
                        y_rol);
         l_roles.extend;
         l_roles(l_roles.count) := l_rol;
-      END LOOP;
+      end loop;
       l_usuario.roles := l_roles;
-    END IF;
+    end if;
   
-    RETURN l_usuario;
-  END;
+    return l_usuario;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
     l_json_array  json_array_t;
-    i             INTEGER;
-  BEGIN
-    l_json_object := NEW json_object_t();
+    i             integer;
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('id_usuario', self.id_usuario);
     l_json_object.put('alias', self.alias);
     l_json_object.put('nombre', self.nombre);
@@ -73,20 +73,20 @@ CREATE OR REPLACE TYPE BODY y_usuario IS
     l_json_object.put('version_avatar', self.version_avatar);
     l_json_object.put('origen', self.origen);
   
-    IF self.roles IS NULL THEN
+    if self.roles is null then
       l_json_object.put_null('roles');
-    ELSE
-      l_json_array := NEW json_array_t();
+    else
+      l_json_array := new json_array_t();
       i            := self.roles.first;
-      WHILE i IS NOT NULL LOOP
+      while i is not null loop
         l_json_array.append(json_object_t.parse(self.roles(i).to_json));
         i := self.roles.next(i);
-      END LOOP;
+      end loop;
       l_json_object.put('roles', l_json_array);
-    END IF;
+    end if;
   
-    RETURN l_json_object.to_clob;
-  END;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

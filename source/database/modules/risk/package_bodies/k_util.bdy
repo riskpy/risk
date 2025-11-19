@@ -1,25 +1,25 @@
-CREATE OR REPLACE PACKAGE BODY k_util IS
+create or replace package body k_util is
 
-  c_algoritmo CONSTANT PLS_INTEGER := as_crypto.encrypt_aes +
+  c_algoritmo constant pls_integer := as_crypto.encrypt_aes +
                                       as_crypto.chain_cbc +
                                       as_crypto.pad_pkcs5; -- dbms_crypto.aes_cbc_pkcs5;
 
-  PROCEDURE p_generar_trigger_secuencia(i_tabla    IN VARCHAR2,
-                                        i_campo    IN VARCHAR2,
-                                        i_trigger  IN VARCHAR2 DEFAULT NULL,
-                                        i_ejecutar IN BOOLEAN DEFAULT TRUE) IS
-    l_sentencia VARCHAR2(4000);
-    l_trigger   VARCHAR2(30);
-  BEGIN
+  procedure p_generar_trigger_secuencia(i_tabla    in varchar2,
+                                        i_campo    in varchar2,
+                                        i_trigger  in varchar2 default null,
+                                        i_ejecutar in boolean default true) is
+    l_sentencia varchar2(4000);
+    l_trigger   varchar2(30);
+  begin
     l_trigger := lower(nvl(i_trigger, 'gs_' || substr(i_tabla, 3)));
   
     -- Genera secuencia
     l_sentencia := 'CREATE SEQUENCE s_' || lower(i_campo) || ' NOCACHE';
-    IF i_ejecutar THEN
-      EXECUTE IMMEDIATE l_sentencia;
-    ELSE
+    if i_ejecutar then
+      execute immediate l_sentencia;
+    else
       dbms_output.put_line(l_sentencia);
-    END IF;
+    end if;
   
     -- Genera trigger
     l_sentencia := 'CREATE OR REPLACE TRIGGER ' || l_trigger || '
@@ -55,82 +55,82 @@ BEGIN
                    lower(i_campo) || '.nextval;
   END IF;
 END;';
-    IF i_ejecutar THEN
-      EXECUTE IMMEDIATE l_sentencia;
-    ELSE
+    if i_ejecutar then
+      execute immediate l_sentencia;
+    else
       dbms_output.put_line(l_sentencia);
-    END IF;
-  END;
+    end if;
+  end;
 
-  PROCEDURE p_generar_type_objeto(i_tabla    IN VARCHAR2,
-                                  i_type     IN VARCHAR2 DEFAULT NULL,
-                                  i_ejecutar IN BOOLEAN DEFAULT TRUE) IS
-    l_sentencia VARCHAR2(4000);
-    l_type      VARCHAR2(30);
-    l_comments  VARCHAR2(4000);
-    l_campos1   VARCHAR2(4000);
-    l_campos2   VARCHAR2(4000);
-    l_campos3   VARCHAR2(4000);
-    l_data_type VARCHAR2(100);
+  procedure p_generar_type_objeto(i_tabla    in varchar2,
+                                  i_type     in varchar2 default null,
+                                  i_ejecutar in boolean default true) is
+    l_sentencia varchar2(4000);
+    l_type      varchar2(30);
+    l_comments  varchar2(4000);
+    l_campos1   varchar2(4000);
+    l_campos2   varchar2(4000);
+    l_campos3   varchar2(4000);
+    l_data_type varchar2(100);
   
-    CURSOR cr_campos IS
-      SELECT m.comments,
+    cursor cr_campos is
+      select m.comments,
              c.column_name,
              c.data_type,
              c.data_length,
              c.data_precision,
              c.data_scale
-        FROM user_tab_columns c, user_col_comments m
-       WHERE m.table_name = c.table_name
-         AND m.column_name = c.column_name
-         AND lower(c.table_name) LIKE 't\_%' ESCAPE
+        from user_tab_columns c, user_col_comments m
+       where m.table_name = c.table_name
+         and m.column_name = c.column_name
+         and lower(c.table_name) like 't\_%' escape
        '\'
-         AND lower(c.table_name) = lower(i_tabla)
-         AND lower(c.column_name) NOT IN
+         and lower(c.table_name) = lower(i_tabla)
+         and lower(c.column_name) not in
              ('usuario_insercion',
               'fecha_insercion',
               'usuario_modificacion',
               'fecha_modificacion')
-       ORDER BY c.column_id;
-  BEGIN
+       order by c.column_id;
+  begin
     l_type := lower(nvl(i_type,
                         'y_' || substr(i_tabla, 3, length(i_tabla) - 3)));
   
     -- Genera type spec
-    SELECT c.comments
-      INTO l_comments
-      FROM user_tab_comments c
-     WHERE lower(c.table_name) LIKE 't\_%' ESCAPE
+    select c.comments
+      into l_comments
+      from user_tab_comments c
+     where lower(c.table_name) like 't\_%' escape
      '\'
-       AND lower(c.table_name) = lower(i_tabla);
+       and lower(c.table_name) = lower(i_tabla);
   
     l_campos1 := '';
-    FOR c IN cr_campos LOOP
+    for c in cr_campos loop
       l_campos1 := l_campos1 || '/** ' || c.comments || ' */' ||
                    utl_tcp.crlf;
       l_campos1 := l_campos1 || lower(c.column_name) || ' ';
     
-      CASE c.data_type
-        WHEN 'NUMBER' THEN
-          IF c.data_precision IS NOT NULL THEN
-            IF c.data_scale > 0 THEN
+      case c.data_type
+        when 'NUMBER' then
+          if c.data_precision is not null then
+            if c.data_scale > 0 then
               l_data_type := c.data_type || '(' ||
                              to_char(c.data_precision) || ',' ||
                              to_char(c.data_scale) || ')';
-            ELSE
+            else
               l_data_type := c.data_type || '(' ||
                              to_char(c.data_precision) || ')';
-            END IF;
-          ELSE
+            end if;
+          else
             l_data_type := c.data_type;
-          END IF;
-        WHEN 'VARCHAR2' THEN
+          end if;
+        when 'VARCHAR2' then
           l_data_type := c.data_type || '(' || to_char(c.data_length) || ')';
-        ELSE
+        else
           l_data_type := c.data_type;
-      END CASE;
+      end case;
       l_campos1 := l_campos1 || l_data_type || ',' || utl_tcp.crlf;
-    END LOOP;
+    end loop;
   
     l_sentencia := 'CREATE OR REPLACE TYPE ' || l_type || ' UNDER y_objeto
 (
@@ -172,39 +172,39 @@ SOFTWARE.
 
   OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
 )';
-    IF i_ejecutar THEN
-      EXECUTE IMMEDIATE l_sentencia;
-    ELSE
+    if i_ejecutar then
+      execute immediate l_sentencia;
+    else
       dbms_output.put_line(l_sentencia);
-    END IF;
+    end if;
   
     -- Genera type body
     l_campos1 := '';
-    FOR c IN cr_campos LOOP
+    for c in cr_campos loop
       l_campos1 := l_campos1 || 'self.' || lower(c.column_name) ||
                    ' := NULL;' || utl_tcp.crlf;
-    END LOOP;
+    end loop;
   
     l_campos2 := '';
-    FOR c IN cr_campos LOOP
-      CASE c.data_type
-        WHEN 'VARCHAR2' THEN
+    for c in cr_campos loop
+      case c.data_type
+        when 'VARCHAR2' then
           l_data_type := 'string';
-        ELSE
+        else
           l_data_type := lower(c.data_type);
-      END CASE;
+      end case;
     
       l_campos2 := l_campos2 || 'l_objeto.' || lower(c.column_name) ||
                    ' := l_json_object.get_' || l_data_type || '(''' ||
                    lower(c.column_name) || ''');' || utl_tcp.crlf;
-    END LOOP;
+    end loop;
   
     l_campos3 := '';
-    FOR c IN cr_campos LOOP
+    for c in cr_campos loop
       l_campos3 := l_campos3 || 'l_json_object.put(''' ||
                    lower(c.column_name) || ''', self.' ||
                    lower(c.column_name) || ');' || utl_tcp.crlf;
-    END LOOP;
+    end loop;
   
     l_sentencia := 'CREATE OR REPLACE TYPE BODY ' || l_type || ' IS
 
@@ -234,81 +234,81 @@ SOFTWARE.
   END;
 
 END;';
-    IF i_ejecutar THEN
-      EXECUTE IMMEDIATE l_sentencia;
-    ELSE
+    if i_ejecutar then
+      execute immediate l_sentencia;
+    else
       dbms_output.put_line(l_sentencia);
-    END IF;
-  END;
+    end if;
+  end;
 
-  FUNCTION f_valor_parametro(i_id_parametro IN VARCHAR2) RETURN VARCHAR2 IS
-    l_valor t_parametros.valor%TYPE;
-  BEGIN
-    BEGIN
-      SELECT a.valor
-        INTO l_valor
-        FROM t_parametros a
-       WHERE a.id_parametro = i_id_parametro;
-    EXCEPTION
-      WHEN OTHERS THEN
-        l_valor := NULL;
-    END;
-    RETURN l_valor;
-  END;
+  function f_valor_parametro(i_id_parametro in varchar2) return varchar2 is
+    l_valor t_parametros.valor%type;
+  begin
+    begin
+      select a.valor
+        into l_valor
+        from t_parametros a
+       where a.id_parametro = i_id_parametro;
+    exception
+      when others then
+        l_valor := null;
+    end;
+    return l_valor;
+  end;
 
-  PROCEDURE p_actualizar_valor_parametro(i_id_parametro IN VARCHAR2,
-                                         i_valor        IN VARCHAR2) IS
-  BEGIN
-    UPDATE t_parametros a
-       SET a.valor = i_valor
-     WHERE a.id_parametro = i_id_parametro;
-  END;
+  procedure p_actualizar_valor_parametro(i_id_parametro in varchar2,
+                                         i_valor        in varchar2) is
+  begin
+    update t_parametros a
+       set a.valor = i_valor
+     where a.id_parametro = i_id_parametro;
+  end;
 
-  FUNCTION f_hash(i_data      IN VARCHAR2,
-                  i_hash_type IN PLS_INTEGER) RETURN VARCHAR2 DETERMINISTIC IS
-  BEGIN
-    RETURN rawtohex(as_crypto.hash(utl_raw.cast_to_raw(i_data),
+  function f_hash(i_data      in varchar2,
+                  i_hash_type in pls_integer) return varchar2 deterministic is
+  begin
+    return rawtohex(as_crypto.hash(utl_raw.cast_to_raw(i_data),
                                    i_hash_type));
-  END;
+  end;
 
-  FUNCTION bool_to_string(i_bool IN BOOLEAN) RETURN VARCHAR2 IS
-  BEGIN
-    IF i_bool IS NULL THEN
-      RETURN NULL;
-    ELSIF i_bool THEN
-      RETURN 'S';
-    ELSE
-      RETURN 'N';
-    END IF;
-  END;
+  function bool_to_string(i_bool in boolean) return varchar2 is
+  begin
+    if i_bool is null then
+      return null;
+    elsif i_bool then
+      return 'S';
+    else
+      return 'N';
+    end if;
+  end;
 
-  FUNCTION string_to_bool(i_string IN VARCHAR2) RETURN BOOLEAN IS
-  BEGIN
-    IF i_string IS NULL THEN
-      RETURN NULL;
-    ELSIF lower(i_string) IN ('1', 'true', 't', 'yes', 'y', 'si', 's') THEN
-      RETURN TRUE;
-    ELSIF lower(i_string) IN ('0', 'false', 'f', 'no', 'n') THEN
-      RETURN FALSE;
-    ELSE
-      RETURN NULL;
-    END IF;
-  END;
+  function string_to_bool(i_string in varchar2) return boolean is
+  begin
+    if i_string is null then
+      return null;
+    elsif lower(i_string) in ('1', 'true', 't', 'yes', 'y', 'si', 's') then
+      return true;
+    elsif lower(i_string) in ('0', 'false', 'f', 'no', 'n') then
+      return false;
+    else
+      return null;
+    end if;
+  end;
 
-  FUNCTION blob_to_clob(p_data IN BLOB) RETURN CLOB IS
+  function blob_to_clob(p_data in blob) return clob is
     -- -----------------------------------------------------------------------------------
     -- File Name    : https://oracle-base.com/dba/miscellaneous/blob_to_clob.sql
     -- Author       : Tim Hall
     -- Description  : Converts a BLOB to a CLOB.
     -- Last Modified: 26/12/2016
     -- -----------------------------------------------------------------------------------
-    l_clob         CLOB;
-    l_dest_offset  PLS_INTEGER := 1;
-    l_src_offset   PLS_INTEGER := 1;
-    l_lang_context PLS_INTEGER := dbms_lob.default_lang_ctx;
-    l_warning      PLS_INTEGER;
-  BEGIN
-    dbms_lob.createtemporary(lob_loc => l_clob, cache => TRUE);
+    l_clob         clob;
+    l_dest_offset  pls_integer := 1;
+    l_src_offset   pls_integer := 1;
+    l_lang_context pls_integer := dbms_lob.default_lang_ctx;
+    l_warning      pls_integer;
+  begin
+    dbms_lob.createtemporary(lob_loc => l_clob, cache => true);
   
     dbms_lob.converttoclob(dest_lob     => l_clob,
                            src_blob     => p_data,
@@ -319,23 +319,23 @@ END;';
                            lang_context => l_lang_context,
                            warning      => l_warning);
   
-    RETURN l_clob;
-  END;
+    return l_clob;
+  end;
 
-  FUNCTION clob_to_blob(p_data IN CLOB) RETURN BLOB IS
+  function clob_to_blob(p_data in clob) return blob is
     -- -----------------------------------------------------------------------------------
     -- File Name    : https://oracle-base.com/dba/miscellaneous/clob_to_blob.sql
     -- Author       : Tim Hall
     -- Description  : Converts a CLOB to a BLOB.
     -- Last Modified: 26/12/2016
     -- -----------------------------------------------------------------------------------
-    l_blob         BLOB;
-    l_dest_offset  PLS_INTEGER := 1;
-    l_src_offset   PLS_INTEGER := 1;
-    l_lang_context PLS_INTEGER := dbms_lob.default_lang_ctx;
-    l_warning      PLS_INTEGER := dbms_lob.warn_inconvertible_char;
-  BEGIN
-    dbms_lob.createtemporary(lob_loc => l_blob, cache => TRUE);
+    l_blob         blob;
+    l_dest_offset  pls_integer := 1;
+    l_src_offset   pls_integer := 1;
+    l_lang_context pls_integer := dbms_lob.default_lang_ctx;
+    l_warning      pls_integer := dbms_lob.warn_inconvertible_char;
+  begin
+    dbms_lob.createtemporary(lob_loc => l_blob, cache => true);
   
     dbms_lob.converttoblob(dest_lob     => l_blob,
                            src_clob     => p_data,
@@ -346,107 +346,107 @@ END;';
                            lang_context => l_lang_context,
                            warning      => l_warning);
   
-    RETURN l_blob;
-  END;
+    return l_blob;
+  end;
 
-  FUNCTION base64encode(i_blob IN BLOB) RETURN CLOB IS
+  function base64encode(i_blob in blob) return clob is
     -- -----------------------------------------------------------------------------------
     -- File Name    : https://oracle-base.com/dba/miscellaneous/base64encode.sql
     -- Author       : Tim Hall
     -- Description  : Encodes a BLOB into a Base64 CLOB.
     -- Last Modified: 09/11/2011
     -- -----------------------------------------------------------------------------------
-    l_clob CLOB;
-    l_step PLS_INTEGER := 12000; -- make sure you set a multiple of 3 not higher than 24573
-  BEGIN
-    IF i_blob IS NOT NULL AND dbms_lob.getlength(i_blob) > 0 THEN
-      FOR i IN 0 .. trunc((dbms_lob.getlength(i_blob) - 1) / l_step) LOOP
+    l_clob clob;
+    l_step pls_integer := 12000; -- make sure you set a multiple of 3 not higher than 24573
+  begin
+    if i_blob is not null and dbms_lob.getlength(i_blob) > 0 then
+      for i in 0 .. trunc((dbms_lob.getlength(i_blob) - 1) / l_step) loop
         l_clob := l_clob ||
                   utl_raw.cast_to_varchar2(utl_encode.base64_encode(dbms_lob.substr(i_blob,
                                                                                     l_step,
                                                                                     i *
                                                                                     l_step + 1)));
-      END LOOP;
-    END IF;
-    RETURN l_clob;
-  END;
+      end loop;
+    end if;
+    return l_clob;
+  end;
 
-  FUNCTION base64decode(i_clob IN CLOB) RETURN BLOB IS
+  function base64decode(i_clob in clob) return blob is
     -- -----------------------------------------------------------------------------------
     -- File Name    : https://oracle-base.com/dba/miscellaneous/base64decode.sql
     -- Author       : Tim Hall
     -- Description  : Decodes a Base64 CLOB into a BLOB
     -- Last Modified: 09/11/2011
     -- -----------------------------------------------------------------------------------
-    l_blob   BLOB;
-    l_raw    RAW(32767);
-    l_amt    NUMBER := 7700;
-    l_offset NUMBER := 1;
-    l_temp   VARCHAR2(32767);
-  BEGIN
-    BEGIN
-      dbms_lob.createtemporary(l_blob, FALSE, dbms_lob.call);
-      LOOP
+    l_blob   blob;
+    l_raw    raw(32767);
+    l_amt    number := 7700;
+    l_offset number := 1;
+    l_temp   varchar2(32767);
+  begin
+    begin
+      dbms_lob.createtemporary(l_blob, false, dbms_lob.call);
+      loop
         dbms_lob.read(i_clob, l_amt, l_offset, l_temp);
         l_offset := l_offset + l_amt;
         l_raw    := utl_encode.base64_decode(utl_raw.cast_to_raw(l_temp));
         dbms_lob.append(l_blob, to_blob(l_raw));
-      END LOOP;
-    EXCEPTION
-      WHEN no_data_found THEN
-        NULL;
-    END;
-    RETURN l_blob;
-  END;
+      end loop;
+    exception
+      when no_data_found then
+        null;
+    end;
+    return l_blob;
+  end;
 
-  FUNCTION encrypt(i_src IN VARCHAR2) RETURN VARCHAR2 IS
-  BEGIN
-    RETURN rawtohex(as_crypto.encrypt(src => utl_i18n.string_to_raw(i_src,
+  function encrypt(i_src in varchar2) return varchar2 is
+  begin
+    return rawtohex(as_crypto.encrypt(src => utl_i18n.string_to_raw(i_src,
                                                                     'AL32UTF8'),
                                       typ => c_algoritmo,
                                       key => hextoraw(f_valor_parametro('CLAVE_ENCRIPTACION_DESENCRIPTACION'))));
-  END;
+  end;
 
-  FUNCTION decrypt(i_src IN VARCHAR2) RETURN VARCHAR2 IS
-  BEGIN
-    RETURN utl_i18n.raw_to_char(as_crypto.decrypt(src => hextoraw(i_src),
+  function decrypt(i_src in varchar2) return varchar2 is
+  begin
+    return utl_i18n.raw_to_char(as_crypto.decrypt(src => hextoraw(i_src),
                                                   typ => c_algoritmo,
                                                   key => hextoraw(f_valor_parametro('CLAVE_ENCRIPTACION_DESENCRIPTACION'))),
                                 'AL32UTF8');
-  END;
+  end;
 
-  FUNCTION json_to_objeto(i_json        IN CLOB,
-                          i_nombre_tipo IN VARCHAR2) RETURN anydata IS
+  function json_to_objeto(i_json        in clob,
+                          i_nombre_tipo in varchar2) return anydata is
     l_retorno anydata;
     l_objeto  y_objeto;
-  BEGIN
-    IF i_json IS NOT NULL AND i_nombre_tipo IS NOT NULL THEN
-      BEGIN
-        EXECUTE IMMEDIATE 'BEGIN :1 := ' || lower(i_nombre_tipo) ||
+  begin
+    if i_json is not null and i_nombre_tipo is not null then
+      begin
+        execute immediate 'BEGIN :1 := ' || lower(i_nombre_tipo) ||
                           '.parse_json(i_json => :2); END;'
-          USING OUT l_objeto, IN i_json;
-      EXCEPTION
-        WHEN ex_tipo_inexistente THEN
+          using out l_objeto, in i_json;
+      exception
+        when ex_tipo_inexistente then
           raise_application_error(-20000,
                                   'Tipo ' || lower(i_nombre_tipo) ||
                                   ' no existe');
-      END;
-    END IF;
+      end;
+    end if;
   
     l_retorno := anydata.convertobject(l_objeto);
   
-    RETURN l_retorno;
-  END;
+    return l_retorno;
+  end;
 
-  FUNCTION objeto_to_json(i_objeto IN anydata) RETURN CLOB IS
-    l_json     CLOB;
+  function objeto_to_json(i_objeto in anydata) return clob is
+    l_json     clob;
     l_typeinfo anytype;
-    l_typecode PLS_INTEGER;
-  BEGIN
-    IF i_objeto IS NOT NULL THEN
+    l_typecode pls_integer;
+  begin
+    if i_objeto is not null then
       l_typecode := i_objeto.gettype(l_typeinfo);
-      IF l_typecode = dbms_types.typecode_object THEN
-        EXECUTE IMMEDIATE 'DECLARE
+      if l_typecode = dbms_types.typecode_object then
+        execute immediate 'DECLARE
   l_retorno PLS_INTEGER;
   l_anydata anydata := :1;
   l_object  ' || i_objeto.gettypename || ';
@@ -455,115 +455,115 @@ BEGIN
   l_retorno := l_anydata.getobject(obj => l_object);
   :2        := l_object.to_json();
 END;'
-          USING IN i_objeto, OUT l_json;
-      END IF;
-    END IF;
-    RETURN l_json;
-  END;
+          using in i_objeto, out l_json;
+      end if;
+    end if;
+    return l_json;
+  end;
 
-  FUNCTION read_http_body(resp IN OUT utl_http.resp) RETURN CLOB AS
-    l_http_body CLOB;
-    l_data      VARCHAR2(1024);
-  BEGIN
-    BEGIN
-      LOOP
+  function read_http_body(resp in out utl_http.resp) return clob as
+    l_http_body clob;
+    l_data      varchar2(1024);
+  begin
+    begin
+      loop
         utl_http.read_text(resp, l_data, 1024);
         l_http_body := l_http_body || l_data;
-      END LOOP;
-    EXCEPTION
-      WHEN utl_http.end_of_body THEN
-        NULL;
-      WHEN OTHERS THEN
-        l_http_body := NULL;
-    END;
-    RETURN l_http_body;
-  END;
+      end loop;
+    exception
+      when utl_http.end_of_body then
+        null;
+      when others then
+        l_http_body := null;
+    end;
+    return l_http_body;
+  end;
 
-  FUNCTION f_base_datos RETURN VARCHAR2 IS
-  BEGIN
-    RETURN sys_context('USERENV', 'DB_NAME');
-  END;
+  function f_base_datos return varchar2 is
+  begin
+    return sys_context('USERENV', 'DB_NAME');
+  end;
 
-  FUNCTION f_terminal RETURN VARCHAR2 IS
-  BEGIN
-    RETURN sys_context('USERENV', 'TERMINAL');
-  END;
+  function f_terminal return varchar2 is
+  begin
+    return sys_context('USERENV', 'TERMINAL');
+  end;
 
-  FUNCTION f_host RETURN VARCHAR2 IS
-  BEGIN
-    RETURN sys_context('USERENV', 'HOST');
-  END;
+  function f_host return varchar2 is
+  begin
+    return sys_context('USERENV', 'HOST');
+  end;
 
-  FUNCTION f_direccion_ip RETURN VARCHAR2 IS
-  BEGIN
-    RETURN sys_context('USERENV', 'IP_ADDRESS');
-  END;
+  function f_direccion_ip return varchar2 is
+  begin
+    return sys_context('USERENV', 'IP_ADDRESS');
+  end;
 
-  FUNCTION f_esquema_actual RETURN VARCHAR2 IS
-  BEGIN
-    RETURN sys_context('USERENV', 'CURRENT_SCHEMA');
-  END;
+  function f_esquema_actual return varchar2 is
+  begin
+    return sys_context('USERENV', 'CURRENT_SCHEMA');
+  end;
 
-  FUNCTION f_charset RETURN VARCHAR2 IS
-    l_characterset nls_database_parameters.value%TYPE;
-  BEGIN
-    BEGIN
-      SELECT VALUE
-        INTO l_characterset
-        FROM nls_database_parameters
-       WHERE parameter = 'NLS_CHARACTERSET';
-    EXCEPTION
-      WHEN OTHERS THEN
-        l_characterset := NULL;
-    END;
-    RETURN utl_i18n.map_charset(l_characterset);
-  END;
+  function f_charset return varchar2 is
+    l_characterset nls_database_parameters.value%type;
+  begin
+    begin
+      select value
+        into l_characterset
+        from nls_database_parameters
+       where parameter = 'NLS_CHARACTERSET';
+    exception
+      when others then
+        l_characterset := null;
+    end;
+    return utl_i18n.map_charset(l_characterset);
+  end;
 
-  FUNCTION f_es_valor_numerico(i_valor IN VARCHAR2) RETURN BOOLEAN IS
-    l_numero NUMBER(20, 2);
-    l_result BOOLEAN;
-  BEGIN
-    l_result := FALSE;
+  function f_es_valor_numerico(i_valor in varchar2) return boolean is
+    l_numero number(20, 2);
+    l_result boolean;
+  begin
+    l_result := false;
     l_numero := to_number(i_valor);
-    l_result := TRUE;
-    RETURN l_result;
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN l_result;
-  END;
+    l_result := true;
+    return l_result;
+  exception
+    when others then
+      return l_result;
+  end;
 
-  FUNCTION f_zona_horaria(i_zona_horaria IN VARCHAR2) RETURN VARCHAR2 IS
-    l_zona   NUMBER(18, 2);
-    l_tiempo NUMBER(15);
-    l_hora   NUMBER(15);
-    l_minuto NUMBER(3);
+  function f_zona_horaria(i_zona_horaria in varchar2) return varchar2 is
+    l_zona   number(18, 2);
+    l_tiempo number(15);
+    l_hora   number(15);
+    l_minuto number(3);
     --
-    l_retorno    VARCHAR2(10);
-    l_validacion DATE;
-  BEGIN
-    IF f_es_valor_numerico(i_zona_horaria) THEN
+    l_retorno    varchar2(10);
+    l_validacion date;
+  begin
+    if f_es_valor_numerico(i_zona_horaria) then
       l_zona := to_number(i_zona_horaria);
     
       l_tiempo := l_zona * 3600;
     
       l_hora   := trunc(l_tiempo / 3600);
-      l_tiempo := abs((l_tiempo - (l_hora * 3600)) MOD 3600);
+      l_tiempo := abs((l_tiempo - (l_hora * 3600)) mod 3600);
       l_minuto := trunc(l_tiempo / 60);
     
       l_retorno := to_char(l_hora) || ':' || to_char(l_minuto);
-    ELSE
+    else
       l_retorno := i_zona_horaria;
-    END IF;
+    end if;
   
-    SELECT CAST(current_timestamp at TIME ZONE (SELECT l_retorno FROM dual) AS DATE) fecha
-      INTO l_validacion
-      FROM dual;
+    select cast(current_timestamp at time zone (select l_retorno from dual) as date) fecha
+      into l_validacion
+      from dual;
   
-    RETURN l_retorno;
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN NULL;
-  END;
+    return l_retorno;
+  exception
+    when others then
+      return null;
+  end;
 
-END;
+end;
 /

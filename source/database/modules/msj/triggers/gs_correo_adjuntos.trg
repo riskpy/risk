@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_correo_adjuntos
-  BEFORE INSERT ON t_correo_adjuntos
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_correo_adjuntos
+  before insert on t_correo_adjuntos
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_correo_adjunto IS NULL THEN
+  if :new.id_correo_adjunto is null then
     :new.id_correo_adjunto := s_id_correo_adjunto.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

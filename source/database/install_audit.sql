@@ -27,14 +27,14 @@ set serveroutput on size unlimited
 
 accept v_generate_audit char default 'N' prompt 'Generate audit columns and triggers? (Y/N)'
 
-DECLARE
-  CURSOR cr_tablas IS
-    SELECT lower(table_name) AS tabla
-      FROM user_tables
-     WHERE lower(table_name) LIKE 't\_%' ESCAPE '\';
-BEGIN
-  IF upper('&v_generate_audit') = 'Y' THEN
-    FOR t IN cr_tablas LOOP
+declare
+  cursor cr_tablas is
+    select lower(table_name) as tabla
+      from user_tables
+     where lower(table_name) like 't\_%' escape '\';
+begin
+  if upper('&v_generate_audit') = 'Y' then
+    for t in cr_tablas loop
       dbms_output.put_line('Generating audit columns for table ' ||
                            upper(t.tabla) || '...');
       dbms_output.put_line('-----------------------------------');
@@ -43,9 +43,9 @@ BEGIN
                            upper(t.tabla) || '...');
       dbms_output.put_line('-----------------------------------');
       k_auditoria.p_generar_trigger_auditoria(i_tabla => t.tabla);
-    END LOOP;
-  END IF;
-END;
+    end loop;
+  end if;
+end;
 /
 
 set serveroutput off

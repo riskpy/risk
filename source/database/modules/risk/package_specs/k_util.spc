@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_util IS
+create or replace package k_util is
 
   /**
   Agrupa herramientas para facilitar el desarrollo
@@ -31,8 +31,8 @@ CREATE OR REPLACE PACKAGE k_util IS
   */
 
   -- Excepciones
-  ex_tipo_inexistente EXCEPTION;
-  PRAGMA EXCEPTION_INIT(ex_tipo_inexistente, -6550);
+  ex_tipo_inexistente exception;
+  pragma exception_init(ex_tipo_inexistente, -6550);
 
   /**
   Genera trigger de secuencia para un campo de una tabla
@@ -43,57 +43,57 @@ CREATE OR REPLACE PACKAGE k_util IS
   %param i_trigger Trigger
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  PROCEDURE p_generar_trigger_secuencia(i_tabla    IN VARCHAR2,
-                                        i_campo    IN VARCHAR2,
-                                        i_trigger  IN VARCHAR2 DEFAULT NULL,
-                                        i_ejecutar IN BOOLEAN DEFAULT TRUE);
+  procedure p_generar_trigger_secuencia(i_tabla    in varchar2,
+                                        i_campo    in varchar2,
+                                        i_trigger  in varchar2 default null,
+                                        i_ejecutar in boolean default true);
 
-  PROCEDURE p_generar_type_objeto(i_tabla    IN VARCHAR2,
-                                  i_type     IN VARCHAR2 DEFAULT NULL,
-                                  i_ejecutar IN BOOLEAN DEFAULT TRUE);
+  procedure p_generar_type_objeto(i_tabla    in varchar2,
+                                  i_type     in varchar2 default null,
+                                  i_ejecutar in boolean default true);
 
-  FUNCTION f_valor_parametro(i_id_parametro IN VARCHAR2) RETURN VARCHAR2;
+  function f_valor_parametro(i_id_parametro in varchar2) return varchar2;
 
-  PROCEDURE p_actualizar_valor_parametro(i_id_parametro IN VARCHAR2,
-                                         i_valor        IN VARCHAR2);
+  procedure p_actualizar_valor_parametro(i_id_parametro in varchar2,
+                                         i_valor        in varchar2);
 
-  FUNCTION f_hash(i_data      IN VARCHAR2,
-                  i_hash_type IN PLS_INTEGER) RETURN VARCHAR2 DETERMINISTIC;
+  function f_hash(i_data      in varchar2,
+                  i_hash_type in pls_integer) return varchar2 deterministic;
 
-  FUNCTION bool_to_string(i_bool IN BOOLEAN) RETURN VARCHAR2;
+  function bool_to_string(i_bool in boolean) return varchar2;
 
-  FUNCTION string_to_bool(i_string IN VARCHAR2) RETURN BOOLEAN;
+  function string_to_bool(i_string in varchar2) return boolean;
 
-  FUNCTION blob_to_clob(p_data IN BLOB) RETURN CLOB;
+  function blob_to_clob(p_data in blob) return clob;
 
-  FUNCTION clob_to_blob(p_data IN CLOB) RETURN BLOB;
+  function clob_to_blob(p_data in clob) return blob;
 
-  FUNCTION base64encode(i_blob IN BLOB) RETURN CLOB;
+  function base64encode(i_blob in blob) return clob;
 
-  FUNCTION base64decode(i_clob IN CLOB) RETURN BLOB;
+  function base64decode(i_clob in clob) return blob;
 
-  FUNCTION encrypt(i_src IN VARCHAR2) RETURN VARCHAR2;
+  function encrypt(i_src in varchar2) return varchar2;
 
-  FUNCTION decrypt(i_src IN VARCHAR2) RETURN VARCHAR2;
+  function decrypt(i_src in varchar2) return varchar2;
 
-  FUNCTION json_to_objeto(i_json        IN CLOB,
-                          i_nombre_tipo IN VARCHAR2) RETURN anydata;
+  function json_to_objeto(i_json        in clob,
+                          i_nombre_tipo in varchar2) return anydata;
 
-  FUNCTION objeto_to_json(i_objeto IN anydata) RETURN CLOB;
+  function objeto_to_json(i_objeto in anydata) return clob;
 
-  FUNCTION read_http_body(resp IN OUT utl_http.resp) RETURN CLOB;
+  function read_http_body(resp in out utl_http.resp) return clob;
 
-  FUNCTION f_base_datos RETURN VARCHAR2;
+  function f_base_datos return varchar2;
 
-  FUNCTION f_terminal RETURN VARCHAR2;
+  function f_terminal return varchar2;
 
-  FUNCTION f_host RETURN VARCHAR2;
+  function f_host return varchar2;
 
-  FUNCTION f_direccion_ip RETURN VARCHAR2;
+  function f_direccion_ip return varchar2;
 
-  FUNCTION f_esquema_actual RETURN VARCHAR2;
+  function f_esquema_actual return varchar2;
 
-  FUNCTION f_charset RETURN VARCHAR2;
+  function f_charset return varchar2;
 
   /**
   Retorna si el valor recibido es de tipo numérico
@@ -102,7 +102,7 @@ CREATE OR REPLACE PACKAGE k_util IS
   %param i_valor Zona horaria en formato decimal
   %return Si el valor recibido es de tipo numérico
   */
-  FUNCTION f_es_valor_numerico(i_valor IN VARCHAR2) RETURN BOOLEAN;
+  function f_es_valor_numerico(i_valor in varchar2) return boolean;
 
   /**
   Retorna una zona horaria en formato '(+|-)HH:MM'
@@ -111,7 +111,7 @@ CREATE OR REPLACE PACKAGE k_util IS
   %param i_zona_horaria Zona horaria en formato decimal
   %return Zona horaria en formato '(+|-)HH:MM'
   */
-  FUNCTION f_zona_horaria(i_zona_horaria IN VARCHAR2) RETURN VARCHAR2;
+  function f_zona_horaria(i_zona_horaria in varchar2) return varchar2;
 
-END;
+end;
 /

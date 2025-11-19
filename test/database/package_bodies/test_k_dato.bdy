@@ -1,23 +1,23 @@
-CREATE OR REPLACE PACKAGE BODY test_k_dato IS
+create or replace package body test_k_dato is
 
-  c_tabla             CONSTANT VARCHAR2(30) := 'T_MODULOS';
-  c_nombre_referencia CONSTANT VARCHAR2(30) := 'ID_MODULO';
+  c_tabla             constant varchar2(30) := 'T_MODULOS';
+  c_nombre_referencia constant varchar2(30) := 'ID_MODULO';
 
-  PROCEDURE lp_insertar_modulo IS
-  BEGIN
-    INSERT INTO t_modulos
+  procedure lp_insertar_modulo is
+  begin
+    insert into t_modulos
       (id_modulo, nombre, activo)
-    VALUES
+    values
       ('TEST', 'MÓDULO DE PRUEBA', 'S');
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_string_uso_basico IS
-    l_cantidad INTEGER;
-  BEGIN
+  procedure p_guardar_dato_string_uso_basico is
+    l_cantidad integer;
+  begin
     -- Arrange
-    INSERT INTO t_dato_definiciones
+    insert into t_dato_definiciones
       (tabla, campo, descripcion, orden, nombre_referencia, tipo_dato)
-    VALUES
+    values
       (c_tabla,
        'MI_STRING',
        'Dato adicional de tipo string',
@@ -28,22 +28,22 @@ CREATE OR REPLACE PACKAGE BODY test_k_dato IS
     -- Act
     k_dato.p_guardar_dato_string(c_tabla, 'MI_STRING', 'TEST', 'qwerty');
     -- Assert
-    SELECT COUNT(*)
-      INTO l_cantidad
-      FROM t_datos
-     WHERE tabla = c_tabla
-       AND campo = 'MI_STRING'
-       AND referencia = 'TEST';
+    select count(*)
+      into l_cantidad
+      from t_datos
+     where tabla = c_tabla
+       and campo = 'MI_STRING'
+       and referencia = 'TEST';
     ut.expect(l_cantidad).to_be_greater_than(0);
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_number_uso_basico IS
-    l_cantidad INTEGER;
-  BEGIN
+  procedure p_guardar_dato_number_uso_basico is
+    l_cantidad integer;
+  begin
     -- Arrange
-    INSERT INTO t_dato_definiciones
+    insert into t_dato_definiciones
       (tabla, campo, descripcion, orden, nombre_referencia, tipo_dato)
-    VALUES
+    values
       (c_tabla,
        'MI_NUMBER',
        'Dato adicional de tipo number',
@@ -54,22 +54,22 @@ CREATE OR REPLACE PACKAGE BODY test_k_dato IS
     -- Act
     k_dato.p_guardar_dato_number(c_tabla, 'MI_NUMBER', 'TEST', 123);
     -- Assert
-    SELECT COUNT(*)
-      INTO l_cantidad
-      FROM t_datos
-     WHERE tabla = c_tabla
-       AND campo = 'MI_NUMBER'
-       AND referencia = 'TEST';
+    select count(*)
+      into l_cantidad
+      from t_datos
+     where tabla = c_tabla
+       and campo = 'MI_NUMBER'
+       and referencia = 'TEST';
     ut.expect(l_cantidad).to_be_greater_than(0);
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_boolean_uso_basico IS
-    l_cantidad INTEGER;
-  BEGIN
+  procedure p_guardar_dato_boolean_uso_basico is
+    l_cantidad integer;
+  begin
     -- Arrange
-    INSERT INTO t_dato_definiciones
+    insert into t_dato_definiciones
       (tabla, campo, descripcion, orden, nombre_referencia, tipo_dato)
-    VALUES
+    values
       (c_tabla,
        'MI_BOOLEAN',
        'Dato adicional de tipo boolean',
@@ -78,24 +78,24 @@ CREATE OR REPLACE PACKAGE BODY test_k_dato IS
        'B');
     lp_insertar_modulo;
     -- Act
-    k_dato.p_guardar_dato_boolean(c_tabla, 'MI_BOOLEAN', 'TEST', TRUE);
+    k_dato.p_guardar_dato_boolean(c_tabla, 'MI_BOOLEAN', 'TEST', true);
     -- Assert
-    SELECT COUNT(*)
-      INTO l_cantidad
-      FROM t_datos
-     WHERE tabla = c_tabla
-       AND campo = 'MI_BOOLEAN'
-       AND referencia = 'TEST';
+    select count(*)
+      into l_cantidad
+      from t_datos
+     where tabla = c_tabla
+       and campo = 'MI_BOOLEAN'
+       and referencia = 'TEST';
     ut.expect(l_cantidad).to_be_greater_than(0);
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_date_uso_basico IS
-    l_cantidad INTEGER;
-  BEGIN
+  procedure p_guardar_dato_date_uso_basico is
+    l_cantidad integer;
+  begin
     -- Arrange
-    INSERT INTO t_dato_definiciones
+    insert into t_dato_definiciones
       (tabla, campo, descripcion, orden, nombre_referencia, tipo_dato)
-    VALUES
+    values
       (c_tabla,
        'MI_DATE',
        'Dato adicional de tipo date',
@@ -104,25 +104,25 @@ CREATE OR REPLACE PACKAGE BODY test_k_dato IS
        'D');
     lp_insertar_modulo;
     -- Act
-    k_dato.p_guardar_dato_date(c_tabla, 'MI_DATE', 'TEST', trunc(SYSDATE));
+    k_dato.p_guardar_dato_date(c_tabla, 'MI_DATE', 'TEST', trunc(sysdate));
     -- Assert
-    SELECT COUNT(*)
-      INTO l_cantidad
-      FROM t_datos
-     WHERE tabla = c_tabla
-       AND campo = 'MI_DATE'
-       AND referencia = 'TEST';
+    select count(*)
+      into l_cantidad
+      from t_datos
+     where tabla = c_tabla
+       and campo = 'MI_DATE'
+       and referencia = 'TEST';
     ut.expect(l_cantidad).to_be_greater_than(0);
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_object_uso_basico IS
-    l_cantidad INTEGER;
+  procedure p_guardar_dato_object_uso_basico is
+    l_cantidad integer;
     l_dato     y_rol;
-  BEGIN
+  begin
     -- Arrange
-    INSERT INTO t_dato_definiciones
+    insert into t_dato_definiciones
       (tabla, campo, descripcion, orden, nombre_referencia, tipo_dato)
-    VALUES
+    values
       (c_tabla,
        'MI_OBJECT',
        'Dato adicional de tipo object',
@@ -131,19 +131,19 @@ CREATE OR REPLACE PACKAGE BODY test_k_dato IS
        'O');
     lp_insertar_modulo;
     -- Act
-    l_dato        := NEW y_rol();
+    l_dato        := new y_rol();
     l_dato.id_rol := 123;
     l_dato.nombre := 'qwerty';
     k_dato.p_guardar_dato_object(c_tabla, 'MI_OBJECT', 'TEST', l_dato);
     -- Assert
-    SELECT COUNT(*)
-      INTO l_cantidad
-      FROM t_datos
-     WHERE tabla = c_tabla
-       AND campo = 'MI_OBJECT'
-       AND referencia = 'TEST';
+    select count(*)
+      into l_cantidad
+      from t_datos
+     where tabla = c_tabla
+       and campo = 'MI_OBJECT'
+       and referencia = 'TEST';
     ut.expect(l_cantidad).to_be_greater_than(0);
-  END;
+  end;
 
-END;
+end;
 /

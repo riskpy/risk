@@ -1,25 +1,25 @@
-CREATE OR REPLACE PACKAGE k_modulo IS
+create or replace package k_modulo is
 
   /**
   Agrupa operaciones relacionadas con los módulos
-
+  
   %author jtsoya539 27/3/2020 16:58:36
   */
 
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
-
+  
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-
+  
   The above copyright notice and this permission notice shall be included in all
   copies or substantial portions of the Software.
-
+  
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,8 +31,8 @@ CREATE OR REPLACE PACKAGE k_modulo IS
   */
 
   -- Constantes
-  c_instalado_risk CONSTANT BOOLEAN := TRUE;
-  c_instalado_msj  CONSTANT BOOLEAN := FALSE;
+  c_instalado_risk constant boolean := true;
+  c_instalado_msj  constant boolean := false;
 
-END;
+end;
 /

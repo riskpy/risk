@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_monitoreo_aut IS
+create or replace package k_monitoreo_aut is
 
   /**
   Agrupa operaciones relacionadas con los Monitoreos de Conflictos del dominio AUT
@@ -31,8 +31,8 @@ CREATE OR REPLACE PACKAGE k_monitoreo_aut IS
   */
 
   --Expira sesiones de usuario
-  FUNCTION sesiones_expiradas(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function sesiones_expiradas(i_parametros in y_parametros)
+    return y_respuesta;
 
-END;
+end;
 /

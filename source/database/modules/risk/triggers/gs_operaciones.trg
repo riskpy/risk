@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_operaciones
-  BEFORE INSERT ON t_operaciones
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_operaciones
+  before insert on t_operaciones
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,9 +26,9 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_operacion IS NULL THEN
+  if :new.id_operacion is null then
     :new.id_operacion := to_number(sys_guid(),
                                    'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-  END IF;
-END;
+  end if;
+end;
 /

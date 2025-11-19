@@ -1,44 +1,44 @@
-CREATE OR REPLACE TYPE BODY y_significado IS
+create or replace type body y_significado is
 
-  CONSTRUCTOR FUNCTION y_significado RETURN SELF AS RESULT AS
-  BEGIN
-    self.dominio     := NULL;
-    self.codigo      := NULL;
-    self.significado := NULL;
-    self.referencia  := NULL;
-    self.activo      := NULL;
+  constructor function y_significado return self as result as
+  begin
+    self.dominio     := null;
+    self.codigo      := null;
+    self.significado := null;
+    self.referencia  := null;
+    self.activo      := null;
   
-    RETURN;
-  END;
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_objeto      y_significado;
     l_json_object json_object_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_objeto             := NEW y_significado();
+    l_objeto             := new y_significado();
     l_objeto.dominio     := l_json_object.get_string('dominio');
     l_objeto.codigo      := l_json_object.get_string('codigo');
     l_objeto.significado := l_json_object.get_string('significado');
     l_objeto.referencia  := l_json_object.get_string('referencia');
     l_objeto.activo      := l_json_object.get_string('activo');
   
-    RETURN l_objeto;
-  END;
+    return l_objeto;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
-  BEGIN
-    l_json_object := NEW json_object_t();
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('dominio', self.dominio);
     l_json_object.put('codigo', self.codigo);
     l_json_object.put('significado', self.significado);
     l_json_object.put('referencia', self.referencia);
     l_json_object.put('activo', self.activo);
   
-    RETURN l_json_object.to_clob;
-  END;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

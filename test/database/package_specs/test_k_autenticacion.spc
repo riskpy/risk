@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE test_k_autenticacion IS
+create or replace package test_k_autenticacion is
 
   --%suite(Tests unitarios del paquete k_autenticacion)
   --%tags(package)
@@ -7,8 +7,8 @@ CREATE OR REPLACE PACKAGE test_k_autenticacion IS
   --%name(2)
 
   --%test()
-  PROCEDURE test;
+  procedure test;
   --%endcontext
 
-END;
+end;
 /

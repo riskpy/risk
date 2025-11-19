@@ -1,13 +1,13 @@
-CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
+create or replace package body k_servicio_aut is
 
-  FUNCTION registrar_usuario(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function registrar_usuario(i_parametros in y_parametros) return y_respuesta is
     l_rsp    y_respuesta;
     l_dato   y_dato;
-    l_origen VARCHAR2(1);
-  BEGIN
+    l_origen varchar2(1);
+  begin
     -- Inicializa respuesta
-    l_rsp  := NEW y_respuesta();
-    l_dato := NEW y_dato();
+    l_rsp  := new y_respuesta();
+    l_dato := new y_dato();
   
     l_rsp.lugar := 'Obteniendo origen';
     l_origen    := nvl(k_operacion.f_valor_parametro_string(i_parametros,
@@ -15,26 +15,26 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                        k_autenticacion.c_origen_risk);
   
     l_rsp.lugar := 'Validando parametros';
-    IF l_origen = k_autenticacion.c_origen_risk THEN
+    if l_origen = k_autenticacion.c_origen_risk then
       k_operacion.p_validar_parametro(l_rsp,
                                       k_operacion.f_valor_parametro_string(i_parametros,
-                                                                           'clave') IS NOT NULL,
+                                                                           'clave') is not null,
                                       'Debe ingresar clave');
-    END IF;
+    end if;
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'usuario') IS NOT NULL,
+                                                                         'usuario') is not null,
                                     'Debe ingresar usuario');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'nombre') IS NOT NULL,
+                                                                         'nombre') is not null,
                                     'Debe ingresar nombre');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'apellido') IS NOT NULL,
+                                                                         'apellido') is not null,
                                     'Debe ingresar apellido');
   
     l_rsp.lugar      := 'Registrando usuario';
@@ -55,49 +55,49 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                                                  'id_externo'));
   
     k_operacion.p_respuesta_ok(l_rsp, l_dato);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_usuario.ex_usuario_existente THEN
-      IF l_origen <> k_autenticacion.c_origen_risk THEN
+    return l_rsp;
+  exception
+    when k_usuario.ex_usuario_existente then
+      if l_origen <> k_autenticacion.c_origen_risk then
         l_dato.contenido := k_usuario.f_alias(k_usuario.f_buscar_id(k_operacion.f_valor_parametro_string(i_parametros,
                                                                                                          'id_externo')));
-      ELSE
-        l_dato := NULL;
-      END IF;
+      else
+        l_dato := null;
+      end if;
       k_operacion.p_respuesta_error(l_rsp,
                                     c_usuario_externo_existente,
                                     'Usuario externo ya existe',
-                                    NULL,
+                                    null,
                                     l_dato);
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+      return l_rsp;
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION cambiar_estado_usuario(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function cambiar_estado_usuario(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'usuario') IS NOT NULL,
+                                                                         'usuario') is not null,
                                     'Debe ingresar usuario');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'estado') IS NOT NULL,
+                                                                         'estado') is not null,
                                     'Debe ingresar estado');
   
     l_rsp.lugar := 'Cambiando estado de usuario';
@@ -107,25 +107,25 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                     'estado'));
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION registrar_clave(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function registrar_clave(i_parametros in y_parametros) return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     -- l_rsp.lugar := 'Validando parametros';
   
@@ -138,25 +138,25 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                    'tipo_clave'));
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION cambiar_clave(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function cambiar_clave(i_parametros in y_parametros) return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     -- l_rsp.lugar := 'Validando parametros';
   
@@ -171,150 +171,150 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                  'tipo_clave'));
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION validar_credenciales(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function validar_credenciales(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'usuario') IS NOT NULL,
+                                                                         'usuario') is not null,
                                     'Debe ingresar usuario');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'clave') IS NOT NULL,
+                                                                         'clave') is not null,
                                     'Debe ingresar clave');
   
     l_rsp.lugar := 'Validando credenciales';
-    IF NOT
+    if not
         k_autenticacion.f_validar_credenciales(k_operacion.f_valor_parametro_string(i_parametros,
                                                                                     'usuario'),
                                                k_operacion.f_valor_parametro_string(i_parametros,
                                                                                     'clave'),
                                                k_operacion.f_valor_parametro_string(i_parametros,
-                                                                                    'tipo_clave')) THEN
+                                                                                    'tipo_clave')) then
       k_operacion.p_respuesta_error(l_rsp,
                                     'aut0003',
                                     'Credenciales inválidas');
-      RAISE k_operacion.ex_error_general;
-    END IF;
+      raise k_operacion.ex_error_general;
+    end if;
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION validar_clave_aplicacion(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function validar_clave_aplicacion(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'clave_aplicacion') IS NOT NULL,
+                                                                         'clave_aplicacion') is not null,
                                     'Debe ingresar clave_aplicacion');
   
     l_rsp.lugar := 'Validando clave de aplicacion';
-    IF NOT
+    if not
         k_aplicacion.f_validar_clave(k_operacion.f_valor_parametro_string(i_parametros,
-                                                                          'clave_aplicacion')) THEN
+                                                                          'clave_aplicacion')) then
       k_operacion.p_respuesta_error(l_rsp,
                                     'aut0002',
                                     'Clave de aplicacion invalida');
-      RAISE k_operacion.ex_error_general;
-    END IF;
+      raise k_operacion.ex_error_general;
+    end if;
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION validar_sesion(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function validar_sesion(i_parametros in y_parametros) return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'access_token') IS NOT NULL,
+                                                                         'access_token') is not null,
                                     'Debe ingresar access_token');
   
     l_rsp.lugar := 'Validando sesion';
-    IF NOT
+    if not
         k_sesion.f_validar_sesion(k_operacion.f_valor_parametro_string(i_parametros,
-                                                                       'access_token')) THEN
+                                                                       'access_token')) then
       k_operacion.p_respuesta_error(l_rsp,
                                     'aut0002',
                                     'Sesion finalizada o expirada');
-      RAISE k_operacion.ex_error_general;
-    END IF;
+      raise k_operacion.ex_error_general;
+    end if;
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION iniciar_sesion(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function iniciar_sesion(i_parametros in y_parametros) return y_respuesta is
     l_rsp       y_respuesta;
     l_sesion    y_sesion;
-    l_id_sesion t_sesiones.id_sesion%TYPE;
-    l_origen    VARCHAR2(1);
-  BEGIN
+    l_id_sesion t_sesiones.id_sesion%type;
+    l_origen    varchar2(1);
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Obteniendo origen';
     l_origen    := nvl(k_operacion.f_valor_parametro_string(i_parametros,
@@ -324,20 +324,20 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'usuario') IS NOT NULL,
+                                                                         'usuario') is not null,
                                     'Debe ingresar usuario');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'access_token') IS NOT NULL,
+                                                                         'access_token') is not null,
                                     'Debe ingresar access_token');
   
-    IF l_origen = k_autenticacion.c_origen_risk THEN
+    if l_origen = k_autenticacion.c_origen_risk then
       k_operacion.p_validar_parametro(l_rsp,
                                       k_operacion.f_valor_parametro_string(i_parametros,
-                                                                           'refresh_token') IS NOT NULL,
+                                                                           'refresh_token') is not null,
                                       'Debe ingresar refresh_token');
-    END IF;
+    end if;
   
     l_rsp.lugar := 'Iniciando sesion';
     l_id_sesion := k_autenticacion.f_iniciar_sesion(k_sistema.f_valor_parametro_string(k_sistema.c_id_aplicacion),
@@ -357,28 +357,28 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
     l_sesion    := k_sesion.f_datos_sesion(l_id_sesion);
   
     k_operacion.p_respuesta_ok(l_rsp, l_sesion);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION refrescar_sesion(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function refrescar_sesion(i_parametros in y_parametros) return y_respuesta is
     l_rsp       y_respuesta;
     l_sesion    y_sesion;
-    l_id_sesion t_sesiones.id_sesion%TYPE;
-    l_origen    VARCHAR2(1);
-  BEGIN
+    l_id_sesion t_sesiones.id_sesion%type;
+    l_origen    varchar2(1);
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Obteniendo origen';
     l_origen    := nvl(k_operacion.f_valor_parametro_string(i_parametros,
@@ -388,27 +388,27 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'access_token_antiguo') IS NOT NULL,
+                                                                         'access_token_antiguo') is not null,
                                     'Debe ingresar antiguo Access Token');
   
-    IF l_origen = k_autenticacion.c_origen_risk THEN
+    if l_origen = k_autenticacion.c_origen_risk then
       k_operacion.p_validar_parametro(l_rsp,
                                       k_operacion.f_valor_parametro_string(i_parametros,
-                                                                           'refresh_token_antiguo') IS NOT NULL,
+                                                                           'refresh_token_antiguo') is not null,
                                       'Debe ingresar antiguo Refresh Token');
-    END IF;
+    end if;
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'access_token_nuevo') IS NOT NULL,
+                                                                         'access_token_nuevo') is not null,
                                     'Debe ingresar nuevo Access Token');
   
-    IF l_origen = k_autenticacion.c_origen_risk THEN
+    if l_origen = k_autenticacion.c_origen_risk then
       k_operacion.p_validar_parametro(l_rsp,
                                       k_operacion.f_valor_parametro_string(i_parametros,
-                                                                           'refresh_token_nuevo') IS NOT NULL,
+                                                                           'refresh_token_nuevo') is not null,
                                       'Debe ingresar nuevo Refresh Token');
-    END IF;
+    end if;
   
     l_rsp.lugar := 'Refrescando sesion';
     l_id_sesion := k_autenticacion.f_refrescar_sesion(k_sistema.f_valor_parametro_string(k_sistema.c_id_aplicacion),
@@ -428,36 +428,36 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
     l_sesion    := k_sesion.f_datos_sesion(l_id_sesion);
   
     k_operacion.p_respuesta_ok(l_rsp, l_sesion);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION cambiar_estado_sesion(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function cambiar_estado_sesion(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'access_token') IS NOT NULL,
+                                                                         'access_token') is not null,
                                     'Debe ingresar access_token');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'estado') IS NOT NULL,
+                                                                         'estado') is not null,
                                     'Debe ingresar estado');
   
     l_rsp.lugar := 'Cambiando estado de sesion';
@@ -467,31 +467,31 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                    'estado'));
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION datos_usuario(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function datos_usuario(i_parametros in y_parametros) return y_respuesta is
     l_rsp     y_respuesta;
     l_usuario y_usuario;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'usuario') IS NOT NULL,
+                                                                         'usuario') is not null,
                                     'Debe ingresar usuario');
   
     l_rsp.lugar := 'Cargando datos del usuario';
@@ -499,39 +499,39 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                                                         'usuario')));
   
     k_operacion.p_respuesta_ok(l_rsp, l_usuario);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION registrar_dispositivo(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function registrar_dispositivo(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp            y_respuesta;
     l_dato           y_dato;
     l_dispositivo    y_dispositivo;
-    l_id_dispositivo t_dispositivos.id_dispositivo%TYPE;
-    i                INTEGER;
-  BEGIN
+    l_id_dispositivo t_dispositivos.id_dispositivo%type;
+    i                integer;
+  begin
     -- Inicializa respuesta
-    l_rsp  := NEW y_respuesta();
-    l_dato := NEW y_dato();
+    l_rsp  := new y_respuesta();
+    l_dato := new y_dato();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_object(i_parametros,
-                                                                         'dispositivo') IS NOT NULL,
+                                                                         'dispositivo') is not null,
                                     'Debe ingresar dispositivo');
     l_dispositivo := treat(k_operacion.f_valor_parametro_object(i_parametros,
-                                                                'dispositivo') AS
+                                                                'dispositivo') as
                            y_dispositivo);
   
     l_rsp.lugar      := 'Registrando dispositivo';
@@ -551,54 +551,54 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
     $if k_modulo.c_instalado_msj $then
     l_rsp.lugar := 'Agregando suscripciones';
     i           := l_dispositivo.suscripciones.first;
-    WHILE i IS NOT NULL LOOP
-      l_dato := treat(l_dispositivo.suscripciones(i) AS y_dato);
+    while i is not null loop
+      l_dato := treat(l_dispositivo.suscripciones(i) as y_dato);
       k_dispositivo.p_suscribir_notificacion(l_id_dispositivo,
                                              l_dato.contenido);
       i := l_dispositivo.suscripciones.next(i);
-    END LOOP;
+    end loop;
     $end
   
     l_rsp.lugar := 'Buscando token del dispositivo';
-    BEGIN
-      SELECT token_dispositivo
-        INTO l_dato.contenido
-        FROM t_dispositivos
-       WHERE id_dispositivo = l_id_dispositivo;
-    EXCEPTION
-      WHEN OTHERS THEN
+    begin
+      select token_dispositivo
+        into l_dato.contenido
+        from t_dispositivos
+       where id_dispositivo = l_id_dispositivo;
+    exception
+      when others then
         k_operacion.p_respuesta_error(l_rsp,
                                       'aut0001',
                                       'Error al obtener token del dispositivo');
-        RAISE k_operacion.ex_error_general;
-    END;
+        raise k_operacion.ex_error_general;
+    end;
   
     k_operacion.p_respuesta_ok(l_rsp, l_dato);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION datos_dispositivo(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function datos_dispositivo(i_parametros in y_parametros) return y_respuesta is
     l_rsp         y_respuesta;
     l_dispositivo y_dispositivo;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parámetros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'token_dispositivo') IS NOT NULL,
+                                                                         'token_dispositivo') is not null,
                                     'Debe ingresar token_dispositivo');
   
     l_rsp.lugar   := 'Cargando datos del dispositivo';
@@ -606,31 +606,31 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                                                                            'token_dispositivo')));
   
     k_operacion.p_respuesta_ok(l_rsp, l_dispositivo);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION registrar_ubicacion(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function registrar_ubicacion(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parámetros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'token_dispositivo') IS NOT NULL,
+                                                                         'token_dispositivo') is not null,
                                     'Debe ingresar token_dispositivo');
   
     l_rsp.lugar := 'Registrando ubicación del dispositivo';
@@ -642,33 +642,33 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                              'longitud'));
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION tiempo_expiracion_token(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function tiempo_expiracion_token(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp  y_respuesta;
     l_dato y_dato;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp  := NEW y_respuesta();
-    l_dato := NEW y_dato();
+    l_rsp  := new y_respuesta();
+    l_dato := new y_dato();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'tipo_token') IS NOT NULL,
+                                                                         'tipo_token') is not null,
                                     'Debe ingresar tipo_token');
   
     l_rsp.lugar      := 'Obteniendo tiempo de expiración';
@@ -676,41 +676,41 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                    k_operacion.f_valor_parametro_string(i_parametros,
                                                                                                         'tipo_token')));
   
-    IF l_dato.contenido IS NULL THEN
+    if l_dato.contenido is null then
       k_operacion.p_respuesta_error(l_rsp,
                                     'aut0003',
                                     'Error al obtener tiempo de expiración');
-      RAISE k_operacion.ex_error_general;
-    END IF;
+      raise k_operacion.ex_error_general;
+    end if;
   
     k_operacion.p_respuesta_ok(l_rsp, l_dato);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION editar_usuario(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function editar_usuario(i_parametros in y_parametros) return y_respuesta is
     l_rsp  y_respuesta;
     l_dato y_dato;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp  := NEW y_respuesta();
-    l_dato := NEW y_dato();
+    l_rsp  := new y_respuesta();
+    l_dato := new y_dato();
   
     l_rsp.lugar := 'Validando parámetros';
     /* TODO: text="Implementar validación de parámetros" */
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'usuario_antiguo') IS NOT NULL,
+                                                                         'usuario_antiguo') is not null,
                                     'Debe ingresar usuario_antiguo');
   
     l_rsp.lugar := 'Editando usuario';
@@ -728,41 +728,41 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                           'numero_telefono'));
   
     k_operacion.p_respuesta_ok(l_rsp, l_dato);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION editar_dato_usuario(i_parametros IN y_parametros)
-    RETURN y_respuesta IS
+  function editar_dato_usuario(i_parametros in y_parametros)
+    return y_respuesta is
     l_rsp  y_respuesta;
     l_dato y_dato;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp  := NEW y_respuesta();
-    l_dato := NEW y_dato();
+    l_rsp  := new y_respuesta();
+    l_dato := new y_dato();
   
     l_rsp.lugar := 'Validando parámetros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'usuario') IS NOT NULL,
+                                                                         'usuario') is not null,
                                     'Debe ingresar usuario');
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'campo') IS NOT NULL,
+                                                                         'campo') is not null,
                                     'Debe ingresar campo');
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'dato') IS NOT NULL,
+                                                                         'dato') is not null,
                                     'Debe ingresar dato');
   
     l_rsp.lugar := 'Editando dato del usuario';
@@ -774,46 +774,46 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
                                                                          'dato'));
   
     k_operacion.p_respuesta_ok(l_rsp, l_dato);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION generar_otp(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function generar_otp(i_parametros in y_parametros) return y_respuesta is
     l_rsp    y_respuesta;
     l_dato   y_dato;
-    l_secret VARCHAR2(100);
-    l_otp    VARCHAR2(100);
-    l_body   CLOB;
-  BEGIN
+    l_secret varchar2(100);
+    l_otp    varchar2(100);
+    l_body   clob;
+  begin
     -- Inicializa respuesta
-    l_rsp  := NEW y_respuesta();
-    l_dato := NEW y_dato();
+    l_rsp  := new y_respuesta();
+    l_dato := new y_dato();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'tipo_mensajeria') IS NOT NULL,
+                                                                         'tipo_mensajeria') is not null,
                                     'Debe ingresar tipo_mensajeria');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'tipo_mensajeria') IN
+                                                                         'tipo_mensajeria') in
                                     ('M', 'S', 'P'),
                                     'Valor no válido para tipo_mensajeria');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'destino') IS NOT NULL,
+                                                                         'destino') is not null,
                                     'Debe ingresar destino');
   
     l_rsp.lugar := 'Generando secret';
@@ -824,157 +824,157 @@ CREATE OR REPLACE PACKAGE BODY k_servicio_aut IS
   
     $if k_modulo.c_instalado_msj $then
     l_rsp.lugar := 'Enviando mensajería';
-    CASE
+    case
      k_operacion.f_valor_parametro_string(i_parametros, 'tipo_mensajeria')
     
-      WHEN 'M' THEN
+      when 'M' then
         -- Mail
         l_body := k_mensajeria.f_correo_html('Tu clave de validación es ' ||
                                              l_otp,
                                              'Clave de validación',
                                              'Clave de validación');
       
-        IF k_mensajeria.f_enviar_correo('Clave de validación',
+        if k_mensajeria.f_enviar_correo('Clave de validación',
                                         l_body,
-                                        NULL,
+                                        null,
                                         k_operacion.f_valor_parametro_string(i_parametros,
                                                                              'destino'),
-                                        NULL,
-                                        NULL,
-                                        NULL,
-                                        NULL,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
                                         k_mensajeria.c_prioridad_urgente) <>
-           k_mensajeria.c_ok THEN
+           k_mensajeria.c_ok then
           k_operacion.p_respuesta_error(l_rsp,
                                         'aut0001',
                                         'Error al enviar Mail');
-          RAISE k_operacion.ex_error_general;
-        END IF;
+          raise k_operacion.ex_error_general;
+        end if;
       
-      WHEN 'S' THEN
+      when 'S' then
         -- SMS
-        IF k_mensajeria.f_enviar_mensaje('Tu clave de validación es ' ||
+        if k_mensajeria.f_enviar_mensaje('Tu clave de validación es ' ||
                                          l_otp,
-                                         NULL,
+                                         null,
                                          k_operacion.f_valor_parametro_string(i_parametros,
                                                                               'destino'),
                                          k_mensajeria.c_prioridad_urgente) <>
-           k_mensajeria.c_ok THEN
+           k_mensajeria.c_ok then
           k_operacion.p_respuesta_error(l_rsp,
                                         'aut0002',
                                         'Error al enviar SMS');
-          RAISE k_operacion.ex_error_general;
-        END IF;
+          raise k_operacion.ex_error_general;
+        end if;
       
-      WHEN 'P' THEN
+      when 'P' then
         -- Push
-        NULL;
+        null;
       
-    END CASE;
+    end case;
     $end
   
     l_dato.contenido := l_secret;
   
     k_operacion.p_respuesta_ok(l_rsp, l_dato);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION validar_otp(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function validar_otp(i_parametros in y_parametros) return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'secret') IS NOT NULL,
+                                                                         'secret') is not null,
                                     'Debe ingresar secret');
   
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_number(i_parametros,
-                                                                         'otp') IS NOT NULL,
+                                                                         'otp') is not null,
                                     'Debe ingresar otp');
   
     l_rsp.lugar := 'Validando OTP';
-    BEGIN
-      IF oos_util_totp.validate_otp(k_operacion.f_valor_parametro_string(i_parametros,
+    begin
+      if oos_util_totp.validate_otp(k_operacion.f_valor_parametro_string(i_parametros,
                                                                          'secret'),
                                     k_operacion.f_valor_parametro_number(i_parametros,
                                                                          'otp'),
-                                    to_number(k_util.f_valor_parametro('TIEMPO_TOLERANCIA_VALIDAR_OTP'))) <> 1 THEN
+                                    to_number(k_util.f_valor_parametro('TIEMPO_TOLERANCIA_VALIDAR_OTP'))) <> 1 then
         k_operacion.p_respuesta_error(l_rsp, 'aut0001', 'OTP inválido');
-        RAISE k_operacion.ex_error_general;
-      END IF;
-    EXCEPTION
-      WHEN OTHERS THEN
+        raise k_operacion.ex_error_general;
+      end if;
+    exception
+      when others then
         k_operacion.p_respuesta_error(l_rsp, 'aut0002', 'OTP inválido');
-        RAISE k_operacion.ex_error_general;
-    END;
+        raise k_operacion.ex_error_general;
+    end;
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION validar_permiso(i_parametros IN y_parametros) RETURN y_respuesta IS
+  function validar_permiso(i_parametros in y_parametros) return y_respuesta is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Validando parametros';
     k_operacion.p_validar_parametro(l_rsp,
                                     k_operacion.f_valor_parametro_string(i_parametros,
-                                                                         'id_permiso') IS NOT NULL,
+                                                                         'id_permiso') is not null,
                                     'Debe ingresar permiso');
   
     l_rsp.lugar := 'Validando permiso';
-    IF NOT
+    if not
         k_autorizacion.f_validar_permiso(k_usuario.f_id_usuario(k_sistema.f_usuario),
                                          k_operacion.f_valor_parametro_string(i_parametros,
                                                                               'id_permiso'),
                                          k_operacion.f_valor_parametro_string(i_parametros,
-                                                                              'accion')) THEN
+                                                                              'accion')) then
       k_operacion.p_respuesta_error(l_rsp, 'aut0001', 'Sin autorización');
-      RAISE k_operacion.ex_error_general;
-    END IF;
+      raise k_operacion.ex_error_general;
+    end if;
   
     k_operacion.p_respuesta_ok(l_rsp);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-END;
+end;
 /

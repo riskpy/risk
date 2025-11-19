@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_parametro UNDER y_objeto
+create or replace type y_parametro under y_objeto
 (
 /**
 Agrupa datos de un parámetro de servicio o proceso.
@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /** Nombre del parametro */
-  nombre VARCHAR2(100),
+  nombre varchar2(100),
 /** Valor del parametro */
   valor anydata,
 
@@ -41,9 +41,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_parametro.
 */
-  CONSTRUCTOR FUNCTION y_parametro RETURN SELF AS RESULT,
+  constructor function y_parametro return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -51,6 +51,6 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_importacion IS
+create or replace package k_importacion is
 
   /**
   Agrupa operaciones relacionadas con la Importación de Archivos del sistema
@@ -31,34 +31,34 @@ CREATE OR REPLACE PACKAGE k_importacion IS
   */
 
   -- Códigos de respuesta
-  c_error_general_importacion CONSTANT VARCHAR2(10) := 'import0001';
+  c_error_general_importacion constant varchar2(10) := 'import0001';
 
-  FUNCTION f_procesar_importacion_local(i_id_importacion         IN NUMBER,
-                                        i_archivo                IN BLOB,
-                                        i_parametros_adicionales IN VARCHAR2 DEFAULT NULL,
-                                        i_version                IN VARCHAR2 DEFAULT NULL)
-    RETURN y_respuesta;
+  function f_procesar_importacion_local(i_id_importacion         in number,
+                                        i_archivo                in blob,
+                                        i_parametros_adicionales in varchar2 default null,
+                                        i_version                in varchar2 default null)
+    return y_respuesta;
 
-  FUNCTION f_procesar_importacion_autonoma(i_id_importacion         IN NUMBER,
-                                           i_archivo                IN BLOB,
-                                           i_parametros_adicionales IN VARCHAR2 DEFAULT NULL,
-                                           i_version                IN VARCHAR2 DEFAULT NULL)
-    RETURN y_respuesta;
+  function f_procesar_importacion_autonoma(i_id_importacion         in number,
+                                           i_archivo                in blob,
+                                           i_parametros_adicionales in varchar2 default null,
+                                           i_version                in varchar2 default null)
+    return y_respuesta;
 
-  FUNCTION f_procesar_importacion(i_id_importacion         IN NUMBER,
-                                  i_archivo                IN BLOB,
-                                  i_parametros_adicionales IN VARCHAR2 DEFAULT NULL,
-                                  i_transaccion_autonoma   IN BOOLEAN DEFAULT FALSE,
-                                  i_version                IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_procesar_importacion(i_id_importacion         in number,
+                                  i_archivo                in blob,
+                                  i_parametros_adicionales in varchar2 default null,
+                                  i_transaccion_autonoma   in boolean default false,
+                                  i_version                in varchar2 default null)
+    return clob;
 
-  FUNCTION f_procesar_importacion(i_nombre                 IN VARCHAR2,
-                                  i_dominio                IN VARCHAR2,
-                                  i_archivo                IN BLOB,
-                                  i_parametros_adicionales IN VARCHAR2 DEFAULT NULL,
-                                  i_transaccion_autonoma   IN BOOLEAN DEFAULT FALSE,
-                                  i_version                IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_procesar_importacion(i_nombre                 in varchar2,
+                                  i_dominio                in varchar2,
+                                  i_archivo                in blob,
+                                  i_parametros_adicionales in varchar2 default null,
+                                  i_transaccion_autonoma   in boolean default false,
+                                  i_version                in varchar2 default null)
+    return clob;
 
-END;
+end;
 /

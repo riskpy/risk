@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_cadena IS
+create or replace package k_cadena is
 
   /**
   Agrupa operaciones relacionadas con cadenas
@@ -32,13 +32,13 @@ CREATE OR REPLACE PACKAGE k_cadena IS
 
   -- https://github.com/osalvador/tePLSQL
   --Define data type for Template Variable names
-  SUBTYPE t_template_variable_name IS VARCHAR2(255);
+  subtype t_template_variable_name is varchar2(255);
 
   --Define data type for Template Variable values
-  SUBTYPE t_template_variable_value IS VARCHAR2(32767);
+  subtype t_template_variable_value is varchar2(32767);
 
   --Define Associative Array
-  TYPE t_assoc_array IS TABLE OF t_template_variable_value INDEX BY t_template_variable_name;
+  type t_assoc_array is table of t_template_variable_value index by t_template_variable_name;
 
   null_assoc_array t_assoc_array;
 
@@ -50,24 +50,24 @@ CREATE OR REPLACE PACKAGE k_cadena IS
   %param i_separador Caracter separador. Por defecto '~'
   %return Tabla de cadenas
   */
-  FUNCTION f_separar_cadenas(i_cadena    IN VARCHAR2,
-                             i_separador IN VARCHAR2 DEFAULT '~')
-    RETURN y_cadenas
-    PIPELINED;
+  function f_separar_cadenas(i_cadena    in varchar2,
+                             i_separador in varchar2 default '~')
+    return y_cadenas
+    pipelined;
 
-  FUNCTION f_unir_cadenas(i_cadena    IN VARCHAR2,
-                          i_cadenas   IN y_cadenas,
-                          i_wrap_char IN VARCHAR2 DEFAULT '@')
-    RETURN VARCHAR2;
+  function f_unir_cadenas(i_cadena    in varchar2,
+                          i_cadenas   in y_cadenas,
+                          i_wrap_char in varchar2 default '@')
+    return varchar2;
 
-  FUNCTION f_unir_cadenas(i_cadena    IN VARCHAR2,
-                          i_cadena1   IN VARCHAR2 DEFAULT NULL,
-                          i_cadena2   IN VARCHAR2 DEFAULT NULL,
-                          i_cadena3   IN VARCHAR2 DEFAULT NULL,
-                          i_cadena4   IN VARCHAR2 DEFAULT NULL,
-                          i_cadena5   IN VARCHAR2 DEFAULT NULL,
-                          i_wrap_char IN VARCHAR2 DEFAULT '@')
-    RETURN VARCHAR2;
+  function f_unir_cadenas(i_cadena    in varchar2,
+                          i_cadena1   in varchar2 default null,
+                          i_cadena2   in varchar2 default null,
+                          i_cadena3   in varchar2 default null,
+                          i_cadena4   in varchar2 default null,
+                          i_cadena5   in varchar2 default null,
+                          i_wrap_char in varchar2 default '@')
+    return varchar2;
 
   /**
   Retorna una tabla de cadenas contenidas en delimitadores dentro de un texto dado
@@ -78,12 +78,12 @@ CREATE OR REPLACE PACKAGE k_cadena IS
   %param i_encapsulador_final Caracter delimitador final. Por defecto ' '
   %return Tabla de cadenas
   */
-  FUNCTION f_extraer_cadenas(i_texto                IN VARCHAR2,
-                             i_encapsulador_inicial IN VARCHAR2 := ':',
-                             i_encapsulador_final   IN VARCHAR2 := ' ',
-                             i_limpio               IN VARCHAR2 := 'N')
-    RETURN y_cadenas
-    PIPELINED;
+  function f_extraer_cadenas(i_texto                in varchar2,
+                             i_encapsulador_inicial in varchar2 := ':',
+                             i_encapsulador_final   in varchar2 := ' ',
+                             i_limpio               in varchar2 := 'N')
+    return y_cadenas
+    pipelined;
 
   /**
   Retorna el valor que se encuenta en la posicion indicada dentro de una cadena
@@ -95,36 +95,36 @@ CREATE OR REPLACE PACKAGE k_cadena IS
   %param i_separador Caracter separador. Por defecto '~'
   %return Valor que se encuenta en la posicion indicada
   */
-  FUNCTION f_valor_posicion(i_cadena    IN VARCHAR2,
-                            i_posicion  IN NUMBER,
-                            i_separador IN VARCHAR2 DEFAULT '~')
-    RETURN VARCHAR2;
+  function f_valor_posicion(i_cadena    in varchar2,
+                            i_posicion  in number,
+                            i_separador in varchar2 default '~')
+    return varchar2;
 
-  FUNCTION f_reemplazar_acentos(i_cadena IN VARCHAR2) RETURN VARCHAR2;
+  function f_reemplazar_acentos(i_cadena in varchar2) return varchar2;
 
-  FUNCTION f_formatear_titulo(i_titulo IN VARCHAR2) RETURN VARCHAR2
-    DETERMINISTIC;
+  function f_formatear_titulo(i_titulo in varchar2) return varchar2
+    deterministic;
 
-  FUNCTION f_procesar_plantilla(i_plantilla IN CLOB,
-                                i_variables IN t_assoc_array DEFAULT null_assoc_array,
-                                i_wrap_char IN VARCHAR2 DEFAULT '@')
-    RETURN CLOB;
+  function f_procesar_plantilla(i_plantilla in clob,
+                                i_variables in t_assoc_array default null_assoc_array,
+                                i_wrap_char in varchar2 default '@')
+    return clob;
 
-  FUNCTION f_buscar_cadena(pin_buscar    VARCHAR2,
-                           pin_cadena    VARCHAR2,
-                           pin_separador VARCHAR2 DEFAULT ',')
-    RETURN VARCHAR2;
+  function f_buscar_cadena(pin_buscar    varchar2,
+                           pin_cadena    varchar2,
+                           pin_separador varchar2 default ',')
+    return varchar2;
 
-  FUNCTION f_formatear_cadena(p_lista_campos     IN VARCHAR2, -- lista separada por comas
-                              p_patron           IN VARCHAR2, -- texto plantilla, usar "#" como placeholder
-                              p_separador_salida IN VARCHAR2 DEFAULT chr(10) -- salto de línea o coma
-                              ) RETURN CLOB;
+  function f_formatear_cadena(p_lista_campos     in varchar2, -- lista separada por comas
+                              p_patron           in varchar2, -- texto plantilla, usar "#" como placeholder
+                              p_separador_salida in varchar2 default chr(10) -- salto de línea o coma
+                              ) return clob;
 
-  FUNCTION f_reemplazar_etiquetas(i_cadena       IN CLOB,
-                                  i_etiquetas    IN y_cadenas,
-                                  i_valores      IN y_cadenas,
-                                  i_encapsulador IN VARCHAR2 DEFAULT '#')
-    RETURN CLOB;
+  function f_reemplazar_etiquetas(i_cadena       in clob,
+                                  i_etiquetas    in y_cadenas,
+                                  i_valores      in y_cadenas,
+                                  i_encapsulador in varchar2 default '#')
+    return clob;
 
-END;
+end;
 /

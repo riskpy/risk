@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_error IS
+create or replace package k_error is
 
   /**
   Agrupa operaciones relacionadas con los errores o textos
@@ -31,12 +31,12 @@ CREATE OR REPLACE PACKAGE k_error IS
   */
 
   -- Tipos de error
-  c_oracle_predefined_error CONSTANT VARCHAR2(3) := 'OPE';
-  c_user_defined_error      CONSTANT VARCHAR2(3) := 'UDE';
+  c_oracle_predefined_error constant varchar2(3) := 'OPE';
+  c_user_defined_error      constant varchar2(3) := 'UDE';
 
-  c_wrap_char CONSTANT VARCHAR2(1) := '@';
+  c_wrap_char constant varchar2(1) := '@';
 
-  FUNCTION f_tipo_excepcion(i_sqlcode IN NUMBER) RETURN VARCHAR2;
+  function f_tipo_excepcion(i_sqlcode in number) return varchar2;
 
   /**
   Retorna el mensaje de error de una excepcion de Oracle
@@ -45,21 +45,21 @@ CREATE OR REPLACE PACKAGE k_error IS
   %param i_sqlerrm Mensaje de la excepcion (SQLERRM)
   %return Mensaje de error
   */
-  FUNCTION f_mensaje_excepcion(i_sqlerrm IN VARCHAR2) RETURN VARCHAR2;
+  function f_mensaje_excepcion(i_sqlerrm in varchar2) return varchar2;
 
-  FUNCTION f_mensaje_error(i_clave     IN VARCHAR2,
-                           i_cadenas   IN y_cadenas,
-                           i_wrap_char IN VARCHAR2 DEFAULT c_wrap_char)
-    RETURN VARCHAR2;
+  function f_mensaje_error(i_clave     in varchar2,
+                           i_cadenas   in y_cadenas,
+                           i_wrap_char in varchar2 default c_wrap_char)
+    return varchar2;
 
-  FUNCTION f_mensaje_error(i_clave     IN VARCHAR2,
-                           i_cadena1   IN VARCHAR2 DEFAULT NULL,
-                           i_cadena2   IN VARCHAR2 DEFAULT NULL,
-                           i_cadena3   IN VARCHAR2 DEFAULT NULL,
-                           i_cadena4   IN VARCHAR2 DEFAULT NULL,
-                           i_cadena5   IN VARCHAR2 DEFAULT NULL,
-                           i_wrap_char IN VARCHAR2 DEFAULT c_wrap_char)
-    RETURN VARCHAR2;
+  function f_mensaje_error(i_clave     in varchar2,
+                           i_cadena1   in varchar2 default null,
+                           i_cadena2   in varchar2 default null,
+                           i_cadena3   in varchar2 default null,
+                           i_cadena4   in varchar2 default null,
+                           i_cadena5   in varchar2 default null,
+                           i_wrap_char in varchar2 default c_wrap_char)
+    return varchar2;
 
-END;
+end;
 /

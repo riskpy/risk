@@ -1,204 +1,204 @@
-CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
+create or replace package body k_mensajeria is
 
-  FUNCTION f_validar_direccion_correo(i_direccion_correo VARCHAR2)
-    RETURN BOOLEAN IS
-  BEGIN
-    RETURN regexp_like(i_direccion_correo,
+  function f_validar_direccion_correo(i_direccion_correo varchar2)
+    return boolean is
+  begin
+    return regexp_like(i_direccion_correo,
                        k_util.f_valor_parametro('REGEXP_VALIDAR_DIRECCION_CORREO'));
-  END;
+  end;
 
-  FUNCTION f_validar_numero_telefono(i_numero_telefono VARCHAR2)
-    RETURN BOOLEAN IS
-  BEGIN
-    RETURN regexp_like(i_numero_telefono,
+  function f_validar_numero_telefono(i_numero_telefono varchar2)
+    return boolean is
+  begin
+    return regexp_like(i_numero_telefono,
                        k_util.f_valor_parametro('REGEXP_VALIDAR_NUMERO_TELEFONO'));
-  END;
+  end;
 
-  FUNCTION f_direccion_correo_usuario(i_id_usuario IN NUMBER) RETURN VARCHAR2 IS
-    l_direccion_correo t_usuarios.direccion_correo%TYPE;
-  BEGIN
-    BEGIN
-      SELECT direccion_correo
-        INTO l_direccion_correo
-        FROM t_usuarios
-       WHERE id_usuario = i_id_usuario;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_direccion_correo := NULL;
-    END;
-    RETURN l_direccion_correo;
-  END;
+  function f_direccion_correo_usuario(i_id_usuario in number) return varchar2 is
+    l_direccion_correo t_usuarios.direccion_correo%type;
+  begin
+    begin
+      select direccion_correo
+        into l_direccion_correo
+        from t_usuarios
+       where id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
+        l_direccion_correo := null;
+    end;
+    return l_direccion_correo;
+  end;
 
-  FUNCTION f_numero_telefono_usuario(i_id_usuario IN NUMBER) RETURN VARCHAR2 IS
-    l_numero_telefono t_usuarios.numero_telefono%TYPE;
-  BEGIN
-    BEGIN
-      SELECT numero_telefono
-        INTO l_numero_telefono
-        FROM t_usuarios
-       WHERE id_usuario = i_id_usuario;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_numero_telefono := NULL;
-    END;
-    RETURN l_numero_telefono;
-  END;
+  function f_numero_telefono_usuario(i_id_usuario in number) return varchar2 is
+    l_numero_telefono t_usuarios.numero_telefono%type;
+  begin
+    begin
+      select numero_telefono
+        into l_numero_telefono
+        from t_usuarios
+       where id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
+        l_numero_telefono := null;
+    end;
+    return l_numero_telefono;
+  end;
 
-  FUNCTION f_correo_html(i_contenido      IN VARCHAR2,
-                         i_titulo         IN VARCHAR2 DEFAULT NULL,
-                         i_encabezado     IN VARCHAR2 DEFAULT NULL,
-                         i_pie            IN VARCHAR2 DEFAULT NULL,
-                         i_boton_etiqueta IN VARCHAR2 DEFAULT NULL,
-                         i_boton_accion   IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB IS
-    l_html      CLOB;
-    l_contenido CLOB;
+  function f_correo_html(i_contenido      in varchar2,
+                         i_titulo         in varchar2 default null,
+                         i_encabezado     in varchar2 default null,
+                         i_pie            in varchar2 default null,
+                         i_boton_etiqueta in varchar2 default null,
+                         i_boton_accion   in varchar2 default null)
+    return clob is
+    l_html      clob;
+    l_contenido clob;
     l_archivo   y_archivo;
-  BEGIN
+  begin
     l_archivo := k_archivo.f_recuperar_archivo(k_archivo.c_carpeta_textos,
                                                'ARCHIVO',
                                                'email-inlined.html');
   
-    IF l_archivo.contenido IS NULL OR
-       dbms_lob.getlength(l_archivo.contenido) = 0 THEN
+    if l_archivo.contenido is null or
+       dbms_lob.getlength(l_archivo.contenido) = 0 then
       raise_application_error(-20000, 'Template de correo no definido');
-    END IF;
+    end if;
   
     l_html := k_util.blob_to_clob(l_archivo.contenido);
   
     -- Reemplaza CRLF por <br> en el contenido
-    l_contenido := REPLACE(i_contenido, utl_tcp.crlf, '<br>');
+    l_contenido := replace(i_contenido, utl_tcp.crlf, '<br>');
   
-    l_html := REPLACE(l_html, '&CONTENIDO', l_contenido);
-    l_html := REPLACE(l_html, '&TITULO', i_titulo);
-    l_html := REPLACE(l_html, '&ENCABEZADO', i_encabezado);
-    l_html := REPLACE(l_html, '&PIE', i_pie);
+    l_html := replace(l_html, '&CONTENIDO', l_contenido);
+    l_html := replace(l_html, '&TITULO', i_titulo);
+    l_html := replace(l_html, '&ENCABEZADO', i_encabezado);
+    l_html := replace(l_html, '&PIE', i_pie);
   
-    IF i_boton_etiqueta IS NOT NULL AND i_boton_accion IS NOT NULL THEN
-      l_html := REPLACE(l_html, '&BOTON_ETIQUETA', i_boton_etiqueta);
-      l_html := REPLACE(l_html, '&BOTON_ACCION', i_boton_accion);
-      l_html := REPLACE(l_html, '&BOTON_HIDDEN');
-    ELSE
-      l_html := REPLACE(l_html, '&BOTON_HIDDEN', 'style="display: none;"');
-    END IF;
+    if i_boton_etiqueta is not null and i_boton_accion is not null then
+      l_html := replace(l_html, '&BOTON_ETIQUETA', i_boton_etiqueta);
+      l_html := replace(l_html, '&BOTON_ACCION', i_boton_accion);
+      l_html := replace(l_html, '&BOTON_HIDDEN');
+    else
+      l_html := replace(l_html, '&BOTON_HIDDEN', 'style="display: none;"');
+    end if;
   
-    RETURN l_html;
-  END;
+    return l_html;
+  end;
 
-  FUNCTION f_correo_tabla_html(i_tabla      IN VARCHAR2,
-                               i_titulo     IN VARCHAR2 DEFAULT NULL,
-                               i_encabezado IN VARCHAR2 DEFAULT NULL,
-                               i_pie        IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB IS
-    l_html    CLOB;
-    l_tabla   CLOB;
+  function f_correo_tabla_html(i_tabla      in varchar2,
+                               i_titulo     in varchar2 default null,
+                               i_encabezado in varchar2 default null,
+                               i_pie        in varchar2 default null)
+    return clob is
+    l_html    clob;
+    l_tabla   clob;
     l_archivo y_archivo;
-  BEGIN
+  begin
     l_archivo := k_archivo.f_recuperar_archivo(k_archivo.c_carpeta_textos,
                                                'ARCHIVO',
                                                'email-table-inlined.html');
   
-    IF l_archivo.contenido IS NULL OR
-       dbms_lob.getlength(l_archivo.contenido) = 0 THEN
+    if l_archivo.contenido is null or
+       dbms_lob.getlength(l_archivo.contenido) = 0 then
       raise_application_error(-20000, 'Template de correo no definido');
-    END IF;
+    end if;
   
     l_html := k_util.blob_to_clob(l_archivo.contenido);
   
     -- Reemplaza CRLF por <br> en el contenido
-    l_tabla := REPLACE(i_tabla, utl_tcp.crlf, '<br>');
+    l_tabla := replace(i_tabla, utl_tcp.crlf, '<br>');
   
-    l_html := REPLACE(l_html, '&TITULO_TABLA', i_titulo);
-    l_html := REPLACE(l_html, '&TABLA', l_tabla);
-    l_html := REPLACE(l_html, '&PIE_TABLA', i_pie);
-    l_html := REPLACE(l_html, '&TITULO', i_titulo);
-    l_html := REPLACE(l_html, '&ENCABEZADO', i_encabezado);
+    l_html := replace(l_html, '&TITULO_TABLA', i_titulo);
+    l_html := replace(l_html, '&TABLA', l_tabla);
+    l_html := replace(l_html, '&PIE_TABLA', i_pie);
+    l_html := replace(l_html, '&TITULO', i_titulo);
+    l_html := replace(l_html, '&ENCABEZADO', i_encabezado);
   
-    RETURN l_html;
-  END;
+    return l_html;
+  end;
 
-  FUNCTION f_correo_tabla_aux_html(i_tabla       IN VARCHAR2,
-                                   i_tabla_aux_1 IN VARCHAR2 DEFAULT NULL,
-                                   i_tabla_aux_2 IN VARCHAR2 DEFAULT NULL,
-                                   i_tabla_aux_3 IN VARCHAR2 DEFAULT NULL,
-                                   i_titulo      IN VARCHAR2 DEFAULT NULL,
-                                   i_encabezado  IN VARCHAR2 DEFAULT NULL,
-                                   i_pie         IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB IS
-    l_html        CLOB;
-    l_tabla       CLOB;
-    l_tabla_aux_1 CLOB;
-    l_tabla_aux_2 CLOB;
-    l_tabla_aux_3 CLOB;
+  function f_correo_tabla_aux_html(i_tabla       in varchar2,
+                                   i_tabla_aux_1 in varchar2 default null,
+                                   i_tabla_aux_2 in varchar2 default null,
+                                   i_tabla_aux_3 in varchar2 default null,
+                                   i_titulo      in varchar2 default null,
+                                   i_encabezado  in varchar2 default null,
+                                   i_pie         in varchar2 default null)
+    return clob is
+    l_html        clob;
+    l_tabla       clob;
+    l_tabla_aux_1 clob;
+    l_tabla_aux_2 clob;
+    l_tabla_aux_3 clob;
     l_archivo     y_archivo;
-  BEGIN
+  begin
     l_archivo := k_archivo.f_recuperar_archivo(k_archivo.c_carpeta_textos,
                                                'ARCHIVO',
                                                'email-table-aux-inlined.html');
   
-    IF l_archivo.contenido IS NULL OR
-       dbms_lob.getlength(l_archivo.contenido) = 0 THEN
+    if l_archivo.contenido is null or
+       dbms_lob.getlength(l_archivo.contenido) = 0 then
       raise_application_error(-20000, 'Template de correo no definido');
-    END IF;
+    end if;
   
     l_html := k_util.blob_to_clob(l_archivo.contenido);
   
     -- Reemplaza CRLF por <br> en el contenido
-    l_tabla       := REPLACE(i_tabla, utl_tcp.crlf, '<br>');
-    l_tabla_aux_1 := REPLACE(i_tabla_aux_1, utl_tcp.crlf, '<br>');
-    l_tabla_aux_2 := REPLACE(i_tabla_aux_2, utl_tcp.crlf, '<br>');
-    l_tabla_aux_3 := REPLACE(i_tabla_aux_3, utl_tcp.crlf, '<br>');
+    l_tabla       := replace(i_tabla, utl_tcp.crlf, '<br>');
+    l_tabla_aux_1 := replace(i_tabla_aux_1, utl_tcp.crlf, '<br>');
+    l_tabla_aux_2 := replace(i_tabla_aux_2, utl_tcp.crlf, '<br>');
+    l_tabla_aux_3 := replace(i_tabla_aux_3, utl_tcp.crlf, '<br>');
   
-    l_html := REPLACE(l_html, '&TITULO_TABLA', i_titulo);
-    l_html := REPLACE(l_html, '&TABLA', l_tabla);
-    l_html := REPLACE(l_html, '&AUX_TABLA1', l_tabla_aux_1);
-    l_html := REPLACE(l_html, '&AUX_TABLA2', l_tabla_aux_2);
-    l_html := REPLACE(l_html, '&AUX_TABLA3', l_tabla_aux_3);
-    l_html := REPLACE(l_html, '&PIE_TABLA', i_pie);
-    l_html := REPLACE(l_html, '&TITULO', i_titulo);
-    l_html := REPLACE(l_html, '&ENCABEZADO', i_encabezado);
+    l_html := replace(l_html, '&TITULO_TABLA', i_titulo);
+    l_html := replace(l_html, '&TABLA', l_tabla);
+    l_html := replace(l_html, '&AUX_TABLA1', l_tabla_aux_1);
+    l_html := replace(l_html, '&AUX_TABLA2', l_tabla_aux_2);
+    l_html := replace(l_html, '&AUX_TABLA3', l_tabla_aux_3);
+    l_html := replace(l_html, '&PIE_TABLA', i_pie);
+    l_html := replace(l_html, '&TITULO', i_titulo);
+    l_html := replace(l_html, '&ENCABEZADO', i_encabezado);
   
-    RETURN l_html;
-  END;
+    return l_html;
+  end;
 
-  PROCEDURE p_enviar_correo(i_subject         IN VARCHAR2,
-                            i_body            IN CLOB,
-                            i_id_usuario      IN NUMBER DEFAULT NULL,
-                            i_to              IN VARCHAR2 DEFAULT NULL,
-                            i_reply_to        IN VARCHAR2 DEFAULT NULL,
-                            i_cc              IN VARCHAR2 DEFAULT NULL,
-                            i_bcc             IN VARCHAR2 DEFAULT NULL,
-                            i_adjuntos        IN y_archivos DEFAULT NULL,
-                            i_prioridad_envio IN NUMBER DEFAULT NULL) IS
-    l_mensaje_to        t_correos.mensaje_to%TYPE;
-    l_id_correo         t_correos.id_correo%TYPE;
-    l_id_correo_adjunto t_correo_adjuntos.id_correo_adjunto%TYPE;
-    i                   INTEGER;
-  BEGIN
+  procedure p_enviar_correo(i_subject         in varchar2,
+                            i_body            in clob,
+                            i_id_usuario      in number default null,
+                            i_to              in varchar2 default null,
+                            i_reply_to        in varchar2 default null,
+                            i_cc              in varchar2 default null,
+                            i_bcc             in varchar2 default null,
+                            i_adjuntos        in y_archivos default null,
+                            i_prioridad_envio in number default null) is
+    l_mensaje_to        t_correos.mensaje_to%type;
+    l_id_correo         t_correos.id_correo%type;
+    l_id_correo_adjunto t_correo_adjuntos.id_correo_adjunto%type;
+    i                   integer;
+  begin
     l_mensaje_to := i_to;
   
-    IF i_id_usuario IS NOT NULL AND l_mensaje_to IS NULL THEN
+    if i_id_usuario is not null and l_mensaje_to is null then
       l_mensaje_to := f_direccion_correo_usuario(i_id_usuario);
-    END IF;
+    end if;
   
-    IF l_mensaje_to IS NULL THEN
+    if l_mensaje_to is null then
       raise_application_error(-20000,
                               'Dirección de correo destino obligatorio');
-    END IF;
+    end if;
   
-    IF i_subject IS NULL THEN
+    if i_subject is null then
       raise_application_error(-20000, 'Asunto del mensaje obligatorio');
-    END IF;
+    end if;
   
-    IF i_body IS NULL THEN
+    if i_body is null then
       raise_application_error(-20000, 'Cuerpo del mensaje obligatorio');
-    END IF;
+    end if;
   
-    IF NOT k_sistema.f_es_produccion THEN
+    if not k_sistema.f_es_produccion then
       l_mensaje_to := k_util.f_valor_parametro('DIRECCION_CORREO_PRUEBAS');
-    END IF;
+    end if;
   
-    INSERT INTO t_correos
+    insert into t_correos
       (id_usuario,
        mensaje_to,
        mensaje_subject,
@@ -209,7 +209,7 @@ CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
        mensaje_bcc,
        estado,
        prioridad_envio)
-    VALUES
+    values
       (i_id_usuario,
        l_mensaje_to,
        i_subject,
@@ -220,16 +220,16 @@ CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
        i_bcc,
        'P',
        nvl(i_prioridad_envio, c_prioridad_media))
-    RETURNING id_correo INTO l_id_correo;
+    returning id_correo into l_id_correo;
   
-    IF i_adjuntos IS NOT NULL THEN
+    if i_adjuntos is not null then
       i := i_adjuntos.first;
-      WHILE i IS NOT NULL LOOP
-        INSERT INTO t_correo_adjuntos
+      while i is not null loop
+        insert into t_correo_adjuntos
           (id_correo)
-        VALUES
+        values
           (l_id_correo)
-        RETURNING id_correo_adjunto INTO l_id_correo_adjunto;
+        returning id_correo_adjunto into l_id_correo_adjunto;
       
         k_archivo.p_guardar_archivo('T_CORREO_ADJUNTOS',
                                     'ARCHIVO',
@@ -237,76 +237,76 @@ CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
                                     i_adjuntos(i));
       
         i := i_adjuntos.next(i);
-      END LOOP;
-    END IF;
-  END;
+      end loop;
+    end if;
+  end;
 
-  PROCEDURE p_enviar_mensaje(i_contenido       IN VARCHAR2,
-                             i_id_usuario      IN NUMBER DEFAULT NULL,
-                             i_numero_telefono IN VARCHAR2 DEFAULT NULL,
-                             i_prioridad_envio IN NUMBER DEFAULT NULL) IS
-    l_numero_telefono t_mensajes.numero_telefono%TYPE;
-  BEGIN
+  procedure p_enviar_mensaje(i_contenido       in varchar2,
+                             i_id_usuario      in number default null,
+                             i_numero_telefono in varchar2 default null,
+                             i_prioridad_envio in number default null) is
+    l_numero_telefono t_mensajes.numero_telefono%type;
+  begin
     l_numero_telefono := i_numero_telefono;
   
-    IF i_id_usuario IS NOT NULL AND l_numero_telefono IS NULL THEN
+    if i_id_usuario is not null and l_numero_telefono is null then
       l_numero_telefono := f_numero_telefono_usuario(i_id_usuario);
-    END IF;
+    end if;
   
-    IF l_numero_telefono IS NULL THEN
+    if l_numero_telefono is null then
       raise_application_error(-20000,
                               'Número de teléfono destino obligatorio');
-    END IF;
+    end if;
   
-    IF i_contenido IS NULL THEN
+    if i_contenido is null then
       raise_application_error(-20000, 'Contenido del mensaje obligatorio');
-    END IF;
+    end if;
   
-    IF NOT k_sistema.f_es_produccion THEN
+    if not k_sistema.f_es_produccion then
       l_numero_telefono := k_util.f_valor_parametro('NUMERO_TELEFONO_PRUEBAS');
-    END IF;
+    end if;
   
-    INSERT INTO t_mensajes
+    insert into t_mensajes
       (id_usuario, numero_telefono, contenido, estado, prioridad_envio)
-    VALUES
+    values
       (i_id_usuario,
        l_numero_telefono,
        substr(i_contenido, 1, 160),
        'P',
        nvl(i_prioridad_envio, c_prioridad_media));
-  END;
+  end;
 
-  PROCEDURE p_enviar_notificacion(i_titulo          IN VARCHAR2,
-                                  i_contenido       IN VARCHAR2,
-                                  i_id_usuario      IN NUMBER DEFAULT NULL,
-                                  i_suscripcion     IN VARCHAR2 DEFAULT NULL,
-                                  i_prioridad_envio IN NUMBER DEFAULT NULL,
-                                  i_datos_extra     IN VARCHAR2 DEFAULT NULL) IS
-    l_suscripcion t_notificaciones.suscripcion%TYPE;
-  BEGIN
+  procedure p_enviar_notificacion(i_titulo          in varchar2,
+                                  i_contenido       in varchar2,
+                                  i_id_usuario      in number default null,
+                                  i_suscripcion     in varchar2 default null,
+                                  i_prioridad_envio in number default null,
+                                  i_datos_extra     in varchar2 default null) is
+    l_suscripcion t_notificaciones.suscripcion%type;
+  begin
     l_suscripcion := i_suscripcion;
   
-    IF i_id_usuario IS NOT NULL THEN
-      IF l_suscripcion IS NULL THEN
+    if i_id_usuario is not null then
+      if l_suscripcion is null then
         l_suscripcion := k_dispositivo.c_suscripcion_usuario || '_' ||
                          to_char(i_id_usuario);
-      ELSE
+      else
         l_suscripcion := l_suscripcion || '&&' ||
                          k_dispositivo.c_suscripcion_usuario || '_' ||
                          to_char(i_id_usuario);
-      END IF;
-    END IF;
+      end if;
+    end if;
   
-    IF l_suscripcion IS NULL THEN
+    if l_suscripcion is null then
       raise_application_error(-20000,
                               'Tag o expresión destino obligatorio');
-    END IF;
+    end if;
   
-    IF NOT k_sistema.f_es_produccion THEN
+    if not k_sistema.f_es_produccion then
       l_suscripcion := k_util.f_valor_parametro('SUSCRIPCION_PRUEBAS');
-    END IF;
+    end if;
   
-    INSERT INTO t_notificaciones
+    insert into t_notificaciones
       (id_usuario,
        suscripcion,
        titulo,
@@ -314,7 +314,7 @@ CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
        estado,
        prioridad_envio,
        datos_extra)
-    VALUES
+    values
       (i_id_usuario,
        l_suscripcion,
        substr(i_titulo, 1, 160),
@@ -322,21 +322,21 @@ CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
        'P',
        nvl(i_prioridad_envio, c_prioridad_media),
        i_datos_extra);
-  END;
+  end;
 
-  FUNCTION f_enviar_correo(i_subject         IN VARCHAR2,
-                           i_body            IN CLOB,
-                           i_id_usuario      IN NUMBER DEFAULT NULL,
-                           i_to              IN VARCHAR2 DEFAULT NULL,
-                           i_reply_to        IN VARCHAR2 DEFAULT NULL,
-                           i_cc              IN VARCHAR2 DEFAULT NULL,
-                           i_bcc             IN VARCHAR2 DEFAULT NULL,
-                           i_adjuntos        IN y_archivos DEFAULT NULL,
-                           i_prioridad_envio IN NUMBER DEFAULT NULL)
-    RETURN PLS_INTEGER IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-    l_rsp PLS_INTEGER;
-  BEGIN
+  function f_enviar_correo(i_subject         in varchar2,
+                           i_body            in clob,
+                           i_id_usuario      in number default null,
+                           i_to              in varchar2 default null,
+                           i_reply_to        in varchar2 default null,
+                           i_cc              in varchar2 default null,
+                           i_bcc             in varchar2 default null,
+                           i_adjuntos        in y_archivos default null,
+                           i_prioridad_envio in number default null)
+    return pls_integer is
+    pragma autonomous_transaction;
+    l_rsp pls_integer;
+  begin
     -- Inicializa respuesta
     l_rsp := 0;
   
@@ -350,23 +350,23 @@ CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
                     i_adjuntos,
                     i_prioridad_envio);
   
-    COMMIT;
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN OTHERS THEN
+    commit;
+    return l_rsp;
+  exception
+    when others then
       l_rsp := utl_call_stack.error_number(1);
-      ROLLBACK;
-      RETURN l_rsp;
-  END;
+      rollback;
+      return l_rsp;
+  end;
 
-  FUNCTION f_enviar_mensaje(i_contenido       IN VARCHAR2,
-                            i_id_usuario      IN NUMBER DEFAULT NULL,
-                            i_numero_telefono IN VARCHAR2 DEFAULT NULL,
-                            i_prioridad_envio IN NUMBER DEFAULT NULL)
-    RETURN PLS_INTEGER IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-    l_rsp PLS_INTEGER;
-  BEGIN
+  function f_enviar_mensaje(i_contenido       in varchar2,
+                            i_id_usuario      in number default null,
+                            i_numero_telefono in varchar2 default null,
+                            i_prioridad_envio in number default null)
+    return pls_integer is
+    pragma autonomous_transaction;
+    l_rsp pls_integer;
+  begin
     -- Inicializa respuesta
     l_rsp := 0;
   
@@ -375,25 +375,25 @@ CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
                      i_numero_telefono,
                      i_prioridad_envio);
   
-    COMMIT;
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN OTHERS THEN
+    commit;
+    return l_rsp;
+  exception
+    when others then
       l_rsp := utl_call_stack.error_number(1);
-      ROLLBACK;
-      RETURN l_rsp;
-  END;
+      rollback;
+      return l_rsp;
+  end;
 
-  FUNCTION f_enviar_notificacion(i_titulo          IN VARCHAR2,
-                                 i_contenido       IN VARCHAR2,
-                                 i_id_usuario      IN NUMBER DEFAULT NULL,
-                                 i_suscripcion     IN VARCHAR2 DEFAULT NULL,
-                                 i_prioridad_envio IN NUMBER DEFAULT NULL,
-                                 i_datos_extra     IN VARCHAR2 DEFAULT NULL)
-    RETURN PLS_INTEGER IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-    l_rsp PLS_INTEGER;
-  BEGIN
+  function f_enviar_notificacion(i_titulo          in varchar2,
+                                 i_contenido       in varchar2,
+                                 i_id_usuario      in number default null,
+                                 i_suscripcion     in varchar2 default null,
+                                 i_prioridad_envio in number default null,
+                                 i_datos_extra     in varchar2 default null)
+    return pls_integer is
+    pragma autonomous_transaction;
+    l_rsp pls_integer;
+  begin
     -- Inicializa respuesta
     l_rsp := 0;
   
@@ -404,14 +404,14 @@ CREATE OR REPLACE PACKAGE BODY k_mensajeria IS
                           i_prioridad_envio,
                           i_datos_extra);
   
-    COMMIT;
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN OTHERS THEN
+    commit;
+    return l_rsp;
+  exception
+    when others then
       l_rsp := utl_call_stack.error_number(1);
-      ROLLBACK;
-      RETURN l_rsp;
-  END;
+      rollback;
+      return l_rsp;
+  end;
 
-END;
+end;
 /

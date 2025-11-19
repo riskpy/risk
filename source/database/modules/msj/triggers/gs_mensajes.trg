@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_mensajes
-  BEFORE INSERT ON t_mensajes
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_mensajes
+  before insert on t_mensajes
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_mensaje IS NULL THEN
+  if :new.id_mensaje is null then
     :new.id_mensaje := s_id_mensaje.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

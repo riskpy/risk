@@ -1,89 +1,89 @@
-CREATE OR REPLACE PACKAGE BODY test_k_util IS
+create or replace package body test_k_util is
 
-  PROCEDURE f_valor_parametro_parametro_con_valor IS
-    l_valor t_parametros.valor%TYPE;
-  BEGIN
+  procedure f_valor_parametro_parametro_con_valor is
+    l_valor t_parametros.valor%type;
+  begin
     -- Arrange
-    INSERT INTO t_parametros
+    insert into t_parametros
       (id_parametro, valor)
-    VALUES
+    values
       ('PARAMETRO_CON_VALOR', 'VALOR');
     -- Act
     l_valor := k_util.f_valor_parametro('PARAMETRO_CON_VALOR');
     -- Assert
     ut.expect(l_valor).to_equal('VALOR');
-  END;
+  end;
 
-  PROCEDURE f_valor_parametro_parametro_sin_valor IS
-    l_valor t_parametros.valor%TYPE;
-  BEGIN
+  procedure f_valor_parametro_parametro_sin_valor is
+    l_valor t_parametros.valor%type;
+  begin
     -- Arrange
-    INSERT INTO t_parametros
+    insert into t_parametros
       (id_parametro, valor)
-    VALUES
-      ('PARAMETRO_SIN_VALOR', NULL);
+    values
+      ('PARAMETRO_SIN_VALOR', null);
     -- Act
     l_valor := k_util.f_valor_parametro('PARAMETRO_SIN_VALOR');
     -- Assert
     ut.expect(l_valor).to_(be_null());
-  END;
+  end;
 
-  PROCEDURE f_valor_parametro_parametro_inexistente IS
-    l_valor t_parametros.valor%TYPE;
-  BEGIN
+  procedure f_valor_parametro_parametro_inexistente is
+    l_valor t_parametros.valor%type;
+  begin
     -- Arrange
     -- Act
     l_valor := k_util.f_valor_parametro('PARAMETRO_QUE_NO_EXISTE');
     -- Assert
     ut.expect(l_valor).to_(be_null());
-  END;
+  end;
 
-  PROCEDURE p_actualizar_valor_parametro_uso_basico IS
-    l_valor t_parametros.valor%TYPE;
-  BEGIN
+  procedure p_actualizar_valor_parametro_uso_basico is
+    l_valor t_parametros.valor%type;
+  begin
     -- Arrange
-    INSERT INTO t_parametros
+    insert into t_parametros
       (id_parametro, valor)
-    VALUES
+    values
       ('PARAMETRO_CON_VALOR', 'VALOR1');
     -- Act
     k_util.p_actualizar_valor_parametro('PARAMETRO_CON_VALOR', 'VALOR2');
     -- Assert
-    SELECT a.valor
-      INTO l_valor
-      FROM t_parametros a
-     WHERE a.id_parametro = 'PARAMETRO_CON_VALOR';
+    select a.valor
+      into l_valor
+      from t_parametros a
+     where a.id_parametro = 'PARAMETRO_CON_VALOR';
     ut.expect(l_valor).to_equal('VALOR2');
-  END;
+  end;
 
-  PROCEDURE f_base_datos IS
-  BEGIN
+  procedure f_base_datos is
+  begin
     ut.expect(k_util.f_base_datos).to_equal(sys_context('USERENV',
                                                         'DB_NAME'));
-  END;
+  end;
 
-  PROCEDURE f_terminal IS
-  BEGIN
+  procedure f_terminal is
+  begin
     ut.expect(k_util.f_terminal).to_equal(sys_context('USERENV',
                                                       'TERMINAL'));
-  END;
+  end;
 
-  PROCEDURE f_host IS
-  BEGIN
+  procedure f_host is
+  begin
     ut.expect(k_util.f_host).to_equal(sys_context('USERENV', 'HOST'));
-  END;
+  end;
 
-  PROCEDURE f_direccion_ip IS
-  BEGIN
+  procedure f_direccion_ip is
+  begin
     ut.expect(k_util.f_direccion_ip).to_equal(sys_context('USERENV',
                                                           'IP_ADDRESS'));
-  END;
+  end;
 
-  PROCEDURE f_esquema_actual IS
-  BEGIN
+  procedure f_esquema_actual is
+  begin
     ut.expect(k_util.f_esquema_actual).to_equal(sys_context('USERENV',
                                                             'CURRENT_SCHEMA'));
-  END;
+  end;
 
-END;
+end;
 /

@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_sistema IS
+create or replace package k_sistema is
 
   /**
   Agrupa operaciones relacionadas con parámetros de la sesión
@@ -31,22 +31,22 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   */
 
   -- Parámetros
-  c_sistema CONSTANT VARCHAR2(50) := 'SISTEMA';
-  c_version CONSTANT VARCHAR2(50) := 'VERSION';
-  c_fecha   CONSTANT VARCHAR2(50) := 'FECHA';
-  c_usuario CONSTANT VARCHAR2(50) := 'USUARIO';
+  c_sistema constant varchar2(50) := 'SISTEMA';
+  c_version constant varchar2(50) := 'VERSION';
+  c_fecha   constant varchar2(50) := 'FECHA';
+  c_usuario constant varchar2(50) := 'USUARIO';
   --
-  c_direccion_ip      CONSTANT VARCHAR2(50) := 'DIRECCION_IP';
-  c_id_operacion      CONSTANT VARCHAR2(50) := 'ID_OPERACION';
-  c_nombre_operacion  CONSTANT VARCHAR2(50) := 'NOMBRE_OPERACION';
-  c_dominio_operacion CONSTANT VARCHAR2(50) := 'DOMINIO_OPERACION';
-  c_id_aplicacion     CONSTANT VARCHAR2(50) := 'ID_APLICACION';
-  c_id_sesion         CONSTANT VARCHAR2(50) := 'ID_SESION';
-  c_id_usuario        CONSTANT VARCHAR2(50) := 'ID_USUARIO';
-  c_id_pais           CONSTANT VARCHAR2(50) := 'ID_PAIS';
-  c_zona_horaria      CONSTANT VARCHAR2(50) := 'ZONA_HORARIA';
-  c_id_idioma         CONSTANT VARCHAR2(50) := 'ID_IDIOMA';
-  c_id_dispositivo    CONSTANT VARCHAR2(50) := 'ID_DISPOSITIVO';
+  c_direccion_ip      constant varchar2(50) := 'DIRECCION_IP';
+  c_id_operacion      constant varchar2(50) := 'ID_OPERACION';
+  c_nombre_operacion  constant varchar2(50) := 'NOMBRE_OPERACION';
+  c_dominio_operacion constant varchar2(50) := 'DOMINIO_OPERACION';
+  c_id_aplicacion     constant varchar2(50) := 'ID_APLICACION';
+  c_id_sesion         constant varchar2(50) := 'ID_SESION';
+  c_id_usuario        constant varchar2(50) := 'ID_USUARIO';
+  c_id_pais           constant varchar2(50) := 'ID_PAIS';
+  c_zona_horaria      constant varchar2(50) := 'ZONA_HORARIA';
+  c_id_idioma         constant varchar2(50) := 'ID_IDIOMA';
+  c_id_dispositivo    constant varchar2(50) := 'ID_DISPOSITIVO';
 
   /**
   Indica si el ambiente de Base de Datos es de producción
@@ -54,7 +54,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %author jtsoya539 4/2/2021 08:56:25
   %return Indicador de si el ambiente de Base de Datos es de producción
   */
-  FUNCTION f_es_produccion RETURN BOOLEAN;
+  function f_es_produccion return boolean;
 
   /**
   Retorna el valor del parámetro FECHA en la sesión
@@ -62,7 +62,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %author jtsoya539 4/2/2021 08:54:38
   %return Valor del parámetro FECHA
   */
-  FUNCTION f_fecha RETURN DATE;
+  function f_fecha return date;
 
   /**
   Retorna el valor del parámetro ID_USUARIO en la sesión
@@ -70,7 +70,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %author jtsoya539 29/1/2022 10:22:38
   %return Valor del parámetro ID_USUARIO
   */
-  FUNCTION f_id_usuario RETURN NUMBER;
+  function f_id_usuario return number;
 
   /**
   Retorna el valor del parámetro USUARIO en la sesión
@@ -78,7 +78,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %author jtsoya539 4/2/2021 08:54:38
   %return Valor del parámetro USUARIO
   */
-  FUNCTION f_usuario RETURN VARCHAR2;
+  function f_usuario return varchar2;
 
   /**
   Retorna el valor del parámetro ID_PAIS en la sesión
@@ -86,7 +86,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %author dmezac 27/1/2022 23:54:40
   %return Valor del parámetro ID_PAIS
   */
-  FUNCTION f_pais RETURN NUMBER;
+  function f_pais return number;
 
   /**
   Retorna el valor del parámetro ZONA_HORARIA en la sesión
@@ -94,7 +94,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %author dmezac 27/1/2022 23:50:38
   %return Valor del parámetro ZONA_HORARIA
   */
-  FUNCTION f_zona_horaria RETURN VARCHAR2;
+  function f_zona_horaria return varchar2;
 
   /**
   Retorna el valor del parámetro ID_IDIOMA en la sesión
@@ -102,7 +102,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %author dmezac 27/1/2022 23:52:18
   %return Valor del parámetro ID_IDIOMA
   */
-  FUNCTION f_idioma RETURN NUMBER;
+  function f_idioma return number;
 
   /**
   Retorna el valor de un parámetro en la sesión
@@ -111,7 +111,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro
   %return Valor del parámetro, si no existe retorna null
   */
-  FUNCTION f_valor_parametro(i_parametro IN VARCHAR2) RETURN anydata;
+  function f_valor_parametro(i_parametro in varchar2) return anydata;
 
   /**
   Retorna el valor de un parámetro de tipo string en la sesión
@@ -120,7 +120,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro
   %return Valor del parámetro de tipo string, si no existe retorna null
   */
-  FUNCTION f_valor_parametro_string(i_parametro IN VARCHAR2) RETURN VARCHAR2;
+  function f_valor_parametro_string(i_parametro in varchar2) return varchar2;
 
   /**
   Retorna el valor de un parámetro de tipo number en la sesión
@@ -129,7 +129,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro
   %return Valor del parámetro de tipo number, si no existe retorna null
   */
-  FUNCTION f_valor_parametro_number(i_parametro IN VARCHAR2) RETURN NUMBER;
+  function f_valor_parametro_number(i_parametro in varchar2) return number;
 
   /**
   Retorna el valor de un parámetro de tipo boolean en la sesión
@@ -138,7 +138,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro
   %return Valor del parámetro de tipo boolean, si no existe retorna null
   */
-  FUNCTION f_valor_parametro_boolean(i_parametro IN VARCHAR2) RETURN BOOLEAN;
+  function f_valor_parametro_boolean(i_parametro in varchar2) return boolean;
 
   /**
   Retorna el valor de un parámetro de tipo date en la sesión
@@ -147,7 +147,7 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro
   %return Valor del parámetro de tipo date, si no existe retorna null
   */
-  FUNCTION f_valor_parametro_date(i_parametro IN VARCHAR2) RETURN DATE;
+  function f_valor_parametro_date(i_parametro in varchar2) return date;
 
   /**
   Define el valor de un parámetro en la sesión
@@ -156,8 +156,8 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro
   %param i_valor Valor del parámetro
   */
-  PROCEDURE p_definir_parametro(i_parametro IN VARCHAR2,
-                                i_valor     IN anydata);
+  procedure p_definir_parametro(i_parametro in varchar2,
+                                i_valor     in anydata);
 
   /**
   Define el valor de un parámetro de tipo string en la sesión
@@ -166,8 +166,8 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro de tipo string
   %param i_valor Valor del parámetro de tipo string
   */
-  PROCEDURE p_definir_parametro_string(i_parametro IN VARCHAR2,
-                                       i_valor     IN VARCHAR2);
+  procedure p_definir_parametro_string(i_parametro in varchar2,
+                                       i_valor     in varchar2);
 
   /**
   Define el valor de un parámetro de tipo number en la sesión
@@ -176,8 +176,8 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro de tipo number
   %param i_valor Valor del parámetro de tipo number
   */
-  PROCEDURE p_definir_parametro_number(i_parametro IN VARCHAR2,
-                                       i_valor     IN NUMBER);
+  procedure p_definir_parametro_number(i_parametro in varchar2,
+                                       i_valor     in number);
 
   /**
   Define el valor de un parámetro de tipo boolean en la sesión
@@ -186,8 +186,8 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro de tipo boolean
   %param i_valor Valor del parámetro de tipo boolean
   */
-  PROCEDURE p_definir_parametro_boolean(i_parametro IN VARCHAR2,
-                                        i_valor     IN BOOLEAN);
+  procedure p_definir_parametro_boolean(i_parametro in varchar2,
+                                        i_valor     in boolean);
 
   /**
   Define el valor de un parámetro de tipo date en la sesión
@@ -196,46 +196,46 @@ CREATE OR REPLACE PACKAGE k_sistema IS
   %param i_parametro Nombre del parámetro de tipo date
   %param i_valor Valor del parámetro de tipo date
   */
-  PROCEDURE p_definir_parametro_date(i_parametro IN VARCHAR2,
-                                     i_valor     IN DATE);
+  procedure p_definir_parametro_date(i_parametro in varchar2,
+                                     i_valor     in date);
 
   /**
   Define el valor de los parámetros por defecto de la sesión
   
   %author jtsoya539 4/2/2021 08:48:40
   */
-  PROCEDURE p_inicializar_parametros;
+  procedure p_inicializar_parametros;
 
   /**
   Define el valor de todos los parámetros de la sesión a null
   
   %author jtsoya539 27/3/2020 17:01:24
   */
-  PROCEDURE p_limpiar_parametros;
+  procedure p_limpiar_parametros;
 
   /**
   Elimina todos los parámetros definidos en la sesión
   
   %author jtsoya539 27/3/2020 17:02:14
   */
-  PROCEDURE p_eliminar_parametros;
+  procedure p_eliminar_parametros;
 
   /**
   Imprime todos los parámetros definidos en la sesión
   
   %author jtsoya539 27/3/2020 17:02:58
   */
-  PROCEDURE p_imprimir_parametros;
+  procedure p_imprimir_parametros;
 
   --
-  PROCEDURE p_inicializar_cola;
+  procedure p_inicializar_cola;
 
-  PROCEDURE p_encolar(i_valor IN VARCHAR2);
+  procedure p_encolar(i_valor in varchar2);
 
-  FUNCTION f_desencolar RETURN VARCHAR2;
+  function f_desencolar return varchar2;
 
-  PROCEDURE p_imprimir_cola;
+  procedure p_imprimir_cola;
   --
 
-END;
+end;
 /

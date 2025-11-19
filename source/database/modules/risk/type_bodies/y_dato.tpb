@@ -1,28 +1,28 @@
-CREATE OR REPLACE TYPE BODY y_dato IS
+create or replace type body y_dato is
 
-  CONSTRUCTOR FUNCTION y_dato RETURN SELF AS RESULT AS
-  BEGIN
-    self.contenido := NULL;
-    RETURN;
-  END;
+  constructor function y_dato return self as result as
+  begin
+    self.contenido := null;
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_dato        y_dato;
     l_json_object json_object_t;
-  BEGIN
+  begin
     l_json_object    := json_object_t.parse(i_json);
-    l_dato           := NEW y_dato();
+    l_dato           := new y_dato();
     l_dato.contenido := l_json_object.get_clob('contenido');
-    RETURN l_dato;
-  END;
+    return l_dato;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
-  BEGIN
-    l_json_object := NEW json_object_t();
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('contenido', self.contenido);
-    RETURN l_json_object.to_clob;
-  END;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

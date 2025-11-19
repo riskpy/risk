@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_error UNDER y_objeto
+create or replace type y_error under y_objeto
 (
 /**
 Agrupa datos de Errores o textos.
@@ -31,14 +31,14 @@ SOFTWARE.
 */
 
 /** Clave del error o texto */
-  clave VARCHAR2(100),
+  clave varchar2(100),
 /** Mensaje del error o texto */
-  mensaje VARCHAR2(4000),
+  mensaje varchar2(4000),
 
-  CONSTRUCTOR FUNCTION y_error RETURN SELF AS RESULT,
+  constructor function y_error return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

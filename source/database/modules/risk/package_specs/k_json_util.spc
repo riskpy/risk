@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_json_util AS
+create or replace package k_json_util as
   /**
   Agrupa herramientas para facilitar el manejo de json y variables
   
@@ -29,39 +29,39 @@ CREATE OR REPLACE PACKAGE k_json_util AS
   -------------------------------------------------------------------------------
   */
 
-  c_json_object_vacio CONSTANT VARCHAR2(10) := '{}';
-  c_json_array_vacio  CONSTANT VARCHAR2(10) := '[]';
+  c_json_object_vacio constant varchar2(10) := '{}';
+  c_json_array_vacio  constant varchar2(10) := '[]';
 
-  FUNCTION f_contiene_valor(i_valor IN VARCHAR2,
-                            i_json  IN CLOB) RETURN BOOLEAN;
+  function f_contiene_valor(i_valor in varchar2,
+                            i_json  in clob) return boolean;
 
-  FUNCTION f_obtener_valor(i_json  IN CLOB,
-                           i_clave IN VARCHAR2) RETURN VARCHAR2;
+  function f_obtener_valor(i_json  in clob,
+                           i_clave in varchar2) return varchar2;
 
-  FUNCTION f_editar_valor(i_json  IN CLOB,
-                          i_clave IN VARCHAR2,
-                          i_valor IN VARCHAR2) RETURN CLOB;
+  function f_editar_valor(i_json  in clob,
+                          i_clave in varchar2,
+                          i_valor in varchar2) return clob;
 
-  FUNCTION f_contiene_valores(i_valores IN VARCHAR2,
-                              i_json    IN CLOB) RETURN VARCHAR2;
+  function f_contiene_valores(i_valores in varchar2,
+                              i_json    in clob) return varchar2;
 
-  FUNCTION f_reemplazar_expresion(i_expresion                  IN VARCHAR2,
-                                  i_valores                    IN CLOB,
-                                  i_encapsulador_inicial       IN VARCHAR2 := ':',
-                                  i_encapsulador_final         IN VARCHAR2 := '',
-                                  i_delimitador_texto_agregado IN VARCHAR2 := '')
-    RETURN CLOB;
+  function f_reemplazar_expresion(i_expresion                  in varchar2,
+                                  i_valores                    in clob,
+                                  i_encapsulador_inicial       in varchar2 := ':',
+                                  i_encapsulador_final         in varchar2 := '',
+                                  i_delimitador_texto_agregado in varchar2 := '')
+    return clob;
 
-  FUNCTION f_reemplazar_expresion_clob(i_expresion                  IN CLOB,
-                                       i_valores                    IN CLOB,
-                                       i_encapsulador_inicial       IN VARCHAR2 := ':',
-                                       i_encapsulador_final         IN VARCHAR2 := '',
-                                       i_delimitador_texto_agregado IN VARCHAR2 := '')
-    RETURN CLOB;
+  function f_reemplazar_expresion_clob(i_expresion                  in clob,
+                                       i_valores                    in clob,
+                                       i_encapsulador_inicial       in varchar2 := ':',
+                                       i_encapsulador_final         in varchar2 := '',
+                                       i_delimitador_texto_agregado in varchar2 := '')
+    return clob;
 
-  FUNCTION f_replace_clob(i_source  IN CLOB,
-                          i_find    IN VARCHAR2,
-                          i_replace IN CLOB) RETURN CLOB;
+  function f_replace_clob(i_source  in clob,
+                          i_find    in varchar2,
+                          i_replace in clob) return clob;
 
-END k_json_util;
+end k_json_util;
 /

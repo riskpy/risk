@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_sesion IS
+create or replace package k_sesion is
 
   /**
   Agrupa operaciones relacionadas con las sesiones
@@ -31,37 +31,37 @@ CREATE OR REPLACE PACKAGE k_sesion IS
   */
 
   -- Tipos de token
-  c_access_token  CONSTANT CHAR(1) := 'A';
-  c_refresh_token CONSTANT CHAR(1) := 'R';
+  c_access_token  constant char(1) := 'A';
+  c_refresh_token constant char(1) := 'R';
 
   -- Excepciones
-  ex_sesion_inexistente EXCEPTION;
+  ex_sesion_inexistente exception;
 
-  FUNCTION f_id_sesion(i_access_token IN VARCHAR2,
-                       i_estado       IN VARCHAR2 DEFAULT NULL) RETURN NUMBER;
+  function f_id_sesion(i_access_token in varchar2,
+                       i_estado       in varchar2 default null) return number;
 
-  FUNCTION f_validar_sesion(i_access_token IN VARCHAR2) RETURN BOOLEAN;
+  function f_validar_sesion(i_access_token in varchar2) return boolean;
 
-  FUNCTION f_datos_sesion(i_id_sesion IN NUMBER) RETURN y_sesion;
+  function f_datos_sesion(i_id_sesion in number) return y_sesion;
 
-  FUNCTION f_dispositivo_sesion(i_id_sesion IN NUMBER) RETURN VARCHAR2;
+  function f_dispositivo_sesion(i_id_sesion in number) return varchar2;
 
-  FUNCTION f_tiempo_expiracion_token(i_id_aplicacion IN VARCHAR2,
-                                     i_tipo_token    IN VARCHAR2)
-    RETURN NUMBER;
+  function f_tiempo_expiracion_token(i_id_aplicacion in varchar2,
+                                     i_tipo_token    in varchar2)
+    return number;
 
-  FUNCTION f_fecha_expiracion_access_token(i_access_token IN VARCHAR2)
-    RETURN DATE;
+  function f_fecha_expiracion_access_token(i_access_token in varchar2)
+    return date;
 
-  FUNCTION f_fecha_expiracion_refresh_token(i_id_aplicacion IN VARCHAR2)
-    RETURN DATE;
+  function f_fecha_expiracion_refresh_token(i_id_aplicacion in varchar2)
+    return date;
 
-  PROCEDURE p_validar_sesion(i_access_token IN VARCHAR2);
+  procedure p_validar_sesion(i_access_token in varchar2);
 
-  PROCEDURE p_cambiar_estado(i_access_token IN VARCHAR2,
-                             i_estado       IN VARCHAR2);
+  procedure p_cambiar_estado(i_access_token in varchar2,
+                             i_estado       in varchar2);
 
-  PROCEDURE p_expirar_sesiones(i_id_usuario IN NUMBER);
+  procedure p_expirar_sesiones(i_id_usuario in number);
 
-END;
+end;
 /

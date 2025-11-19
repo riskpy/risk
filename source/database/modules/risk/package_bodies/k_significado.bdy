@@ -1,75 +1,75 @@
-CREATE OR REPLACE PACKAGE BODY k_significado IS
+create or replace package body k_significado is
 
-  FUNCTION f_significado_codigo(i_dominio IN VARCHAR2,
-                                i_codigo  IN VARCHAR2) RETURN VARCHAR2 IS
-    l_significado t_significados.significado%TYPE;
-  BEGIN
-    BEGIN
-      SELECT a.significado
-        INTO l_significado
-        FROM t_significados a
-       WHERE a.dominio = i_dominio
-         AND a.codigo = i_codigo;
-    EXCEPTION
-      WHEN OTHERS THEN
-        l_significado := NULL;
-    END;
-    RETURN l_significado;
-  END;
+  function f_significado_codigo(i_dominio in varchar2,
+                                i_codigo  in varchar2) return varchar2 is
+    l_significado t_significados.significado%type;
+  begin
+    begin
+      select a.significado
+        into l_significado
+        from t_significados a
+       where a.dominio = i_dominio
+         and a.codigo = i_codigo;
+    exception
+      when others then
+        l_significado := null;
+    end;
+    return l_significado;
+  end;
 
-  FUNCTION f_referencia_codigo(i_dominio IN VARCHAR2,
-                               i_codigo  IN VARCHAR2) RETURN VARCHAR2 IS
-    l_referencia t_significados.referencia%TYPE;
-  BEGIN
-    BEGIN
-      SELECT a.referencia
-        INTO l_referencia
-        FROM t_significados a
-       WHERE a.dominio = i_dominio
-         AND a.codigo = i_codigo;
-    EXCEPTION
-      WHEN OTHERS THEN
-        l_referencia := NULL;
-    END;
-    RETURN l_referencia;
-  END;
+  function f_referencia_codigo(i_dominio in varchar2,
+                               i_codigo  in varchar2) return varchar2 is
+    l_referencia t_significados.referencia%type;
+  begin
+    begin
+      select a.referencia
+        into l_referencia
+        from t_significados a
+       where a.dominio = i_dominio
+         and a.codigo = i_codigo;
+    exception
+      when others then
+        l_referencia := null;
+    end;
+    return l_referencia;
+  end;
 
-  FUNCTION f_existe_codigo(i_dominio IN VARCHAR2,
-                           i_codigo  IN VARCHAR2) RETURN BOOLEAN IS
-    l_existe VARCHAR2(1);
-  BEGIN
-    BEGIN
-      SELECT 'S'
-        INTO l_existe
-        FROM t_significados a
-       WHERE a.dominio = i_dominio
-         AND a.codigo = i_codigo;
-    EXCEPTION
-      WHEN no_data_found THEN
+  function f_existe_codigo(i_dominio in varchar2,
+                           i_codigo  in varchar2) return boolean is
+    l_existe varchar2(1);
+  begin
+    begin
+      select 'S'
+        into l_existe
+        from t_significados a
+       where a.dominio = i_dominio
+         and a.codigo = i_codigo;
+    exception
+      when no_data_found then
         l_existe := 'N';
-      WHEN too_many_rows THEN
+      when too_many_rows then
         l_existe := 'S';
-    END;
-    RETURN k_util.string_to_bool(l_existe);
-  END;
+    end;
+    return k_util.string_to_bool(l_existe);
+  end;
 
-  FUNCTION f_id_modulo_dominio(i_dominio IN VARCHAR2) RETURN VARCHAR2 IS
-    l_id_modulo t_modulos.id_modulo%TYPE;
-  BEGIN
-    BEGIN
-      SELECT d.id_modulo
-        INTO l_id_modulo
-        FROM t_significado_dominios sd, t_dominios d
-       WHERE d.id_dominio = sd.id_dominio
-         AND sd.dominio = i_dominio;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_modulo := NULL;
-      WHEN OTHERS THEN
-        l_id_modulo := NULL;
-    END;
-    RETURN l_id_modulo;
-  END;
+  function f_id_modulo_dominio(i_dominio in varchar2) return varchar2 is
+    l_id_modulo t_modulos.id_modulo%type;
+  begin
+    begin
+      select d.id_modulo
+        into l_id_modulo
+        from t_significado_dominios sd, t_dominios d
+       where d.id_dominio = sd.id_dominio
+         and sd.dominio = i_dominio;
+    exception
+      when no_data_found then
+        l_id_modulo := null;
+      when others then
+        l_id_modulo := null;
+    end;
+    return l_id_modulo;
+  end;
 
-END;
+end;
 /

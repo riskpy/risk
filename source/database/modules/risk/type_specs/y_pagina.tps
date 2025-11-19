@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_pagina UNDER y_objeto
+create or replace type y_pagina under y_objeto
 (
 /**
 Agrupa datos de una página con resultados para una consulta.
@@ -31,17 +31,17 @@ SOFTWARE.
 */
 
 /** Número de la página actual */
-  numero_actual INTEGER,
+  numero_actual integer,
 /** Número de la página siguiente */
-  numero_siguiente INTEGER,
+  numero_siguiente integer,
 /** Número de la última página */
-  numero_ultima INTEGER,
+  numero_ultima integer,
 /** Número de la primera página */
-  numero_primera INTEGER,
+  numero_primera integer,
 /** Número de la página anterior */
-  numero_anterior INTEGER,
+  numero_anterior integer,
 /** Cantidad de elementos en la página actual */
-  cantidad_elementos INTEGER,
+  cantidad_elementos integer,
 /** Elementos */
   elementos y_objetos,
 
@@ -51,9 +51,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_pagina.
 */
-  CONSTRUCTOR FUNCTION y_pagina RETURN SELF AS RESULT,
+  constructor function y_pagina return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -61,6 +61,6 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

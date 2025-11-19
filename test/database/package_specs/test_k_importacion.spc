@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE test_k_importacion IS
+create or replace package test_k_importacion is
 
   --%suite(Tests unitarios del paquete k_importacion)
   --%tags(package)
@@ -7,14 +7,14 @@ CREATE OR REPLACE PACKAGE test_k_importacion IS
   --%name(f_procesar_importacion)
 
   --%test()
-  PROCEDURE p_procesar_importacion_campos_fijos_ok;
+  procedure p_procesar_importacion_campos_fijos_ok;
   --%test()
-  PROCEDURE p_procesar_importacion_campos_fijos_error;
+  procedure p_procesar_importacion_campos_fijos_error;
   --%test()
-  PROCEDURE p_procesar_importacion_campos_separados_por_coma_ok;
+  procedure p_procesar_importacion_campos_separados_por_coma_ok;
   --%test()
-  PROCEDURE p_procesar_importacion_campos_separados_por_coma_error;
+  procedure p_procesar_importacion_campos_separados_por_coma_error;
   --%endcontext
 
-END;
+end;
 /

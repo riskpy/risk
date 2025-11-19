@@ -1,5 +1,4 @@
-CREATE OR REPLACE PACKAGE BODY k_modulo IS
+create or replace package body k_modulo is
 
-END;
+end;
 /
-

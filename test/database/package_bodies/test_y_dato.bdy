@@ -1,9 +1,9 @@
-CREATE OR REPLACE PACKAGE BODY test_y_dato IS
+create or replace package body test_y_dato is
 
-  PROCEDURE y_dato_uso_basico IS
-  BEGIN
+  procedure y_dato_uso_basico is
+  begin
     ut.expect('hola').to_equal('hola');
-  END;
+  end;
 
-END;
+end;
 /

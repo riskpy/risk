@@ -1,43 +1,43 @@
-CREATE OR REPLACE PACKAGE BODY k_aplicacion IS
+create or replace package body k_aplicacion is
 
-  FUNCTION f_id_aplicacion(i_clave_aplicacion IN VARCHAR2,
-                           i_activo           IN VARCHAR2 DEFAULT NULL)
-    RETURN VARCHAR2 IS
-    l_id_aplicacion t_aplicaciones.id_aplicacion%TYPE;
-  BEGIN
-    BEGIN
-      SELECT id_aplicacion
-        INTO l_id_aplicacion
-        FROM t_aplicaciones
-       WHERE clave = i_clave_aplicacion
-         AND activo = nvl(i_activo, activo);
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_aplicacion := NULL;
-      WHEN OTHERS THEN
-        l_id_aplicacion := NULL;
-    END;
-    RETURN l_id_aplicacion;
-  END;
+  function f_id_aplicacion(i_clave_aplicacion in varchar2,
+                           i_activo           in varchar2 default null)
+    return varchar2 is
+    l_id_aplicacion t_aplicaciones.id_aplicacion%type;
+  begin
+    begin
+      select id_aplicacion
+        into l_id_aplicacion
+        from t_aplicaciones
+       where clave = i_clave_aplicacion
+         and activo = nvl(i_activo, activo);
+    exception
+      when no_data_found then
+        l_id_aplicacion := null;
+      when others then
+        l_id_aplicacion := null;
+    end;
+    return l_id_aplicacion;
+  end;
 
-  FUNCTION f_validar_clave(i_clave_aplicacion IN VARCHAR2) RETURN BOOLEAN IS
-  BEGIN
-    IF f_id_aplicacion(i_clave_aplicacion, 'S') IS NULL THEN
-      RETURN FALSE;
-    ELSE
-      RETURN TRUE;
-    END IF;
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN FALSE;
-  END;
+  function f_validar_clave(i_clave_aplicacion in varchar2) return boolean is
+  begin
+    if f_id_aplicacion(i_clave_aplicacion, 'S') is null then
+      return false;
+    else
+      return true;
+    end if;
+  exception
+    when others then
+      return false;
+  end;
 
-  PROCEDURE p_validar_clave(i_clave_aplicacion IN VARCHAR2) IS
-  BEGIN
-    IF NOT f_validar_clave(i_clave_aplicacion) THEN
+  procedure p_validar_clave(i_clave_aplicacion in varchar2) is
+  begin
+    if not f_validar_clave(i_clave_aplicacion) then
       raise_application_error(-20000, 'Aplicación inexistente o inactiva');
-    END IF;
-  END;
+    end if;
+  end;
 
-END;
+end;
 /

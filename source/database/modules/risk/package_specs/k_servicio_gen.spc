@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_servicio_gen IS
+create or replace package k_servicio_gen is
 
   /**
   Agrupa operaciones relacionadas con los Servicios Web del dominio GEN
@@ -30,25 +30,25 @@ CREATE OR REPLACE PACKAGE k_servicio_gen IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION version_sistema(i_parametros IN y_parametros) RETURN y_respuesta;
+  function version_sistema(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION version_servicio(i_parametros IN y_parametros) RETURN y_respuesta;
+  function version_servicio(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION valor_parametro(i_parametros IN y_parametros) RETURN y_respuesta;
+  function valor_parametro(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION significado_codigo(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function significado_codigo(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION listar_significados(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function listar_significados(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION listar_errores(i_parametros IN y_parametros) RETURN y_respuesta;
+  function listar_errores(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION recuperar_archivo(i_parametros IN y_parametros) RETURN y_respuesta;
+  function recuperar_archivo(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION guardar_archivo(i_parametros IN y_parametros) RETURN y_respuesta;
+  function guardar_archivo(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION recuperar_texto(i_parametros IN y_parametros) RETURN y_respuesta;
+  function recuperar_texto(i_parametros in y_parametros) return y_respuesta;
 
-END;
+end;
 /

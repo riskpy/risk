@@ -1,239 +1,239 @@
-CREATE OR REPLACE PACKAGE BODY k_servicio IS
+create or replace package body k_servicio is
 
-  PROCEDURE lp_registrar_ejecucion(i_id_servicio IN NUMBER) IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-  BEGIN
-    UPDATE t_servicios
-       SET cantidad_ejecuciones   = nvl(cantidad_ejecuciones, 0) + 1,
-           fecha_ultima_ejecucion = SYSDATE
-     WHERE id_servicio = i_id_servicio;
-    COMMIT;
-  EXCEPTION
-    WHEN OTHERS THEN
-      ROLLBACK;
-  END;
+  procedure lp_registrar_ejecucion(i_id_servicio in number) is
+    pragma autonomous_transaction;
+  begin
+    update t_servicios
+       set cantidad_ejecuciones   = nvl(cantidad_ejecuciones, 0) + 1,
+           fecha_ultima_ejecucion = sysdate
+     where id_servicio = i_id_servicio;
+    commit;
+  exception
+    when others then
+      rollback;
+  end;
 
-  PROCEDURE lp_registrar_sql_ejecucion(i_id_servicio IN NUMBER,
-                                       i_sql         IN CLOB) IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
-  BEGIN
-    UPDATE t_servicios
-       SET sql_ultima_ejecucion = i_sql
-     WHERE id_servicio = i_id_servicio;
-    COMMIT;
-  EXCEPTION
-    WHEN OTHERS THEN
-      ROLLBACK;
-  END;
+  procedure lp_registrar_sql_ejecucion(i_id_servicio in number,
+                                       i_sql         in clob) is
+    pragma autonomous_transaction;
+  begin
+    update t_servicios
+       set sql_ultima_ejecucion = i_sql
+     where id_servicio = i_id_servicio;
+    commit;
+  exception
+    when others then
+      rollback;
+  end;
 
-  FUNCTION lf_procesar_servicio(i_id_servicio IN NUMBER,
-                                i_parametros  IN CLOB,
-                                i_contexto    IN CLOB DEFAULT NULL,
-                                i_version     IN VARCHAR2 DEFAULT NULL)
-    RETURN y_respuesta IS
-    PRAGMA AUTONOMOUS_TRANSACTION;
+  function lf_procesar_servicio(i_id_servicio in number,
+                                i_parametros  in clob,
+                                i_contexto    in clob default null,
+                                i_version     in varchar2 default null)
+    return y_respuesta is
+    pragma autonomous_transaction;
     l_rsp                 y_respuesta;
     l_prms                y_parametros;
     l_ctx                 y_parametros;
-    l_nombre_servicio     t_operaciones.nombre%TYPE;
-    l_tipo_implementacion t_operaciones.tipo_implementacion%TYPE;
-    l_tipo_servicio       t_servicios.tipo%TYPE;
-    l_consulta_sql        t_servicios.consulta_sql%TYPE;
-    l_sentencia           CLOB;
-  BEGIN
+    l_nombre_servicio     t_operaciones.nombre%type;
+    l_tipo_implementacion t_operaciones.tipo_implementacion%type;
+    l_tipo_servicio       t_servicios.tipo%type;
+    l_consulta_sql        t_servicios.consulta_sql%type;
+    l_sentencia           clob;
+  begin
     -- Inicializa respuesta
-    l_rsp := NEW y_respuesta();
+    l_rsp := new y_respuesta();
   
     l_rsp.lugar := 'Buscando datos del servicio';
-    BEGIN
-      SELECT upper(o.nombre), o.tipo_implementacion, s.tipo, s.consulta_sql
-        INTO l_nombre_servicio,
+    begin
+      select upper(o.nombre), o.tipo_implementacion, s.tipo, s.consulta_sql
+        into l_nombre_servicio,
              l_tipo_implementacion,
              l_tipo_servicio,
              l_consulta_sql
-        FROM t_servicios s, t_operaciones o
-       WHERE o.id_operacion = s.id_servicio
-         AND o.activo = 'S'
-         AND s.id_servicio = i_id_servicio;
-    EXCEPTION
-      WHEN no_data_found THEN
+        from t_servicios s, t_operaciones o
+       where o.id_operacion = s.id_servicio
+         and o.activo = 'S'
+         and s.id_servicio = i_id_servicio;
+    exception
+      when no_data_found then
         k_operacion.p_respuesta_error(l_rsp,
                                       k_operacion.c_servicio_no_implementado,
                                       'Servicio inexistente o inactivo');
-        RAISE k_operacion.ex_error_parametro;
-    END;
+        raise k_operacion.ex_error_parametro;
+    end;
   
     l_rsp.lugar := 'Procesando parámetros del servicio';
-    BEGIN
+    begin
       l_prms := k_operacion.f_procesar_parametros(i_id_servicio,
                                                   i_parametros,
                                                   i_version);
-    EXCEPTION
-      WHEN OTHERS THEN
+    exception
+      when others then
         k_operacion.p_respuesta_error(l_rsp,
                                       k_operacion.c_error_parametro,
-                                      CASE
-                                      k_error.f_tipo_excepcion(utl_call_stack.error_number(1)) WHEN
-                                      k_error.c_user_defined_error THEN
-                                      utl_call_stack.error_msg(1) WHEN
-                                      k_error.c_oracle_predefined_error THEN
-                                      k_error.f_mensaje_error(k_operacion.c_error_parametro) END,
+                                      case
+                                      k_error.f_tipo_excepcion(utl_call_stack.error_number(1)) when
+                                      k_error.c_user_defined_error then
+                                      utl_call_stack.error_msg(1) when
+                                      k_error.c_oracle_predefined_error then
+                                      k_error.f_mensaje_error(k_operacion.c_error_parametro) end,
                                       dbms_utility.format_error_stack);
-        RAISE k_operacion.ex_error_parametro;
-    END;
+        raise k_operacion.ex_error_parametro;
+    end;
   
     l_rsp.lugar := 'Procesando contexto';
-    BEGIN
+    begin
       l_ctx := k_operacion.f_procesar_parametros(k_operacion.c_id_operacion_contexto,
                                                  i_contexto);
-    EXCEPTION
-      WHEN OTHERS THEN
+    exception
+      when others then
         k_operacion.p_respuesta_error(l_rsp,
                                       k_operacion.c_error_parametro,
-                                      CASE
-                                      k_error.f_tipo_excepcion(utl_call_stack.error_number(1)) WHEN
-                                      k_error.c_user_defined_error THEN
-                                      utl_call_stack.error_msg(1) WHEN
-                                      k_error.c_oracle_predefined_error THEN
-                                      k_error.f_mensaje_error(k_operacion.c_error_parametro) END,
+                                      case
+                                      k_error.f_tipo_excepcion(utl_call_stack.error_number(1)) when
+                                      k_error.c_user_defined_error then
+                                      utl_call_stack.error_msg(1) when
+                                      k_error.c_oracle_predefined_error then
+                                      k_error.f_mensaje_error(k_operacion.c_error_parametro) end,
                                       dbms_utility.format_error_stack);
-        RAISE k_operacion.ex_error_parametro;
-    END;
+        raise k_operacion.ex_error_parametro;
+    end;
   
     l_rsp.lugar := 'Definiendo parámetros en la sesión';
     k_operacion.p_definir_parametros(i_id_servicio, l_ctx);
   
     l_rsp.lugar := 'Validando permiso por aplicación';
-    IF k_sistema.f_valor_parametro_string(k_sistema.c_id_aplicacion) IS NOT NULL THEN
-      IF NOT k_operacion.f_validar_permiso_aplicacion(k_sistema.f_valor_parametro_string(k_sistema.c_id_aplicacion),
-                                                      i_id_servicio) THEN
+    if k_sistema.f_valor_parametro_string(k_sistema.c_id_aplicacion) is not null then
+      if not k_operacion.f_validar_permiso_aplicacion(k_sistema.f_valor_parametro_string(k_sistema.c_id_aplicacion),
+                                                      i_id_servicio) then
         k_operacion.p_respuesta_error(l_rsp,
                                       k_operacion.c_error_permiso,
                                       k_error.f_mensaje_error(k_operacion.c_error_permiso));
-        RAISE k_operacion.ex_error_general;
-      END IF;
-    END IF;
+        raise k_operacion.ex_error_general;
+      end if;
+    end if;
   
     l_rsp.lugar := 'Validando permiso por usuario';
-    IF k_sistema.f_valor_parametro_number(k_sistema.c_id_usuario) IS NOT NULL THEN
-      IF NOT
+    if k_sistema.f_valor_parametro_number(k_sistema.c_id_usuario) is not null then
+      if not
           k_autorizacion.f_validar_permiso(k_sistema.f_valor_parametro_number(k_sistema.c_id_usuario),
-                                           k_operacion.f_id_permiso(i_id_servicio)) THEN
+                                           k_operacion.f_id_permiso(i_id_servicio)) then
         k_operacion.p_respuesta_error(l_rsp,
                                       k_operacion.c_error_permiso,
                                       k_error.f_mensaje_error(k_operacion.c_error_permiso));
-        RAISE k_operacion.ex_error_general;
-      END IF;
-    END IF;
+        raise k_operacion.ex_error_general;
+      end if;
+    end if;
   
-    IF l_tipo_servicio = 'C' THEN
+    if l_tipo_servicio = 'C' then
       -- CONSULTA
       l_rsp := f_servicio_sql(i_id_servicio, l_prms);
     
-    ELSE
+    else
       l_rsp.lugar := 'Construyendo sentencia';
-      IF l_tipo_implementacion IN
+      if l_tipo_implementacion in
          (k_operacion.c_tipo_implementacion_paquete,
-          k_operacion.c_tipo_implementacion_funcion) THEN
+          k_operacion.c_tipo_implementacion_funcion) then
         l_sentencia := 'BEGIN :1 := ' ||
                        k_operacion.f_nombre_programa(i_id_servicio,
                                                      i_version) ||
                        '(:2); END;';
-      ELSIF l_tipo_implementacion =
-            k_operacion.c_tipo_implementacion_bloque THEN
+      elsif l_tipo_implementacion =
+            k_operacion.c_tipo_implementacion_bloque then
         l_sentencia := 'DECLARE ' || l_consulta_sql || ' BEGIN :1 := ' ||
                        k_operacion.f_nombre_programa(i_id_servicio,
                                                      i_version) ||
                        '(:2); END;';
-      END IF;
+      end if;
     
       -- Registra SQL
       lp_registrar_sql_ejecucion(i_id_servicio, l_sentencia);
     
       l_rsp.lugar := 'Procesando servicio';
-      BEGIN
-        EXECUTE IMMEDIATE l_sentencia
-          USING OUT l_rsp, IN l_prms;
-      EXCEPTION
-        WHEN k_operacion.ex_servicio_no_implementado THEN
+      begin
+        execute immediate l_sentencia
+          using out l_rsp, in l_prms;
+      exception
+        when k_operacion.ex_servicio_no_implementado then
           k_operacion.p_respuesta_error(l_rsp,
                                         k_operacion.c_servicio_no_implementado,
                                         'Servicio no implementado',
                                         dbms_utility.format_error_stack);
-          RAISE k_operacion.ex_error_general;
-        WHEN OTHERS THEN
+          raise k_operacion.ex_error_general;
+        when others then
           k_operacion.p_respuesta_error(l_rsp,
                                         k_operacion.c_error_general,
-                                        CASE
-                                        k_error.f_tipo_excepcion(utl_call_stack.error_number(1)) WHEN
-                                        k_error.c_user_defined_error THEN
-                                        utl_call_stack.error_msg(1) WHEN
-                                        k_error.c_oracle_predefined_error THEN
-                                        'Error al procesar servicio' END,
+                                        case
+                                        k_error.f_tipo_excepcion(utl_call_stack.error_number(1)) when
+                                        k_error.c_user_defined_error then
+                                        utl_call_stack.error_msg(1) when
+                                        k_error.c_oracle_predefined_error then
+                                        'Error al procesar servicio' end,
                                         dbms_utility.format_error_stack);
-          RAISE k_operacion.ex_error_general;
-      END;
+          raise k_operacion.ex_error_general;
+      end;
     
-    END IF;
+    end if;
   
-    IF l_rsp.codigo = k_operacion.c_ok THEN
-      COMMIT;
-    ELSE
-      RAISE k_operacion.ex_error_general;
-    END IF;
+    if l_rsp.codigo = k_operacion.c_ok then
+      commit;
+    else
+      raise k_operacion.ex_error_general;
+    end if;
   
     k_operacion.p_respuesta_ok(l_rsp, l_rsp.datos);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      ROLLBACK;
-      RETURN l_rsp;
-    WHEN OTHERS THEN
-      ROLLBACK;
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      rollback;
+      return l_rsp;
+    when others then
+      rollback;
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  PROCEDURE p_limpiar_historial IS
-  BEGIN
-    UPDATE t_servicios
-       SET cantidad_ejecuciones   = NULL,
-           fecha_ultima_ejecucion = NULL,
-           sql_ultima_ejecucion   = NULL;
-  END;
+  procedure p_limpiar_historial is
+  begin
+    update t_servicios
+       set cantidad_ejecuciones   = null,
+           fecha_ultima_ejecucion = null,
+           sql_ultima_ejecucion   = null;
+  end;
 
-  FUNCTION f_pagina_parametros(i_parametros IN y_parametros)
-    RETURN y_pagina_parametros IS
-  BEGIN
-    RETURN nvl(treat(k_operacion.f_valor_parametro_object(i_parametros,
-                                                          'pagina_parametros') AS
+  function f_pagina_parametros(i_parametros in y_parametros)
+    return y_pagina_parametros is
+  begin
+    return nvl(treat(k_operacion.f_valor_parametro_object(i_parametros,
+                                                          'pagina_parametros') as
                      y_pagina_parametros),
-               NEW y_pagina_parametros());
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN NEW y_pagina_parametros();
-  END;
+               new y_pagina_parametros());
+  exception
+    when others then
+      return new y_pagina_parametros();
+  end;
 
-  FUNCTION f_paginar_elementos(i_elementos           IN y_objetos,
-                               i_numero_pagina       IN INTEGER DEFAULT NULL,
-                               i_cantidad_por_pagina IN INTEGER DEFAULT NULL,
-                               i_no_paginar          IN VARCHAR2 DEFAULT NULL)
-    RETURN y_pagina IS
+  function f_paginar_elementos(i_elementos           in y_objetos,
+                               i_numero_pagina       in integer default null,
+                               i_cantidad_por_pagina in integer default null,
+                               i_no_paginar          in varchar2 default null)
+    return y_pagina is
     l_pagina              y_pagina;
     l_objetos             y_objetos;
-    l_numero_pagina       INTEGER;
-    l_cantidad_por_pagina INTEGER;
-    l_rango_i             INTEGER;
-    l_rango_j             INTEGER;
-    l_no_paginar          BOOLEAN;
-  BEGIN
+    l_numero_pagina       integer;
+    l_cantidad_por_pagina integer;
+    l_rango_i             integer;
+    l_rango_j             integer;
+    l_no_paginar          boolean;
+  begin
     -- Inicializa respuesta
-    l_pagina                    := NEW y_pagina();
+    l_pagina                    := new y_pagina();
     l_pagina.numero_actual      := 0;
     l_pagina.numero_siguiente   := 0;
     l_pagina.numero_ultima      := 0;
@@ -248,43 +248,43 @@ CREATE OR REPLACE PACKAGE BODY k_servicio IS
     --
   
     -- Valida parámetro de cantidad por página
-    IF l_no_paginar THEN
+    if l_no_paginar then
       l_cantidad_por_pagina := l_pagina.cantidad_elementos;
-    ELSE
+    else
       l_cantidad_por_pagina := nvl(i_cantidad_por_pagina,
                                    to_number(k_util.f_valor_parametro('PAGINACION_CANTIDAD_DEFECTO_POR_PAGINA')));
-    END IF;
+    end if;
   
-    IF l_cantidad_por_pagina <= 0 THEN
+    if l_cantidad_por_pagina <= 0 then
       l_cantidad_por_pagina := to_number(k_util.f_valor_parametro('PAGINACION_CANTIDAD_DEFECTO_POR_PAGINA'));
-    END IF;
+    end if;
   
-    IF NOT l_no_paginar AND
+    if not l_no_paginar and
        l_cantidad_por_pagina >
-       to_number(k_util.f_valor_parametro('PAGINACION_CANTIDAD_MAXIMA_POR_PAGINA')) THEN
+       to_number(k_util.f_valor_parametro('PAGINACION_CANTIDAD_MAXIMA_POR_PAGINA')) then
       l_cantidad_por_pagina := to_number(k_util.f_valor_parametro('PAGINACION_CANTIDAD_MAXIMA_POR_PAGINA'));
-    END IF;
+    end if;
     --
   
     -- Calcula primera página y última página
     l_pagina.numero_ultima := ceil(l_pagina.cantidad_elementos /
                                    l_cantidad_por_pagina);
   
-    IF l_pagina.numero_ultima > 0 THEN
+    if l_pagina.numero_ultima > 0 then
       l_pagina.numero_primera := 1;
-    END IF;
+    end if;
     --
   
     -- Valida parámetro de número de página
     l_numero_pagina := nvl(i_numero_pagina, 1);
   
-    IF l_numero_pagina < l_pagina.numero_primera THEN
+    if l_numero_pagina < l_pagina.numero_primera then
       l_numero_pagina := l_pagina.numero_primera;
-    END IF;
+    end if;
   
-    IF l_numero_pagina > l_pagina.numero_ultima THEN
+    if l_numero_pagina > l_pagina.numero_ultima then
       l_numero_pagina := l_pagina.numero_ultima;
-    END IF;
+    end if;
     --
   
     -- Carga página actual
@@ -295,90 +295,90 @@ CREATE OR REPLACE PACKAGE BODY k_servicio IS
     l_pagina.numero_anterior  := l_pagina.numero_actual - 1;
     l_pagina.numero_siguiente := l_pagina.numero_actual + 1;
   
-    IF l_pagina.numero_anterior < l_pagina.numero_primera THEN
+    if l_pagina.numero_anterior < l_pagina.numero_primera then
       l_pagina.numero_anterior := l_pagina.numero_primera;
-    END IF;
+    end if;
   
-    IF l_pagina.numero_siguiente > l_pagina.numero_ultima THEN
+    if l_pagina.numero_siguiente > l_pagina.numero_ultima then
       l_pagina.numero_siguiente := l_pagina.numero_ultima;
-    END IF;
+    end if;
     --
   
     -- Calcula el rango de elementos
     l_rango_i := ((l_pagina.numero_actual - 1) * l_cantidad_por_pagina) + 1;
     l_rango_j := l_pagina.numero_actual * l_cantidad_por_pagina;
   
-    IF l_rango_i < 0 THEN
+    if l_rango_i < 0 then
       l_rango_i := 0;
-    END IF;
+    end if;
   
-    IF l_rango_j > l_pagina.cantidad_elementos THEN
+    if l_rango_j > l_pagina.cantidad_elementos then
       l_rango_j := l_pagina.cantidad_elementos;
-    END IF;
+    end if;
     --
   
     -- Carga elementos dentro del rango
-    l_objetos := NEW y_objetos();
-    IF l_pagina.cantidad_elementos > 0 THEN
-      FOR i IN l_rango_i .. l_rango_j LOOP
+    l_objetos := new y_objetos();
+    if l_pagina.cantidad_elementos > 0 then
+      for i in l_rango_i .. l_rango_j loop
         l_objetos.extend;
         l_objetos(l_objetos.count) := i_elementos(i);
-      END LOOP;
-    END IF;
+      end loop;
+    end if;
     l_pagina.elementos := l_objetos;
     --
   
-    RETURN l_pagina;
-  END;
+    return l_pagina;
+  end;
 
-  FUNCTION f_paginar_elementos(i_elementos         IN y_objetos,
-                               i_pagina_parametros IN y_pagina_parametros)
-    RETURN y_pagina IS
-  BEGIN
-    RETURN f_paginar_elementos(i_elementos,
+  function f_paginar_elementos(i_elementos         in y_objetos,
+                               i_pagina_parametros in y_pagina_parametros)
+    return y_pagina is
+  begin
+    return f_paginar_elementos(i_elementos,
                                i_pagina_parametros.pagina,
                                i_pagina_parametros.por_pagina,
                                i_pagina_parametros.no_paginar);
-  END;
+  end;
 
-  FUNCTION f_servicio_sql(i_id_servicio IN NUMBER,
-                          i_parametros  IN y_parametros) RETURN y_respuesta IS
+  function f_servicio_sql(i_id_servicio in number,
+                          i_parametros  in y_parametros) return y_respuesta is
     l_rsp       y_respuesta;
     l_pagina    y_pagina;
     l_elementos y_objetos;
     l_elemento  y_dato;
   
-    l_nombre_servicio  t_operaciones.nombre%TYPE;
-    l_dominio_servicio t_operaciones.dominio%TYPE;
-    l_consulta_sql     t_servicios.consulta_sql%TYPE;
-  BEGIN
+    l_nombre_servicio  t_operaciones.nombre%type;
+    l_dominio_servicio t_operaciones.dominio%type;
+    l_consulta_sql     t_servicios.consulta_sql%type;
+  begin
     -- Inicializa respuesta
-    l_rsp       := NEW y_respuesta();
-    l_elementos := NEW y_objetos();
+    l_rsp       := new y_respuesta();
+    l_elementos := new y_objetos();
   
     l_rsp.lugar := 'Buscando datos del servicio';
-    BEGIN
-      SELECT upper(o.nombre), upper(o.dominio), s.consulta_sql
-        INTO l_nombre_servicio, l_dominio_servicio, l_consulta_sql
-        FROM t_servicios s, t_operaciones o
-       WHERE o.id_operacion = s.id_servicio
-         AND o.activo = 'S'
-         AND s.id_servicio = i_id_servicio;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select upper(o.nombre), upper(o.dominio), s.consulta_sql
+        into l_nombre_servicio, l_dominio_servicio, l_consulta_sql
+        from t_servicios s, t_operaciones o
+       where o.id_operacion = s.id_servicio
+         and o.activo = 'S'
+         and s.id_servicio = i_id_servicio;
+    exception
+      when no_data_found then
         k_operacion.p_respuesta_error(l_rsp,
                                       k_operacion.c_error_parametro,
                                       'Servicio inexistente o inactivo');
-        RAISE k_operacion.ex_error_parametro;
-    END;
+        raise k_operacion.ex_error_parametro;
+    end;
   
     l_rsp.lugar := 'Validando parametros';
-    IF l_consulta_sql IS NULL THEN
+    if l_consulta_sql is null then
       k_operacion.p_respuesta_error(l_rsp,
                                     k_operacion.c_error_general,
                                     'Consulta SQL no definida');
-      RAISE k_operacion.ex_error_parametro;
-    END IF;
+      raise k_operacion.ex_error_parametro;
+    end if;
   
     l_consulta_sql := 'SELECT * FROM (' || l_consulta_sql || ')' ||
                       k_operacion.f_filtros_sql(i_parametros);
@@ -386,110 +386,110 @@ CREATE OR REPLACE PACKAGE BODY k_servicio IS
     lp_registrar_sql_ejecucion(i_id_servicio, l_consulta_sql);
   
     -- ========================================================
-    DECLARE
-      l_cursor   PLS_INTEGER;
-      l_row_cnt  PLS_INTEGER;
-      l_col_cnt  PLS_INTEGER;
+    declare
+      l_cursor   pls_integer;
+      l_row_cnt  pls_integer;
+      l_col_cnt  pls_integer;
       l_desc_tab dbms_sql.desc_tab2;
       --
-      l_buffer_varchar2  VARCHAR2(32767);
-      l_buffer_number    NUMBER;
-      l_buffer_date      DATE;
-      l_buffer_timestamp TIMESTAMP;
+      l_buffer_varchar2  varchar2(32767);
+      l_buffer_number    number;
+      l_buffer_date      date;
+      l_buffer_timestamp timestamp;
       --
       l_json_object json_object_t;
-    BEGIN
+    begin
       l_cursor := dbms_sql.open_cursor;
       dbms_sql.parse(l_cursor, l_consulta_sql, dbms_sql.native);
       dbms_sql.describe_columns2(l_cursor, l_col_cnt, l_desc_tab);
     
-      FOR i IN 1 .. l_col_cnt LOOP
-        IF l_desc_tab(i).col_type IN (dbms_types.typecode_varchar,
+      for i in 1 .. l_col_cnt loop
+        if l_desc_tab(i).col_type in (dbms_types.typecode_varchar,
                          dbms_types.typecode_varchar2,
                          dbms_types.typecode_char,
                          dbms_types.typecode_clob,
                          dbms_types.typecode_nvarchar2,
                          dbms_types.typecode_nchar,
-                         dbms_types.typecode_nclob) THEN
+                         dbms_types.typecode_nclob) then
           dbms_sql.define_column(l_cursor, i, l_buffer_varchar2, 32767);
-        ELSIF l_desc_tab(i).col_type IN (dbms_types.typecode_number) THEN
+        elsif l_desc_tab(i).col_type in (dbms_types.typecode_number) then
           dbms_sql.define_column(l_cursor, i, l_buffer_number);
-        ELSIF l_desc_tab(i).col_type IN (dbms_types.typecode_date) THEN
+        elsif l_desc_tab(i).col_type in (dbms_types.typecode_date) then
           dbms_sql.define_column(l_cursor, i, l_buffer_date);
-        ELSIF l_desc_tab(i).col_type IN (dbms_types.typecode_timestamp) THEN
+        elsif l_desc_tab(i).col_type in (dbms_types.typecode_timestamp) then
           dbms_sql.define_column(l_cursor, i, l_buffer_timestamp);
-        END IF;
-      END LOOP;
+        end if;
+      end loop;
     
       l_row_cnt := dbms_sql.execute(l_cursor);
     
-      LOOP
-        EXIT WHEN dbms_sql.fetch_rows(l_cursor) = 0;
+      loop
+        exit when dbms_sql.fetch_rows(l_cursor) = 0;
       
-        l_json_object := NEW json_object_t();
+        l_json_object := new json_object_t();
       
-        FOR i IN 1 .. l_col_cnt LOOP
-          IF l_desc_tab(i)
-           .col_type IN (dbms_types.typecode_varchar,
+        for i in 1 .. l_col_cnt loop
+          if l_desc_tab(i)
+           .col_type in (dbms_types.typecode_varchar,
                            dbms_types.typecode_varchar2,
                            dbms_types.typecode_char,
                            dbms_types.typecode_clob,
                            dbms_types.typecode_nvarchar2,
                            dbms_types.typecode_nchar,
-                           dbms_types.typecode_nclob) THEN
+                           dbms_types.typecode_nclob) then
             dbms_sql.column_value(l_cursor, i, l_buffer_varchar2);
             l_json_object.put(lower(l_desc_tab(i).col_name),
                               l_buffer_varchar2);
-          ELSIF l_desc_tab(i).col_type IN (dbms_types.typecode_number) THEN
+          elsif l_desc_tab(i).col_type in (dbms_types.typecode_number) then
             dbms_sql.column_value(l_cursor, i, l_buffer_number);
             l_json_object.put(lower(l_desc_tab(i).col_name),
                               l_buffer_number);
-          ELSIF l_desc_tab(i).col_type IN (dbms_types.typecode_date) THEN
+          elsif l_desc_tab(i).col_type in (dbms_types.typecode_date) then
             dbms_sql.column_value(l_cursor, i, l_buffer_date);
             l_json_object.put(lower(l_desc_tab(i).col_name), l_buffer_date);
-          ELSIF l_desc_tab(i).col_type IN (dbms_types.typecode_timestamp) THEN
+          elsif l_desc_tab(i).col_type in (dbms_types.typecode_timestamp) then
             dbms_sql.column_value(l_cursor, i, l_buffer_timestamp);
             l_json_object.put(lower(l_desc_tab(i).col_name),
                               l_buffer_timestamp);
-          END IF;
-        END LOOP;
+          end if;
+        end loop;
       
-        l_elemento      := NEW y_dato();
+        l_elemento      := new y_dato();
         l_elemento.json := l_json_object.to_clob;
       
         l_elementos.extend;
         l_elementos(l_elementos.count) := l_elemento;
-      END LOOP;
+      end loop;
     
       dbms_sql.close_cursor(l_cursor);
-    END;
+    end;
     -- ========================================================
   
     l_pagina := f_paginar_elementos(l_elementos,
                                     f_pagina_parametros(i_parametros));
   
     k_operacion.p_respuesta_ok(l_rsp, l_pagina);
-    RETURN l_rsp;
-  EXCEPTION
-    WHEN k_operacion.ex_error_parametro THEN
-      RETURN l_rsp;
-    WHEN k_operacion.ex_error_general THEN
-      RETURN l_rsp;
-    WHEN OTHERS THEN
+    return l_rsp;
+  exception
+    when k_operacion.ex_error_parametro then
+      return l_rsp;
+    when k_operacion.ex_error_general then
+      return l_rsp;
+    when others then
       k_operacion.p_respuesta_excepcion(l_rsp,
                                         utl_call_stack.error_number(1),
                                         utl_call_stack.error_msg(1),
                                         dbms_utility.format_error_stack);
-      RETURN l_rsp;
-  END;
+      return l_rsp;
+  end;
 
-  FUNCTION f_procesar_servicio(i_id_servicio IN NUMBER,
-                               i_parametros  IN CLOB,
-                               i_contexto    IN CLOB DEFAULT NULL,
-                               i_version     IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB IS
+  function f_procesar_servicio(i_id_servicio in number,
+                               i_parametros  in clob,
+                               i_contexto    in clob default null,
+                               i_version     in varchar2 default null)
+    return clob is
     l_rsp y_respuesta;
-  BEGIN
+  begin
     -- Inicializa parámetros de la sesión
     k_sistema.p_inicializar_parametros;
     -- Registra ejecución
@@ -508,18 +508,18 @@ CREATE OR REPLACE PACKAGE BODY k_servicio IS
                                 l_rsp.to_json,
                                 i_contexto,
                                 i_version);
-    RETURN l_rsp.to_json;
-  END;
+    return l_rsp.to_json;
+  end;
 
-  FUNCTION f_procesar_servicio(i_nombre     IN VARCHAR2,
-                               i_dominio    IN VARCHAR2,
-                               i_parametros IN CLOB,
-                               i_contexto   IN CLOB DEFAULT NULL,
-                               i_version    IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB IS
+  function f_procesar_servicio(i_nombre     in varchar2,
+                               i_dominio    in varchar2,
+                               i_parametros in clob,
+                               i_contexto   in clob default null,
+                               i_version    in varchar2 default null)
+    return clob is
     l_rsp         y_respuesta;
-    l_id_servicio t_servicios.id_servicio%TYPE;
-  BEGIN
+    l_id_servicio t_servicios.id_servicio%type;
+  begin
     -- Inicializa parámetros de la sesión
     k_sistema.p_inicializar_parametros;
     -- Busca servicio
@@ -542,8 +542,8 @@ CREATE OR REPLACE PACKAGE BODY k_servicio IS
                                 l_rsp.to_json,
                                 i_contexto,
                                 i_version);
-    RETURN l_rsp.to_json;
-  END;
+    return l_rsp.to_json;
+  end;
 
-END;
+end;
 /

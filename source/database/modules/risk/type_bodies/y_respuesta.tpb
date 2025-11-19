@@ -1,23 +1,23 @@
-CREATE OR REPLACE TYPE BODY y_respuesta IS
+create or replace type body y_respuesta is
 
-  CONSTRUCTOR FUNCTION y_respuesta RETURN SELF AS RESULT AS
-  BEGIN
+  constructor function y_respuesta return self as result as
+  begin
     self.codigo     := '0';
     self.mensaje    := 'OK';
-    self.mensaje_bd := NULL;
-    self.lugar      := NULL;
-    self.datos      := NULL;
-    RETURN;
-  END;
+    self.mensaje_bd := null;
+    self.lugar      := null;
+    self.datos      := null;
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_respuesta    y_respuesta;
     l_json_object  json_object_t;
     l_json_element json_element_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_respuesta            := NEW y_respuesta();
+    l_respuesta            := new y_respuesta();
     l_respuesta.codigo     := l_json_object.get_string('codigo');
     l_respuesta.mensaje    := l_json_object.get_string('mensaje');
     l_respuesta.mensaje_bd := l_json_object.get_string('mensaje_bd');
@@ -25,43 +25,43 @@ CREATE OR REPLACE TYPE BODY y_respuesta IS
   
     l_json_element := l_json_object.get('datos');
   
-    IF l_json_element IS NULL OR l_json_element.is_null THEN
-      l_respuesta.datos := NULL;
-    ELSE
-      DECLARE
+    if l_json_element is null or l_json_element.is_null then
+      l_respuesta.datos := null;
+    else
+      declare
         l_anydata anydata;
-        l_result  PLS_INTEGER;
-        l_tipo    VARCHAR2(100);
-      BEGIN
+        l_result  pls_integer;
+        l_tipo    varchar2(100);
+      begin
         -- Busca nombre del tipo para hacer el parse
         l_tipo := k_sistema.f_desencolar;
         --
         l_anydata := k_util.json_to_objeto(l_json_element.to_clob, l_tipo);
         l_result  := l_anydata.getobject(l_respuesta.datos);
-      EXCEPTION
-        WHEN OTHERS THEN
-          l_respuesta.datos := NULL;
-      END;
-    END IF;
+      exception
+        when others then
+          l_respuesta.datos := null;
+      end;
+    end if;
   
-    RETURN l_respuesta;
-  END;
+    return l_respuesta;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
-  BEGIN
-    l_json_object := NEW json_object_t();
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('codigo', self.codigo);
     l_json_object.put('mensaje', self.mensaje);
     l_json_object.put('mensaje_bd', self.mensaje_bd);
     l_json_object.put('lugar', self.lugar);
-    IF self.datos IS NULL THEN
+    if self.datos is null then
       l_json_object.put_null('datos');
-    ELSE
+    else
       l_json_object.put('datos', json_element_t.parse(self.datos.to_json));
-    END IF;
-    RETURN l_json_object.to_clob;
-  END;
+    end if;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

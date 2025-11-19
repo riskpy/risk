@@ -1,94 +1,94 @@
-CREATE OR REPLACE PACKAGE BODY k_dispositivo IS
+create or replace package body k_dispositivo is
 
   -- Tiempo de expiración de la suscripción en días
-  c_tiempo_expiracion_suscripcion CONSTANT PLS_INTEGER := 30;
+  c_tiempo_expiracion_suscripcion constant pls_integer := 30;
 
-  FUNCTION f_suscripcion_defecto RETURN VARCHAR2 IS
-  BEGIN
-    RETURN c_suscripcion_defecto;
-  END;
+  function f_suscripcion_defecto return varchar2 is
+  begin
+    return c_suscripcion_defecto;
+  end;
 
-  FUNCTION f_suscripcion_usuario(i_id_usuario IN NUMBER) RETURN VARCHAR2 IS
-  BEGIN
-    RETURN c_suscripcion_usuario || '_' || to_char(i_id_usuario);
-  END;
+  function f_suscripcion_usuario(i_id_usuario in number) return varchar2 is
+  begin
+    return c_suscripcion_usuario || '_' || to_char(i_id_usuario);
+  end;
 
-  FUNCTION f_id_dispositivo(i_token_dispositivo IN VARCHAR2) RETURN NUMBER IS
-    l_id_dispositivo t_dispositivos.id_dispositivo%TYPE;
-  BEGIN
-    BEGIN
-      SELECT id_dispositivo
-        INTO l_id_dispositivo
-        FROM t_dispositivos
-       WHERE token_dispositivo = i_token_dispositivo;
-    EXCEPTION
-      WHEN no_data_found THEN
-        l_id_dispositivo := NULL;
-      WHEN OTHERS THEN
-        l_id_dispositivo := NULL;
-    END;
-    RETURN l_id_dispositivo;
-  END;
+  function f_id_dispositivo(i_token_dispositivo in varchar2) return number is
+    l_id_dispositivo t_dispositivos.id_dispositivo%type;
+  begin
+    begin
+      select id_dispositivo
+        into l_id_dispositivo
+        from t_dispositivos
+       where token_dispositivo = i_token_dispositivo;
+    exception
+      when no_data_found then
+        l_id_dispositivo := null;
+      when others then
+        l_id_dispositivo := null;
+    end;
+    return l_id_dispositivo;
+  end;
 
-  FUNCTION f_registrar_dispositivo(i_id_aplicacion             IN VARCHAR2,
-                                   i_token_dispositivo         IN VARCHAR2,
-                                   i_token_notificacion        IN VARCHAR2 DEFAULT NULL,
-                                   i_nombre_sistema_operativo  IN VARCHAR2 DEFAULT NULL,
-                                   i_version_sistema_operativo IN VARCHAR2 DEFAULT NULL,
-                                   i_tipo                      IN VARCHAR2 DEFAULT NULL,
-                                   i_nombre_navegador          IN VARCHAR2 DEFAULT NULL,
-                                   i_version_navegador         IN VARCHAR2 DEFAULT NULL,
-                                   i_version_aplicacion        IN VARCHAR2 DEFAULT NULL,
-                                   i_pais_iso_alpha_2          IN VARCHAR2 DEFAULT NULL,
-                                   i_zona_horaria              IN VARCHAR2 DEFAULT NULL,
-                                   i_idioma_iso369_1           IN VARCHAR2 DEFAULT NULL)
-    RETURN NUMBER IS
-    l_id_dispositivo t_dispositivos.id_dispositivo%TYPE;
-    l_id_pais        t_dispositivos.id_pais%TYPE;
-    l_id_idioma      t_dispositivos.id_idioma%TYPE;
-  BEGIN
+  function f_registrar_dispositivo(i_id_aplicacion             in varchar2,
+                                   i_token_dispositivo         in varchar2,
+                                   i_token_notificacion        in varchar2 default null,
+                                   i_nombre_sistema_operativo  in varchar2 default null,
+                                   i_version_sistema_operativo in varchar2 default null,
+                                   i_tipo                      in varchar2 default null,
+                                   i_nombre_navegador          in varchar2 default null,
+                                   i_version_navegador         in varchar2 default null,
+                                   i_version_aplicacion        in varchar2 default null,
+                                   i_pais_iso_alpha_2          in varchar2 default null,
+                                   i_zona_horaria              in varchar2 default null,
+                                   i_idioma_iso369_1           in varchar2 default null)
+    return number is
+    l_id_dispositivo t_dispositivos.id_dispositivo%type;
+    l_id_pais        t_dispositivos.id_pais%type;
+    l_id_idioma      t_dispositivos.id_idioma%type;
+  begin
     -- Valida aplicación
-    IF i_id_aplicacion IS NULL THEN
+    if i_id_aplicacion is null then
       raise_application_error(-20000, 'Aplicación inexistente o inactiva');
-    END IF;
+    end if;
   
-    IF i_token_dispositivo IS NULL THEN
+    if i_token_dispositivo is null then
       raise_application_error(-20000, 'Parámetro Token es requerido');
-    END IF;
+    end if;
   
     -- Busca dispositivo
     l_id_dispositivo := f_id_dispositivo(i_token_dispositivo);
   
     -- Busca el pais
-    IF i_pais_iso_alpha_2 IS NOT NULL THEN
-      BEGIN
-        SELECT p.id_pais
-          INTO l_id_pais
-          FROM t_paises p
-         WHERE p.iso_alpha_2 = upper(i_pais_iso_alpha_2);
-      EXCEPTION
-        WHEN OTHERS THEN
-          l_id_pais := NULL;
-      END;
-    END IF;
+    if i_pais_iso_alpha_2 is not null then
+      begin
+        select p.id_pais
+          into l_id_pais
+          from t_paises p
+         where p.iso_alpha_2 = upper(i_pais_iso_alpha_2);
+      exception
+        when others then
+          l_id_pais := null;
+      end;
+    end if;
   
     -- Busca el idioma
-    IF i_idioma_iso369_1 IS NOT NULL THEN
-      BEGIN
-        SELECT i.id_idioma
-          INTO l_id_idioma
-          FROM t_idiomas i
-         WHERE i.iso_639_1 = lower(i_idioma_iso369_1);
-      EXCEPTION
-        WHEN OTHERS THEN
-          l_id_idioma := NULL;
-      END;
-    END IF;
+    if i_idioma_iso369_1 is not null then
+      begin
+        select i.id_idioma
+          into l_id_idioma
+          from t_idiomas i
+         where i.iso_639_1 = lower(i_idioma_iso369_1);
+      exception
+        when others then
+          l_id_idioma := null;
+      end;
+    end if;
   
-    IF l_id_dispositivo IS NOT NULL THEN
+    if l_id_dispositivo is not null then
       -- Actualiza dispositivo
-      UPDATE t_dispositivos
-         SET fecha_ultimo_acceso       = SYSDATE,
+      update t_dispositivos
+         set fecha_ultimo_acceso       = sysdate,
              id_aplicacion             = i_id_aplicacion,
              nombre_sistema_operativo  = nvl(i_nombre_sistema_operativo,
                                              nombre_sistema_operativo),
@@ -107,10 +107,10 @@ CREATE OR REPLACE PACKAGE BODY k_dispositivo IS
              zona_horaria              = nvl(k_util.f_zona_horaria(i_zona_horaria),
                                              zona_horaria),
              id_idioma                 = nvl(l_id_idioma, id_idioma)
-       WHERE id_dispositivo = l_id_dispositivo;
-    ELSE
+       where id_dispositivo = l_id_dispositivo;
+    else
       -- Inserta dispositivo
-      INSERT INTO t_dispositivos
+      insert into t_dispositivos
         (token_dispositivo,
          fecha_ultimo_acceso,
          id_aplicacion,
@@ -124,9 +124,9 @@ CREATE OR REPLACE PACKAGE BODY k_dispositivo IS
          id_pais,
          zona_horaria,
          id_idioma)
-      VALUES
+      values
         (i_token_dispositivo,
-         SYSDATE,
+         sysdate,
          i_id_aplicacion,
          i_nombre_sistema_operativo,
          i_version_sistema_operativo,
@@ -138,51 +138,51 @@ CREATE OR REPLACE PACKAGE BODY k_dispositivo IS
          l_id_pais,
          k_util.f_zona_horaria(i_zona_horaria),
          l_id_idioma)
-      RETURNING id_dispositivo INTO l_id_dispositivo;
-    END IF;
+      returning id_dispositivo into l_id_dispositivo;
+    end if;
   
     $if k_modulo.c_instalado_msj $then
-    IF l_id_dispositivo IS NOT NULL THEN
+    if l_id_dispositivo is not null then
       -- Inserta o actualiza una suscripción por defecto en el dispositivo
       p_suscribir_notificacion(l_id_dispositivo, c_suscripcion_defecto);
-    END IF;
+    end if;
     $end
   
-    RETURN l_id_dispositivo;
-  END;
+    return l_id_dispositivo;
+  end;
 
-  FUNCTION f_datos_dispositivo(i_id_dispositivo IN NUMBER)
-    RETURN y_dispositivo IS
+  function f_datos_dispositivo(i_id_dispositivo in number)
+    return y_dispositivo is
     l_dispositivo   y_dispositivo;
     l_suscripciones y_datos;
     l_suscripcion   y_dato;
     l_plantilla     y_plantilla;
     l_plantillas    y_datos;
-    l_id_aplicacion t_aplicaciones.id_aplicacion%TYPE;
+    l_id_aplicacion t_aplicaciones.id_aplicacion%type;
   
     $if k_modulo.c_instalado_msj $then
-    CURSOR cr_plantillas(i_id_aplicacion IN VARCHAR2) IS
-      SELECT n.nombre, n.plantilla
-        FROM t_notificacion_plantillas n
-       WHERE n.id_aplicacion = i_id_aplicacion;
+    cursor cr_plantillas(i_id_aplicacion in varchar2) is
+      select n.nombre, n.plantilla
+        from t_notificacion_plantillas n
+       where n.id_aplicacion = i_id_aplicacion;
     $end
   
     $if k_modulo.c_instalado_msj $then
-    CURSOR cr_suscripciones(i_id_dispositivo IN NUMBER) IS
-      SELECT s.suscripcion
-        FROM t_dispositivo_suscripciones s
-       WHERE (s.fecha_expiracion IS NULL OR s.fecha_expiracion > SYSDATE)
-         AND s.id_dispositivo = i_id_dispositivo;
+    cursor cr_suscripciones(i_id_dispositivo in number) is
+      select s.suscripcion
+        from t_dispositivo_suscripciones s
+       where (s.fecha_expiracion is null or s.fecha_expiracion > sysdate)
+         and s.id_dispositivo = i_id_dispositivo;
     $end
-  BEGIN
+  begin
     -- Inicializa respuesta
-    l_dispositivo   := NEW y_dispositivo();
-    l_suscripciones := NEW y_datos();
-    l_plantillas    := NEW y_datos();
+    l_dispositivo   := new y_dispositivo();
+    l_suscripciones := new y_datos();
+    l_plantillas    := new y_datos();
   
     -- Buscando datos del dispositivo
-    BEGIN
-      SELECT d.id_dispositivo,
+    begin
+      select d.id_dispositivo,
              d.token_dispositivo,
              d.nombre_sistema_operativo,
              d.version_sistema_operativo,
@@ -192,15 +192,15 @@ CREATE OR REPLACE PACKAGE BODY k_dispositivo IS
              d.token_notificacion,
              a.plataforma_notificacion,
              d.version_aplicacion,
-             (SELECT p.iso_alpha_2
-                FROM t_paises p
-               WHERE p.id_pais = d.id_pais),
+             (select p.iso_alpha_2
+                from t_paises p
+               where p.id_pais = d.id_pais),
              d.zona_horaria,
-             (SELECT i.iso_639_1
-                FROM t_idiomas i
-               WHERE i.id_idioma = d.id_idioma),
+             (select i.iso_639_1
+                from t_idiomas i
+               where i.id_idioma = d.id_idioma),
              a.id_aplicacion
-        INTO l_dispositivo.id_dispositivo,
+        into l_dispositivo.id_dispositivo,
              l_dispositivo.token_dispositivo,
              l_dispositivo.nombre_sistema_operativo,
              l_dispositivo.version_sistema_operativo,
@@ -214,145 +214,145 @@ CREATE OR REPLACE PACKAGE BODY k_dispositivo IS
              l_dispositivo.zona_horaria,
              l_dispositivo.id_idioma_iso369_1,
              l_id_aplicacion
-        FROM t_dispositivos d, t_aplicaciones a
-       WHERE a.id_aplicacion(+) = d.id_aplicacion
-         AND d.id_dispositivo = i_id_dispositivo;
-    EXCEPTION
-      WHEN no_data_found THEN
+        from t_dispositivos d, t_aplicaciones a
+       where a.id_aplicacion(+) = d.id_aplicacion
+         and d.id_dispositivo = i_id_dispositivo;
+    exception
+      when no_data_found then
         raise_application_error(-20000, 'Dispositivo inexistente');
-      WHEN OTHERS THEN
+      when others then
         raise_application_error(-20000,
                                 'Error al buscar datos del dispositivo');
-    END;
+    end;
   
     -- Buscando plantillas de la aplicación
     $if k_modulo.c_instalado_msj $then
-    FOR c IN cr_plantillas(l_id_aplicacion) LOOP
-      l_plantilla           := NEW y_plantilla();
+    for c in cr_plantillas(l_id_aplicacion) loop
+      l_plantilla           := new y_plantilla();
       l_plantilla.contenido := c.plantilla;
       l_plantilla.nombre    := c.nombre;
     
       l_plantillas.extend;
       l_plantillas(l_plantillas.count) := l_plantilla;
-    END LOOP;
+    end loop;
     $end
     l_dispositivo.plantillas := l_plantillas;
   
     -- Buscando suscripciones del dispositivo
     $if k_modulo.c_instalado_msj $then
-    FOR c IN cr_suscripciones(l_dispositivo.id_dispositivo) LOOP
-      l_suscripcion           := NEW y_dato();
+    for c in cr_suscripciones(l_dispositivo.id_dispositivo) loop
+      l_suscripcion           := new y_dato();
       l_suscripcion.contenido := c.suscripcion;
     
       l_suscripciones.extend;
       l_suscripciones(l_suscripciones.count) := l_suscripcion;
-    END LOOP;
+    end loop;
     $end
     l_dispositivo.suscripciones := l_suscripciones;
   
-    RETURN l_dispositivo;
-  END;
+    return l_dispositivo;
+  end;
 
   $if k_modulo.c_instalado_msj $then
-  PROCEDURE p_suscribir_notificacion(i_id_dispositivo   IN NUMBER,
-                                     i_suscripcion_alta IN VARCHAR2) IS
-  BEGIN
+  procedure p_suscribir_notificacion(i_id_dispositivo   in number,
+                                     i_suscripcion_alta in varchar2) is
+  begin
     -- Actualiza suscripción
-    UPDATE t_dispositivo_suscripciones s
-       SET s.suscripcion      = lower(i_suscripcion_alta),
-           s.fecha_expiracion = SYSDATE + c_tiempo_expiracion_suscripcion
-     WHERE s.id_dispositivo = i_id_dispositivo
-       AND lower(s.suscripcion) = lower(i_suscripcion_alta);
+    update t_dispositivo_suscripciones s
+       set s.suscripcion      = lower(i_suscripcion_alta),
+           s.fecha_expiracion = sysdate + c_tiempo_expiracion_suscripcion
+     where s.id_dispositivo = i_id_dispositivo
+       and lower(s.suscripcion) = lower(i_suscripcion_alta);
   
-    IF SQL%NOTFOUND THEN
+    if sql%notfound then
       -- Inserta suscripción
-      INSERT INTO t_dispositivo_suscripciones
+      insert into t_dispositivo_suscripciones
         (id_dispositivo, suscripcion, fecha_expiracion)
-      VALUES
+      values
         (i_id_dispositivo,
          lower(i_suscripcion_alta),
-         SYSDATE + c_tiempo_expiracion_suscripcion);
-    END IF;
-  END;
+         sysdate + c_tiempo_expiracion_suscripcion);
+    end if;
+  end;
 
-  PROCEDURE p_suscribir_notificacion_s(i_suscripcion      IN VARCHAR2,
-                                       i_suscripcion_alta IN VARCHAR2) IS
-    CURSOR cr_dispositivos(i_suscripcion IN VARCHAR2) IS
-      SELECT s.id_dispositivo
-        FROM t_dispositivo_suscripciones s
-       WHERE lower(s.suscripcion) = lower(i_suscripcion)
-         AND (s.fecha_expiracion IS NULL OR s.fecha_expiracion > SYSDATE);
-  BEGIN
-    FOR c IN cr_dispositivos(i_suscripcion) LOOP
+  procedure p_suscribir_notificacion_s(i_suscripcion      in varchar2,
+                                       i_suscripcion_alta in varchar2) is
+    cursor cr_dispositivos(i_suscripcion in varchar2) is
+      select s.id_dispositivo
+        from t_dispositivo_suscripciones s
+       where lower(s.suscripcion) = lower(i_suscripcion)
+         and (s.fecha_expiracion is null or s.fecha_expiracion > sysdate);
+  begin
+    for c in cr_dispositivos(i_suscripcion) loop
       p_suscribir_notificacion(c.id_dispositivo, i_suscripcion_alta);
-    END LOOP;
-  END;
+    end loop;
+  end;
 
-  PROCEDURE p_suscribir_notificacion_usuario(i_id_dispositivo IN NUMBER,
-                                             i_id_usuario     IN NUMBER) IS
-  BEGIN
+  procedure p_suscribir_notificacion_usuario(i_id_dispositivo in number,
+                                             i_id_usuario     in number) is
+  begin
     -- Inserta suscripción de dispositivo a partir de un usuario
-    INSERT INTO t_dispositivo_suscripciones
+    insert into t_dispositivo_suscripciones
       (id_dispositivo, suscripcion, fecha_expiracion)
-      SELECT i_id_dispositivo, us.suscripcion, us.fecha_expiracion
-        FROM t_usuario_suscripciones us
-       WHERE us.id_usuario = i_id_usuario
-         AND us.suscripcion NOT IN
-             (SELECT ds.suscripcion
-                FROM t_dispositivo_suscripciones ds
-               WHERE ds.id_dispositivo = i_id_dispositivo);
-  END;
+      select i_id_dispositivo, us.suscripcion, us.fecha_expiracion
+        from t_usuario_suscripciones us
+       where us.id_usuario = i_id_usuario
+         and us.suscripcion not in
+             (select ds.suscripcion
+                from t_dispositivo_suscripciones ds
+               where ds.id_dispositivo = i_id_dispositivo);
+  end;
 
-  PROCEDURE p_desuscribir_notificacion(i_id_dispositivo   IN NUMBER,
-                                       i_suscripcion_baja IN VARCHAR2) IS
-  BEGIN
-    DELETE t_dispositivo_suscripciones s
-     WHERE s.id_dispositivo = i_id_dispositivo
-       AND lower(s.suscripcion) = lower(i_suscripcion_baja);
-  END;
+  procedure p_desuscribir_notificacion(i_id_dispositivo   in number,
+                                       i_suscripcion_baja in varchar2) is
+  begin
+    delete t_dispositivo_suscripciones s
+     where s.id_dispositivo = i_id_dispositivo
+       and lower(s.suscripcion) = lower(i_suscripcion_baja);
+  end;
 
-  PROCEDURE p_desuscribir_notificacion_s(i_suscripcion      IN VARCHAR2,
-                                         i_suscripcion_baja IN VARCHAR2) IS
-    CURSOR cr_dispositivos(i_suscripcion IN VARCHAR2) IS
-      SELECT s.id_dispositivo
-        FROM t_dispositivo_suscripciones s
-       WHERE lower(s.suscripcion) = lower(i_suscripcion)
-         AND (s.fecha_expiracion IS NULL OR s.fecha_expiracion > SYSDATE);
-  BEGIN
-    FOR c IN cr_dispositivos(i_suscripcion) LOOP
+  procedure p_desuscribir_notificacion_s(i_suscripcion      in varchar2,
+                                         i_suscripcion_baja in varchar2) is
+    cursor cr_dispositivos(i_suscripcion in varchar2) is
+      select s.id_dispositivo
+        from t_dispositivo_suscripciones s
+       where lower(s.suscripcion) = lower(i_suscripcion)
+         and (s.fecha_expiracion is null or s.fecha_expiracion > sysdate);
+  begin
+    for c in cr_dispositivos(i_suscripcion) loop
       p_desuscribir_notificacion(c.id_dispositivo, i_suscripcion_baja);
-    END LOOP;
-  END;
+    end loop;
+  end;
 
-  PROCEDURE p_desuscribir_notificacion_usuario(i_id_dispositivo IN NUMBER,
-                                               i_id_usuario     IN NUMBER) IS
-  BEGIN
+  procedure p_desuscribir_notificacion_usuario(i_id_dispositivo in number,
+                                               i_id_usuario     in number) is
+  begin
     -- Elimina suscripción a dispositivo de un usuario
-    DELETE FROM t_dispositivo_suscripciones ds
-     WHERE ds.id_dispositivo = i_id_dispositivo
-       AND ds.suscripcion IN
-           (SELECT us.suscripcion
-              FROM t_usuario_suscripciones us
-             WHERE us.id_usuario = i_id_usuario);
-  END;
+    delete from t_dispositivo_suscripciones ds
+     where ds.id_dispositivo = i_id_dispositivo
+       and ds.suscripcion in
+           (select us.suscripcion
+              from t_usuario_suscripciones us
+             where us.id_usuario = i_id_usuario);
+  end;
   $end
 
-  PROCEDURE p_registrar_ubicacion(i_id_dispositivo IN NUMBER,
-                                  i_latitud        IN NUMBER,
-                                  i_longitud       IN NUMBER) IS
-    l_orden t_dispositivo_ubicaciones.orden%TYPE;
-  BEGIN
-    SELECT nvl(MAX(du.orden), 0) + 1
-      INTO l_orden
-      FROM t_dispositivo_ubicaciones du
-     WHERE du.id_dispositivo = i_id_dispositivo;
+  procedure p_registrar_ubicacion(i_id_dispositivo in number,
+                                  i_latitud        in number,
+                                  i_longitud       in number) is
+    l_orden t_dispositivo_ubicaciones.orden%type;
+  begin
+    select nvl(max(du.orden), 0) + 1
+      into l_orden
+      from t_dispositivo_ubicaciones du
+     where du.id_dispositivo = i_id_dispositivo;
   
     -- Inserta ubicación
-    INSERT INTO t_dispositivo_ubicaciones
+    insert into t_dispositivo_ubicaciones
       (id_dispositivo, orden, fecha, latitud, longitud)
-    VALUES
-      (i_id_dispositivo, l_orden, SYSDATE, i_latitud, i_longitud);
-  END;
+    values
+      (i_id_dispositivo, l_orden, sysdate, i_latitud, i_longitud);
+  end;
 
-END;
+end;
 /

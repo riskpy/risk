@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_monitoreo IS
+create or replace package k_monitoreo is
 
   /**
   Agrupa operaciones relacionadas con los Monitoreos de Conflictos del sistema
@@ -31,47 +31,47 @@ CREATE OR REPLACE PACKAGE k_monitoreo IS
   */
 
   -- Constantes
-  c_id_ejecucion CONSTANT VARCHAR2(50) := 'ID_EJECUCION';
+  c_id_ejecucion constant varchar2(50) := 'ID_EJECUCION';
 
   -- Excepciones
-  ex_frecuencia_no_existe EXCEPTION;
+  ex_frecuencia_no_existe exception;
 
-  PROCEDURE p_limpiar_historial;
+  procedure p_limpiar_historial;
 
-  PROCEDURE p_aviso_resumido(i_id_ejecucion IN NUMBER);
+  procedure p_aviso_resumido(i_id_ejecucion in number);
 
-  PROCEDURE p_aviso_detallado(i_id_ejecucion IN NUMBER,
-                              i_id_monitoreo IN NUMBER);
+  procedure p_aviso_detallado(i_id_ejecucion in number,
+                              i_id_monitoreo in number);
 
-  FUNCTION f_pagina_parametros(i_parametros IN y_parametros)
-    RETURN y_pagina_parametros;
+  function f_pagina_parametros(i_parametros in y_parametros)
+    return y_pagina_parametros;
 
-  FUNCTION f_paginar_elementos(i_elementos           IN y_objetos,
-                               i_numero_pagina       IN INTEGER DEFAULT NULL,
-                               i_cantidad_por_pagina IN INTEGER DEFAULT NULL,
-                               i_no_paginar          IN VARCHAR2 DEFAULT NULL)
-    RETURN y_pagina;
+  function f_paginar_elementos(i_elementos           in y_objetos,
+                               i_numero_pagina       in integer default null,
+                               i_cantidad_por_pagina in integer default null,
+                               i_no_paginar          in varchar2 default null)
+    return y_pagina;
 
-  FUNCTION f_paginar_elementos(i_elementos         IN y_objetos,
-                               i_pagina_parametros IN y_pagina_parametros)
-    RETURN y_pagina;
+  function f_paginar_elementos(i_elementos         in y_objetos,
+                               i_pagina_parametros in y_pagina_parametros)
+    return y_pagina;
 
-  FUNCTION f_monitoreo_sql(i_id_monitoreo    IN NUMBER,
-                           i_version         IN VARCHAR2 DEFAULT NULL,
-                           o_tiene_conflicto OUT BOOLEAN) RETURN y_respuesta;
+  function f_monitoreo_sql(i_id_monitoreo    in number,
+                           i_version         in varchar2 default null,
+                           o_tiene_conflicto out boolean) return y_respuesta;
 
-  FUNCTION f_monitoreo_columnas_sql(i_id_monitoreo IN NUMBER) RETURN CLOB;
+  function f_monitoreo_columnas_sql(i_id_monitoreo in number) return clob;
 
-  FUNCTION f_procesar_monitoreo(i_id_monitoreo IN NUMBER,
-                                i_version      IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_procesar_monitoreo(i_id_monitoreo in number,
+                                i_version      in varchar2 default null)
+    return clob;
 
-  FUNCTION f_procesar_monitoreo(i_nombre  IN VARCHAR2,
-                                i_dominio IN VARCHAR2,
-                                i_version IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_procesar_monitoreo(i_nombre  in varchar2,
+                                i_dominio in varchar2,
+                                i_version in varchar2 default null)
+    return clob;
 
-  PROCEDURE p_procesar_monitoreos(i_frecuencia IN VARCHAR2 DEFAULT NULL);
+  procedure p_procesar_monitoreos(i_frecuencia in varchar2 default null);
 
-END;
+end;
 /

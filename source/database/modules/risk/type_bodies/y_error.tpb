@@ -1,35 +1,35 @@
-CREATE OR REPLACE TYPE BODY y_error IS
+create or replace type body y_error is
 
-  CONSTRUCTOR FUNCTION y_error RETURN SELF AS RESULT AS
-  BEGIN
-    self.clave   := NULL;
-    self.mensaje := NULL;
+  constructor function y_error return self as result as
+  begin
+    self.clave   := null;
+    self.mensaje := null;
   
-    RETURN;
-  END;
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_objeto      y_error;
     l_json_object json_object_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_objeto         := NEW y_error();
+    l_objeto         := new y_error();
     l_objeto.clave   := l_json_object.get_string('clave');
     l_objeto.mensaje := l_json_object.get_string('mensaje');
   
-    RETURN l_objeto;
-  END;
+    return l_objeto;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
-  BEGIN
-    l_json_object := NEW json_object_t();
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('clave', self.clave);
     l_json_object.put('mensaje', self.mensaje);
   
-    RETURN l_json_object.to_clob;
-  END;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

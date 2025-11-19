@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_correos
-  BEFORE INSERT ON t_correos
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_correos
+  before insert on t_correos
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_correo IS NULL THEN
+  if :new.id_correo is null then
     :new.id_correo := s_id_correo.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

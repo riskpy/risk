@@ -1,26 +1,26 @@
-CREATE OR REPLACE PACKAGE BODY k_trabajo IS
+create or replace package body k_trabajo is
 
   -- Crea un trabajo en el sistema
-  PROCEDURE p_crear_trabajo(i_id_trabajo           IN NUMBER,
-                            i_parametros           IN CLOB DEFAULT NULL,
-                            i_fecha_inicio         IN TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-                            i_intervalo_repeticion IN VARCHAR2 DEFAULT NULL,
-                            i_fecha_fin            IN TIMESTAMP WITH TIME ZONE DEFAULT NULL) IS
+  procedure p_crear_trabajo(i_id_trabajo           in number,
+                            i_parametros           in clob default null,
+                            i_fecha_inicio         in timestamp with time zone default null,
+                            i_intervalo_repeticion in varchar2 default null,
+                            i_fecha_fin            in timestamp with time zone default null) is
     l_prms y_parametros;
     --
-    l_tipo_trabajo         t_trabajos.tipo%TYPE;
-    l_nombre_trabajo       t_operaciones.nombre%TYPE;
-    l_nombre_programa      t_operaciones.nombre%TYPE;
-    l_dominio_trabajo      t_operaciones.dominio%TYPE;
-    l_accion_trabajo       t_trabajos.accion%TYPE;
-    l_fecha_inicio         t_trabajos.fecha_inicio%TYPE;
-    l_intervalo_repeticion t_trabajos.intervalo_repeticion%TYPE;
-    l_fecha_fin            t_trabajos.fecha_fin%TYPE;
-    l_comentarios          t_trabajos.comentarios%TYPE;
-  BEGIN
+    l_tipo_trabajo         t_trabajos.tipo%type;
+    l_nombre_trabajo       t_operaciones.nombre%type;
+    l_nombre_programa      t_operaciones.nombre%type;
+    l_dominio_trabajo      t_operaciones.dominio%type;
+    l_accion_trabajo       t_trabajos.accion%type;
+    l_fecha_inicio         t_trabajos.fecha_inicio%type;
+    l_intervalo_repeticion t_trabajos.intervalo_repeticion%type;
+    l_fecha_fin            t_trabajos.fecha_fin%type;
+    l_comentarios          t_trabajos.comentarios%type;
+  begin
     -- Buscar datos del trabajo
-    BEGIN
-      SELECT t.tipo,
+    begin
+      select t.tipo,
              upper(o.nombre),
              upper(o.dominio),
              t.accion,
@@ -30,7 +30,7 @@ CREATE OR REPLACE PACKAGE BODY k_trabajo IS
              nvl(i_fecha_fin, t.fecha_fin),
              t.comentarios,
              t.programa
-        INTO l_tipo_trabajo,
+        into l_tipo_trabajo,
              l_nombre_trabajo,
              l_dominio_trabajo,
              l_accion_trabajo,
@@ -39,72 +39,72 @@ CREATE OR REPLACE PACKAGE BODY k_trabajo IS
              l_fecha_fin,
              l_comentarios,
              l_nombre_programa
-        FROM t_trabajos t, t_operaciones o
-       WHERE o.id_operacion = t.id_trabajo
-         AND o.activo = 'S'
-         AND t.id_trabajo = i_id_trabajo;
-    EXCEPTION
-      WHEN no_data_found THEN
-        RAISE ex_trabajo_no_implementado;
-    END;
+        from t_trabajos t, t_operaciones o
+       where o.id_operacion = t.id_trabajo
+         and o.activo = 'S'
+         and t.id_trabajo = i_id_trabajo;
+    exception
+      when no_data_found then
+        raise ex_trabajo_no_implementado;
+    end;
   
     -- Obtener parámetros del trabajo
-    BEGIN
+    begin
       l_prms := k_operacion.f_procesar_parametros(i_id_trabajo,
                                                   i_parametros);
-    EXCEPTION
-      WHEN OTHERS THEN
-        RAISE ex_error_parametro;
-    END;
+    exception
+      when others then
+        raise ex_error_parametro;
+    end;
   
     -- Procesar parámetros del trabajo
-    DECLARE
-      i PLS_INTEGER;
-    BEGIN
+    declare
+      i pls_integer;
+    begin
       i := l_prms.first;
-      WHILE i IS NOT NULL LOOP
-        l_nombre_trabajo := REPLACE(l_nombre_trabajo,
+      while i is not null loop
+        l_nombre_trabajo := replace(l_nombre_trabajo,
                                     '{' || upper(l_prms(i).nombre) || '}',
                                     k_operacion.f_valor_parametro_string(l_prms,
                                                                          l_prms(i).nombre));
-        l_accion_trabajo := REPLACE(l_accion_trabajo,
+        l_accion_trabajo := replace(l_accion_trabajo,
                                     '&' || upper(l_prms(i).nombre),
                                     k_operacion.f_valor_parametro_string(l_prms,
                                                                          l_prms(i).nombre));
         i                := l_prms.next(i);
-      END LOOP;
-    END;
+      end loop;
+    end;
   
-    IF l_tipo_trabajo = 'STORED_PROCEDURE' THEN
+    if l_tipo_trabajo = 'STORED_PROCEDURE' then
       -- Registrar el programa del trabajo
-      BEGIN
-        IF l_nombre_programa IS NULL THEN
-          l_nombre_programa := 'P_' || REPLACE(l_nombre_trabajo, '.', '_');
-        END IF;
+      begin
+        if l_nombre_programa is null then
+          l_nombre_programa := 'P_' || replace(l_nombre_trabajo, '.', '_');
+        end if;
         dbms_scheduler.create_program(program_name        => l_nombre_programa,
                                       program_action      => l_accion_trabajo,
                                       program_type        => l_tipo_trabajo,
                                       number_of_arguments => l_prms.count,
-                                      enabled             => FALSE);
-      EXCEPTION
-        WHEN ex_trabajo_ya_existe THEN
-          NULL;
-      END;
+                                      enabled             => false);
+      exception
+        when ex_trabajo_ya_existe then
+          null;
+      end;
     
       -- Procesar parámetros del programa
-      DECLARE
-        i PLS_INTEGER;
-      BEGIN
+      declare
+        i pls_integer;
+      begin
         i := l_prms.first;
-        WHILE i IS NOT NULL LOOP
+        while i is not null loop
           dbms_scheduler.define_program_argument(program_name      => l_nombre_programa,
                                                  argument_name     => upper(l_prms(i).nombre),
                                                  argument_position => i,
                                                  argument_type     => 'VARCHAR2',
-                                                 default_value     => NULL);
+                                                 default_value     => null);
           i := l_prms.next(i);
-        END LOOP;
-      END;
+        end loop;
+      end;
     
       -- Habilitar el programa
       dbms_scheduler.enable(l_nombre_programa);
@@ -114,27 +114,27 @@ CREATE OR REPLACE PACKAGE BODY k_trabajo IS
                                 start_date      => l_fecha_inicio,
                                 repeat_interval => l_intervalo_repeticion,
                                 end_date        => l_fecha_fin,
-                                enabled         => FALSE,
+                                enabled         => false,
                                 comments        => l_comentarios);
     
       -- Asignar parámetros del trabajo
-      DECLARE
-        i PLS_INTEGER;
-      BEGIN
+      declare
+        i pls_integer;
+      begin
         i := l_prms.first;
-        WHILE i IS NOT NULL LOOP
+        while i is not null loop
           dbms_scheduler.set_job_argument_value(l_nombre_trabajo,
                                                 i,
                                                 k_operacion.f_valor_parametro_string(l_prms,
                                                                                      l_prms(i).nombre));
           i := l_prms.next(i);
-        END LOOP;
-      END;
+        end loop;
+      end;
     
       -- Habilitar el trabajo
       dbms_scheduler.enable(l_nombre_trabajo);
     
-    ELSE
+    else
       -- Registrar el trabajo
       --dbms_output.put_line(l_nombre_trabajo);
       --dbms_output.put_line(l_accion_trabajo);
@@ -144,34 +144,34 @@ CREATE OR REPLACE PACKAGE BODY k_trabajo IS
                                 start_date      => l_fecha_inicio,
                                 repeat_interval => l_intervalo_repeticion,
                                 end_date        => l_fecha_fin,
-                                enabled         => TRUE,
+                                enabled         => true,
                                 comments        => l_comentarios);
     
-    END IF;
+    end if;
   
-  END;
+  end;
 
   -- Edita un trabajo en el sistema
-  PROCEDURE p_editar_trabajo(i_id_trabajo           IN NUMBER,
-                             i_parametros           IN CLOB DEFAULT NULL,
-                             i_fecha_inicio         IN TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-                             i_intervalo_repeticion IN VARCHAR2 DEFAULT NULL,
-                             i_fecha_fin            IN TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-                             i_editar_accion        IN BOOLEAN DEFAULT FALSE) IS
+  procedure p_editar_trabajo(i_id_trabajo           in number,
+                             i_parametros           in clob default null,
+                             i_fecha_inicio         in timestamp with time zone default null,
+                             i_intervalo_repeticion in varchar2 default null,
+                             i_fecha_fin            in timestamp with time zone default null,
+                             i_editar_accion        in boolean default false) is
     l_prms y_parametros;
     --
-    l_tipo_trabajo         t_trabajos.tipo%TYPE;
-    l_nombre_trabajo       t_operaciones.nombre%TYPE;
-    l_dominio_trabajo      t_operaciones.dominio%TYPE;
-    l_accion_trabajo       t_trabajos.accion%TYPE;
-    l_fecha_inicio         t_trabajos.fecha_inicio%TYPE;
-    l_intervalo_repeticion t_trabajos.intervalo_repeticion%TYPE;
-    l_fecha_fin            t_trabajos.fecha_fin%TYPE;
-    l_comentarios          t_trabajos.comentarios%TYPE;
-  BEGIN
+    l_tipo_trabajo         t_trabajos.tipo%type;
+    l_nombre_trabajo       t_operaciones.nombre%type;
+    l_dominio_trabajo      t_operaciones.dominio%type;
+    l_accion_trabajo       t_trabajos.accion%type;
+    l_fecha_inicio         t_trabajos.fecha_inicio%type;
+    l_intervalo_repeticion t_trabajos.intervalo_repeticion%type;
+    l_fecha_fin            t_trabajos.fecha_fin%type;
+    l_comentarios          t_trabajos.comentarios%type;
+  begin
     -- Buscar datos del trabajo
-    BEGIN
-      SELECT t.tipo,
+    begin
+      select t.tipo,
              upper(o.nombre),
              upper(o.dominio),
              t.accion,
@@ -179,7 +179,7 @@ CREATE OR REPLACE PACKAGE BODY k_trabajo IS
              i_intervalo_repeticion,
              i_fecha_fin,
              t.comentarios
-        INTO l_tipo_trabajo,
+        into l_tipo_trabajo,
              l_nombre_trabajo,
              l_dominio_trabajo,
              l_accion_trabajo,
@@ -187,177 +187,177 @@ CREATE OR REPLACE PACKAGE BODY k_trabajo IS
              l_intervalo_repeticion,
              l_fecha_fin,
              l_comentarios
-        FROM t_trabajos t, t_operaciones o
-       WHERE o.id_operacion = t.id_trabajo
-         AND o.activo = 'S'
-         AND t.id_trabajo = i_id_trabajo;
-    EXCEPTION
-      WHEN no_data_found THEN
-        RAISE ex_trabajo_no_implementado;
-    END;
+        from t_trabajos t, t_operaciones o
+       where o.id_operacion = t.id_trabajo
+         and o.activo = 'S'
+         and t.id_trabajo = i_id_trabajo;
+    exception
+      when no_data_found then
+        raise ex_trabajo_no_implementado;
+    end;
   
-    IF i_parametros IS NOT NULL THEN
+    if i_parametros is not null then
       -- Obtener parámetros del trabajo
-      BEGIN
+      begin
         l_prms := k_operacion.f_procesar_parametros(i_id_trabajo,
                                                     i_parametros);
-      EXCEPTION
-        WHEN OTHERS THEN
-          RAISE ex_error_parametro;
-      END;
+      exception
+        when others then
+          raise ex_error_parametro;
+      end;
     
       -- Procesar parámetros del trabajo
-      DECLARE
-        i PLS_INTEGER;
-      BEGIN
+      declare
+        i pls_integer;
+      begin
         i := l_prms.first;
-        WHILE i IS NOT NULL LOOP
-          l_nombre_trabajo := REPLACE(l_nombre_trabajo,
+        while i is not null loop
+          l_nombre_trabajo := replace(l_nombre_trabajo,
                                       '{' || upper(l_prms(i).nombre) || '}',
                                       k_operacion.f_valor_parametro_string(l_prms,
                                                                            l_prms(i).nombre));
-          l_accion_trabajo := REPLACE(l_accion_trabajo,
+          l_accion_trabajo := replace(l_accion_trabajo,
                                       '&' || upper(l_prms(i).nombre),
                                       k_operacion.f_valor_parametro_string(l_prms,
                                                                            l_prms(i).nombre));
           i                := l_prms.next(i);
-        END LOOP;
-      END;
-    END IF;
+        end loop;
+      end;
+    end if;
   
     -- Verificar si el trabajo existe
-    BEGIN
-      dbms_scheduler.get_attribute(NAME      => l_nombre_trabajo,
+    begin
+      dbms_scheduler.get_attribute(name      => l_nombre_trabajo,
                                    attribute => 'job_type',
-                                   VALUE     => l_tipo_trabajo);
-    END;
+                                   value     => l_tipo_trabajo);
+    end;
   
     -- Editar fecha de inicio del trabajo
-    IF i_fecha_inicio IS NOT NULL THEN
-      dbms_scheduler.set_attribute(NAME      => l_nombre_trabajo,
+    if i_fecha_inicio is not null then
+      dbms_scheduler.set_attribute(name      => l_nombre_trabajo,
                                    attribute => 'start_date',
-                                   VALUE     => l_fecha_inicio);
-    END IF;
+                                   value     => l_fecha_inicio);
+    end if;
   
     -- Editar intérvalo de repetición del trabajo
-    IF i_intervalo_repeticion IS NOT NULL THEN
-      dbms_scheduler.set_attribute(NAME      => l_nombre_trabajo,
+    if i_intervalo_repeticion is not null then
+      dbms_scheduler.set_attribute(name      => l_nombre_trabajo,
                                    attribute => 'repeat_interval',
-                                   VALUE     => l_intervalo_repeticion);
-    END IF;
+                                   value     => l_intervalo_repeticion);
+    end if;
   
     -- Editar fecha de fin del trabajo
-    IF i_fecha_fin IS NOT NULL THEN
-      dbms_scheduler.set_attribute(NAME      => l_nombre_trabajo,
+    if i_fecha_fin is not null then
+      dbms_scheduler.set_attribute(name      => l_nombre_trabajo,
                                    attribute => 'end_date',
-                                   VALUE     => l_fecha_fin);
-    END IF;
+                                   value     => l_fecha_fin);
+    end if;
   
     -- Editar la acción del trabajo.
     -- Lanza error en caso de procedimiento almacenado
-    IF i_editar_accion THEN
-      IF l_tipo_trabajo = 'STORED_PROCEDURE' THEN
-        RAISE ex_error_parametro;
-      ELSE
-        dbms_scheduler.set_attribute(NAME      => l_nombre_trabajo,
+    if i_editar_accion then
+      if l_tipo_trabajo = 'STORED_PROCEDURE' then
+        raise ex_error_parametro;
+      else
+        dbms_scheduler.set_attribute(name      => l_nombre_trabajo,
                                      attribute => 'job_action',
-                                     VALUE     => l_accion_trabajo);
-      END IF;
-    END IF;
-  END;
+                                     value     => l_accion_trabajo);
+      end if;
+    end if;
+  end;
 
   -- Crea o edita un trabajo en el sistema
-  PROCEDURE p_crear_o_editar_trabajo(i_id_trabajo           IN NUMBER,
-                                     i_parametros           IN CLOB DEFAULT NULL,
-                                     i_fecha_inicio         IN TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-                                     i_intervalo_repeticion IN VARCHAR2 DEFAULT NULL,
-                                     i_fecha_fin            IN TIMESTAMP WITH TIME ZONE DEFAULT NULL) IS
-  BEGIN
-    BEGIN
+  procedure p_crear_o_editar_trabajo(i_id_trabajo           in number,
+                                     i_parametros           in clob default null,
+                                     i_fecha_inicio         in timestamp with time zone default null,
+                                     i_intervalo_repeticion in varchar2 default null,
+                                     i_fecha_fin            in timestamp with time zone default null) is
+  begin
+    begin
       p_editar_trabajo(i_id_trabajo           => i_id_trabajo,
                        i_parametros           => i_parametros,
                        i_fecha_inicio         => i_fecha_inicio,
                        i_intervalo_repeticion => i_intervalo_repeticion,
                        i_fecha_fin            => i_fecha_fin);
-    EXCEPTION
-      WHEN ex_trabajo_no_existe THEN
+    exception
+      when ex_trabajo_no_existe then
         -- Crea el trabajo si no existe
         p_crear_trabajo(i_id_trabajo           => i_id_trabajo,
                         i_parametros           => i_parametros,
                         i_fecha_inicio         => i_fecha_inicio,
                         i_intervalo_repeticion => i_intervalo_repeticion,
                         i_fecha_fin            => i_fecha_fin);
-    END;
-  END;
+    end;
+  end;
 
   -- Elimina un trabajo en el sistema
-  PROCEDURE p_eliminar_trabajo(i_id_trabajo IN NUMBER,
-                               i_parametros IN CLOB DEFAULT NULL) IS
+  procedure p_eliminar_trabajo(i_id_trabajo in number,
+                               i_parametros in clob default null) is
     l_prms y_parametros;
     --
-    l_tipo_trabajo    t_trabajos.tipo%TYPE;
-    l_nombre_trabajo  t_operaciones.nombre%TYPE;
-    l_nombre_programa t_operaciones.nombre%TYPE;
-    l_dominio_trabajo t_operaciones.dominio%TYPE;
-  BEGIN
+    l_tipo_trabajo    t_trabajos.tipo%type;
+    l_nombre_trabajo  t_operaciones.nombre%type;
+    l_nombre_programa t_operaciones.nombre%type;
+    l_dominio_trabajo t_operaciones.dominio%type;
+  begin
     -- Buscar datos del trabajo
-    BEGIN
-      SELECT t.tipo, upper(o.nombre), upper(o.dominio), t.programa
-        INTO l_tipo_trabajo,
+    begin
+      select t.tipo, upper(o.nombre), upper(o.dominio), t.programa
+        into l_tipo_trabajo,
              l_nombre_trabajo,
              l_dominio_trabajo,
              l_nombre_programa
-        FROM t_trabajos t, t_operaciones o
-       WHERE o.id_operacion = t.id_trabajo
-         AND o.activo = 'S'
-         AND t.id_trabajo = i_id_trabajo;
-    EXCEPTION
-      WHEN no_data_found THEN
-        RAISE ex_trabajo_no_implementado;
-    END;
+        from t_trabajos t, t_operaciones o
+       where o.id_operacion = t.id_trabajo
+         and o.activo = 'S'
+         and t.id_trabajo = i_id_trabajo;
+    exception
+      when no_data_found then
+        raise ex_trabajo_no_implementado;
+    end;
   
-    IF i_parametros IS NOT NULL THEN
+    if i_parametros is not null then
       -- Obtener parámetros del trabajo
-      BEGIN
+      begin
         l_prms := k_operacion.f_procesar_parametros(i_id_trabajo,
                                                     i_parametros);
-      EXCEPTION
-        WHEN OTHERS THEN
-          RAISE ex_error_parametro;
-      END;
+      exception
+        when others then
+          raise ex_error_parametro;
+      end;
     
       -- Procesar parámetros del trabajo
-      DECLARE
-        i PLS_INTEGER;
-      BEGIN
+      declare
+        i pls_integer;
+      begin
         i := l_prms.first;
-        WHILE i IS NOT NULL LOOP
-          l_nombre_trabajo := REPLACE(l_nombre_trabajo,
+        while i is not null loop
+          l_nombre_trabajo := replace(l_nombre_trabajo,
                                       '{' || upper(l_prms(i).nombre) || '}',
                                       k_operacion.f_valor_parametro_string(l_prms,
                                                                            l_prms(i).nombre));
           i                := l_prms.next(i);
-        END LOOP;
-      END;
-    END IF;
+        end loop;
+      end;
+    end if;
   
     -- Elimina el trabajo
     dbms_scheduler.drop_job(l_nombre_trabajo);
   
     -- Elimina el programa
-    IF l_tipo_trabajo = 'STORED_PROCEDURE' THEN
-      BEGIN
-        IF l_nombre_programa IS NULL THEN
-          l_nombre_programa := 'P_' || REPLACE(l_nombre_trabajo, '.', '_');
-        END IF;
+    if l_tipo_trabajo = 'STORED_PROCEDURE' then
+      begin
+        if l_nombre_programa is null then
+          l_nombre_programa := 'P_' || replace(l_nombre_trabajo, '.', '_');
+        end if;
         dbms_scheduler.drop_program(l_nombre_programa);
-      EXCEPTION
-        WHEN ex_programa_con_dependencia THEN
-          NULL;
-      END;
-    END IF;
+      exception
+        when ex_programa_con_dependencia then
+          null;
+      end;
+    end if;
   
-  END;
+  end;
 
-END;
+end;
 /

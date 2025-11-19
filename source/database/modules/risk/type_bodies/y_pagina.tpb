@@ -1,25 +1,25 @@
-CREATE OR REPLACE TYPE BODY y_pagina IS
+create or replace type body y_pagina is
 
-  CONSTRUCTOR FUNCTION y_pagina RETURN SELF AS RESULT AS
-  BEGIN
-    self.numero_actual      := NULL;
-    self.numero_siguiente   := NULL;
-    self.numero_ultima      := NULL;
-    self.numero_primera     := NULL;
-    self.numero_anterior    := NULL;
-    self.cantidad_elementos := NULL;
-    self.elementos          := NEW y_objetos();
-    RETURN;
-  END;
+  constructor function y_pagina return self as result as
+  begin
+    self.numero_actual      := null;
+    self.numero_siguiente   := null;
+    self.numero_ultima      := null;
+    self.numero_primera     := null;
+    self.numero_anterior    := null;
+    self.cantidad_elementos := null;
+    self.elementos          := new y_objetos();
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_pagina      y_pagina;
     l_json_object json_object_t;
     l_json_array  json_array_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_pagina                    := NEW y_pagina();
+    l_pagina                    := new y_pagina();
     l_pagina.numero_actual      := l_json_object.get_number('numero_actual');
     l_pagina.numero_siguiente   := l_json_object.get_number('numero_siguiente');
     l_pagina.numero_ultima      := l_json_object.get_number('numero_ultima');
@@ -29,45 +29,45 @@ CREATE OR REPLACE TYPE BODY y_pagina IS
   
     l_json_array := l_json_object.get_array('elementos');
   
-    IF l_json_array IS NULL OR l_json_array.is_null OR
-       l_json_array.get_size = 0 THEN
-      l_pagina.elementos := NEW y_objetos();
-    ELSE
-      DECLARE
+    if l_json_array is null or l_json_array.is_null or
+       l_json_array.get_size = 0 then
+      l_pagina.elementos := new y_objetos();
+    else
+      declare
         l_anydata anydata;
-        l_result  PLS_INTEGER;
-        l_tipo    VARCHAR2(100);
+        l_result  pls_integer;
+        l_tipo    varchar2(100);
         l_objeto  y_objeto;
         l_objetos y_objetos;
-      BEGIN
+      begin
         -- Busca nombre del tipo para hacer el parse
         l_tipo := k_sistema.f_desencolar;
         --
-        l_objetos := NEW y_objetos();
-        FOR i IN 0 .. l_json_array.get_size - 1 LOOP
-          l_objeto  := NULL;
+        l_objetos := new y_objetos();
+        for i in 0 .. l_json_array.get_size - 1 loop
+          l_objeto  := null;
           l_anydata := k_util.json_to_objeto(l_json_array.get(i).to_clob,
                                              l_tipo);
           l_result  := l_anydata.getobject(l_objeto);
           l_objetos.extend;
           l_objetos(l_objetos.count) := l_objeto;
-        END LOOP;
+        end loop;
         l_pagina.elementos := l_objetos;
-      EXCEPTION
-        WHEN OTHERS THEN
-          l_pagina.elementos := NEW y_objetos();
-      END;
-    END IF;
+      exception
+        when others then
+          l_pagina.elementos := new y_objetos();
+      end;
+    end if;
   
-    RETURN l_pagina;
-  END;
+    return l_pagina;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
     l_json_array  json_array_t;
-    i             INTEGER;
-  BEGIN
-    l_json_object := NEW json_object_t();
+    i             integer;
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('numero_actual', self.numero_actual);
     l_json_object.put('numero_siguiente', self.numero_siguiente);
     l_json_object.put('numero_ultima', self.numero_ultima);
@@ -75,21 +75,21 @@ CREATE OR REPLACE TYPE BODY y_pagina IS
     l_json_object.put('numero_anterior', self.numero_anterior);
     l_json_object.put('cantidad_elementos', self.cantidad_elementos);
   
-    IF self.elementos IS NULL THEN
+    if self.elementos is null then
       l_json_object.put_null('elementos');
-    ELSE
-      l_json_array := NEW json_array_t();
+    else
+      l_json_array := new json_array_t();
       i            := self.elementos.first;
-      WHILE i IS NOT NULL LOOP
+      while i is not null loop
         l_json_array.append(json_object_t.parse(nvl(self.elementos(i).json,
                                                     self.elementos(i).to_json)));
         i := self.elementos.next(i);
-      END LOOP;
+      end loop;
       l_json_object.put('elementos', l_json_array);
-    END IF;
+    end if;
   
-    RETURN l_json_object.to_clob;
-  END;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

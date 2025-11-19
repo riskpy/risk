@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_dispositivo IS
+create or replace package k_dispositivo is
 
   /**
   Agrupa operaciones relacionadas con los dispositivos
@@ -30,35 +30,35 @@ CREATE OR REPLACE PACKAGE k_dispositivo IS
   -------------------------------------------------------------------------------
   */
 
-  c_suscripcion_defecto CONSTANT VARCHAR2(120) := 'default';
-  c_suscripcion_usuario CONSTANT VARCHAR2(120) := 'user';
+  c_suscripcion_defecto constant varchar2(120) := 'default';
+  c_suscripcion_usuario constant varchar2(120) := 'user';
 
-  FUNCTION f_suscripcion_defecto RETURN VARCHAR2;
+  function f_suscripcion_defecto return varchar2;
 
-  FUNCTION f_suscripcion_usuario(i_id_usuario IN NUMBER) RETURN VARCHAR2;
+  function f_suscripcion_usuario(i_id_usuario in number) return varchar2;
 
-  FUNCTION f_id_dispositivo(i_token_dispositivo IN VARCHAR2) RETURN NUMBER;
+  function f_id_dispositivo(i_token_dispositivo in varchar2) return number;
 
-  FUNCTION f_registrar_dispositivo(i_id_aplicacion             IN VARCHAR2,
-                                   i_token_dispositivo         IN VARCHAR2,
-                                   i_token_notificacion        IN VARCHAR2 DEFAULT NULL,
-                                   i_nombre_sistema_operativo  IN VARCHAR2 DEFAULT NULL,
-                                   i_version_sistema_operativo IN VARCHAR2 DEFAULT NULL,
-                                   i_tipo                      IN VARCHAR2 DEFAULT NULL,
-                                   i_nombre_navegador          IN VARCHAR2 DEFAULT NULL,
-                                   i_version_navegador         IN VARCHAR2 DEFAULT NULL,
-                                   i_version_aplicacion        IN VARCHAR2 DEFAULT NULL,
-                                   i_pais_iso_alpha_2          IN VARCHAR2 DEFAULT NULL,
-                                   i_zona_horaria              IN VARCHAR2 DEFAULT NULL,
-                                   i_idioma_iso369_1           IN VARCHAR2 DEFAULT NULL)
-    RETURN NUMBER;
+  function f_registrar_dispositivo(i_id_aplicacion             in varchar2,
+                                   i_token_dispositivo         in varchar2,
+                                   i_token_notificacion        in varchar2 default null,
+                                   i_nombre_sistema_operativo  in varchar2 default null,
+                                   i_version_sistema_operativo in varchar2 default null,
+                                   i_tipo                      in varchar2 default null,
+                                   i_nombre_navegador          in varchar2 default null,
+                                   i_version_navegador         in varchar2 default null,
+                                   i_version_aplicacion        in varchar2 default null,
+                                   i_pais_iso_alpha_2          in varchar2 default null,
+                                   i_zona_horaria              in varchar2 default null,
+                                   i_idioma_iso369_1           in varchar2 default null)
+    return number;
 
-  FUNCTION f_datos_dispositivo(i_id_dispositivo IN NUMBER)
-    RETURN y_dispositivo;
+  function f_datos_dispositivo(i_id_dispositivo in number)
+    return y_dispositivo;
 
   $if k_modulo.c_instalado_msj $then
-  PROCEDURE p_suscribir_notificacion(i_id_dispositivo   IN NUMBER,
-                                     i_suscripcion_alta IN VARCHAR2);
+  procedure p_suscribir_notificacion(i_id_dispositivo   in number,
+                                     i_suscripcion_alta in varchar2);
 
   /**
   Suscribe a una notificación a partir de otra suscripción
@@ -67,8 +67,8 @@ CREATE OR REPLACE PACKAGE k_dispositivo IS
   %param i_suscripcion Suscripción original
   %param i_suscripcion_alta Suscripción a dar de alta
   */
-  PROCEDURE p_suscribir_notificacion_s(i_suscripcion      IN VARCHAR2,
-                                       i_suscripcion_alta IN VARCHAR2);
+  procedure p_suscribir_notificacion_s(i_suscripcion      in varchar2,
+                                       i_suscripcion_alta in varchar2);
 
   /**
   Suscribe el dispositivo a las notificaciones de un usuario
@@ -77,11 +77,11 @@ CREATE OR REPLACE PACKAGE k_dispositivo IS
   %param i_id_dispositivo Identificador del dispositivo
   %param i_id_usuario Identificador del usuario
   */
-  PROCEDURE p_suscribir_notificacion_usuario(i_id_dispositivo IN NUMBER,
-                                             i_id_usuario     IN NUMBER);
+  procedure p_suscribir_notificacion_usuario(i_id_dispositivo in number,
+                                             i_id_usuario     in number);
 
-  PROCEDURE p_desuscribir_notificacion(i_id_dispositivo   IN NUMBER,
-                                       i_suscripcion_baja IN VARCHAR2);
+  procedure p_desuscribir_notificacion(i_id_dispositivo   in number,
+                                       i_suscripcion_baja in varchar2);
 
   /**
   Desuscribe de una notificación a partir de otra suscripción
@@ -90,8 +90,8 @@ CREATE OR REPLACE PACKAGE k_dispositivo IS
   %param i_suscripcion Suscripción original
   %param i_suscripcion_alta Suscripción a dar de baja
   */
-  PROCEDURE p_desuscribir_notificacion_s(i_suscripcion      IN VARCHAR2,
-                                         i_suscripcion_baja IN VARCHAR2);
+  procedure p_desuscribir_notificacion_s(i_suscripcion      in varchar2,
+                                         i_suscripcion_baja in varchar2);
 
   /**
   Desuscribe el dispositivo de las notificaciones de un usuario
@@ -100,13 +100,13 @@ CREATE OR REPLACE PACKAGE k_dispositivo IS
   %param i_id_dispositivo Identificador del dispositivo
   %param i_id_usuario Identificador del usuario
   */
-  PROCEDURE p_desuscribir_notificacion_usuario(i_id_dispositivo IN NUMBER,
-                                               i_id_usuario     IN NUMBER);
+  procedure p_desuscribir_notificacion_usuario(i_id_dispositivo in number,
+                                               i_id_usuario     in number);
   $end
 
-  PROCEDURE p_registrar_ubicacion(i_id_dispositivo IN NUMBER,
-                                  i_latitud        IN NUMBER,
-                                  i_longitud       IN NUMBER);
+  procedure p_registrar_ubicacion(i_id_dispositivo in number,
+                                  i_latitud        in number,
+                                  i_longitud       in number);
 
-END;
+end;
 /

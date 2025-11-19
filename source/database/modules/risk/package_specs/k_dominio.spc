@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_dominio IS
+create or replace package k_dominio is
 
   /**
   Agrupa operaciones relacionadas con los dominios
@@ -30,7 +30,7 @@ CREATE OR REPLACE PACKAGE k_dominio IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION f_id_modulo(i_id_dominio IN VARCHAR2) RETURN VARCHAR2;
+  function f_id_modulo(i_id_dominio in varchar2) return varchar2;
 
-END;
+end;
 /

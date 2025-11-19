@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_barrio UNDER y_objeto
+create or replace type y_barrio under y_objeto
 (
 /**
 Agrupa datos de Barrios.
@@ -31,20 +31,20 @@ SOFTWARE.
 */
 
 /** Identificador del barrio */
-  id_barrio NUMBER(10),
+  id_barrio number(10),
 /** Nombre del barrio */
-  nombre VARCHAR2(100),
+  nombre varchar2(100),
 /** País del barrio */
-  id_pais NUMBER(10),
+  id_pais number(10),
 /** Departamento, estado o provincia del barrio */
-  id_departamento NUMBER(10),
+  id_departamento number(10),
 /** Ciudad del barrio */
-  id_ciudad NUMBER(10),
+  id_ciudad number(10),
 
-  CONSTRUCTOR FUNCTION y_barrio RETURN SELF AS RESULT,
+  constructor function y_barrio return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

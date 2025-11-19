@@ -1,10 +1,10 @@
-CREATE OR REPLACE TRIGGER gf_operaciones
-  AFTER INSERT OR UPDATE OR DELETE ON t_operaciones
-  FOR EACH ROW
-DECLARE
-  l_id_permiso_old t_permisos.id_permiso%TYPE;
-  l_id_permiso_new t_permisos.id_permiso%TYPE;
-BEGIN
+create or replace trigger gf_operaciones
+  after insert or update or delete on t_operaciones
+  for each row
+declare
+  l_id_permiso_old t_permisos.id_permiso%type;
+  l_id_permiso_new t_permisos.id_permiso%type;
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -36,42 +36,42 @@ BEGIN
                                                                :new.tipo) || ':' ||
                             :new.dominio || ':' || :new.nombre);
 
-  IF inserting THEN
+  if inserting then
   
-    IF :new.tipo IN ('S', 'R') THEN
+    if :new.tipo in ('S', 'R') then
       -- SERVICIO, REPORTE
-      INSERT INTO t_permisos
+      insert into t_permisos
         (id_permiso, descripcion, detalle)
-      VALUES
-        (l_id_permiso_new, NULL, NULL);
-    END IF;
+      values
+        (l_id_permiso_new, null, null);
+    end if;
   
-  ELSIF updating AND (nvl(:new.tipo, 'X') <> nvl(:old.tipo, 'X') OR
-        nvl(:new.nombre, 'X') <> nvl(:old.nombre, 'X') OR
-        nvl(:new.dominio, 'X') <> nvl(:old.dominio, 'X')) THEN
+  elsif updating and (nvl(:new.tipo, 'X') <> nvl(:old.tipo, 'X') or
+        nvl(:new.nombre, 'X') <> nvl(:old.nombre, 'X') or
+        nvl(:new.dominio, 'X') <> nvl(:old.dominio, 'X')) then
   
-    IF :old.tipo IN ('S', 'R') THEN
+    if :old.tipo in ('S', 'R') then
       -- SERVICIO, REPORTE
-      DELETE t_rol_permisos WHERE id_permiso = l_id_permiso_old;
-      DELETE t_permisos WHERE id_permiso = l_id_permiso_old;
-    END IF;
+      delete t_rol_permisos where id_permiso = l_id_permiso_old;
+      delete t_permisos where id_permiso = l_id_permiso_old;
+    end if;
   
-    IF :new.tipo IN ('S', 'R') THEN
+    if :new.tipo in ('S', 'R') then
       -- SERVICIO, REPORTE
-      INSERT INTO t_permisos
+      insert into t_permisos
         (id_permiso, descripcion, detalle)
-      VALUES
-        (l_id_permiso_new, NULL, NULL);
-    END IF;
+      values
+        (l_id_permiso_new, null, null);
+    end if;
   
-  ELSIF deleting THEN
+  elsif deleting then
   
-    IF :old.tipo IN ('S', 'R') THEN
+    if :old.tipo in ('S', 'R') then
       -- SERVICIO, REPORTE
-      DELETE t_rol_permisos WHERE id_permiso = l_id_permiso_old;
-      DELETE t_permisos WHERE id_permiso = l_id_permiso_old;
-    END IF;
+      delete t_rol_permisos where id_permiso = l_id_permiso_old;
+      delete t_permisos where id_permiso = l_id_permiso_old;
+    end if;
   
-  END IF;
-END;
+  end if;
+end;
 /

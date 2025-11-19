@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_pagina_parametros UNDER y_objeto
+create or replace type y_pagina_parametros under y_objeto
 (
 /**
 Parámetros para paginación de elementos.
@@ -31,11 +31,11 @@ SOFTWARE.
 */
 
 /** Número de la página */
-  pagina INTEGER,
+  pagina integer,
 /** Cantidad de elementos por página */
-  por_pagina INTEGER,
+  por_pagina integer,
 /** No paginar? (S/N) */
-  no_paginar VARCHAR2(1),
+  no_paginar varchar2(1),
 
 /**
 Constructor del objeto sin parámetros.
@@ -43,9 +43,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_pagina_parametros.
 */
-  CONSTRUCTOR FUNCTION y_pagina_parametros RETURN SELF AS RESULT,
+  constructor function y_pagina_parametros return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -53,6 +53,6 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

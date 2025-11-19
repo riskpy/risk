@@ -1,10 +1,10 @@
-CREATE OR REPLACE PACKAGE test_y_respuesta IS
+create or replace package test_y_respuesta is
 
   --%suite(Tests unitarios del type y_respuesta)
   --%tags(type)
 
   --%test()
-  PROCEDURE parse_json_generico;
+  procedure parse_json_generico;
 
-END;
+end;
 /

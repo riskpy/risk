@@ -1,10 +1,9 @@
-CREATE OR REPLACE PACKAGE BODY test_k_significado IS
+create or replace package body test_k_significado is
 
-  PROCEDURE test IS
-  BEGIN
-    NULL;
-  END;
+  procedure test is
+  begin
+    null;
+  end;
 
-END;
+end;
 /
-

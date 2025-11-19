@@ -1,25 +1,25 @@
-CREATE OR REPLACE PACKAGE test_gb_personas IS
+create or replace package test_gb_personas is
 
   --%suite(Tests unitarios del trigger gb_personas)
   --%tags(trigger)
 
   --%test(Guarda el nombre en mayúsculas al insertar)
-  PROCEDURE nombre_mayusculas_al_insertar;
+  procedure nombre_mayusculas_al_insertar;
 
   --%test(Guarda el apellido en mayúsculas al insertar)
-  PROCEDURE apellido_mayusculas_al_insertar;
+  procedure apellido_mayusculas_al_insertar;
 
   --%test(Guarda el nombre completo en mayúsculas al insertar)
-  PROCEDURE nombre_completo_mayusculas_al_insertar;
+  procedure nombre_completo_mayusculas_al_insertar;
 
   --%test(Guarda el nombre en mayúsculas al actualizar)
-  PROCEDURE nombre_mayusculas_al_actualizar;
+  procedure nombre_mayusculas_al_actualizar;
 
   --%test(Guarda el apellido en mayúsculas al actualizar)
-  PROCEDURE apellido_mayusculas_al_actualizar;
+  procedure apellido_mayusculas_al_actualizar;
 
   --%test(Guarda el nombre completo en mayúsculas al actualizar)
-  PROCEDURE nombre_completo_mayusculas_al_actualizar;
+  procedure nombre_completo_mayusculas_al_actualizar;
 
-END;
+end;
 /

@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_dispositivo UNDER y_objeto
+create or replace type y_dispositivo under y_objeto
 (
 /**
 Agrupa datos de un dispositivo.
@@ -31,31 +31,31 @@ SOFTWARE.
 */
 
 /** Identificador del dispositivo */
-  id_dispositivo NUMBER(15),
+  id_dispositivo number(15),
 /** Token del dispositivo */
-  token_dispositivo VARCHAR2(500),
+  token_dispositivo varchar2(500),
 /** Nombre del sistema operativo */
-  nombre_sistema_operativo VARCHAR2(100),
+  nombre_sistema_operativo varchar2(100),
 /** Version del sistema operativo */
-  version_sistema_operativo VARCHAR2(100),
+  version_sistema_operativo varchar2(100),
 /** Tipo del dispositivo */
-  tipo VARCHAR2(1),
+  tipo varchar2(1),
 /** Nombre del navegador */
-  nombre_navegador VARCHAR2(100),
+  nombre_navegador varchar2(100),
 /** Version del navegador */
-  version_navegador VARCHAR2(100),
+  version_navegador varchar2(100),
 /** Token de notificacion del dispositivo */
-  token_notificacion VARCHAR2(500),
+  token_notificacion varchar2(500),
 /** Plataforma para las notificaciones push de la aplicación */
-  plataforma_notificacion VARCHAR2(10),
+  plataforma_notificacion varchar2(10),
 /** Version de la aplicacion */
-  version_aplicacion VARCHAR2(100),
+  version_aplicacion varchar2(100),
 /** Pais del dispositivo */
-  id_pais_iso2 VARCHAR2(2),
+  id_pais_iso2 varchar2(2),
 /** Zona horaria del dispositivo */
-  zona_horaria VARCHAR2(8),
+  zona_horaria varchar2(8),
 /** Idioma del dispositivo */
-  id_idioma_iso369_1 VARCHAR2(2),
+  id_idioma_iso369_1 varchar2(2),
 /** Plantillas para las notificaciones push de la aplicación */
   plantillas y_datos,
 /** Suscripciones para notificaciones push del dispositivo */
@@ -67,9 +67,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_dispositivo.
 */
-  CONSTRUCTOR FUNCTION y_dispositivo RETURN SELF AS RESULT,
+  constructor function y_dispositivo return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -77,6 +77,6 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

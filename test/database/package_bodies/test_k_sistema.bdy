@@ -1,21 +1,21 @@
-CREATE OR REPLACE PACKAGE BODY test_k_sistema IS
+create or replace package body test_k_sistema is
 
-  PROCEDURE f_fecha_por_defecto IS
-    l_fecha_actual t_modulos.fecha_actual%TYPE;
-  BEGIN
-    SELECT fecha_actual
-      INTO l_fecha_actual
-      FROM t_modulos
-     WHERE id_modulo = 'RISK';
+  procedure f_fecha_por_defecto is
+    l_fecha_actual t_modulos.fecha_actual%type;
+  begin
+    select fecha_actual
+      into l_fecha_actual
+      from t_modulos
+     where id_modulo = 'RISK';
     k_sistema.p_inicializar_parametros;
     ut.expect(k_sistema.f_fecha).to_equal(l_fecha_actual);
-  END;
+  end;
 
-  PROCEDURE f_usuario_por_defecto IS
-  BEGIN
+  procedure f_usuario_por_defecto is
+  begin
     k_sistema.p_inicializar_parametros;
-    ut.expect(k_sistema.f_usuario).to_equal(USER);
-  END;
+    ut.expect(k_sistema.f_usuario).to_equal(user);
+  end;
 
-END;
+end;
 /

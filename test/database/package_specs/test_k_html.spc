@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE test_k_html IS
+create or replace package test_k_html is
 
   --%suite(Tests unitarios del paquete k_html)
   --%tags(package)
@@ -7,8 +7,8 @@ CREATE OR REPLACE PACKAGE test_k_html IS
   --%name(f_html)
 
   --%test()
-  PROCEDURE f_html;
+  procedure f_html;
   --%endcontext
 
-END;
+end;
 /

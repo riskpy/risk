@@ -1,9 +1,9 @@
-CREATE OR REPLACE TRIGGER gf_archivos
-  AFTER INSERT OR UPDATE OR DELETE ON t_archivos
-  FOR EACH ROW
-DECLARE
-  l_historico_activo t_archivo_definiciones.historico_activo%TYPE;
-BEGIN
+create or replace trigger gf_archivos
+  after insert or update or delete on t_archivos
+  for each row
+declare
+  l_historico_activo t_archivo_definiciones.historico_activo%type;
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -28,26 +28,26 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF (updating AND
-     nvl(:new.version_actual, 0) <> nvl(:old.version_actual, 0)) OR
-     deleting THEN
+  if (updating and
+     nvl(:new.version_actual, 0) <> nvl(:old.version_actual, 0)) or
+     deleting then
   
     -- Verifica si el histórico de versiones está activo
-    BEGIN
-      SELECT d.historico_activo
-        INTO l_historico_activo
-        FROM t_archivo_definiciones d
-       WHERE upper(d.tabla) = upper(:old.tabla)
-         AND upper(d.campo) = upper(:old.campo);
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select d.historico_activo
+        into l_historico_activo
+        from t_archivo_definiciones d
+       where upper(d.tabla) = upper(:old.tabla)
+         and upper(d.campo) = upper(:old.campo);
+    exception
+      when no_data_found then
         raise_application_error(-20000,
                                 'Definición de archivo inexistente');
-    END;
+    end;
   
-    IF l_historico_activo = 'S' THEN
+    if l_historico_activo = 'S' then
       -- Guarda versión anterior en tabla histórica
-      INSERT INTO t_archivos_hist
+      insert into t_archivos_hist
         (tabla,
          campo,
          referencia,
@@ -58,7 +58,7 @@ BEGIN
          tamano,
          nombre,
          extension)
-      VALUES
+      values
         (:old.tabla,
          :old.campo,
          :old.referencia,
@@ -69,8 +69,8 @@ BEGIN
          :old.tamano,
          :old.nombre,
          :old.extension);
-    END IF;
+    end if;
   
-  END IF;
-END;
+  end if;
+end;
 /

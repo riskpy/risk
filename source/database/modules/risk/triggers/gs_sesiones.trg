@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_sesiones
-  BEFORE INSERT ON t_sesiones
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_sesiones
+  before insert on t_sesiones
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_sesion IS NULL THEN
+  if :new.id_sesion is null then
     :new.id_sesion := s_id_sesion.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

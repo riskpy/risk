@@ -1,39 +1,39 @@
-CREATE OR REPLACE TYPE BODY y_rol IS
+create or replace type body y_rol is
 
-  CONSTRUCTOR FUNCTION y_rol RETURN SELF AS RESULT AS
-  BEGIN
-    self.id_rol  := NULL;
-    self.nombre  := NULL;
-    self.activo  := NULL;
-    self.detalle := NULL;
-    RETURN;
-  END;
+  constructor function y_rol return self as result as
+  begin
+    self.id_rol  := null;
+    self.nombre  := null;
+    self.activo  := null;
+    self.detalle := null;
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_rol         y_rol;
     l_json_object json_object_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_rol         := NEW y_rol();
+    l_rol         := new y_rol();
     l_rol.id_rol  := l_json_object.get_number('id_rol');
     l_rol.nombre  := l_json_object.get_string('nombre');
     l_rol.activo  := l_json_object.get_string('activo');
     l_rol.detalle := l_json_object.get_string('detalle');
   
-    RETURN l_rol;
-  END;
+    return l_rol;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
-  BEGIN
-    l_json_object := NEW json_object_t();
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('id_rol', self.id_rol);
     l_json_object.put('nombre', self.nombre);
     l_json_object.put('activo', self.activo);
     l_json_object.put('detalle', self.detalle);
-    RETURN l_json_object.to_clob;
-  END;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

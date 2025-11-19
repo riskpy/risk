@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_html IS
+create or replace package k_html is
 
   /**
   Agrupa operaciones relacionadas con la generacion de HTML
@@ -30,18 +30,18 @@ CREATE OR REPLACE PACKAGE k_html IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION f_query2table(i_query    IN CLOB,
-                         i_template IN CLOB := NULL) RETURN CLOB;
+  function f_query2table(i_query    in clob,
+                         i_template in clob := null) return clob;
 
-  FUNCTION f_escapar_texto(i_texto IN CLOB) RETURN CLOB;
+  function f_escapar_texto(i_texto in clob) return clob;
 
-  FUNCTION f_html RETURN CLOB;
+  function f_html return clob;
 
-  PROCEDURE p_inicializar(i_doctype IN BOOLEAN DEFAULT TRUE);
+  procedure p_inicializar(i_doctype in boolean default true);
 
-  PROCEDURE p_print(i_clob IN CLOB);
+  procedure p_print(i_clob in clob);
 
-  PROCEDURE p_font_face(i_fuentes IN VARCHAR2);
+  procedure p_font_face(i_fuentes in varchar2);
 
-END;
+end;
 /

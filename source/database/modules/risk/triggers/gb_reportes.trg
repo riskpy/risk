@@ -1,10 +1,10 @@
-CREATE OR REPLACE TRIGGER gb_reportes
-  BEFORE INSERT OR UPDATE OR DELETE ON t_reportes
-  FOR EACH ROW
-DECLARE
-  l_tipo_operacion t_operaciones.tipo%TYPE;
-  l_cursor         PLS_INTEGER;
-BEGIN
+create or replace trigger gb_reportes
+  before insert or update or delete on t_reportes
+  for each row
+declare
+  l_tipo_operacion t_operaciones.tipo%type;
+  l_cursor         pls_integer;
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -29,38 +29,38 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF inserting OR updating THEN
+  if inserting or updating then
   
     -- Valida operación
-    BEGIN
-      SELECT o.tipo
-        INTO l_tipo_operacion
-        FROM t_operaciones o
-       WHERE o.id_operacion = :new.id_reporte;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select o.tipo
+        into l_tipo_operacion
+        from t_operaciones o
+       where o.id_operacion = :new.id_reporte;
+    exception
+      when no_data_found then
         raise_application_error(-20000, 'Operación inexistente');
-    END;
+    end;
   
     -- Valida tipo de operación
-    IF l_tipo_operacion <> 'R' THEN
+    if l_tipo_operacion <> 'R' then
       raise_application_error(-20000, 'Operación no es de tipo Reporte');
-    END IF;
+    end if;
   
     -- Valida consulta SQL
-    IF :new.consulta_sql IS NOT NULL THEN
-      BEGIN
+    if :new.consulta_sql is not null then
+      begin
         l_cursor := dbms_sql.open_cursor;
         dbms_sql.parse(l_cursor, :new.consulta_sql, dbms_sql.native);
         dbms_sql.close_cursor(l_cursor);
-      EXCEPTION
-        WHEN OTHERS THEN
+      exception
+        when others then
           raise_application_error(-20000,
-                                  'Consulta SQL no válida: ' || SQLERRM);
-      END;
-    END IF;
+                                  'Consulta SQL no válida: ' || sqlerrm);
+      end;
+    end if;
   
-  END IF;
+  end if;
 
-END;
+end;
 /

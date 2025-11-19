@@ -1,38 +1,38 @@
-CREATE OR REPLACE TYPE BODY y_parametro IS
+create or replace type body y_parametro is
 
-  CONSTRUCTOR FUNCTION y_parametro RETURN SELF AS RESULT AS
-  BEGIN
-    self.nombre := NULL;
-    self.valor  := NULL;
-    RETURN;
-  END;
+  constructor function y_parametro return self as result as
+  begin
+    self.nombre := null;
+    self.valor  := null;
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_parametro   y_parametro;
     l_json_object json_object_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_parametro        := NEW y_parametro();
+    l_parametro        := new y_parametro();
     l_parametro.nombre := l_json_object.get_string('nombre');
-    l_parametro.valor  := NULL; -- TODO
+    l_parametro.valor  := null; -- TODO
   
-    RETURN l_parametro;
-  END;
+    return l_parametro;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
-  BEGIN
-    l_json_object := NEW json_object_t();
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('nombre', self.nombre);
-    IF self.valor IS NULL OR k_util.objeto_to_json(self.valor) IS NULL THEN
+    if self.valor is null or k_util.objeto_to_json(self.valor) is null then
       l_json_object.put_null('valor');
-    ELSE
+    else
       l_json_object.put('valor',
                         json_element_t.parse(k_util.objeto_to_json(self.valor)));
-    END IF;
-    RETURN l_json_object.to_clob;
-  END;
+    end if;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

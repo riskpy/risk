@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_lob_util IS
+create or replace package k_lob_util is
 
   /**
   Agrupa herramientas para facilitar el manejo de LOBs y variables
@@ -30,9 +30,9 @@ CREATE OR REPLACE PACKAGE k_lob_util IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION f_obtener_blob_desde_clob(i_clob IN CLOB) RETURN BLOB;
+  function f_obtener_blob_desde_clob(i_clob in clob) return blob;
 
-  FUNCTION f_obtener_clob_desde_blob(i_blob IN BLOB) RETURN CLOB;
+  function f_obtener_clob_desde_blob(i_blob in blob) return clob;
 
-END;
+end;
 /

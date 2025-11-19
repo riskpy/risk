@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_servicio IS
+create or replace package k_servicio is
 
   /**
   Agrupa operaciones relacionadas con los Servicios Web del sistema
@@ -30,36 +30,36 @@ CREATE OR REPLACE PACKAGE k_servicio IS
   -------------------------------------------------------------------------------
   */
 
-  PROCEDURE p_limpiar_historial;
+  procedure p_limpiar_historial;
 
-  FUNCTION f_pagina_parametros(i_parametros IN y_parametros)
-    RETURN y_pagina_parametros;
+  function f_pagina_parametros(i_parametros in y_parametros)
+    return y_pagina_parametros;
 
-  FUNCTION f_paginar_elementos(i_elementos           IN y_objetos,
-                               i_numero_pagina       IN INTEGER DEFAULT NULL,
-                               i_cantidad_por_pagina IN INTEGER DEFAULT NULL,
-                               i_no_paginar          IN VARCHAR2 DEFAULT NULL)
-    RETURN y_pagina;
+  function f_paginar_elementos(i_elementos           in y_objetos,
+                               i_numero_pagina       in integer default null,
+                               i_cantidad_por_pagina in integer default null,
+                               i_no_paginar          in varchar2 default null)
+    return y_pagina;
 
-  FUNCTION f_paginar_elementos(i_elementos         IN y_objetos,
-                               i_pagina_parametros IN y_pagina_parametros)
-    RETURN y_pagina;
+  function f_paginar_elementos(i_elementos         in y_objetos,
+                               i_pagina_parametros in y_pagina_parametros)
+    return y_pagina;
 
-  FUNCTION f_servicio_sql(i_id_servicio IN NUMBER,
-                          i_parametros  IN y_parametros) RETURN y_respuesta;
+  function f_servicio_sql(i_id_servicio in number,
+                          i_parametros  in y_parametros) return y_respuesta;
 
-  FUNCTION f_procesar_servicio(i_id_servicio IN NUMBER,
-                               i_parametros  IN CLOB,
-                               i_contexto    IN CLOB DEFAULT NULL,
-                               i_version     IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_procesar_servicio(i_id_servicio in number,
+                               i_parametros  in clob,
+                               i_contexto    in clob default null,
+                               i_version     in varchar2 default null)
+    return clob;
 
-  FUNCTION f_procesar_servicio(i_nombre     IN VARCHAR2,
-                               i_dominio    IN VARCHAR2,
-                               i_parametros IN CLOB,
-                               i_contexto   IN CLOB DEFAULT NULL,
-                               i_version    IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_procesar_servicio(i_nombre     in varchar2,
+                               i_dominio    in varchar2,
+                               i_parametros in clob,
+                               i_contexto   in clob default null,
+                               i_version    in varchar2 default null)
+    return clob;
 
-END;
+end;
 /

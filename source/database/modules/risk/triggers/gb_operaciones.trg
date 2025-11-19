@@ -1,9 +1,9 @@
-CREATE OR REPLACE TRIGGER gb_operaciones
-  BEFORE INSERT OR UPDATE OR DELETE ON t_operaciones
-  FOR EACH ROW
-DECLARE
-  l_resultado VARCHAR2(32767);
-BEGIN
+create or replace trigger gb_operaciones
+  before insert or update or delete on t_operaciones
+  for each row
+declare
+  l_resultado varchar2(32767);
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -28,20 +28,20 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF inserting OR updating THEN
+  if inserting or updating then
   
-    IF :new.tipo IN ('S', 'R') THEN
+    if :new.tipo in ('S', 'R') then
       -- SERVICIO, REPORTE
       -- Valida nombre
-      BEGIN
+      begin
         l_resultado := dbms_assert.simple_sql_name(:new.nombre);
-      EXCEPTION
-        WHEN OTHERS THEN
+      exception
+        when others then
           raise_application_error(-20000, 'Nombre no válido');
-      END;
-    END IF;
+      end;
+    end if;
   
-  END IF;
+  end if;
 
-END;
+end;
 /

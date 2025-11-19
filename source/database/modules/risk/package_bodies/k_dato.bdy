@@ -1,171 +1,171 @@
-CREATE OR REPLACE PACKAGE BODY k_dato IS
+create or replace package body k_dato is
 
-  FUNCTION f_recuperar_dato(i_tabla      IN VARCHAR2,
-                            i_campo      IN VARCHAR2,
-                            i_referencia IN VARCHAR2) RETURN anydata IS
-    l_dato t_datos.contenido%TYPE;
-  BEGIN
-    BEGIN
-      SELECT a.contenido
-        INTO l_dato
-        FROM t_datos a
-       WHERE upper(a.tabla) = upper(i_tabla)
-         AND upper(a.campo) = upper(i_campo)
-         AND a.referencia = i_referencia;
-    EXCEPTION
-      WHEN no_data_found THEN
+  function f_recuperar_dato(i_tabla      in varchar2,
+                            i_campo      in varchar2,
+                            i_referencia in varchar2) return anydata is
+    l_dato t_datos.contenido%type;
+  begin
+    begin
+      select a.contenido
+        into l_dato
+        from t_datos a
+       where upper(a.tabla) = upper(i_tabla)
+         and upper(a.campo) = upper(i_campo)
+         and a.referencia = i_referencia;
+    exception
+      when no_data_found then
         raise_application_error(-20000, 'Dato adicional inexistente');
-      WHEN OTHERS THEN
+      when others then
         raise_application_error(-20000,
                                 'Error al recuperar dato adicional');
-    END;
+    end;
   
-    RETURN l_dato;
-  END;
+    return l_dato;
+  end;
 
-  FUNCTION f_recuperar_dato_string(i_tabla      IN VARCHAR2,
-                                   i_campo      IN VARCHAR2,
-                                   i_referencia IN VARCHAR2) RETURN VARCHAR2 IS
-  BEGIN
-    RETURN anydata.accessvarchar2(f_recuperar_dato(i_tabla,
+  function f_recuperar_dato_string(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2) return varchar2 is
+  begin
+    return anydata.accessvarchar2(f_recuperar_dato(i_tabla,
                                                    i_campo,
                                                    i_referencia));
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN NULL;
-  END;
+  exception
+    when others then
+      return null;
+  end;
 
-  FUNCTION f_recuperar_dato_number(i_tabla      IN VARCHAR2,
-                                   i_campo      IN VARCHAR2,
-                                   i_referencia IN VARCHAR2) RETURN NUMBER IS
-  BEGIN
-    RETURN anydata.accessnumber(f_recuperar_dato(i_tabla,
+  function f_recuperar_dato_number(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2) return number is
+  begin
+    return anydata.accessnumber(f_recuperar_dato(i_tabla,
                                                  i_campo,
                                                  i_referencia));
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN NULL;
-  END;
+  exception
+    when others then
+      return null;
+  end;
 
-  FUNCTION f_recuperar_dato_boolean(i_tabla      IN VARCHAR2,
-                                    i_campo      IN VARCHAR2,
-                                    i_referencia IN VARCHAR2) RETURN BOOLEAN IS
-  BEGIN
-    RETURN sys.diutil.int_to_bool(anydata.accessnumber(f_recuperar_dato(i_tabla,
+  function f_recuperar_dato_boolean(i_tabla      in varchar2,
+                                    i_campo      in varchar2,
+                                    i_referencia in varchar2) return boolean is
+  begin
+    return sys.diutil.int_to_bool(anydata.accessnumber(f_recuperar_dato(i_tabla,
                                                                         i_campo,
                                                                         i_referencia)));
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN NULL;
-  END;
+  exception
+    when others then
+      return null;
+  end;
 
-  FUNCTION f_recuperar_dato_date(i_tabla      IN VARCHAR2,
-                                 i_campo      IN VARCHAR2,
-                                 i_referencia IN VARCHAR2) RETURN DATE IS
-  BEGIN
-    RETURN anydata.accessdate(f_recuperar_dato(i_tabla,
+  function f_recuperar_dato_date(i_tabla      in varchar2,
+                                 i_campo      in varchar2,
+                                 i_referencia in varchar2) return date is
+  begin
+    return anydata.accessdate(f_recuperar_dato(i_tabla,
                                                i_campo,
                                                i_referencia));
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN NULL;
-  END;
+  exception
+    when others then
+      return null;
+  end;
 
-  FUNCTION f_recuperar_dato_object(i_tabla      IN VARCHAR2,
-                                   i_campo      IN VARCHAR2,
-                                   i_referencia IN VARCHAR2) RETURN y_objeto IS
+  function f_recuperar_dato_object(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2) return y_objeto is
     l_objeto   y_objeto;
     l_anydata  anydata;
-    l_result   PLS_INTEGER;
+    l_result   pls_integer;
     l_typeinfo anytype;
-    l_typecode PLS_INTEGER;
-  BEGIN
+    l_typecode pls_integer;
+  begin
     l_anydata := f_recuperar_dato(i_tabla, i_campo, i_referencia);
   
     l_typecode := l_anydata.gettype(l_typeinfo);
-    IF l_typecode = dbms_types.typecode_object THEN
+    if l_typecode = dbms_types.typecode_object then
       l_result := l_anydata.getobject(l_objeto);
-    END IF;
+    end if;
   
-    RETURN l_objeto;
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN NULL;
-  END;
+    return l_objeto;
+  exception
+    when others then
+      return null;
+  end;
 
-  PROCEDURE p_guardar_dato(i_tabla      IN VARCHAR2,
-                           i_campo      IN VARCHAR2,
-                           i_referencia IN VARCHAR2,
-                           i_dato       IN anydata) IS
-  BEGIN
-    UPDATE t_datos a
-       SET a.contenido = i_dato
-     WHERE upper(a.tabla) = upper(i_tabla)
-       AND upper(a.campo) = upper(i_campo)
-       AND a.referencia = i_referencia;
+  procedure p_guardar_dato(i_tabla      in varchar2,
+                           i_campo      in varchar2,
+                           i_referencia in varchar2,
+                           i_dato       in anydata) is
+  begin
+    update t_datos a
+       set a.contenido = i_dato
+     where upper(a.tabla) = upper(i_tabla)
+       and upper(a.campo) = upper(i_campo)
+       and a.referencia = i_referencia;
   
-    IF SQL%NOTFOUND THEN
-      INSERT INTO t_datos
+    if sql%notfound then
+      insert into t_datos
         (tabla, campo, referencia, contenido)
-      VALUES
+      values
         (upper(i_tabla), upper(i_campo), i_referencia, i_dato);
-    END IF;
-  END;
+    end if;
+  end;
 
-  PROCEDURE p_guardar_dato_string(i_tabla      IN VARCHAR2,
-                                  i_campo      IN VARCHAR2,
-                                  i_referencia IN VARCHAR2,
-                                  i_dato       IN VARCHAR2) IS
-  BEGIN
+  procedure p_guardar_dato_string(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2,
+                                  i_dato       in varchar2) is
+  begin
     p_guardar_dato(i_tabla,
                    i_campo,
                    i_referencia,
                    anydata.convertvarchar2(i_dato));
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_number(i_tabla      IN VARCHAR2,
-                                  i_campo      IN VARCHAR2,
-                                  i_referencia IN VARCHAR2,
-                                  i_dato       IN NUMBER) IS
-  BEGIN
+  procedure p_guardar_dato_number(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2,
+                                  i_dato       in number) is
+  begin
     p_guardar_dato(i_tabla,
                    i_campo,
                    i_referencia,
                    anydata.convertnumber(i_dato));
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_boolean(i_tabla      IN VARCHAR2,
-                                   i_campo      IN VARCHAR2,
-                                   i_referencia IN VARCHAR2,
-                                   i_dato       IN BOOLEAN) IS
-  BEGIN
+  procedure p_guardar_dato_boolean(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2,
+                                   i_dato       in boolean) is
+  begin
     p_guardar_dato(i_tabla,
                    i_campo,
                    i_referencia,
                    anydata.convertnumber(sys.diutil.bool_to_int(i_dato)));
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_date(i_tabla      IN VARCHAR2,
-                                i_campo      IN VARCHAR2,
-                                i_referencia IN VARCHAR2,
-                                i_dato       IN DATE) IS
-  BEGIN
+  procedure p_guardar_dato_date(i_tabla      in varchar2,
+                                i_campo      in varchar2,
+                                i_referencia in varchar2,
+                                i_dato       in date) is
+  begin
     p_guardar_dato(i_tabla,
                    i_campo,
                    i_referencia,
                    anydata.convertdate(i_dato));
-  END;
+  end;
 
-  PROCEDURE p_guardar_dato_object(i_tabla      IN VARCHAR2,
-                                  i_campo      IN VARCHAR2,
-                                  i_referencia IN VARCHAR2,
-                                  i_dato       IN y_objeto) IS
-  BEGIN
+  procedure p_guardar_dato_object(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2,
+                                  i_dato       in y_objeto) is
+  begin
     p_guardar_dato(i_tabla,
                    i_campo,
                    i_referencia,
                    anydata.convertobject(i_dato));
-  END;
+  end;
 
-END;
+end;
 /

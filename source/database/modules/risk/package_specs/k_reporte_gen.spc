@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_reporte_gen IS
+create or replace package k_reporte_gen is
 
   /**
   Agrupa operaciones relacionadas con los Reportes del dominio GEN
@@ -30,7 +30,7 @@ CREATE OR REPLACE PACKAGE k_reporte_gen IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION version_sistema(i_parametros IN y_parametros) RETURN y_archivo;
+  function version_sistema(i_parametros in y_parametros) return y_archivo;
 
-END;
+end;
 /

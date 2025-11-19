@@ -1,34 +1,34 @@
-CREATE OR REPLACE PACKAGE BODY k_autorizacion IS
+create or replace package body k_autorizacion is
 
-  FUNCTION f_validar_permiso(i_id_usuario IN NUMBER,
-                             i_id_permiso IN VARCHAR2,
-                             i_accion     IN VARCHAR2 DEFAULT NULL)
-    RETURN BOOLEAN IS
-    l_permiso VARCHAR2(1);
-  BEGIN
-    SELECT decode(i_accion,
-                  NULL,
-                  decode(nvl(COUNT(*), 0), 0, 'N', 'S'),
+  function f_validar_permiso(i_id_usuario in number,
+                             i_id_permiso in varchar2,
+                             i_accion     in varchar2 default null)
+    return boolean is
+    l_permiso varchar2(1);
+  begin
+    select decode(i_accion,
+                  null,
+                  decode(nvl(count(*), 0), 0, 'N', 'S'),
                   'C',
-                  nvl(MAX(rp.consultar), 'N'),
+                  nvl(max(rp.consultar), 'N'),
                   'I',
-                  nvl(MAX(rp.insertar), 'N'),
+                  nvl(max(rp.insertar), 'N'),
                   'A',
-                  nvl(MAX(rp.actualizar), 'N'),
+                  nvl(max(rp.actualizar), 'N'),
                   'E',
-                  nvl(MAX(rp.eliminar), 'N'),
+                  nvl(max(rp.eliminar), 'N'),
                   'N')
-      INTO l_permiso
-      FROM t_rol_permisos rp
-     WHERE rp.id_rol IN (SELECT ru.id_rol
-                           FROM t_rol_usuarios ru
-                          WHERE ru.id_usuario = i_id_usuario)
-       AND upper(rp.id_permiso) = upper(i_id_permiso);
-    RETURN k_util.string_to_bool(l_permiso);
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN FALSE;
-  END;
+      into l_permiso
+      from t_rol_permisos rp
+     where rp.id_rol in (select ru.id_rol
+                           from t_rol_usuarios ru
+                          where ru.id_usuario = i_id_usuario)
+       and upper(rp.id_permiso) = upper(i_id_permiso);
+    return k_util.string_to_bool(l_permiso);
+  exception
+    when others then
+      return false;
+  end;
 
-END;
+end;
 /

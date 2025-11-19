@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gb_sesiones
-  BEFORE INSERT OR UPDATE OR DELETE ON t_sesiones
-  FOR EACH ROW
-BEGIN
+create or replace trigger gb_sesiones
+  before insert or update or delete on t_sesiones
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,9 +26,9 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF inserting OR
-     (updating AND nvl(:new.estado, 'X') <> nvl(:old.estado, 'X')) THEN
-    :new.fecha_estado := SYSDATE;
-  END IF;
-END;
+  if inserting or
+     (updating and nvl(:new.estado, 'X') <> nvl(:old.estado, 'X')) then
+    :new.fecha_estado := sysdate;
+  end if;
+end;
 /

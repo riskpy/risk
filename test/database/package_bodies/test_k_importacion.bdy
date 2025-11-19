@@ -1,10 +1,10 @@
-CREATE OR REPLACE PACKAGE BODY test_k_importacion IS
+create or replace package body test_k_importacion is
 
-  PROCEDURE p_procesar_importacion_campos_fijos_ok IS
-    l_respuesta    VARCHAR2(4000);
-    l_archivo_blob BLOB;
-    l_archivo_clob CLOB;
-  BEGIN
+  procedure p_procesar_importacion_campos_fijos_ok is
+    l_respuesta    varchar2(4000);
+    l_archivo_blob blob;
+    l_archivo_clob clob;
+  begin
     l_archivo_clob := '422222   ARGENTINA           ARGENTINA           AR ARG 32
 311111   PARAGUAY            PARAGUAY            PU PRU999
 644444   BOLIVIA             BOLIVIANA           BU BUL998';
@@ -16,16 +16,16 @@ CREATE OR REPLACE PACKAGE BODY test_k_importacion IS
                                                         i_dominio                => 'GEN',
                                                         i_archivo                => l_archivo_blob,
                                                         i_parametros_adicionales => '',
-                                                        i_transaccion_autonoma   => FALSE,
-                                                        i_version                => NULL);
+                                                        i_transaccion_autonoma   => false,
+                                                        i_version                => null);
     ut.expect(l_respuesta).to_equal('{"codigo":"0","mensaje":"OK","mensaje_bd":"Filas insertadas : 2","lugar":null,"datos":null}');
-  END;
+  end;
 
-  PROCEDURE p_procesar_importacion_campos_fijos_error IS
-    l_respuesta    VARCHAR2(4000);
-    l_archivo_blob BLOB;
-    l_archivo_clob CLOB;
-  BEGIN
+  procedure p_procesar_importacion_campos_fijos_error is
+    l_respuesta    varchar2(4000);
+    l_archivo_blob blob;
+    l_archivo_clob clob;
+  begin
     l_archivo_clob := '422222   ARGENTINA           ARGENTINA           AR ARG 32
 533333   BRASIL              BRASILERA           BR BRA 76
 311111   PARAGUAY            PARAGUAY            PU PRU999
@@ -39,16 +39,16 @@ CREATE OR REPLACE PACKAGE BODY test_k_importacion IS
                                                         i_dominio                => 'GEN',
                                                         i_archivo                => l_archivo_blob,
                                                         i_parametros_adicionales => '',
-                                                        i_transaccion_autonoma   => FALSE,
-                                                        i_version                => NULL);
+                                                        i_transaccion_autonoma   => false,
+                                                        i_version                => null);
     ut.expect(l_respuesta).to_equal('{"codigo":"import0001","mensaje":"Error al importar archivo en las líneas: [2, 5]. Verifique.","mensaje_bd":null,"lugar":null,"datos":{"contenido":null}}');
-  END;
+  end;
 
-  PROCEDURE p_procesar_importacion_campos_separados_por_coma_ok IS
-    l_respuesta    VARCHAR2(4000);
-    l_archivo_blob BLOB;
-    l_archivo_clob CLOB;
-  BEGIN
+  procedure p_procesar_importacion_campos_separados_por_coma_ok is
+    l_respuesta    varchar2(4000);
+    l_archivo_blob blob;
+    l_archivo_clob clob;
+  begin
     l_archivo_clob := '1,"Asunción, ciudad de"
 999999,Villeta
 999998,Carapegua
@@ -61,16 +61,16 @@ CREATE OR REPLACE PACKAGE BODY test_k_importacion IS
                                                         i_dominio                => 'GEN',
                                                         i_archivo                => l_archivo_blob,
                                                         i_parametros_adicionales => '{"id_pais":null}',
-                                                        i_transaccion_autonoma   => FALSE,
-                                                        i_version                => NULL);
+                                                        i_transaccion_autonoma   => false,
+                                                        i_version                => null);
     ut.expect(l_respuesta).to_equal('{"codigo":"0","mensaje":"OK","mensaje_bd":"Filas insertadas : 4","lugar":null,"datos":null}');
-  END;
+  end;
 
-  PROCEDURE p_procesar_importacion_campos_separados_por_coma_error IS
-    l_respuesta    VARCHAR2(4000);
-    l_archivo_blob BLOB;
-    l_archivo_clob CLOB;
-  BEGIN
+  procedure p_procesar_importacion_campos_separados_por_coma_error is
+    l_respuesta    varchar2(4000);
+    l_archivo_blob blob;
+    l_archivo_clob clob;
+  begin
     l_archivo_clob := '1,"Asunción, ciudad de"
 999999,Villeta
 999998,Carapegua
@@ -83,10 +83,10 @@ CREATE OR REPLACE PACKAGE BODY test_k_importacion IS
                                                         i_dominio                => 'GEN',
                                                         i_archivo                => l_archivo_blob,
                                                         i_parametros_adicionales => '',
-                                                        i_transaccion_autonoma   => FALSE,
-                                                        i_version                => NULL);
+                                                        i_transaccion_autonoma   => false,
+                                                        i_version                => null);
     ut.expect(l_respuesta).to_equal('{"codigo":"import0001","mensaje":"Faltan parámetros adicionales: id_pais","mensaje_bd":null,"lugar":"Validando parámetros adicionales de la importación de archivo","datos":null}');
-  END;
+  end;
 
-END;
+end;
 /

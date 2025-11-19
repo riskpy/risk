@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_usuario IS
+create or replace package k_usuario is
 
   /**
   Agrupa operaciones relacionadas con los usuarios
@@ -31,32 +31,32 @@ CREATE OR REPLACE PACKAGE k_usuario IS
   */
 
   -- Excepciones
-  ex_usuario_inexistente EXCEPTION;
-  ex_usuario_existente   EXCEPTION;
+  ex_usuario_inexistente exception;
+  ex_usuario_existente   exception;
 
-  FUNCTION f_buscar_id(i_usuario IN VARCHAR2) RETURN NUMBER;
+  function f_buscar_id(i_usuario in varchar2) return number;
 
-  FUNCTION f_id_usuario(i_alias IN VARCHAR2) RETURN NUMBER;
+  function f_id_usuario(i_alias in varchar2) return number;
 
-  FUNCTION f_id_persona(i_id_usuario IN NUMBER) RETURN NUMBER;
+  function f_id_persona(i_id_usuario in number) return number;
 
-  FUNCTION f_alias(i_id_usuario IN NUMBER) RETURN VARCHAR2;
+  function f_alias(i_id_usuario in number) return varchar2;
 
-  FUNCTION f_estado(i_id_usuario IN NUMBER) RETURN VARCHAR2;
+  function f_estado(i_id_usuario in number) return varchar2;
 
-  FUNCTION f_origen(i_id_usuario IN NUMBER) RETURN VARCHAR2;
+  function f_origen(i_id_usuario in number) return varchar2;
 
-  FUNCTION f_validar_alias(i_alias VARCHAR2) RETURN BOOLEAN;
+  function f_validar_alias(i_alias varchar2) return boolean;
 
-  FUNCTION f_version_avatar(i_alias IN VARCHAR2) RETURN NUMBER;
+  function f_version_avatar(i_alias in varchar2) return number;
 
-  FUNCTION f_datos_usuario(i_id_usuario IN NUMBER) RETURN y_usuario;
+  function f_datos_usuario(i_id_usuario in number) return y_usuario;
 
-  FUNCTION f_existe_usuario_externo(i_origen     IN VARCHAR2,
-                                    i_id_externo IN VARCHAR2) RETURN BOOLEAN;
+  function f_existe_usuario_externo(i_origen     in varchar2,
+                                    i_id_externo in varchar2) return boolean;
 
-  PROCEDURE p_cambiar_estado(i_id_usuario IN NUMBER,
-                             i_estado     IN VARCHAR2);
+  procedure p_cambiar_estado(i_id_usuario in number,
+                             i_estado     in varchar2);
 
   $if k_modulo.c_instalado_msj $then
   /**
@@ -66,8 +66,8 @@ CREATE OR REPLACE PACKAGE k_usuario IS
   %param i_id_usuario Identificador del usuario
   %param i_suscripcion_alta Suscripción a dar de alta
   */
-  PROCEDURE p_suscribir_notificacion(i_id_usuario       IN NUMBER,
-                                     i_suscripcion_alta IN VARCHAR2);
+  procedure p_suscribir_notificacion(i_id_usuario       in number,
+                                     i_suscripcion_alta in varchar2);
 
   /**
   Desuscribe usuario de una notificación
@@ -76,8 +76,8 @@ CREATE OR REPLACE PACKAGE k_usuario IS
   %param i_id_usuario Identificador del usuario
   %param i_suscripcion_baja Suscripción a dar de baja
   */
-  PROCEDURE p_desuscribir_notificacion(i_id_usuario       IN NUMBER,
-                                       i_suscripcion_baja IN VARCHAR2);
+  procedure p_desuscribir_notificacion(i_id_usuario       in number,
+                                       i_suscripcion_baja in varchar2);
   $end
 
   /**
@@ -88,9 +88,9 @@ CREATE OR REPLACE PACKAGE k_usuario IS
   %param i_campo Campo a guardar
   %param i_dato Dato a guardar
   */
-  PROCEDURE p_guardar_dato_string(i_alias IN VARCHAR2,
-                                  i_campo IN VARCHAR2,
-                                  i_dato  IN VARCHAR2);
+  procedure p_guardar_dato_string(i_alias in varchar2,
+                                  i_campo in varchar2,
+                                  i_dato  in varchar2);
 
-END;
+end;
 /

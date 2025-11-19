@@ -1,13 +1,13 @@
-CREATE OR REPLACE TRIGGER gb_datos
-  BEFORE INSERT OR UPDATE OR DELETE ON t_datos
-  FOR EACH ROW
-DECLARE
-  l_existe_registro   VARCHAR2(1);
-  l_nombre_referencia t_dato_definiciones.nombre_referencia%TYPE;
-  l_tipo_dato         t_dato_definiciones.tipo_dato%TYPE;
+create or replace trigger gb_datos
+  before insert or update or delete on t_datos
+  for each row
+declare
+  l_existe_registro   varchar2(1);
+  l_nombre_referencia t_dato_definiciones.nombre_referencia%type;
+  l_tipo_dato         t_dato_definiciones.tipo_dato%type;
   l_typeinfo          anytype;
-  l_typecode          PLS_INTEGER;
-BEGIN
+  l_typecode          pls_integer;
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -32,24 +32,24 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF inserting OR updating THEN
+  if inserting or updating then
   
     -- Valida definición
-    BEGIN
-      SELECT d.nombre_referencia, d.tipo_dato
-        INTO l_nombre_referencia, l_tipo_dato
-        FROM t_dato_definiciones d
-       WHERE upper(d.tabla) = upper(:new.tabla)
-         AND upper(d.campo) = upper(:new.campo);
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select d.nombre_referencia, d.tipo_dato
+        into l_nombre_referencia, l_tipo_dato
+        from t_dato_definiciones d
+       where upper(d.tabla) = upper(:new.tabla)
+         and upper(d.campo) = upper(:new.campo);
+    exception
+      when no_data_found then
         raise_application_error(-20000,
                                 'Definición de dato adicional inexistente');
-    END;
+    end;
   
     -- Valida registro relacionado
-    IF l_nombre_referencia IS NOT NULL THEN
-      EXECUTE IMMEDIATE 'DECLARE
+    if l_nombre_referencia is not null then
+      execute immediate 'DECLARE
   l_existe VARCHAR2(1) := ''N'';
 BEGIN
   BEGIN
@@ -67,58 +67,58 @@ BEGIN
   END;
   :2 := l_existe;
 END;'
-        USING IN :new.referencia, OUT l_existe_registro;
+        using in :new.referencia, out l_existe_registro;
     
-      IF l_existe_registro = 'N' THEN
+      if l_existe_registro = 'N' then
         raise_application_error(-20000, 'Registro relacionado inexistente');
-      END IF;
-    END IF;
+      end if;
+    end if;
   
-    IF :new.contenido IS NULL THEN
-      NULL; -- ?
-    ELSE
+    if :new.contenido is null then
+      null; -- ?
+    else
       -- Valida tipo de dato
       l_typecode := :new.contenido.gettype(l_typeinfo);
     
-      CASE l_tipo_dato
+      case l_tipo_dato
       
-        WHEN 'S' THEN
+        when 'S' then
           -- String
-          IF l_typecode <> dbms_types.typecode_varchar2 THEN
+          if l_typecode <> dbms_types.typecode_varchar2 then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
-          END IF;
+          end if;
         
-        WHEN 'N' THEN
+        when 'N' then
           -- Number
-          IF l_typecode <> dbms_types.typecode_number THEN
+          if l_typecode <> dbms_types.typecode_number then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
-          END IF;
+          end if;
         
-        WHEN 'B' THEN
+        when 'B' then
           -- Boolean
-          IF l_typecode <> dbms_types.typecode_number THEN
+          if l_typecode <> dbms_types.typecode_number then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
-          END IF;
+          end if;
         
-        WHEN 'D' THEN
+        when 'D' then
           -- Date
-          IF l_typecode <> dbms_types.typecode_date THEN
+          if l_typecode <> dbms_types.typecode_date then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
-          END IF;
+          end if;
         
-        WHEN 'O' THEN
+        when 'O' then
           -- Object
-          IF l_typecode <> dbms_types.typecode_object THEN
+          if l_typecode <> dbms_types.typecode_object then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
-          END IF;
+          end if;
         
-        ELSE
+        else
           raise_application_error(-20000, 'Tipo de dato no soportado');
         
-      END CASE;
-    END IF;
+      end case;
+    end if;
   
-  END IF;
+  end if;
 
-END;
+end;
 /

@@ -1,9 +1,9 @@
-CREATE OR REPLACE PACKAGE BODY test_k_trabajo IS
+create or replace package body test_k_trabajo is
 
-  PROCEDURE test IS
-  BEGIN
-    NULL;
-  END;
+  procedure test is
+  begin
+    null;
+  end;
 
-END;
+end;
 /

@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_notificacion UNDER y_objeto
+create or replace type y_notificacion under y_objeto
 (
 /**
 Agrupa datos de Notificaciones push.
@@ -31,20 +31,20 @@ SOFTWARE.
 */
 
 /** Identificador de la notificación push */
-  id_notificacion NUMBER,
+  id_notificacion number,
 /** Tag o expresión destino de la notificación push */
-  suscripcion VARCHAR2(500),
+  suscripcion varchar2(500),
 /** Título de la notificación push */
-  titulo VARCHAR2(160),
+  titulo varchar2(160),
 /** Contenido de la notificación push */
-  contenido VARCHAR2(500),
+  contenido varchar2(500),
 /** Datos extra de la notificación push */
-  datos_extra CLOB,
+  datos_extra clob,
 
-  CONSTRUCTOR FUNCTION y_notificacion RETURN SELF AS RESULT,
+  constructor function y_notificacion return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

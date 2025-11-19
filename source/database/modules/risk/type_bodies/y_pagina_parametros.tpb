@@ -1,36 +1,36 @@
-CREATE OR REPLACE TYPE BODY y_pagina_parametros IS
+create or replace type body y_pagina_parametros is
 
-  CONSTRUCTOR FUNCTION y_pagina_parametros RETURN SELF AS RESULT AS
-  BEGIN
-    self.pagina     := NULL;
-    self.por_pagina := NULL;
-    self.no_paginar := NULL;
-    RETURN;
-  END;
+  constructor function y_pagina_parametros return self as result as
+  begin
+    self.pagina     := null;
+    self.por_pagina := null;
+    self.no_paginar := null;
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_objeto      y_pagina_parametros;
     l_json_object json_object_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_objeto            := NEW y_pagina_parametros();
+    l_objeto            := new y_pagina_parametros();
     l_objeto.pagina     := l_json_object.get_number('pagina');
     l_objeto.por_pagina := l_json_object.get_number('por_pagina');
     l_objeto.no_paginar := l_json_object.get_string('no_paginar');
   
-    RETURN l_objeto;
-  END;
+    return l_objeto;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
-  BEGIN
-    l_json_object := NEW json_object_t();
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('pagina', self.pagina);
     l_json_object.put('por_pagina', self.por_pagina);
     l_json_object.put('no_paginar', self.no_paginar);
-    RETURN l_json_object.to_clob;
-  END;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

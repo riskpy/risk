@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_mensajeria IS
+create or replace package k_mensajeria is
 
   /**
   Agrupa operaciones relacionadas con el envío de mensajes a los usuarios
@@ -37,94 +37,94 @@ CREATE OR REPLACE PACKAGE k_mensajeria IS
   -------------------------------------------------------------------------------
   */
 
-  c_ok                           CONSTANT PLS_INTEGER := 0;
-  c_cantidad_intentos_permitidos CONSTANT PLS_INTEGER := 3;
+  c_ok                           constant pls_integer := 0;
+  c_cantidad_intentos_permitidos constant pls_integer := 3;
 
   -- Prioridades de envío
-  c_prioridad_urgente    CONSTANT PLS_INTEGER := 1;
-  c_prioridad_importante CONSTANT PLS_INTEGER := 2;
-  c_prioridad_media      CONSTANT PLS_INTEGER := 3;
-  c_prioridad_baja       CONSTANT PLS_INTEGER := 4;
+  c_prioridad_urgente    constant pls_integer := 1;
+  c_prioridad_importante constant pls_integer := 2;
+  c_prioridad_media      constant pls_integer := 3;
+  c_prioridad_baja       constant pls_integer := 4;
 
-  FUNCTION f_validar_direccion_correo(i_direccion_correo VARCHAR2)
-    RETURN BOOLEAN;
+  function f_validar_direccion_correo(i_direccion_correo varchar2)
+    return boolean;
 
-  FUNCTION f_validar_numero_telefono(i_numero_telefono VARCHAR2)
-    RETURN BOOLEAN;
+  function f_validar_numero_telefono(i_numero_telefono varchar2)
+    return boolean;
 
-  FUNCTION f_direccion_correo_usuario(i_id_usuario IN NUMBER) RETURN VARCHAR2;
+  function f_direccion_correo_usuario(i_id_usuario in number) return varchar2;
 
-  FUNCTION f_numero_telefono_usuario(i_id_usuario IN NUMBER) RETURN VARCHAR2;
+  function f_numero_telefono_usuario(i_id_usuario in number) return varchar2;
 
-  FUNCTION f_correo_html(i_contenido      IN VARCHAR2,
-                         i_titulo         IN VARCHAR2 DEFAULT NULL,
-                         i_encabezado     IN VARCHAR2 DEFAULT NULL,
-                         i_pie            IN VARCHAR2 DEFAULT NULL,
-                         i_boton_etiqueta IN VARCHAR2 DEFAULT NULL,
-                         i_boton_accion   IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_correo_html(i_contenido      in varchar2,
+                         i_titulo         in varchar2 default null,
+                         i_encabezado     in varchar2 default null,
+                         i_pie            in varchar2 default null,
+                         i_boton_etiqueta in varchar2 default null,
+                         i_boton_accion   in varchar2 default null)
+    return clob;
 
-  FUNCTION f_correo_tabla_html(i_tabla      IN VARCHAR2,
-                               i_titulo     IN VARCHAR2 DEFAULT NULL,
-                               i_encabezado IN VARCHAR2 DEFAULT NULL,
-                               i_pie        IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_correo_tabla_html(i_tabla      in varchar2,
+                               i_titulo     in varchar2 default null,
+                               i_encabezado in varchar2 default null,
+                               i_pie        in varchar2 default null)
+    return clob;
 
-  FUNCTION f_correo_tabla_aux_html(i_tabla       IN VARCHAR2,
-                                   i_tabla_aux_1 IN VARCHAR2 DEFAULT NULL,
-                                   i_tabla_aux_2 IN VARCHAR2 DEFAULT NULL,
-                                   i_tabla_aux_3 IN VARCHAR2 DEFAULT NULL,
-                                   i_titulo      IN VARCHAR2 DEFAULT NULL,
-                                   i_encabezado  IN VARCHAR2 DEFAULT NULL,
-                                   i_pie         IN VARCHAR2 DEFAULT NULL)
-    RETURN CLOB;
+  function f_correo_tabla_aux_html(i_tabla       in varchar2,
+                                   i_tabla_aux_1 in varchar2 default null,
+                                   i_tabla_aux_2 in varchar2 default null,
+                                   i_tabla_aux_3 in varchar2 default null,
+                                   i_titulo      in varchar2 default null,
+                                   i_encabezado  in varchar2 default null,
+                                   i_pie         in varchar2 default null)
+    return clob;
 
-  PROCEDURE p_enviar_correo(i_subject         IN VARCHAR2,
-                            i_body            IN CLOB,
-                            i_id_usuario      IN NUMBER DEFAULT NULL,
-                            i_to              IN VARCHAR2 DEFAULT NULL,
-                            i_reply_to        IN VARCHAR2 DEFAULT NULL,
-                            i_cc              IN VARCHAR2 DEFAULT NULL,
-                            i_bcc             IN VARCHAR2 DEFAULT NULL,
-                            i_adjuntos        IN y_archivos DEFAULT NULL,
-                            i_prioridad_envio IN NUMBER DEFAULT NULL);
+  procedure p_enviar_correo(i_subject         in varchar2,
+                            i_body            in clob,
+                            i_id_usuario      in number default null,
+                            i_to              in varchar2 default null,
+                            i_reply_to        in varchar2 default null,
+                            i_cc              in varchar2 default null,
+                            i_bcc             in varchar2 default null,
+                            i_adjuntos        in y_archivos default null,
+                            i_prioridad_envio in number default null);
 
-  PROCEDURE p_enviar_mensaje(i_contenido       IN VARCHAR2,
-                             i_id_usuario      IN NUMBER DEFAULT NULL,
-                             i_numero_telefono IN VARCHAR2 DEFAULT NULL,
-                             i_prioridad_envio IN NUMBER DEFAULT NULL);
+  procedure p_enviar_mensaje(i_contenido       in varchar2,
+                             i_id_usuario      in number default null,
+                             i_numero_telefono in varchar2 default null,
+                             i_prioridad_envio in number default null);
 
-  PROCEDURE p_enviar_notificacion(i_titulo          IN VARCHAR2,
-                                  i_contenido       IN VARCHAR2,
-                                  i_id_usuario      IN NUMBER DEFAULT NULL,
-                                  i_suscripcion     IN VARCHAR2 DEFAULT NULL,
-                                  i_prioridad_envio IN NUMBER DEFAULT NULL,
-                                  i_datos_extra     IN VARCHAR2 DEFAULT NULL);
+  procedure p_enviar_notificacion(i_titulo          in varchar2,
+                                  i_contenido       in varchar2,
+                                  i_id_usuario      in number default null,
+                                  i_suscripcion     in varchar2 default null,
+                                  i_prioridad_envio in number default null,
+                                  i_datos_extra     in varchar2 default null);
 
-  FUNCTION f_enviar_correo(i_subject         IN VARCHAR2,
-                           i_body            IN CLOB,
-                           i_id_usuario      IN NUMBER DEFAULT NULL,
-                           i_to              IN VARCHAR2 DEFAULT NULL,
-                           i_reply_to        IN VARCHAR2 DEFAULT NULL,
-                           i_cc              IN VARCHAR2 DEFAULT NULL,
-                           i_bcc             IN VARCHAR2 DEFAULT NULL,
-                           i_adjuntos        IN y_archivos DEFAULT NULL,
-                           i_prioridad_envio IN NUMBER DEFAULT NULL)
-    RETURN PLS_INTEGER;
+  function f_enviar_correo(i_subject         in varchar2,
+                           i_body            in clob,
+                           i_id_usuario      in number default null,
+                           i_to              in varchar2 default null,
+                           i_reply_to        in varchar2 default null,
+                           i_cc              in varchar2 default null,
+                           i_bcc             in varchar2 default null,
+                           i_adjuntos        in y_archivos default null,
+                           i_prioridad_envio in number default null)
+    return pls_integer;
 
-  FUNCTION f_enviar_mensaje(i_contenido       IN VARCHAR2,
-                            i_id_usuario      IN NUMBER DEFAULT NULL,
-                            i_numero_telefono IN VARCHAR2 DEFAULT NULL,
-                            i_prioridad_envio IN NUMBER DEFAULT NULL)
-    RETURN PLS_INTEGER;
+  function f_enviar_mensaje(i_contenido       in varchar2,
+                            i_id_usuario      in number default null,
+                            i_numero_telefono in varchar2 default null,
+                            i_prioridad_envio in number default null)
+    return pls_integer;
 
-  FUNCTION f_enviar_notificacion(i_titulo          IN VARCHAR2,
-                                 i_contenido       IN VARCHAR2,
-                                 i_id_usuario      IN NUMBER DEFAULT NULL,
-                                 i_suscripcion     IN VARCHAR2 DEFAULT NULL,
-                                 i_prioridad_envio IN NUMBER DEFAULT NULL,
-                                 i_datos_extra     IN VARCHAR2 DEFAULT NULL)
-    RETURN PLS_INTEGER;
+  function f_enviar_notificacion(i_titulo          in varchar2,
+                                 i_contenido       in varchar2,
+                                 i_id_usuario      in number default null,
+                                 i_suscripcion     in varchar2 default null,
+                                 i_prioridad_envio in number default null,
+                                 i_datos_extra     in varchar2 default null)
+    return pls_integer;
 
-END;
+end;
 /

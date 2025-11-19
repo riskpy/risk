@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE test_k_servicio IS
+create or replace package test_k_servicio is
 
   --%suite(Tests unitarios del paquete k_servicio)
   --%tags(package)
@@ -7,16 +7,16 @@ CREATE OR REPLACE PACKAGE test_k_servicio IS
   --%name(f_procesar_servicio)
 
   --%test()
-  PROCEDURE f_procesar_servicio_inexistente;
+  procedure f_procesar_servicio_inexistente;
   --%test()
-  PROCEDURE f_procesar_servicio_error_json_parametros;
+  procedure f_procesar_servicio_error_json_parametros;
   --%test()
-  PROCEDURE f_procesar_servicio_error_json_contexto;
+  procedure f_procesar_servicio_error_json_contexto;
   --%test()
-  PROCEDURE f_procesar_servicio_error_tipo_contexto;
+  procedure f_procesar_servicio_error_tipo_contexto;
   --%test()
-  PROCEDURE f_procesar_servicio_version_sistema;
+  procedure f_procesar_servicio_version_sistema;
   --%endcontext
 
-END;
+end;
 /

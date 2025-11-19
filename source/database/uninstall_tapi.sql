@@ -24,22 +24,22 @@ SOFTWARE.
 
 set serveroutput on size unlimited
 
-DECLARE
-  CURSOR cr_statements IS
-    SELECT 'drop ' || lower(x.object_type) || ' ' || lower(x.object_name) ||
-           decode(x.object_type, 'VIEW', ' cascade constraints') AS drop_statement
-      FROM TABLE(om_tapigen.view_naming_conflicts) x
-     WHERE x.object_type IN ('PACKAGE', 'VIEW');
-BEGIN
-  FOR s IN cr_statements LOOP
-    BEGIN
-      EXECUTE IMMEDIATE s.drop_statement;
-    EXCEPTION
-      WHEN OTHERS THEN
-        dbms_output.put_line(SQLERRM);
-    END;
-  END LOOP;
-END;
+declare
+  cursor cr_statements is
+    select 'drop ' || lower(x.object_type) || ' ' || lower(x.object_name) ||
+           decode(x.object_type, 'VIEW', ' cascade constraints') as drop_statement
+      from table(om_tapigen.view_naming_conflicts) x
+     where x.object_type in ('PACKAGE', 'VIEW');
+begin
+  for s in cr_statements loop
+    begin
+      execute immediate s.drop_statement;
+    exception
+      when others then
+        dbms_output.put_line(sqlerrm);
+    end;
+  end loop;
+end;
 /
 
 set serveroutput off

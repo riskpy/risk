@@ -1,67 +1,67 @@
-CREATE OR REPLACE PACKAGE BODY test_k_error IS
+create or replace package body test_k_error is
 
-  PROCEDURE f_tipo_excepcion_ude_negativo IS
-  BEGIN
+  procedure f_tipo_excepcion_ude_negativo is
+  begin
     ut.expect(k_error.f_tipo_excepcion(-20000)).to_equal(k_error.c_user_defined_error);
-  END;
+  end;
 
-  PROCEDURE f_tipo_excepcion_ude_positivo IS
-  BEGIN
+  procedure f_tipo_excepcion_ude_positivo is
+  begin
     ut.expect(k_error.f_tipo_excepcion(20000)).to_equal(k_error.c_user_defined_error);
-  END;
+  end;
 
-  PROCEDURE f_tipo_excepcion_ope IS
-  BEGIN
+  procedure f_tipo_excepcion_ope is
+  begin
     ut.expect(k_error.f_tipo_excepcion(-1)).to_equal(k_error.c_oracle_predefined_error);
-  END;
+  end;
 
-  PROCEDURE f_mensaje_excepcion_ude IS
-    l_mensaje_excepcion VARCHAR2(4000);
-  BEGIN
-    BEGIN
+  procedure f_mensaje_excepcion_ude is
+    l_mensaje_excepcion varchar2(4000);
+  begin
+    begin
       raise_application_error(-20000, 'Este es un mensaje de error');
-    EXCEPTION
-      WHEN OTHERS THEN
-        l_mensaje_excepcion := k_error.f_mensaje_excepcion(SQLERRM);
-    END;
+    exception
+      when others then
+        l_mensaje_excepcion := k_error.f_mensaje_excepcion(sqlerrm);
+    end;
     ut.expect(l_mensaje_excepcion).to_equal('Este es un mensaje de error');
-  END;
+  end;
 
-  PROCEDURE f_mensaje_excepcion_ope IS
-    l_mensaje_excepcion VARCHAR2(4000);
-    l_error_msg         VARCHAR2(4000);
-  BEGIN
-    BEGIN
-      RAISE no_data_found;
-    EXCEPTION
-      WHEN OTHERS THEN
+  procedure f_mensaje_excepcion_ope is
+    l_mensaje_excepcion varchar2(4000);
+    l_error_msg         varchar2(4000);
+  begin
+    begin
+      raise no_data_found;
+    exception
+      when others then
         l_error_msg         := utl_call_stack.error_msg(1);
-        l_mensaje_excepcion := k_error.f_mensaje_excepcion(SQLERRM);
-    END;
+        l_mensaje_excepcion := k_error.f_mensaje_excepcion(sqlerrm);
+    end;
     ut.expect(l_mensaje_excepcion).to_equal(l_error_msg);
-  END;
+  end;
 
-  PROCEDURE f_mensaje_excepcion_ope_sin_plsql IS
-    l_mensaje_excepcion VARCHAR2(4000);
-    l_error_msg         VARCHAR2(4000);
-  BEGIN
-    BEGIN
-      RAISE program_error;
-    EXCEPTION
-      WHEN OTHERS THEN
+  procedure f_mensaje_excepcion_ope_sin_plsql is
+    l_mensaje_excepcion varchar2(4000);
+    l_error_msg         varchar2(4000);
+  begin
+    begin
+      raise program_error;
+    exception
+      when others then
         l_error_msg         := utl_call_stack.error_msg(1);
-        l_mensaje_excepcion := k_error.f_mensaje_excepcion(SQLERRM);
-    END;
-    ut.expect(l_mensaje_excepcion).to_equal(REPLACE(l_error_msg,
+        l_mensaje_excepcion := k_error.f_mensaje_excepcion(sqlerrm);
+    end;
+    ut.expect(l_mensaje_excepcion).to_equal(replace(l_error_msg,
                                                     'PL/SQL: '));
-  END;
+  end;
 
-  PROCEDURE f_mensaje_error_default_wrap_char IS
-    l_mensaje_error VARCHAR2(4000);
-  BEGIN
-    INSERT INTO t_errores
+  procedure f_mensaje_error_default_wrap_char is
+    l_mensaje_error varchar2(4000);
+  begin
+    insert into t_errores
       (clave, mensaje)
-    VALUES
+    values
       ('mierror', '@1@-@2@-@3@-@4@-@5@');
   
     l_mensaje_error := k_error.f_mensaje_error('mierror',
@@ -71,14 +71,14 @@ CREATE OR REPLACE PACKAGE BODY test_k_error IS
                                                'cuatro',
                                                'cinco');
     ut.expect(l_mensaje_error).to_equal('uno-dos-tres-cuatro-cinco');
-  END;
+  end;
 
-  PROCEDURE f_mensaje_error_custom_wrap_char IS
-    l_mensaje_error VARCHAR2(4000);
-  BEGIN
-    INSERT INTO t_errores
+  procedure f_mensaje_error_custom_wrap_char is
+    l_mensaje_error varchar2(4000);
+  begin
+    insert into t_errores
       (clave, mensaje)
-    VALUES
+    values
       ('mierror', '#1#-#2#-#3#-#4#-#5#');
   
     l_mensaje_error := k_error.f_mensaje_error('mierror',
@@ -89,12 +89,12 @@ CREATE OR REPLACE PACKAGE BODY test_k_error IS
                                                'cinco',
                                                '#');
     ut.expect(l_mensaje_error).to_equal('uno-dos-tres-cuatro-cinco');
-  END;
+  end;
 
-  PROCEDURE f_mensaje_error_no_registrado IS
-  BEGIN
+  procedure f_mensaje_error_no_registrado is
+  begin
     ut.expect(k_error.f_mensaje_error('errorquenoexiste')).to_equal('Error no registrado [errorquenoexiste]');
-  END;
+  end;
 
-END;
+end;
 /

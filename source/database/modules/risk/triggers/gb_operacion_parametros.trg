@@ -1,9 +1,9 @@
-CREATE OR REPLACE TRIGGER gb_operacion_parametros
-  BEFORE INSERT OR UPDATE OR DELETE ON t_operacion_parametros
-  FOR EACH ROW
-DECLARE
-  l_existe VARCHAR2(1);
-BEGIN
+create or replace trigger gb_operacion_parametros
+  before insert or update or delete on t_operacion_parametros
+  for each row
+declare
+  l_existe varchar2(1);
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -28,29 +28,29 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF inserting OR updating THEN
+  if inserting or updating then
   
-    IF :new.valores_posibles IS NOT NULL THEN
+    if :new.valores_posibles is not null then
       -- Valida dominio
-      BEGIN
-        SELECT 'S'
-          INTO l_existe
-          FROM t_significados a
-         WHERE upper(a.dominio) = upper(:new.valores_posibles);
-      EXCEPTION
-        WHEN no_data_found THEN
+      begin
+        select 'S'
+          into l_existe
+          from t_significados a
+         where upper(a.dominio) = upper(:new.valores_posibles);
+      exception
+        when no_data_found then
           l_existe := 'N';
-        WHEN too_many_rows THEN
+        when too_many_rows then
           l_existe := 'S';
-      END;
+      end;
     
-      IF l_existe = 'N' THEN
+      if l_existe = 'N' then
         raise_application_error(-20000,
                                 'Dominio no definido en tabla de significados');
-      END IF;
-    END IF;
+      end if;
+    end if;
   
-  END IF;
+  end if;
 
-END;
+end;
 /

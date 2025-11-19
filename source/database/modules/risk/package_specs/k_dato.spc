@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_dato IS
+create or replace package k_dato is
 
   /**
   Agrupa operaciones relacionadas con datos adicionales
@@ -30,64 +30,64 @@ CREATE OR REPLACE PACKAGE k_dato IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION f_recuperar_dato(i_tabla      IN VARCHAR2,
-                            i_campo      IN VARCHAR2,
-                            i_referencia IN VARCHAR2) RETURN anydata;
+  function f_recuperar_dato(i_tabla      in varchar2,
+                            i_campo      in varchar2,
+                            i_referencia in varchar2) return anydata;
 
-  FUNCTION f_recuperar_dato_string(i_tabla      IN VARCHAR2,
-                                   i_campo      IN VARCHAR2,
-                                   i_referencia IN VARCHAR2) RETURN VARCHAR2;
+  function f_recuperar_dato_string(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2) return varchar2;
 
-  FUNCTION f_recuperar_dato_number(i_tabla      IN VARCHAR2,
-                                   i_campo      IN VARCHAR2,
-                                   i_referencia IN VARCHAR2) RETURN NUMBER;
+  function f_recuperar_dato_number(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2) return number;
 
-  FUNCTION f_recuperar_dato_boolean(i_tabla      IN VARCHAR2,
-                                    i_campo      IN VARCHAR2,
-                                    i_referencia IN VARCHAR2) RETURN BOOLEAN;
+  function f_recuperar_dato_boolean(i_tabla      in varchar2,
+                                    i_campo      in varchar2,
+                                    i_referencia in varchar2) return boolean;
 
-  FUNCTION f_recuperar_dato_date(i_tabla      IN VARCHAR2,
-                                 i_campo      IN VARCHAR2,
-                                 i_referencia IN VARCHAR2) RETURN DATE;
+  function f_recuperar_dato_date(i_tabla      in varchar2,
+                                 i_campo      in varchar2,
+                                 i_referencia in varchar2) return date;
 
-  FUNCTION f_recuperar_dato_object(i_tabla      IN VARCHAR2,
-                                   i_campo      IN VARCHAR2,
-                                   i_referencia IN VARCHAR2) RETURN y_objeto;
+  function f_recuperar_dato_object(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2) return y_objeto;
 
-  PROCEDURE p_guardar_dato(i_tabla      IN VARCHAR2,
-                           i_campo      IN VARCHAR2,
-                           i_referencia IN VARCHAR2,
-                           i_dato       IN anydata);
+  procedure p_guardar_dato(i_tabla      in varchar2,
+                           i_campo      in varchar2,
+                           i_referencia in varchar2,
+                           i_dato       in anydata);
 
-  PROCEDURE p_guardar_dato_string(i_tabla      IN VARCHAR2,
-                                  i_campo      IN VARCHAR2,
-                                  i_referencia IN VARCHAR2,
-                                  i_dato       IN VARCHAR2);
+  procedure p_guardar_dato_string(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2,
+                                  i_dato       in varchar2);
 
-  PROCEDURE p_guardar_dato_number(i_tabla      IN VARCHAR2,
-                                  i_campo      IN VARCHAR2,
-                                  i_referencia IN VARCHAR2,
-                                  i_dato       IN NUMBER);
+  procedure p_guardar_dato_number(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2,
+                                  i_dato       in number);
 
-  PROCEDURE p_guardar_dato_boolean(i_tabla      IN VARCHAR2,
-                                   i_campo      IN VARCHAR2,
-                                   i_referencia IN VARCHAR2,
-                                   i_dato       IN BOOLEAN);
+  procedure p_guardar_dato_boolean(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2,
+                                   i_dato       in boolean);
 
-  PROCEDURE p_guardar_dato_date(i_tabla      IN VARCHAR2,
-                                i_campo      IN VARCHAR2,
-                                i_referencia IN VARCHAR2,
-                                i_dato       IN DATE);
+  procedure p_guardar_dato_date(i_tabla      in varchar2,
+                                i_campo      in varchar2,
+                                i_referencia in varchar2,
+                                i_dato       in date);
 
   -- Para evitar el error ORA-22370, el tipo (heredado de y_objeto) del dato no
   -- debe contener atributos LOBs (CLOB, BLOB) ya que actualmente no cuenta con
   -- soporte para persistencia
-  PROCEDURE p_guardar_dato_object(i_tabla      IN VARCHAR2,
-                                  i_campo      IN VARCHAR2,
-                                  i_referencia IN VARCHAR2,
-                                  i_dato       IN y_objeto);
-  PRAGMA deprecate(p_guardar_dato_object,
+  procedure p_guardar_dato_object(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2,
+                                  i_dato       in y_objeto);
+  pragma deprecate(p_guardar_dato_object,
                    'No usar! Siempre da error ORA-22370 por el campo json de y_objeto');
 
-END;
+end;
 /

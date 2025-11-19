@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_servicio_glo IS
+create or replace package k_servicio_glo is
 
   /**
   Agrupa operaciones relacionadas con los Servicios Web del dominio GLO
@@ -30,14 +30,14 @@ CREATE OR REPLACE PACKAGE k_servicio_glo IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION listar_paises(i_parametros IN y_parametros) RETURN y_respuesta;
+  function listar_paises(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION listar_departamentos(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function listar_departamentos(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION listar_ciudades(i_parametros IN y_parametros) RETURN y_respuesta;
+  function listar_ciudades(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION listar_barrios(i_parametros IN y_parametros) RETURN y_respuesta;
+  function listar_barrios(i_parametros in y_parametros) return y_respuesta;
 
-END;
+end;
 /

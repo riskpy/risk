@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_archivo UNDER y_objeto
+create or replace type y_archivo under y_objeto
 (
 /**
 Agrupa datos de un archivo.
@@ -31,19 +31,19 @@ SOFTWARE.
 */
 
 /** Contenido del archivo */
-  contenido BLOB,
+  contenido blob,
 /** URL del archivo */
-  url VARCHAR2(4000),
+  url varchar2(4000),
 /** Hash del archivo calculado con el algoritmo SHA-1 */
-  checksum VARCHAR2(100),
+  checksum varchar2(100),
 /** Tamaño del archivo en bytes */
-  tamano NUMBER,
+  tamano number,
 /** Nombre del archivo */
-  nombre VARCHAR2(4000),
+  nombre varchar2(4000),
 /** Extensión del archivo */
-  extension VARCHAR2(100),
+  extension varchar2(100),
 /** Tipo MIME del archivo */
-  tipo_mime VARCHAR2(100),
+  tipo_mime varchar2(100),
 
 /**
 Constructor del objeto sin parámetros.
@@ -51,9 +51,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_archivo.
 */
-  CONSTRUCTOR FUNCTION y_archivo RETURN SELF AS RESULT,
+  constructor function y_archivo return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -62,6 +62,6 @@ El contenido del archivo se comprime con gzip y se codifica en formato Base64.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

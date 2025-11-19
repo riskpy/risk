@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_autorizacion IS
+create or replace package k_autorizacion is
 
   /**
   Agrupa operaciones relacionadas con la autorizacion de usuarios
@@ -31,15 +31,15 @@ CREATE OR REPLACE PACKAGE k_autorizacion IS
   */
 
   -- Acciones
-  c_accion_consultar  CONSTANT CHAR(1) := 'C';
-  c_accion_insertar   CONSTANT CHAR(1) := 'I';
-  c_accion_actualizar CONSTANT CHAR(1) := 'A';
-  c_accion_eliminar   CONSTANT CHAR(1) := 'E';
+  c_accion_consultar  constant char(1) := 'C';
+  c_accion_insertar   constant char(1) := 'I';
+  c_accion_actualizar constant char(1) := 'A';
+  c_accion_eliminar   constant char(1) := 'E';
 
-  FUNCTION f_validar_permiso(i_id_usuario IN NUMBER,
-                             i_id_permiso IN VARCHAR2,
-                             i_accion     IN VARCHAR2 DEFAULT NULL)
-    RETURN BOOLEAN;
+  function f_validar_permiso(i_id_usuario in number,
+                             i_id_permiso in varchar2,
+                             i_accion     in varchar2 default null)
+    return boolean;
 
-END;
+end;
 /

@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_ciudad UNDER y_objeto
+create or replace type y_ciudad under y_objeto
 (
 /**
 Agrupa datos de Ciudades.
@@ -31,18 +31,18 @@ SOFTWARE.
 */
 
 /** Identificador de la ciudad */
-  id_ciudad NUMBER(10),
+  id_ciudad number(10),
 /** Nombre de la ciudad */
-  nombre VARCHAR2(100),
+  nombre varchar2(100),
 /** País de la ciudad */
-  id_pais NUMBER(10),
+  id_pais number(10),
 /** Departamento, estado o provincia de la ciudad */
-  id_departamento NUMBER(10),
+  id_departamento number(10),
 
-  CONSTRUCTOR FUNCTION y_ciudad RETURN SELF AS RESULT,
+  constructor function y_ciudad return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

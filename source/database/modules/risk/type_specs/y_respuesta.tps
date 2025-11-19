@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_respuesta UNDER y_objeto
+create or replace type y_respuesta under y_objeto
 (
 /**
 Agrupa datos de una respuesta de servicio o proceso.
@@ -31,13 +31,13 @@ SOFTWARE.
 */
 
 /** Código de la respuesta. */
-  codigo VARCHAR2(10),
+  codigo varchar2(10),
 /** Mensaje de la respuesta. */
-  mensaje VARCHAR2(4000),
+  mensaje varchar2(4000),
 /** Mensaje de Base de Datos. */
-  mensaje_bd VARCHAR2(4000),
+  mensaje_bd varchar2(4000),
 /** Lugar en el proceso. */
-  lugar VARCHAR2(1000),
+  lugar varchar2(1000),
 /** Datos adicionales. */
   datos y_objeto,
 
@@ -47,9 +47,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_respuesta.
 */
-  CONSTRUCTOR FUNCTION y_respuesta RETURN SELF AS RESULT,
+  constructor function y_respuesta return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -57,6 +57,6 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

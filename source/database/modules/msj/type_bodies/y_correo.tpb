@@ -1,29 +1,29 @@
-CREATE OR REPLACE TYPE BODY y_correo IS
+create or replace type body y_correo is
 
-  CONSTRUCTOR FUNCTION y_correo RETURN SELF AS RESULT AS
-  BEGIN
-    self.id_correo        := NULL;
-    self.mensaje_to       := NULL;
-    self.mensaje_subject  := NULL;
-    self.mensaje_body     := NULL;
-    self.mensaje_from     := NULL;
-    self.mensaje_reply_to := NULL;
-    self.mensaje_cc       := NULL;
-    self.mensaje_bcc      := NULL;
-    self.adjuntos         := NEW y_archivos();
-    RETURN;
-  END;
+  constructor function y_correo return self as result as
+  begin
+    self.id_correo        := null;
+    self.mensaje_to       := null;
+    self.mensaje_subject  := null;
+    self.mensaje_body     := null;
+    self.mensaje_from     := null;
+    self.mensaje_reply_to := null;
+    self.mensaje_cc       := null;
+    self.mensaje_bcc      := null;
+    self.adjuntos         := new y_archivos();
+    return;
+  end;
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
+  static function parse_json(i_json in clob) return y_objeto is
     l_objeto      y_correo;
     l_json_object json_object_t;
     l_archivo     y_archivo;
     l_adjuntos    y_archivos;
     l_json_array  json_array_t;
-  BEGIN
+  begin
     l_json_object := json_object_t.parse(i_json);
   
-    l_objeto                  := NEW y_correo();
+    l_objeto                  := new y_correo();
     l_objeto.id_correo        := l_json_object.get_number('id_correo');
     l_objeto.mensaje_to       := l_json_object.get_string('mensaje_to');
     l_objeto.mensaje_subject  := l_json_object.get_string('mensaje_subject');
@@ -35,29 +35,29 @@ CREATE OR REPLACE TYPE BODY y_correo IS
   
     l_json_array := l_json_object.get_array('adjuntos');
   
-    IF l_json_array IS NULL THEN
-      l_objeto.adjuntos := NEW y_archivos();
-    ELSE
-      l_adjuntos := NEW y_archivos();
-      FOR i IN 0 .. l_json_array.get_size - 1 LOOP
-        l_archivo := NEW y_archivo();
-        l_archivo := treat(y_archivo.parse_json(l_json_array.get(i).to_clob) AS
+    if l_json_array is null then
+      l_objeto.adjuntos := new y_archivos();
+    else
+      l_adjuntos := new y_archivos();
+      for i in 0 .. l_json_array.get_size - 1 loop
+        l_archivo := new y_archivo();
+        l_archivo := treat(y_archivo.parse_json(l_json_array.get(i).to_clob) as
                            y_archivo);
         l_adjuntos.extend;
         l_adjuntos(l_adjuntos.count) := l_archivo;
-      END LOOP;
+      end loop;
       l_objeto.adjuntos := l_adjuntos;
-    END IF;
+    end if;
   
-    RETURN l_objeto;
-  END;
+    return l_objeto;
+  end;
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
+  overriding member function to_json return clob is
     l_json_object json_object_t;
     l_json_array  json_array_t;
-    i             INTEGER;
-  BEGIN
-    l_json_object := NEW json_object_t();
+    i             integer;
+  begin
+    l_json_object := new json_object_t();
     l_json_object.put('id_correo', self.id_correo);
     l_json_object.put('mensaje_to', self.mensaje_to);
     l_json_object.put('mensaje_subject', self.mensaje_subject);
@@ -67,20 +67,20 @@ CREATE OR REPLACE TYPE BODY y_correo IS
     l_json_object.put('mensaje_cc', self.mensaje_cc);
     l_json_object.put('mensaje_bcc', self.mensaje_bcc);
   
-    IF self.adjuntos IS NULL THEN
+    if self.adjuntos is null then
       l_json_object.put_null('adjuntos');
-    ELSE
-      l_json_array := NEW json_array_t();
+    else
+      l_json_array := new json_array_t();
       i            := self.adjuntos.first;
-      WHILE i IS NOT NULL LOOP
+      while i is not null loop
         l_json_array.append(json_object_t.parse(self.adjuntos(i).to_json));
         i := self.adjuntos.next(i);
-      END LOOP;
+      end loop;
       l_json_object.put('adjuntos', l_json_array);
-    END IF;
+    end if;
   
-    RETURN l_json_object.to_clob;
-  END;
+    return l_json_object.to_clob;
+  end;
 
-END;
+end;
 /

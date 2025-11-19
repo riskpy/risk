@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_personas
-  BEFORE INSERT ON t_personas
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_personas
+  before insert on t_personas
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_persona IS NULL THEN
+  if :new.id_persona is null then
     :new.id_persona := s_id_persona.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

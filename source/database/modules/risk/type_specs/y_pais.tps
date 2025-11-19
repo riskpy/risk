@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_pais UNDER y_objeto
+create or replace type y_pais under y_objeto
 (
 /**
 Agrupa datos de Paises.
@@ -31,20 +31,20 @@ SOFTWARE.
 */
 
 /** Identificador del pais */
-  id_pais NUMBER(10),
+  id_pais number(10),
 /** Nombre del pais */
-  nombre VARCHAR2(100),
+  nombre varchar2(100),
 /** Codigo del pais segun estandar ISO 3166-1 alpha-2 */
-  iso_alpha_2 VARCHAR2(2),
+  iso_alpha_2 varchar2(2),
 /** Codigo del pais segun estandar ISO 3166-1 alpha-3 */
-  iso_alpha_3 VARCHAR2(3),
+  iso_alpha_3 varchar2(3),
 /** Codigo del pais segun estandar ISO 3166-1 numeric */
-  iso_numeric NUMBER(3),
+  iso_numeric number(3),
 
-  CONSTRUCTOR FUNCTION y_pais RETURN SELF AS RESULT,
+  constructor function y_pais return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

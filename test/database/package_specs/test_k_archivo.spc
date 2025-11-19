@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE test_k_archivo IS
+create or replace package test_k_archivo is
 
   --%suite(Tests unitarios del paquete k_archivo)
   --%tags(package)
@@ -7,8 +7,8 @@ CREATE OR REPLACE PACKAGE test_k_archivo IS
   --%name(2)
 
   --%test()
-  PROCEDURE test;
+  procedure test;
   --%endcontext
 
-END;
+end;
 /

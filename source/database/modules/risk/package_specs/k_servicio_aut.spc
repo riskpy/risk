@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_servicio_aut IS
+create or replace package k_servicio_aut is
 
   /**
   Agrupa operaciones relacionadas con los Servicios Web del dominio AUT
@@ -31,55 +31,55 @@ CREATE OR REPLACE PACKAGE k_servicio_aut IS
   */
 
   -- Códigos de respuesta
-  c_usuario_externo_existente CONSTANT VARCHAR2(10) := 'aut0010';
+  c_usuario_externo_existente constant varchar2(10) := 'aut0010';
 
-  FUNCTION registrar_usuario(i_parametros IN y_parametros) RETURN y_respuesta;
+  function registrar_usuario(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION cambiar_estado_usuario(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function cambiar_estado_usuario(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION registrar_clave(i_parametros IN y_parametros) RETURN y_respuesta;
+  function registrar_clave(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION cambiar_clave(i_parametros IN y_parametros) RETURN y_respuesta;
+  function cambiar_clave(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION validar_credenciales(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function validar_credenciales(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION validar_clave_aplicacion(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function validar_clave_aplicacion(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION validar_sesion(i_parametros IN y_parametros) RETURN y_respuesta;
+  function validar_sesion(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION iniciar_sesion(i_parametros IN y_parametros) RETURN y_respuesta;
+  function iniciar_sesion(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION refrescar_sesion(i_parametros IN y_parametros) RETURN y_respuesta;
+  function refrescar_sesion(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION cambiar_estado_sesion(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function cambiar_estado_sesion(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION datos_usuario(i_parametros IN y_parametros) RETURN y_respuesta;
+  function datos_usuario(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION registrar_dispositivo(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function registrar_dispositivo(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION datos_dispositivo(i_parametros IN y_parametros) RETURN y_respuesta;
+  function datos_dispositivo(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION registrar_ubicacion(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function registrar_ubicacion(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION tiempo_expiracion_token(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function tiempo_expiracion_token(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION editar_usuario(i_parametros IN y_parametros) RETURN y_respuesta;
+  function editar_usuario(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION editar_dato_usuario(i_parametros IN y_parametros)
-    RETURN y_respuesta;
+  function editar_dato_usuario(i_parametros in y_parametros)
+    return y_respuesta;
 
-  FUNCTION generar_otp(i_parametros IN y_parametros) RETURN y_respuesta;
+  function generar_otp(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION validar_otp(i_parametros IN y_parametros) RETURN y_respuesta;
+  function validar_otp(i_parametros in y_parametros) return y_respuesta;
 
-  FUNCTION validar_permiso(i_parametros IN y_parametros) RETURN y_respuesta;
+  function validar_permiso(i_parametros in y_parametros) return y_respuesta;
 
-END;
+end;
 /

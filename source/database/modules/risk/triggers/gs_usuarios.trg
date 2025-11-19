@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_usuarios
-  BEFORE INSERT ON t_usuarios
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_usuarios
+  before insert on t_usuarios
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_usuario IS NULL THEN
+  if :new.id_usuario is null then
     :new.id_usuario := s_id_usuario.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

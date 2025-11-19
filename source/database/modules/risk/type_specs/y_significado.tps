@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_significado UNDER y_objeto
+create or replace type y_significado under y_objeto
 (
 /**
 Agrupa datos de Significados.
@@ -31,20 +31,20 @@ SOFTWARE.
 */
 
 /** Dominio */
-  dominio VARCHAR2(50),
+  dominio varchar2(50),
 /** Codigo */
-  codigo VARCHAR2(50),
+  codigo varchar2(50),
 /** Significado */
-  significado VARCHAR2(500),
+  significado varchar2(500),
 /** Referencia adicional */
-  referencia VARCHAR2(500),
+  referencia varchar2(500),
 /** El significado esta activo? (S/N) */
-  activo VARCHAR2(1),
+  activo varchar2(1),
 
-  CONSTRUCTOR FUNCTION y_significado RETURN SELF AS RESULT,
+  constructor function y_significado return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

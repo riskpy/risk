@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_dato UNDER y_objeto
+create or replace type y_dato under y_objeto
 (
 /**
 Contiene un dato en formato de texto.
@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /** Contenido en formato de texto. */
-  contenido CLOB,
+  contenido clob,
 
 /**
 Constructor del objeto sin parámetros.
@@ -39,9 +39,9 @@ Constructor del objeto sin parámetros.
 %author jtsoya539 30/3/2020 10:08:08
 %return Objeto del tipo y_dato.
 */
-  CONSTRUCTOR FUNCTION y_dato RETURN SELF AS RESULT,
+  constructor function y_dato return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -49,7 +49,7 @@ Retorna el objeto serializado en formato JSON.
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
-NOT FINAL
+not final
 /

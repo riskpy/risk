@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_archivo IS
+create or replace package k_archivo is
 
   /**
   Agrupa operaciones relacionadas con archivos
@@ -31,39 +31,39 @@ CREATE OR REPLACE PACKAGE k_archivo IS
   */
 
   -- Carpetas de archivos
-  c_carpeta_fuentes  CONSTANT VARCHAR2(30) := 'FUENTES';
-  c_carpeta_imagenes CONSTANT VARCHAR2(30) := 'IMAGENES';
-  c_carpeta_textos   CONSTANT VARCHAR2(30) := 'TEXTOS';
+  c_carpeta_fuentes  constant varchar2(30) := 'FUENTES';
+  c_carpeta_imagenes constant varchar2(30) := 'IMAGENES';
+  c_carpeta_textos   constant varchar2(30) := 'TEXTOS';
 
-  FUNCTION f_tipo_mime(i_dominio   IN VARCHAR2,
-                       i_extension IN VARCHAR2) RETURN VARCHAR2;
+  function f_tipo_mime(i_dominio   in varchar2,
+                       i_extension in varchar2) return varchar2;
 
-  FUNCTION f_recuperar_archivo(i_tabla      IN VARCHAR2,
-                               i_campo      IN VARCHAR2,
-                               i_referencia IN VARCHAR2,
-                               i_version    IN VARCHAR2 DEFAULT NULL)
-    RETURN y_archivo;
+  function f_recuperar_archivo(i_tabla      in varchar2,
+                               i_campo      in varchar2,
+                               i_referencia in varchar2,
+                               i_version    in varchar2 default null)
+    return y_archivo;
 
-  PROCEDURE p_guardar_archivo(i_tabla      IN VARCHAR2,
-                              i_campo      IN VARCHAR2,
-                              i_referencia IN VARCHAR2,
-                              i_archivo    IN y_archivo);
+  procedure p_guardar_archivo(i_tabla      in varchar2,
+                              i_campo      in varchar2,
+                              i_referencia in varchar2,
+                              i_archivo    in y_archivo);
 
-  PROCEDURE p_calcular_propiedades(i_contenido IN BLOB,
-                                   o_checksum  OUT VARCHAR2,
-                                   o_tamano    OUT NUMBER);
+  procedure p_calcular_propiedades(i_contenido in blob,
+                                   o_checksum  out varchar2,
+                                   o_tamano    out number);
 
-  FUNCTION f_version_archivo(i_tabla      IN VARCHAR2,
-                             i_campo      IN VARCHAR2,
-                             i_referencia IN VARCHAR2) RETURN NUMBER;
+  function f_version_archivo(i_tabla      in varchar2,
+                             i_campo      in varchar2,
+                             i_referencia in varchar2) return number;
 
-  FUNCTION f_data_url(i_contenido IN BLOB,
-                      i_tipo_mime IN VARCHAR2) RETURN CLOB;
+  function f_data_url(i_contenido in blob,
+                      i_tipo_mime in varchar2) return clob;
 
-  FUNCTION f_data_url(i_tabla      IN VARCHAR2,
-                      i_campo      IN VARCHAR2,
-                      i_referencia IN VARCHAR2,
-                      i_version    IN VARCHAR2 DEFAULT NULL) RETURN CLOB;
+  function f_data_url(i_tabla      in varchar2,
+                      i_campo      in varchar2,
+                      i_referencia in varchar2,
+                      i_version    in varchar2 default null) return clob;
 
-END;
+end;
 /

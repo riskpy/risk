@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_plantilla UNDER y_dato
+create or replace type y_plantilla under y_dato
 (
 /**
 Contiene una plantilla de notificación push.
@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /** Contenido en formato de texto. */
-  nombre VARCHAR2(100),
+  nombre varchar2(100),
 
 /**
 Constructor del objeto sin parámetros.
@@ -39,9 +39,9 @@ Constructor del objeto sin parámetros.
 %author dmezac 20/6/2021 20:08:08
 %return Objeto del tipo y_plantilla.
 */
-  CONSTRUCTOR FUNCTION y_plantilla RETURN SELF AS RESULT,
+  constructor function y_plantilla return self as result,
 
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -49,6 +49,6 @@ Retorna el objeto serializado en formato JSON.
 %author dmezac 20/6/2021 19:42:09
 %return JSON con los atributos del objeto.
 */
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
+  overriding member function to_json return clob
 )
 /

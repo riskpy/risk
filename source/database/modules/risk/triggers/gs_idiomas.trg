@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_idiomas
-  BEFORE INSERT ON t_idiomas
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_idiomas
+  before insert on t_idiomas
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_idioma IS NULL THEN
+  if :new.id_idioma is null then
     :new.id_idioma := s_id_idioma.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

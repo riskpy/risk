@@ -1,9 +1,9 @@
-CREATE OR REPLACE TRIGGER gb_trabajos
-  BEFORE INSERT OR UPDATE OR DELETE ON t_trabajos
-  FOR EACH ROW
-DECLARE
-  l_tipo_operacion t_operaciones.tipo%TYPE;
-BEGIN
+create or replace trigger gb_trabajos
+  before insert or update or delete on t_trabajos
+  for each row
+declare
+  l_tipo_operacion t_operaciones.tipo%type;
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -28,25 +28,25 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF inserting OR updating THEN
+  if inserting or updating then
   
     -- Valida operación
-    BEGIN
-      SELECT o.tipo
-        INTO l_tipo_operacion
-        FROM t_operaciones o
-       WHERE o.id_operacion = :new.id_trabajo;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select o.tipo
+        into l_tipo_operacion
+        from t_operaciones o
+       where o.id_operacion = :new.id_trabajo;
+    exception
+      when no_data_found then
         raise_application_error(-20000, 'Operación inexistente');
-    END;
+    end;
   
     -- Valida tipo de operación
-    IF l_tipo_operacion <> 'T' THEN
+    if l_tipo_operacion <> 'T' then
       raise_application_error(-20000, 'Operación no es de tipo Trabajo');
-    END IF;
+    end if;
   
-  END IF;
+  end if;
 
-END;
+end;
 /

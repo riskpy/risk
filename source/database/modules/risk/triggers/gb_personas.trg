@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gb_personas
-  BEFORE INSERT OR UPDATE OR DELETE ON t_personas
-  FOR EACH ROW
-BEGIN
+create or replace trigger gb_personas
+  before insert or update or delete on t_personas
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,20 +26,19 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF inserting OR
-     (updating AND nvl(:new.nombre, 'X') <> nvl(:old.nombre, 'X')) THEN
+  if inserting or
+     (updating and nvl(:new.nombre, 'X') <> nvl(:old.nombre, 'X')) then
     :new.nombre := upper(:new.nombre);
-  END IF;
+  end if;
 
-  IF inserting OR
-     (updating AND nvl(:new.apellido, 'X') <> nvl(:old.apellido, 'X')) THEN
+  if inserting or
+     (updating and nvl(:new.apellido, 'X') <> nvl(:old.apellido, 'X')) then
     :new.apellido := upper(:new.apellido);
-  END IF;
+  end if;
 
-  IF inserting OR (updating AND nvl(:new.nombre_completo, 'X') <>
-     nvl(:old.nombre_completo, 'X')) THEN
+  if inserting or (updating and nvl(:new.nombre_completo, 'X') <>
+     nvl(:old.nombre_completo, 'X')) then
     :new.nombre_completo := upper(:new.nombre_completo);
-  END IF;
-END;
+  end if;
+end;
 /
-

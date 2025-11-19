@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_paises
-  BEFORE INSERT ON t_paises
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_paises
+  before insert on t_paises
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_pais IS NULL THEN
+  if :new.id_pais is null then
     :new.id_pais := s_id_pais.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

@@ -1,4 +1,4 @@
-CREATE OR REPLACE TYPE y_objeto AS OBJECT
+create or replace type y_objeto as object
 (
 /**
 Tipo base para un objeto que puede ser serializado/deserializado con formato JSON.
@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /** Objeto serializado en formato JSON. */
-  json CLOB,
+  json clob,
 
 /**
 Retorna el objeto deserializado a partir de un JSON.
@@ -42,7 +42,7 @@ atributos correspondientes.
 %param i_json JSON del objeto a deserializar.
 %return Objeto deserializado a partir de un JSON.
 */
-  NOT FINAL STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
+  not final static function parse_json(i_json in clob) return y_objeto,
 
 /**
 Retorna el objeto serializado en formato JSON.
@@ -52,7 +52,7 @@ atributos correspondientes.
 %author jtsoya539 30/3/2020 09:42:09
 %return Objeto serializado en formato JSON.
 */
-  NOT FINAL NOT INSTANTIABLE MEMBER FUNCTION to_json RETURN CLOB
+  not final not instantiable member function to_json return clob
 )
-NOT FINAL NOT INSTANTIABLE
+not final not instantiable
 /

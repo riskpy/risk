@@ -1,12 +1,12 @@
-CREATE OR REPLACE TRIGGER gb_archivos
-  BEFORE INSERT OR UPDATE OR DELETE ON t_archivos
-  FOR EACH ROW
-DECLARE
-  l_existe_registro        VARCHAR2(1);
-  l_nombre_referencia      t_archivo_definiciones.nombre_referencia%TYPE;
-  l_tamano_maximo          t_archivo_definiciones.tamano_maximo%TYPE;
-  l_extensiones_permitidas t_archivo_definiciones.extensiones_permitidas%TYPE;
-BEGIN
+create or replace trigger gb_archivos
+  before insert or update or delete on t_archivos
+  for each row
+declare
+  l_existe_registro        varchar2(1);
+  l_nombre_referencia      t_archivo_definiciones.nombre_referencia%type;
+  l_tamano_maximo          t_archivo_definiciones.tamano_maximo%type;
+  l_extensiones_permitidas t_archivo_definiciones.extensiones_permitidas%type;
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -31,24 +31,24 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF inserting OR updating THEN
+  if inserting or updating then
   
     -- Valida definición
-    BEGIN
-      SELECT d.nombre_referencia, d.tamano_maximo, d.extensiones_permitidas
-        INTO l_nombre_referencia, l_tamano_maximo, l_extensiones_permitidas
-        FROM t_archivo_definiciones d
-       WHERE upper(d.tabla) = upper(:new.tabla)
-         AND upper(d.campo) = upper(:new.campo);
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select d.nombre_referencia, d.tamano_maximo, d.extensiones_permitidas
+        into l_nombre_referencia, l_tamano_maximo, l_extensiones_permitidas
+        from t_archivo_definiciones d
+       where upper(d.tabla) = upper(:new.tabla)
+         and upper(d.campo) = upper(:new.campo);
+    exception
+      when no_data_found then
         raise_application_error(-20000,
                                 'Definición de archivo inexistente');
-    END;
+    end;
   
     -- Valida registro relacionado
-    IF l_nombre_referencia IS NOT NULL THEN
-      EXECUTE IMMEDIATE 'DECLARE
+    if l_nombre_referencia is not null then
+      execute immediate 'DECLARE
   l_existe VARCHAR2(1) := ''N'';
 BEGIN
   BEGIN
@@ -66,55 +66,55 @@ BEGIN
   END;
   :2 := l_existe;
 END;'
-        USING IN :new.referencia, OUT l_existe_registro;
+        using in :new.referencia, out l_existe_registro;
     
-      IF l_existe_registro = 'N' THEN
+      if l_existe_registro = 'N' then
         raise_application_error(-20000, 'Registro relacionado inexistente');
-      END IF;
-    END IF;
+      end if;
+    end if;
   
-    IF :new.contenido IS NOT NULL OR :new.url IS NOT NULL THEN
+    if :new.contenido is not null or :new.url is not null then
       -- Valida nombre del archivo
-      IF :new.nombre IS NULL THEN
+      if :new.nombre is null then
         raise_application_error(-20000, 'Nombre del archivo obligatorio');
-      END IF;
+      end if;
     
       -- Valida extensión del archivo
-      IF :new.extension IS NULL THEN
+      if :new.extension is null then
         raise_application_error(-20000,
                                 'Extensión del archivo obligatorio');
-      END IF;
+      end if;
     
-      IF l_extensiones_permitidas IS NOT NULL THEN
-        IF k_archivo.f_tipo_mime(l_extensiones_permitidas, :new.extension) IS NULL THEN
+      if l_extensiones_permitidas is not null then
+        if k_archivo.f_tipo_mime(l_extensiones_permitidas, :new.extension) is null then
           raise_application_error(-20000,
                                   'Extensión de archivo no permitida');
-        END IF;
-      END IF;
-    END IF;
+        end if;
+      end if;
+    end if;
   
-    IF :new.contenido IS NULL OR dbms_lob.getlength(:new.contenido) = 0 THEN
-      :new.checksum := NULL;
-      :new.tamano   := NULL;
-    ELSE
+    if :new.contenido is null or dbms_lob.getlength(:new.contenido) = 0 then
+      :new.checksum := null;
+      :new.tamano   := null;
+    else
       -- Calcula propiedades del archivo
-      IF :old.contenido IS NULL OR
-         dbms_lob.compare(:old.contenido, :new.contenido) <> 0 THEN
+      if :old.contenido is null or
+         dbms_lob.compare(:old.contenido, :new.contenido) <> 0 then
         k_archivo.p_calcular_propiedades(:new.contenido,
                                          :new.checksum,
                                          :new.tamano);
-      END IF;
+      end if;
     
       -- Valida tamaño del archivo
-      IF nvl(:new.tamano, 0) > nvl(l_tamano_maximo, 0) THEN
+      if nvl(:new.tamano, 0) > nvl(l_tamano_maximo, 0) then
         raise_application_error(-20000,
                                 'Archivo supera el tamaño máximo (' ||
-                                TRIM(to_char(l_tamano_maximo / 1000000,
+                                trim(to_char(l_tamano_maximo / 1000000,
                                              '999G999G999D99')) || ' MB)');
-      END IF;
-    END IF;
+      end if;
+    end if;
   
-  END IF;
+  end if;
 
-END;
+end;
 /

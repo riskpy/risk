@@ -1,9 +1,9 @@
-CREATE OR REPLACE PACKAGE BODY test_k_autorizacion IS
+create or replace package body test_k_autorizacion is
 
-  PROCEDURE test IS
-  BEGIN
-    NULL;
-  END;
+  procedure test is
+  begin
+    null;
+  end;
 
-END;
+end;
 /

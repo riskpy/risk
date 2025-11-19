@@ -1,118 +1,118 @@
-CREATE OR REPLACE PACKAGE BODY k_archivo IS
+create or replace package body k_archivo is
 
-  FUNCTION f_tipo_mime(i_dominio   IN VARCHAR2,
-                       i_extension IN VARCHAR2) RETURN VARCHAR2 IS
-    l_referencia t_significados.referencia%TYPE;
-  BEGIN
-    BEGIN
-      SELECT a.referencia
-        INTO l_referencia
-        FROM t_significados a
-       WHERE a.activo = 'S'
-         AND a.dominio = i_dominio
-         AND upper(a.codigo) = upper(i_extension);
-    EXCEPTION
-      WHEN OTHERS THEN
-        l_referencia := NULL;
-    END;
-    RETURN l_referencia;
-  END;
+  function f_tipo_mime(i_dominio   in varchar2,
+                       i_extension in varchar2) return varchar2 is
+    l_referencia t_significados.referencia%type;
+  begin
+    begin
+      select a.referencia
+        into l_referencia
+        from t_significados a
+       where a.activo = 'S'
+         and a.dominio = i_dominio
+         and upper(a.codigo) = upper(i_extension);
+    exception
+      when others then
+        l_referencia := null;
+    end;
+    return l_referencia;
+  end;
 
-  FUNCTION f_recuperar_archivo(i_tabla      IN VARCHAR2,
-                               i_campo      IN VARCHAR2,
-                               i_referencia IN VARCHAR2,
-                               i_version    IN VARCHAR2 DEFAULT NULL)
-    RETURN y_archivo IS
+  function f_recuperar_archivo(i_tabla      in varchar2,
+                               i_campo      in varchar2,
+                               i_referencia in varchar2,
+                               i_version    in varchar2 default null)
+    return y_archivo is
     l_archivo y_archivo;
-  BEGIN
-    l_archivo := NEW y_archivo();
+  begin
+    l_archivo := new y_archivo();
   
-    BEGIN
-      SELECT a.contenido,
+    begin
+      select a.contenido,
              a.url,
              a.checksum,
              a.tamano,
              a.nombre,
              a.extension,
              f_tipo_mime(d.extensiones_permitidas, a.extension)
-        INTO l_archivo.contenido,
+        into l_archivo.contenido,
              l_archivo.url,
              l_archivo.checksum,
              l_archivo.tamano,
              l_archivo.nombre,
              l_archivo.extension,
              l_archivo.tipo_mime
-        FROM t_archivos a, t_archivo_definiciones d
-       WHERE d.tabla = a.tabla
-         AND d.campo = a.campo
-         AND upper(a.tabla) = upper(i_tabla)
-         AND upper(a.campo) = upper(i_campo)
-         AND a.referencia = i_referencia
-         AND nvl(a.version_actual, 0) =
+        from t_archivos a, t_archivo_definiciones d
+       where d.tabla = a.tabla
+         and d.campo = a.campo
+         and upper(a.tabla) = upper(i_tabla)
+         and upper(a.campo) = upper(i_campo)
+         and a.referencia = i_referencia
+         and nvl(a.version_actual, 0) =
              nvl(i_version, nvl(a.version_actual, 0));
-    EXCEPTION
-      WHEN no_data_found THEN
+    exception
+      when no_data_found then
         -- Busca versión en tabla histórica
-        BEGIN
-          SELECT h.contenido,
+        begin
+          select h.contenido,
                  h.url,
                  h.checksum,
                  h.tamano,
                  h.nombre,
                  h.extension,
                  f_tipo_mime(d.extensiones_permitidas, h.extension)
-            INTO l_archivo.contenido,
+            into l_archivo.contenido,
                  l_archivo.url,
                  l_archivo.checksum,
                  l_archivo.tamano,
                  l_archivo.nombre,
                  l_archivo.extension,
                  l_archivo.tipo_mime
-            FROM t_archivos_hist h, t_archivo_definiciones d
-           WHERE d.tabla = h.tabla
-             AND d.campo = h.campo
-             AND upper(h.tabla) = upper(i_tabla)
-             AND upper(h.campo) = upper(i_campo)
-             AND h.referencia = i_referencia
-             AND h.version = nvl(i_version, -1);
-        EXCEPTION
-          WHEN no_data_found THEN
+            from t_archivos_hist h, t_archivo_definiciones d
+           where d.tabla = h.tabla
+             and d.campo = h.campo
+             and upper(h.tabla) = upper(i_tabla)
+             and upper(h.campo) = upper(i_campo)
+             and h.referencia = i_referencia
+             and h.version = nvl(i_version, -1);
+        exception
+          when no_data_found then
             raise_application_error(-20000, 'Archivo inexistente');
-          WHEN OTHERS THEN
+          when others then
             raise_application_error(-20000, 'Error al recuperar archivo');
-        END;
-      WHEN OTHERS THEN
+        end;
+      when others then
         raise_application_error(-20000, 'Error al recuperar archivo');
-    END;
+    end;
   
-    RETURN l_archivo;
-  END;
+    return l_archivo;
+  end;
 
-  PROCEDURE p_guardar_archivo(i_tabla      IN VARCHAR2,
-                              i_campo      IN VARCHAR2,
-                              i_referencia IN VARCHAR2,
-                              i_archivo    IN y_archivo) IS
-    l_version_actual t_archivos.version_actual%TYPE;
-  BEGIN
-    UPDATE t_archivos a
-       SET a.contenido      = i_archivo.contenido,
+  procedure p_guardar_archivo(i_tabla      in varchar2,
+                              i_campo      in varchar2,
+                              i_referencia in varchar2,
+                              i_archivo    in y_archivo) is
+    l_version_actual t_archivos.version_actual%type;
+  begin
+    update t_archivos a
+       set a.contenido      = i_archivo.contenido,
            a.url            = i_archivo.url,
            a.nombre         = i_archivo.nombre,
            a.extension      = i_archivo.extension,
            a.version_actual = nvl(a.version_actual, 0) + 1
-     WHERE upper(a.tabla) = upper(i_tabla)
-       AND upper(a.campo) = upper(i_campo)
-       AND a.referencia = i_referencia;
+     where upper(a.tabla) = upper(i_tabla)
+       and upper(a.campo) = upper(i_campo)
+       and a.referencia = i_referencia;
   
-    IF SQL%NOTFOUND THEN
-      SELECT nvl(MAX(h.version), 0) + 1
-        INTO l_version_actual
-        FROM t_archivos_hist h
-       WHERE upper(h.tabla) = upper(i_tabla)
-         AND upper(h.campo) = upper(i_campo)
-         AND h.referencia = i_referencia;
+    if sql%notfound then
+      select nvl(max(h.version), 0) + 1
+        into l_version_actual
+        from t_archivos_hist h
+       where upper(h.tabla) = upper(i_tabla)
+         and upper(h.campo) = upper(i_campo)
+         and h.referencia = i_referencia;
     
-      INSERT INTO t_archivos
+      insert into t_archivos
         (tabla,
          campo,
          referencia,
@@ -121,7 +121,7 @@ CREATE OR REPLACE PACKAGE BODY k_archivo IS
          nombre,
          extension,
          version_actual)
-      VALUES
+      values
         (upper(i_tabla),
          upper(i_campo),
          i_referencia,
@@ -130,83 +130,83 @@ CREATE OR REPLACE PACKAGE BODY k_archivo IS
          i_archivo.nombre,
          i_archivo.extension,
          l_version_actual);
-    END IF;
-  END;
+    end if;
+  end;
 
-  PROCEDURE p_calcular_propiedades(i_contenido IN BLOB,
-                                   o_checksum  OUT VARCHAR2,
-                                   o_tamano    OUT NUMBER) IS
-  BEGIN
-    IF i_contenido IS NOT NULL THEN
-      BEGIN
+  procedure p_calcular_propiedades(i_contenido in blob,
+                                   o_checksum  out varchar2,
+                                   o_tamano    out number) is
+  begin
+    if i_contenido is not null then
+      begin
         o_checksum := rawtohex(as_crypto.hash(i_contenido,
                                               as_crypto.hash_sh1));
-      EXCEPTION
-        WHEN OTHERS THEN
-          o_checksum := NULL;
-      END;
+      exception
+        when others then
+          o_checksum := null;
+      end;
     
-      BEGIN
+      begin
         o_tamano := dbms_lob.getlength(i_contenido);
-      EXCEPTION
-        WHEN OTHERS THEN
-          o_tamano := NULL;
-      END;
-    END IF;
-  END;
+      exception
+        when others then
+          o_tamano := null;
+      end;
+    end if;
+  end;
 
-  FUNCTION f_version_archivo(i_tabla      IN VARCHAR2,
-                             i_campo      IN VARCHAR2,
-                             i_referencia IN VARCHAR2) RETURN NUMBER IS
-    l_version t_archivos.version_actual%TYPE;
-  BEGIN
+  function f_version_archivo(i_tabla      in varchar2,
+                             i_campo      in varchar2,
+                             i_referencia in varchar2) return number is
+    l_version t_archivos.version_actual%type;
+  begin
   
-    SELECT nvl(a.version_actual, 0)
-      INTO l_version
-      FROM t_archivos a, t_archivo_definiciones d
-     WHERE d.tabla = a.tabla
-       AND d.campo = a.campo
-       AND upper(a.tabla) = upper(i_tabla)
-       AND upper(a.campo) = upper(i_campo)
-       AND a.referencia = i_referencia;
+    select nvl(a.version_actual, 0)
+      into l_version
+      from t_archivos a, t_archivo_definiciones d
+     where d.tabla = a.tabla
+       and d.campo = a.campo
+       and upper(a.tabla) = upper(i_tabla)
+       and upper(a.campo) = upper(i_campo)
+       and a.referencia = i_referencia;
   
-    RETURN l_version;
-  EXCEPTION
-    WHEN OTHERS THEN
-      RETURN NULL;
-  END;
+    return l_version;
+  exception
+    when others then
+      return null;
+  end;
 
   -- https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
-  FUNCTION f_data_url(i_contenido IN BLOB,
-                      i_tipo_mime IN VARCHAR2) RETURN CLOB IS
-    l_data_url CLOB;
-    l_base64   CLOB;
-  BEGIN
+  function f_data_url(i_contenido in blob,
+                      i_tipo_mime in varchar2) return clob is
+    l_data_url clob;
+    l_base64   clob;
+  begin
     -- Codifica en formato Base64
     l_base64 := k_util.base64encode(i_contenido);
     -- Elimina caracteres de nueva línea
-    l_base64 := REPLACE(l_base64, utl_tcp.crlf);
+    l_base64 := replace(l_base64, utl_tcp.crlf);
   
     l_data_url := 'data:' || i_tipo_mime || ';charset=' || k_util.f_charset ||
                   ';base64,' || l_base64;
   
-    RETURN l_data_url;
-  END;
+    return l_data_url;
+  end;
 
-  FUNCTION f_data_url(i_tabla      IN VARCHAR2,
-                      i_campo      IN VARCHAR2,
-                      i_referencia IN VARCHAR2,
-                      i_version    IN VARCHAR2 DEFAULT NULL) RETURN CLOB IS
+  function f_data_url(i_tabla      in varchar2,
+                      i_campo      in varchar2,
+                      i_referencia in varchar2,
+                      i_version    in varchar2 default null) return clob is
     l_archivo y_archivo;
-  BEGIN
+  begin
     -- Recupera el archivo
     l_archivo := f_recuperar_archivo(i_tabla,
                                      i_campo,
                                      i_referencia,
                                      i_version);
   
-    RETURN f_data_url(l_archivo.contenido, l_archivo.tipo_mime);
-  END;
+    return f_data_url(l_archivo.contenido, l_archivo.tipo_mime);
+  end;
 
-END;
+end;
 /

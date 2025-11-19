@@ -1,8 +1,8 @@
-CREATE OR REPLACE PACKAGE BODY test_k_html IS
+create or replace package body test_k_html is
 
-  PROCEDURE f_html IS
-    l_html CLOB;
-  BEGIN
+  procedure f_html is
+    l_html clob;
+  begin
     -- Arrange
     k_html.p_inicializar;
     htp.htmlopen; -- generates <HTML>
@@ -17,7 +17,7 @@ CREATE OR REPLACE PACKAGE BODY test_k_html IS
     l_html := k_html.f_html;
     -- Assert
     ut.expect(l_html).to_be_like('%<html>%<title>Hello</title>%<h1>Hello</h1>%</html>%');
-  END;
+  end;
 
-END;
+end;
 /

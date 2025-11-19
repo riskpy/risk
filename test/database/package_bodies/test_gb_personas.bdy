@@ -1,112 +1,112 @@
-CREATE OR REPLACE PACKAGE BODY test_gb_personas IS
+create or replace package body test_gb_personas is
 
-  PROCEDURE nombre_mayusculas_al_insertar IS
-    l_id_persona t_personas.id_persona%TYPE;
-    l_nombre     t_personas.nombre%TYPE;
-  BEGIN
+  procedure nombre_mayusculas_al_insertar is
+    l_id_persona t_personas.id_persona%type;
+    l_nombre     t_personas.nombre%type;
+  begin
     -- Arrange
-    SELECT MAX(id_persona) + 1 INTO l_id_persona FROM t_personas;
+    select max(id_persona) + 1 into l_id_persona from t_personas;
     -- Act
-    INSERT INTO t_personas
+    insert into t_personas
       (id_persona, nombre)
-    VALUES
+    values
       (l_id_persona, 'John')
-    RETURNING nombre INTO l_nombre;
+    returning nombre into l_nombre;
     -- Assert
     ut.expect(l_nombre).to_equal('JOHN');
-  END;
+  end;
 
-  PROCEDURE apellido_mayusculas_al_insertar IS
-    l_id_persona t_personas.id_persona%TYPE;
-    l_apellido   t_personas.apellido%TYPE;
-  BEGIN
+  procedure apellido_mayusculas_al_insertar is
+    l_id_persona t_personas.id_persona%type;
+    l_apellido   t_personas.apellido%type;
+  begin
     -- Arrange
-    SELECT MAX(id_persona) + 1 INTO l_id_persona FROM t_personas;
+    select max(id_persona) + 1 into l_id_persona from t_personas;
     -- Act
-    INSERT INTO t_personas
+    insert into t_personas
       (id_persona, apellido)
-    VALUES
+    values
       (l_id_persona, 'Doe')
-    RETURNING apellido INTO l_apellido;
+    returning apellido into l_apellido;
     -- Assert
     ut.expect(l_apellido).to_equal('DOE');
-  END;
+  end;
 
-  PROCEDURE nombre_completo_mayusculas_al_insertar IS
-    l_id_persona      t_personas.id_persona%TYPE;
-    l_nombre_completo t_personas.nombre_completo%TYPE;
-  BEGIN
+  procedure nombre_completo_mayusculas_al_insertar is
+    l_id_persona      t_personas.id_persona%type;
+    l_nombre_completo t_personas.nombre_completo%type;
+  begin
     -- Arrange
-    SELECT MAX(id_persona) + 1 INTO l_id_persona FROM t_personas;
+    select max(id_persona) + 1 into l_id_persona from t_personas;
     -- Act
-    INSERT INTO t_personas
+    insert into t_personas
       (id_persona, nombre_completo)
-    VALUES
+    values
       (l_id_persona, 'John Doe')
-    RETURNING nombre_completo INTO l_nombre_completo;
+    returning nombre_completo into l_nombre_completo;
     -- Assert
     ut.expect(l_nombre_completo).to_equal('JOHN DOE');
-  END;
+  end;
 
-  PROCEDURE nombre_mayusculas_al_actualizar IS
-    l_id_persona t_personas.id_persona%TYPE;
-    l_nombre     t_personas.nombre%TYPE;
-  BEGIN
+  procedure nombre_mayusculas_al_actualizar is
+    l_id_persona t_personas.id_persona%type;
+    l_nombre     t_personas.nombre%type;
+  begin
     -- Arrange
-    SELECT MAX(id_persona) + 1 INTO l_id_persona FROM t_personas;
-    INSERT INTO t_personas
+    select max(id_persona) + 1 into l_id_persona from t_personas;
+    insert into t_personas
       (id_persona, nombre)
-    VALUES
+    values
       (l_id_persona, 'Nombre')
-    RETURNING id_persona INTO l_id_persona;
+    returning id_persona into l_id_persona;
     -- Act
-    UPDATE t_personas
-       SET nombre = 'John'
-     WHERE id_persona = l_id_persona
-    RETURNING nombre INTO l_nombre;
+    update t_personas
+       set nombre = 'John'
+     where id_persona = l_id_persona
+    returning nombre into l_nombre;
     -- Assert
     ut.expect(l_nombre).to_equal('JOHN');
-  END;
+  end;
 
-  PROCEDURE apellido_mayusculas_al_actualizar IS
-    l_id_persona t_personas.id_persona%TYPE;
-    l_apellido   t_personas.apellido%TYPE;
-  BEGIN
+  procedure apellido_mayusculas_al_actualizar is
+    l_id_persona t_personas.id_persona%type;
+    l_apellido   t_personas.apellido%type;
+  begin
     -- Arrange
-    SELECT MAX(id_persona) + 1 INTO l_id_persona FROM t_personas;
-    INSERT INTO t_personas
+    select max(id_persona) + 1 into l_id_persona from t_personas;
+    insert into t_personas
       (id_persona, apellido)
-    VALUES
+    values
       (l_id_persona, 'Apellido')
-    RETURNING id_persona INTO l_id_persona;
+    returning id_persona into l_id_persona;
     -- Act
-    UPDATE t_personas
-       SET apellido = 'Doe'
-     WHERE id_persona = l_id_persona
-    RETURNING apellido INTO l_apellido;
+    update t_personas
+       set apellido = 'Doe'
+     where id_persona = l_id_persona
+    returning apellido into l_apellido;
     -- Assert
     ut.expect(l_apellido).to_equal('DOE');
-  END;
+  end;
 
-  PROCEDURE nombre_completo_mayusculas_al_actualizar IS
-    l_id_persona      t_personas.id_persona%TYPE;
-    l_nombre_completo t_personas.nombre_completo%TYPE;
-  BEGIN
+  procedure nombre_completo_mayusculas_al_actualizar is
+    l_id_persona      t_personas.id_persona%type;
+    l_nombre_completo t_personas.nombre_completo%type;
+  begin
     -- Arrange
-    SELECT MAX(id_persona) + 1 INTO l_id_persona FROM t_personas;
-    INSERT INTO t_personas
+    select max(id_persona) + 1 into l_id_persona from t_personas;
+    insert into t_personas
       (id_persona, nombre_completo)
-    VALUES
+    values
       (l_id_persona, 'Nombre Apellido')
-    RETURNING id_persona INTO l_id_persona;
+    returning id_persona into l_id_persona;
     -- Act
-    UPDATE t_personas
-       SET nombre_completo = 'John Doe'
-     WHERE id_persona = l_id_persona
-    RETURNING nombre_completo INTO l_nombre_completo;
+    update t_personas
+       set nombre_completo = 'John Doe'
+     where id_persona = l_id_persona
+    returning nombre_completo into l_nombre_completo;
     -- Assert
     ut.expect(l_nombre_completo).to_equal('JOHN DOE');
-  END;
+  end;
 
-END;
+end;
 /

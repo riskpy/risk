@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_significado IS
+create or replace package k_significado is
 
   /**
   Agrupa operaciones relacionadas con significados
@@ -38,16 +38,16 @@ CREATE OR REPLACE PACKAGE k_significado IS
   %param i_codigo Codigo
   %return Significado
   */
-  FUNCTION f_significado_codigo(i_dominio IN VARCHAR2,
-                                i_codigo  IN VARCHAR2) RETURN VARCHAR2;
+  function f_significado_codigo(i_dominio in varchar2,
+                                i_codigo  in varchar2) return varchar2;
 
-  FUNCTION f_referencia_codigo(i_dominio IN VARCHAR2,
-                               i_codigo  IN VARCHAR2) RETURN VARCHAR2;
+  function f_referencia_codigo(i_dominio in varchar2,
+                               i_codigo  in varchar2) return varchar2;
 
-  FUNCTION f_existe_codigo(i_dominio IN VARCHAR2,
-                           i_codigo  IN VARCHAR2) RETURN BOOLEAN;
+  function f_existe_codigo(i_dominio in varchar2,
+                           i_codigo  in varchar2) return boolean;
 
-  FUNCTION f_id_modulo_dominio(i_dominio IN VARCHAR2) RETURN VARCHAR2;
+  function f_id_modulo_dominio(i_dominio in varchar2) return varchar2;
 
-END;
+end;
 /

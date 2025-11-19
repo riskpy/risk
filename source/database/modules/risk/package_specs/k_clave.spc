@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_clave IS
+create or replace package k_clave is
 
   /**
   Agrupa operaciones relacionadas con claves de usuarios
@@ -31,47 +31,47 @@ CREATE OR REPLACE PACKAGE k_clave IS
   */
 
   -- Tipos de clave
-  c_clave_acceso        CONSTANT CHAR(1) := 'A';
-  c_clave_transaccional CONSTANT CHAR(1) := 'T';
+  c_clave_acceso        constant char(1) := 'A';
+  c_clave_transaccional constant char(1) := 'T';
 
-  FUNCTION f_randombytes_hex RETURN VARCHAR2;
+  function f_randombytes_hex return varchar2;
 
-  FUNCTION f_randombytes_base64 RETURN VARCHAR2;
+  function f_randombytes_base64 return varchar2;
 
-  FUNCTION f_salt RETURN VARCHAR2;
+  function f_salt return varchar2;
 
-  FUNCTION f_hash(i_clave IN VARCHAR2,
-                  i_salt  IN VARCHAR2) RETURN VARCHAR2;
+  function f_hash(i_clave in varchar2,
+                  i_salt  in varchar2) return varchar2;
 
-  FUNCTION f_validar_clave(i_id_usuario IN NUMBER,
-                           i_clave      IN VARCHAR2,
-                           i_tipo_clave IN CHAR DEFAULT 'A') RETURN BOOLEAN;
+  function f_validar_clave(i_id_usuario in number,
+                           i_clave      in varchar2,
+                           i_tipo_clave in char default 'A') return boolean;
 
-  PROCEDURE p_registrar_intento_fallido(i_id_usuario IN NUMBER,
-                                        i_tipo_clave IN CHAR DEFAULT 'A');
+  procedure p_registrar_intento_fallido(i_id_usuario in number,
+                                        i_tipo_clave in char default 'A');
 
-  PROCEDURE p_registrar_autenticacion(i_id_usuario IN NUMBER,
-                                      i_tipo_clave IN CHAR DEFAULT 'A');
+  procedure p_registrar_autenticacion(i_id_usuario in number,
+                                      i_tipo_clave in char default 'A');
 
-  PROCEDURE p_validar_politicas(i_alias      IN VARCHAR2,
-                                i_clave      IN VARCHAR2,
-                                i_tipo_clave IN CHAR DEFAULT 'A');
+  procedure p_validar_politicas(i_alias      in varchar2,
+                                i_clave      in varchar2,
+                                i_tipo_clave in char default 'A');
 
-  PROCEDURE p_registrar_clave(i_alias      IN VARCHAR2,
-                              i_clave      IN VARCHAR2,
-                              i_tipo_clave IN CHAR DEFAULT 'A');
+  procedure p_registrar_clave(i_alias      in varchar2,
+                              i_clave      in varchar2,
+                              i_tipo_clave in char default 'A');
 
-  PROCEDURE p_desbloquear_clave(i_alias      IN VARCHAR2,
-                                i_tipo_clave IN CHAR DEFAULT 'A');
+  procedure p_desbloquear_clave(i_alias      in varchar2,
+                                i_tipo_clave in char default 'A');
 
-  PROCEDURE p_restablecer_clave(i_alias      IN VARCHAR2,
-                                i_clave      IN VARCHAR2,
-                                i_tipo_clave IN CHAR DEFAULT 'A');
+  procedure p_restablecer_clave(i_alias      in varchar2,
+                                i_clave      in varchar2,
+                                i_tipo_clave in char default 'A');
 
-  PROCEDURE p_cambiar_clave(i_alias         IN VARCHAR2,
-                            i_clave_antigua IN VARCHAR2,
-                            i_clave_nueva   IN VARCHAR2,
-                            i_tipo_clave    IN CHAR DEFAULT 'A');
+  procedure p_cambiar_clave(i_alias         in varchar2,
+                            i_clave_antigua in varchar2,
+                            i_clave_nueva   in varchar2,
+                            i_tipo_clave    in char default 'A');
 
-END;
+end;
 /

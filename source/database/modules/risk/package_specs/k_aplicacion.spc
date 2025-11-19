@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_aplicacion IS
+create or replace package k_aplicacion is
 
   /**
   Agrupa operaciones relacionadas con las aplicaciones
@@ -30,13 +30,13 @@ CREATE OR REPLACE PACKAGE k_aplicacion IS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION f_id_aplicacion(i_clave_aplicacion IN VARCHAR2,
-                           i_activo           IN VARCHAR2 DEFAULT NULL)
-    RETURN VARCHAR2;
+  function f_id_aplicacion(i_clave_aplicacion in varchar2,
+                           i_activo           in varchar2 default null)
+    return varchar2;
 
-  FUNCTION f_validar_clave(i_clave_aplicacion IN VARCHAR2) RETURN BOOLEAN;
+  function f_validar_clave(i_clave_aplicacion in varchar2) return boolean;
 
-  PROCEDURE p_validar_clave(i_clave_aplicacion IN VARCHAR2);
+  procedure p_validar_clave(i_clave_aplicacion in varchar2);
 
-END;
+end;
 /

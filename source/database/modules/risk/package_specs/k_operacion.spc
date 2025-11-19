@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_operacion IS
+create or replace package k_operacion is
 
   /**
   Agrupa operaciones relacionadas con las Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos, Importaciones)
@@ -31,133 +31,133 @@ CREATE OR REPLACE PACKAGE k_operacion IS
   */
 
   -- Tipos de Operaciones
-  c_tipo_servicio    CONSTANT CHAR(1) := 'S';
-  c_tipo_reporte     CONSTANT CHAR(1) := 'R';
-  c_tipo_trabajo     CONSTANT CHAR(1) := 'T';
-  c_tipo_monitoreo   CONSTANT CHAR(1) := 'M';
-  c_tipo_importacion CONSTANT CHAR(1) := 'I';
-  c_tipo_parametros  CONSTANT CHAR(1) := 'P';
+  c_tipo_servicio    constant char(1) := 'S';
+  c_tipo_reporte     constant char(1) := 'R';
+  c_tipo_trabajo     constant char(1) := 'T';
+  c_tipo_monitoreo   constant char(1) := 'M';
+  c_tipo_importacion constant char(1) := 'I';
+  c_tipo_parametros  constant char(1) := 'P';
 
   -- Tipos de Implementaciones
-  c_tipo_implementacion_paquete CONSTANT CHAR(1) := 'K';
-  c_tipo_implementacion_funcion CONSTANT CHAR(1) := 'F';
-  c_tipo_implementacion_bloque  CONSTANT CHAR(1) := 'B';
+  c_tipo_implementacion_paquete constant char(1) := 'K';
+  c_tipo_implementacion_funcion constant char(1) := 'F';
+  c_tipo_implementacion_bloque  constant char(1) := 'B';
 
   -- Códigos de respuesta
-  c_ok                       CONSTANT VARCHAR2(10) := '0';
-  c_servicio_no_implementado CONSTANT VARCHAR2(10) := 'ser0001';
-  c_error_parametro          CONSTANT VARCHAR2(10) := 'ser0002';
-  c_error_permiso            CONSTANT VARCHAR2(10) := 'ser0003';
-  c_error_general            CONSTANT VARCHAR2(10) := 'ser0099';
-  c_error_inesperado         CONSTANT VARCHAR2(10) := 'ser9999';
+  c_ok                       constant varchar2(10) := '0';
+  c_servicio_no_implementado constant varchar2(10) := 'ser0001';
+  c_error_parametro          constant varchar2(10) := 'ser0002';
+  c_error_permiso            constant varchar2(10) := 'ser0003';
+  c_error_general            constant varchar2(10) := 'ser0099';
+  c_error_inesperado         constant varchar2(10) := 'ser9999';
 
   -- Otras constantes
-  c_id_log                 CONSTANT VARCHAR2(50) := 'ID_LOG';
-  c_fecha_hora_inicio_log  CONSTANT VARCHAR2(50) := 'FECHA_HORA_INICIO_LOG';
-  c_id_ope_par_automaticos CONSTANT PLS_INTEGER := 1000;
-  c_id_operacion_contexto  CONSTANT PLS_INTEGER := 1001;
+  c_id_log                 constant varchar2(50) := 'ID_LOG';
+  c_fecha_hora_inicio_log  constant varchar2(50) := 'FECHA_HORA_INICIO_LOG';
+  c_id_ope_par_automaticos constant pls_integer := 1000;
+  c_id_operacion_contexto  constant pls_integer := 1001;
 
   -- Excepciones
-  ex_servicio_no_implementado EXCEPTION;
-  ex_error_parametro          EXCEPTION;
-  ex_error_general            EXCEPTION;
-  PRAGMA EXCEPTION_INIT(ex_servicio_no_implementado, -6550);
+  ex_servicio_no_implementado exception;
+  ex_error_parametro          exception;
+  ex_error_general            exception;
+  pragma exception_init(ex_servicio_no_implementado, -6550);
 
-  PROCEDURE p_inicializar_log(i_id_operacion IN NUMBER);
+  procedure p_inicializar_log(i_id_operacion in number);
 
-  PROCEDURE p_registrar_log(i_id_operacion     IN NUMBER,
-                            i_parametros       IN CLOB,
-                            i_codigo_respuesta IN VARCHAR2,
-                            i_respuesta        IN CLOB,
-                            i_contexto         IN CLOB DEFAULT NULL,
-                            i_version          IN VARCHAR2 DEFAULT NULL);
+  procedure p_registrar_log(i_id_operacion     in number,
+                            i_parametros       in clob,
+                            i_codigo_respuesta in varchar2,
+                            i_respuesta        in clob,
+                            i_contexto         in clob default null,
+                            i_version          in varchar2 default null);
 
-  PROCEDURE p_respuesta_ok(io_respuesta IN OUT NOCOPY y_respuesta,
-                           i_datos      IN y_objeto DEFAULT NULL);
+  procedure p_respuesta_ok(io_respuesta in out nocopy y_respuesta,
+                           i_datos      in y_objeto default null);
 
-  PROCEDURE p_respuesta_error(io_respuesta IN OUT NOCOPY y_respuesta,
-                              i_codigo     IN VARCHAR2,
-                              i_mensaje    IN VARCHAR2 DEFAULT NULL,
-                              i_mensaje_bd IN VARCHAR2 DEFAULT NULL,
-                              i_datos      IN y_objeto DEFAULT NULL);
+  procedure p_respuesta_error(io_respuesta in out nocopy y_respuesta,
+                              i_codigo     in varchar2,
+                              i_mensaje    in varchar2 default null,
+                              i_mensaje_bd in varchar2 default null,
+                              i_datos      in y_objeto default null);
 
-  PROCEDURE p_respuesta_excepcion(io_respuesta   IN OUT NOCOPY y_respuesta,
-                                  i_error_number IN NUMBER,
-                                  i_error_msg    IN VARCHAR2,
-                                  i_error_stack  IN VARCHAR2);
+  procedure p_respuesta_excepcion(io_respuesta   in out nocopy y_respuesta,
+                                  i_error_number in number,
+                                  i_error_msg    in varchar2,
+                                  i_error_stack  in varchar2);
 
-  PROCEDURE p_validar_parametro(io_respuesta IN OUT NOCOPY y_respuesta,
-                                i_expresion  IN BOOLEAN,
-                                i_mensaje    IN VARCHAR2);
+  procedure p_validar_parametro(io_respuesta in out nocopy y_respuesta,
+                                i_expresion  in boolean,
+                                i_mensaje    in varchar2);
 
-  PROCEDURE p_definir_parametros(i_id_operacion IN NUMBER,
-                                 i_contexto     IN y_parametros);
+  procedure p_definir_parametros(i_id_operacion in number,
+                                 i_contexto     in y_parametros);
 
-  FUNCTION f_operacion(i_id_operacion IN NUMBER) RETURN t_operaciones%ROWTYPE;
+  function f_operacion(i_id_operacion in number) return t_operaciones%rowtype;
 
-  FUNCTION f_id_operacion(i_tipo    IN VARCHAR2,
-                          i_nombre  IN VARCHAR2,
-                          i_dominio IN VARCHAR2) RETURN NUMBER;
+  function f_id_operacion(i_tipo    in varchar2,
+                          i_nombre  in varchar2,
+                          i_dominio in varchar2) return number;
 
-  FUNCTION f_id_permiso(i_id_operacion IN NUMBER) RETURN VARCHAR2;
+  function f_id_permiso(i_id_operacion in number) return varchar2;
 
-  FUNCTION f_id_modulo(i_id_operacion IN NUMBER) RETURN VARCHAR2;
+  function f_id_modulo(i_id_operacion in number) return varchar2;
 
-  FUNCTION f_validar_permiso_aplicacion(i_id_aplicacion IN VARCHAR2,
-                                        i_id_operacion  IN NUMBER)
-    RETURN BOOLEAN;
+  function f_validar_permiso_aplicacion(i_id_aplicacion in varchar2,
+                                        i_id_operacion  in number)
+    return boolean;
 
-  FUNCTION f_procesar_parametros(i_id_operacion IN NUMBER,
-                                 i_parametros   IN CLOB,
-                                 i_version      IN VARCHAR2 DEFAULT NULL)
-    RETURN y_parametros;
+  function f_procesar_parametros(i_id_operacion in number,
+                                 i_parametros   in clob,
+                                 i_version      in varchar2 default null)
+    return y_parametros;
 
-  FUNCTION f_nombre_programa(i_id_operacion IN NUMBER,
-                             i_version      IN VARCHAR2 DEFAULT NULL)
-    RETURN VARCHAR2;
+  function f_nombre_programa(i_id_operacion in number,
+                             i_version      in varchar2 default null)
+    return varchar2;
 
-  FUNCTION f_filtros_sql(i_parametros      IN y_parametros,
-                         i_nombres_excluir IN y_cadenas DEFAULT NULL)
-    RETURN CLOB;
+  function f_filtros_sql(i_parametros      in y_parametros,
+                         i_nombres_excluir in y_cadenas default null)
+    return clob;
 
-  FUNCTION f_valor_parametro(i_parametros IN y_parametros,
-                             i_nombre     IN VARCHAR2) RETURN anydata;
+  function f_valor_parametro(i_parametros in y_parametros,
+                             i_nombre     in varchar2) return anydata;
 
-  FUNCTION f_valor_parametro_string(i_parametros IN y_parametros,
-                                    i_nombre     IN VARCHAR2) RETURN VARCHAR2;
+  function f_valor_parametro_string(i_parametros in y_parametros,
+                                    i_nombre     in varchar2) return varchar2;
 
-  FUNCTION f_valor_parametro_number(i_parametros IN y_parametros,
-                                    i_nombre     IN VARCHAR2) RETURN NUMBER;
+  function f_valor_parametro_number(i_parametros in y_parametros,
+                                    i_nombre     in varchar2) return number;
 
-  FUNCTION f_valor_parametro_boolean(i_parametros IN y_parametros,
-                                     i_nombre     IN VARCHAR2) RETURN BOOLEAN;
+  function f_valor_parametro_boolean(i_parametros in y_parametros,
+                                     i_nombre     in varchar2) return boolean;
 
-  FUNCTION f_valor_parametro_date(i_parametros IN y_parametros,
-                                  i_nombre     IN VARCHAR2) RETURN DATE;
+  function f_valor_parametro_date(i_parametros in y_parametros,
+                                  i_nombre     in varchar2) return date;
 
-  FUNCTION f_valor_parametro_object(i_parametros IN y_parametros,
-                                    i_nombre     IN VARCHAR2) RETURN y_objeto;
+  function f_valor_parametro_object(i_parametros in y_parametros,
+                                    i_nombre     in varchar2) return y_objeto;
 
-  FUNCTION f_inserts_operacion(i_operacion IN t_operaciones%ROWTYPE)
-    RETURN CLOB;
+  function f_inserts_operacion(i_operacion in t_operaciones%rowtype)
+    return clob;
 
-  FUNCTION f_inserts_operacion(i_id_operacion IN NUMBER) RETURN CLOB;
+  function f_inserts_operacion(i_id_operacion in number) return clob;
 
-  FUNCTION f_inserts_operacion(i_tipo    IN VARCHAR2,
-                               i_nombre  IN VARCHAR2,
-                               i_dominio IN VARCHAR2) RETURN CLOB;
+  function f_inserts_operacion(i_tipo    in varchar2,
+                               i_nombre  in varchar2,
+                               i_dominio in varchar2) return clob;
 
-  FUNCTION f_deletes_operacion(i_operacion IN t_operaciones%ROWTYPE)
-    RETURN CLOB;
+  function f_deletes_operacion(i_operacion in t_operaciones%rowtype)
+    return clob;
 
-  FUNCTION f_deletes_operacion(i_id_operacion IN NUMBER) RETURN CLOB;
+  function f_deletes_operacion(i_id_operacion in number) return clob;
 
-  FUNCTION f_deletes_operacion(i_tipo    IN VARCHAR2,
-                               i_nombre  IN VARCHAR2,
-                               i_dominio IN VARCHAR2) RETURN CLOB;
+  function f_deletes_operacion(i_tipo    in varchar2,
+                               i_nombre  in varchar2,
+                               i_dominio in varchar2) return clob;
 
-  FUNCTION f_scripts_operaciones(i_id_modulo IN VARCHAR2 DEFAULT NULL)
-    RETURN BLOB;
+  function f_scripts_operaciones(i_id_modulo in varchar2 default null)
+    return blob;
 
-END;
+end;
 /

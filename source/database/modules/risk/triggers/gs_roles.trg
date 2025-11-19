@@ -1,7 +1,7 @@
-CREATE OR REPLACE TRIGGER gs_roles
-  BEFORE INSERT ON t_roles
-  FOR EACH ROW
-BEGIN
+create or replace trigger gs_roles
+  before insert on t_roles
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
@@ -26,8 +26,8 @@ BEGIN
   -------------------------------------------------------------------------------
   */
 
-  IF :new.id_rol IS NULL THEN
+  if :new.id_rol is null then
     :new.id_rol := s_id_rol.nextval;
-  END IF;
-END;
+  end if;
+end;
 /

@@ -1,47 +1,47 @@
-CREATE OR REPLACE PACKAGE BODY test_k_cadena IS
+create or replace package body test_k_cadena is
 
-  PROCEDURE f_valor_posicion_separador_por_defecto IS
-  BEGIN
+  procedure f_valor_posicion_separador_por_defecto is
+  begin
     ut.expect(k_cadena.f_valor_posicion('hola-que-tal-como-estas-chau', 3)).to_equal('hola-que-tal-como-estas-chau');
-  END;
+  end;
 
-  PROCEDURE f_valor_posicion_separador_un_caracter IS
-  BEGIN
+  procedure f_valor_posicion_separador_un_caracter is
+  begin
     ut.expect(k_cadena.f_valor_posicion('hola-que-tal-como-estas-chau',
                                         3,
                                         '-')).to_equal('tal');
-  END;
+  end;
 
-  PROCEDURE f_valor_posicion_separador_varios_caracteres IS
-  BEGIN
+  procedure f_valor_posicion_separador_varios_caracteres is
+  begin
     ut.expect(k_cadena.f_valor_posicion('hola/*/que/*/tal/*/como/*/estas/*/chau',
                                         3,
                                         '/*/')).to_equal('tal');
-  END;
+  end;
 
-  PROCEDURE f_valor_posicion_fuera_de_rango_mayor IS
-  BEGIN
+  procedure f_valor_posicion_fuera_de_rango_mayor is
+  begin
     ut.expect(k_cadena.f_valor_posicion('hola-que-tal-como-estas-chau',
                                         100,
                                         '-')).to_equal('chau');
-  END;
+  end;
 
-  PROCEDURE f_valor_posicion_fuera_de_rango_menor IS
-  BEGIN
+  procedure f_valor_posicion_fuera_de_rango_menor is
+  begin
     ut.expect(k_cadena.f_valor_posicion('hola-que-tal-como-estas-chau',
                                         0,
                                         '-')).to_equal('hola');
-  END;
+  end;
 
-  PROCEDURE f_reemplazar_acentos_uso_basico IS
-  BEGIN
+  procedure f_reemplazar_acentos_uso_basico is
+  begin
     ut.expect(k_cadena.f_reemplazar_acentos('La cigüeña tocaba el saxofón detrás del palenque de paja')).to_equal('La cigueña tocaba el saxofon detras del palenque de paja');
-  END;
+  end;
 
-  PROCEDURE f_formatear_titulo_uso_basico IS
-  BEGIN
+  procedure f_formatear_titulo_uso_basico is
+  begin
     ut.expect(k_cadena.f_formatear_titulo('ESte eS UN títULO DE pruEba srl')).to_equal('Este Es Un Título de Prueba SRL');
-  END;
+  end;
 
-END;
+end;
 /

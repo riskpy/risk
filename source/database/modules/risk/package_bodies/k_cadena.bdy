@@ -1,206 +1,206 @@
-CREATE OR REPLACE PACKAGE BODY k_cadena IS
+create or replace package body k_cadena is
 
-  FUNCTION f_separar_cadenas(i_cadena    IN VARCHAR2,
-                             i_separador IN VARCHAR2 DEFAULT '~')
-    RETURN y_cadenas
-    PIPELINED IS
-    l_idx    PLS_INTEGER;
-    l_cadena VARCHAR2(32767);
-  BEGIN
+  function f_separar_cadenas(i_cadena    in varchar2,
+                             i_separador in varchar2 default '~')
+    return y_cadenas
+    pipelined is
+    l_idx    pls_integer;
+    l_cadena varchar2(32767);
+  begin
     l_cadena := i_cadena;
-    LOOP
+    loop
       l_idx := instr(l_cadena, i_separador);
-      IF l_idx > 0 THEN
-        PIPE ROW(substr(l_cadena, 1, l_idx - 1));
+      if l_idx > 0 then
+        pipe row(substr(l_cadena, 1, l_idx - 1));
         l_cadena := substr(l_cadena, l_idx + length(i_separador));
-      ELSE
-        PIPE ROW(l_cadena);
-        EXIT;
-      END IF;
-    END LOOP;
-    RETURN;
-  END;
+      else
+        pipe row(l_cadena);
+        exit;
+      end if;
+    end loop;
+    return;
+  end;
 
-  FUNCTION f_unir_cadenas(i_cadena    IN VARCHAR2,
-                          i_cadenas   IN y_cadenas,
-                          i_wrap_char IN VARCHAR2 DEFAULT '@')
-    RETURN VARCHAR2 IS
-    l_cadena VARCHAR2(32767);
-  BEGIN
+  function f_unir_cadenas(i_cadena    in varchar2,
+                          i_cadenas   in y_cadenas,
+                          i_wrap_char in varchar2 default '@')
+    return varchar2 is
+    l_cadena varchar2(32767);
+  begin
     l_cadena := i_cadena;
-    IF l_cadena IS NOT NULL AND i_cadenas.count > 0 THEN
-      FOR i IN i_cadenas.first .. i_cadenas.last LOOP
+    if l_cadena is not null and i_cadenas.count > 0 then
+      for i in i_cadenas.first .. i_cadenas.last loop
         -- Given the index "i" find the related placeholder in the message and
         -- replace the placeholder with the array's value at index "i".
-        l_cadena := REPLACE(l_cadena,
+        l_cadena := replace(l_cadena,
                             i_wrap_char || to_char(i) || i_wrap_char,
                             i_cadenas(i));
-      END LOOP;
-    END IF;
+      end loop;
+    end if;
   
-    RETURN l_cadena;
-  END;
+    return l_cadena;
+  end;
 
-  FUNCTION f_unir_cadenas(i_cadena    IN VARCHAR2,
-                          i_cadena1   IN VARCHAR2 DEFAULT NULL,
-                          i_cadena2   IN VARCHAR2 DEFAULT NULL,
-                          i_cadena3   IN VARCHAR2 DEFAULT NULL,
-                          i_cadena4   IN VARCHAR2 DEFAULT NULL,
-                          i_cadena5   IN VARCHAR2 DEFAULT NULL,
-                          i_wrap_char IN VARCHAR2 DEFAULT '@')
-    RETURN VARCHAR2 IS
+  function f_unir_cadenas(i_cadena    in varchar2,
+                          i_cadena1   in varchar2 default null,
+                          i_cadena2   in varchar2 default null,
+                          i_cadena3   in varchar2 default null,
+                          i_cadena4   in varchar2 default null,
+                          i_cadena5   in varchar2 default null,
+                          i_wrap_char in varchar2 default '@')
+    return varchar2 is
     l_cadenas y_cadenas;
-  BEGIN
-    l_cadenas := NEW y_cadenas();
+  begin
+    l_cadenas := new y_cadenas();
     l_cadenas.extend(5);
   
-    IF i_cadena1 IS NOT NULL THEN
+    if i_cadena1 is not null then
       l_cadenas(1) := i_cadena1;
-    END IF;
-    IF i_cadena2 IS NOT NULL THEN
+    end if;
+    if i_cadena2 is not null then
       l_cadenas(2) := i_cadena2;
-    END IF;
-    IF i_cadena3 IS NOT NULL THEN
+    end if;
+    if i_cadena3 is not null then
       l_cadenas(3) := i_cadena3;
-    END IF;
-    IF i_cadena4 IS NOT NULL THEN
+    end if;
+    if i_cadena4 is not null then
       l_cadenas(4) := i_cadena4;
-    END IF;
-    IF i_cadena5 IS NOT NULL THEN
+    end if;
+    if i_cadena5 is not null then
       l_cadenas(5) := i_cadena5;
-    END IF;
+    end if;
   
-    RETURN f_unir_cadenas(i_cadena, l_cadenas, nvl(i_wrap_char, '@'));
-  END;
+    return f_unir_cadenas(i_cadena, l_cadenas, nvl(i_wrap_char, '@'));
+  end;
 
-  FUNCTION f_valor_posicion(i_cadena    IN VARCHAR2,
-                            i_posicion  IN NUMBER,
-                            i_separador IN VARCHAR2 DEFAULT '~')
-    RETURN VARCHAR2 IS
-    l_valor           VARCHAR2(32767);
-    l_posicion        NUMBER;
-    l_separador       VARCHAR2(10);
-    l_longitud_valor  NUMBER;
-    l_posicion_inicio NUMBER;
-    l_posicion_fin    NUMBER;
-  BEGIN
+  function f_valor_posicion(i_cadena    in varchar2,
+                            i_posicion  in number,
+                            i_separador in varchar2 default '~')
+    return varchar2 is
+    l_valor           varchar2(32767);
+    l_posicion        number;
+    l_separador       varchar2(10);
+    l_longitud_valor  number;
+    l_posicion_inicio number;
+    l_posicion_fin    number;
+  begin
     l_separador := i_separador;
   
-    IF i_posicion > 0 THEN
+    if i_posicion > 0 then
       l_posicion := i_posicion;
-    ELSE
+    else
       l_posicion := 1;
-    END IF;
+    end if;
   
     -- Posicion del inicio del valor dentro de la cadena
-    IF l_posicion > 1 THEN
+    if l_posicion > 1 then
       l_posicion_inicio := instr(i_cadena, l_separador, 1, l_posicion - 1);
-      IF l_posicion_inicio = 0 THEN
+      if l_posicion_inicio = 0 then
         l_posicion_inicio := instr(i_cadena, l_separador, -1, 1);
-      END IF;
+      end if;
       l_posicion_inicio := l_posicion_inicio + length(l_separador);
-    ELSE
+    else
       l_posicion_inicio := 1;
-    END IF;
+    end if;
   
     -- Posicion del fin del valor dentro de la cadena
     l_posicion_fin := instr(i_cadena, l_separador, 1, l_posicion);
   
-    IF l_posicion_fin = 0 THEN
+    if l_posicion_fin = 0 then
       l_valor := substr(i_cadena, l_posicion_inicio);
-    ELSE
+    else
       l_longitud_valor := l_posicion_fin - l_posicion_inicio;
       l_valor          := substr(i_cadena,
                                  l_posicion_inicio,
                                  l_longitud_valor);
-    END IF;
-    RETURN l_valor;
-  END;
+    end if;
+    return l_valor;
+  end;
 
-  FUNCTION f_extraer_cadenas(i_texto                IN VARCHAR2,
-                             i_encapsulador_inicial IN VARCHAR2 := ':',
-                             i_encapsulador_final   IN VARCHAR2 := ' ',
-                             i_limpio               IN VARCHAR2 := 'N')
-    RETURN y_cadenas
-    PIPELINED IS
-    l_limpio CHAR(1) := nvl(substr(i_limpio, 1, 1), 'N');
+  function f_extraer_cadenas(i_texto                in varchar2,
+                             i_encapsulador_inicial in varchar2 := ':',
+                             i_encapsulador_final   in varchar2 := ' ',
+                             i_limpio               in varchar2 := 'N')
+    return y_cadenas
+    pipelined is
+    l_limpio char(1) := nvl(substr(i_limpio, 1, 1), 'N');
     --
-    l_pos         PLS_INTEGER := 1;
-    l_start       PLS_INTEGER;
-    l_end         PLS_INTEGER;
-    l_placeholder VARCHAR2(32767);
-    l_len_ini     PLS_INTEGER := length(i_encapsulador_inicial);
-    l_len_fin     PLS_INTEGER := length(i_encapsulador_final);
-  BEGIN
-    LOOP
+    l_pos         pls_integer := 1;
+    l_start       pls_integer;
+    l_end         pls_integer;
+    l_placeholder varchar2(32767);
+    l_len_ini     pls_integer := length(i_encapsulador_inicial);
+    l_len_fin     pls_integer := length(i_encapsulador_final);
+  begin
+    loop
       l_start := instr(i_texto, i_encapsulador_inicial, l_pos);
-      EXIT WHEN l_start = 0;
+      exit when l_start = 0;
     
       l_end := instr(i_texto, i_encapsulador_final, l_start + l_len_ini);
-      EXIT WHEN l_end = 0;
+      exit when l_end = 0;
     
-      IF l_limpio = 'S' THEN
+      if l_limpio = 'S' then
         -- Solo el contenido interno, sin delimitadores
-        l_placeholder := TRIM(substr(i_texto,
+        l_placeholder := trim(substr(i_texto,
                                      l_start + l_len_ini,
                                      l_end - l_start - l_len_ini));
-      ELSE
+      else
         -- Placeholder completo con delimitadores
-        l_placeholder := TRIM(substr(i_texto,
+        l_placeholder := trim(substr(i_texto,
                                      l_start,
                                      l_end - l_start + l_len_fin));
-      END IF;
+      end if;
     
-      PIPE ROW(l_placeholder);
+      pipe row(l_placeholder);
       l_pos := l_end + l_len_fin;
-    END LOOP;
+    end loop;
   
-    RETURN;
-  END;
+    return;
+  end;
 
-  FUNCTION f_reemplazar_acentos(i_cadena IN VARCHAR2) RETURN VARCHAR2 IS
-  BEGIN
-    RETURN translate(i_cadena,
+  function f_reemplazar_acentos(i_cadena in varchar2) return varchar2 is
+  begin
+    return translate(i_cadena,
                      'áéíóúàèìòùâêîôûäëïöüçãõÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÄËÏÖÜÇÃÕ',
                      'aeiouaeiouaeiouaeioucaoAEIOUAEIOUAEIOUAEIOUCAO');
-  END;
+  end;
 
-  FUNCTION f_formatear_titulo(i_titulo IN VARCHAR2) RETURN VARCHAR2
-    DETERMINISTIC IS
-    v_palabra  VARCHAR2(4000);
-    v_longitud NUMBER;
-    v_inicial  NUMBER;
-    v_final    NUMBER;
-    v_pinicial NUMBER;
-    v_pfinal   NUMBER;
-    v_einicial NUMBER;
-    v_efinal   NUMBER;
-    v_letras   VARCHAR2(20);
-  BEGIN
+  function f_formatear_titulo(i_titulo in varchar2) return varchar2
+    deterministic is
+    v_palabra  varchar2(4000);
+    v_longitud number;
+    v_inicial  number;
+    v_final    number;
+    v_pinicial number;
+    v_pfinal   number;
+    v_einicial number;
+    v_efinal   number;
+    v_letras   varchar2(20);
+  begin
     -- Hace el InitCap para iniciar
     v_palabra := initcap(i_titulo);
     -- Reemplaza los casos mas necesarios  p/, c/, s/, 's
-    v_palabra := REPLACE(v_palabra, 'P/', 'p/');
-    v_palabra := REPLACE(v_palabra, 'C/', 'c/');
-    v_palabra := REPLACE(v_palabra, 'S/', 's/');
-    v_palabra := REPLACE(v_palabra, chr(39) || 'S', chr(39) || 's');
+    v_palabra := replace(v_palabra, 'P/', 'p/');
+    v_palabra := replace(v_palabra, 'C/', 'c/');
+    v_palabra := replace(v_palabra, 'S/', 's/');
+    v_palabra := replace(v_palabra, chr(39) || 'S', chr(39) || 's');
     --
     v_inicial  := 1;
     v_final    := 1;
     v_longitud := nvl(length(v_palabra), 0);
-    LOOP
-      IF v_inicial = 0 OR v_inicial >= v_longitud THEN
-        EXIT;
-      END IF;
-      IF v_final - v_inicial BETWEEN 1 AND 5 THEN
+    loop
+      if v_inicial = 0 or v_inicial >= v_longitud then
+        exit;
+      end if;
+      if v_final - v_inicial between 1 and 5 then
         v_letras := substr(v_palabra, v_inicial, v_final - v_inicial + 1);
-        IF lower(ltrim(rtrim(v_letras))) IN
-           ('srl', 'sa', 'sacic', 'saeca', 'saci', 'eca') THEN
+        if lower(ltrim(rtrim(v_letras))) in
+           ('srl', 'sa', 'sacic', 'saeca', 'saci', 'eca') then
           -- Pone las letras en mayusculas
           v_palabra := substr(v_palabra, 1, v_inicial - 1) ||
                        upper(v_letras) ||
                        substr(v_palabra, v_final + 1, v_longitud);
-        ELSIF lower(ltrim(rtrim(v_letras))) IN
+        elsif lower(ltrim(rtrim(v_letras))) in
               ('del',
                'a',
                'de',
@@ -216,139 +216,139 @@ CREATE OR REPLACE PACKAGE BODY k_cadena IS
                'los',
                'las',
                'contra',
-               'sin') THEN
+               'sin') then
           -- Pone las letras en minusculas
           v_palabra := substr(v_palabra, 1, v_inicial - 1) ||
                        lower(v_letras) ||
                        substr(v_palabra, v_final + 1, v_longitud);
-        END IF;
-      END IF;
+        end if;
+      end if;
       -- Inicial
       v_pinicial := instr(v_palabra, '.', v_final);
       v_einicial := instr(v_palabra, ' ', v_final);
-      IF v_pinicial <> 0 AND v_einicial <> 0 THEN
+      if v_pinicial <> 0 and v_einicial <> 0 then
         v_inicial := least(v_pinicial, v_einicial);
-      ELSE
+      else
         v_inicial := greatest(v_pinicial, v_einicial);
-      END IF;
+      end if;
       -- Final
-      IF v_inicial <> 0 THEN
+      if v_inicial <> 0 then
         v_pfinal := instr(v_palabra, '.', v_inicial + 1);
         v_efinal := instr(v_palabra, ' ', v_inicial + 1);
-        IF v_pfinal <> 0 AND v_efinal <> 0 THEN
+        if v_pfinal <> 0 and v_efinal <> 0 then
           v_final := least(v_pfinal, v_efinal);
-        ELSE
+        else
           v_final := greatest(v_pfinal, v_efinal);
-        END IF;
-      ELSE
+        end if;
+      else
         v_final := 0;
-      END IF;
-      IF v_final = 0 THEN
+      end if;
+      if v_final = 0 then
         v_final := v_longitud;
-      END IF;
-      IF v_inicial <> 0 THEN
+      end if;
+      if v_inicial <> 0 then
         v_inicial := v_inicial + 1;
-      END IF;
-    END LOOP;
+      end if;
+    end loop;
     -- Retorna el titulo modificado
-    RETURN v_palabra;
-  END;
+    return v_palabra;
+  end;
 
   -- https://github.com/osalvador/tePLSQL
-  FUNCTION f_procesar_plantilla(i_plantilla IN CLOB,
-                                i_variables IN t_assoc_array DEFAULT null_assoc_array,
-                                i_wrap_char IN VARCHAR2 DEFAULT '@')
-    RETURN CLOB IS
+  function f_procesar_plantilla(i_plantilla in clob,
+                                i_variables in t_assoc_array default null_assoc_array,
+                                i_wrap_char in varchar2 default '@')
+    return clob is
     l_key     t_template_variable_name;
     l_value   t_template_variable_value;
-    l_retorno CLOB;
-  BEGIN
+    l_retorno clob;
+  begin
     l_retorno := i_plantilla;
   
     l_key := i_variables.first;
-    WHILE l_key IS NOT NULL LOOP
+    while l_key is not null loop
       l_value := i_variables(l_key);
     
-      l_retorno := REPLACE(l_retorno,
+      l_retorno := replace(l_retorno,
                            i_wrap_char || l_key || i_wrap_char,
                            l_value);
-      l_retorno := REPLACE(l_retorno,
+      l_retorno := replace(l_retorno,
                            i_wrap_char || lower(l_key) || i_wrap_char,
                            l_value);
-      l_retorno := REPLACE(l_retorno,
+      l_retorno := replace(l_retorno,
                            i_wrap_char || upper(l_key) || i_wrap_char,
                            l_value);
-      l_retorno := REPLACE(l_retorno,
+      l_retorno := replace(l_retorno,
                            i_wrap_char || initcap(l_key) || i_wrap_char,
                            l_value);
     
       l_key := i_variables.next(l_key);
-    END LOOP;
+    end loop;
   
-    RETURN l_retorno;
-  END;
+    return l_retorno;
+  end;
 
-  FUNCTION f_buscar_cadena(pin_buscar    VARCHAR2,
-                           pin_cadena    VARCHAR2,
-                           pin_separador VARCHAR2 DEFAULT ',')
-    RETURN VARCHAR2 IS
-    vl_encontrado VARCHAR2(1) := 'N';
-  BEGIN
-    BEGIN
-      SELECT 'S'
-        INTO vl_encontrado
-        FROM k_cadena.f_separar_cadenas(pin_cadena, pin_separador)
-       WHERE TRIM(column_value) = pin_buscar;
-    EXCEPTION
-      WHEN no_data_found THEN
+  function f_buscar_cadena(pin_buscar    varchar2,
+                           pin_cadena    varchar2,
+                           pin_separador varchar2 default ',')
+    return varchar2 is
+    vl_encontrado varchar2(1) := 'N';
+  begin
+    begin
+      select 'S'
+        into vl_encontrado
+        from k_cadena.f_separar_cadenas(pin_cadena, pin_separador)
+       where trim(column_value) = pin_buscar;
+    exception
+      when no_data_found then
         vl_encontrado := 'N';
-      WHEN too_many_rows THEN
+      when too_many_rows then
         vl_encontrado := 'S';
-    END;
+    end;
   
-    RETURN vl_encontrado;
-  END f_buscar_cadena;
+    return vl_encontrado;
+  end f_buscar_cadena;
 
-  FUNCTION f_formatear_cadena(p_lista_campos     IN VARCHAR2, -- lista separada por comas
-                              p_patron           IN VARCHAR2, -- texto plantilla, usar "#" como placeholder
-                              p_separador_salida IN VARCHAR2 DEFAULT chr(10) -- salto de línea o coma
-                              ) RETURN CLOB IS
-    v_resultado CLOB := empty_clob();
-    v_token     VARCHAR2(4000);
-    v_pos       PLS_INTEGER := 1;
-    v_lista     VARCHAR2(32767) := p_lista_campos || ',';
-  BEGIN
-    LOOP
+  function f_formatear_cadena(p_lista_campos     in varchar2, -- lista separada por comas
+                              p_patron           in varchar2, -- texto plantilla, usar "#" como placeholder
+                              p_separador_salida in varchar2 default chr(10) -- salto de línea o coma
+                              ) return clob is
+    v_resultado clob := empty_clob();
+    v_token     varchar2(4000);
+    v_pos       pls_integer := 1;
+    v_lista     varchar2(32767) := p_lista_campos || ',';
+  begin
+    loop
       v_token := regexp_substr(v_lista, '[^,]+', 1, v_pos);
-      EXIT WHEN v_token IS NULL;
+      exit when v_token is null;
     
-      v_resultado := v_resultado || REPLACE(p_patron, '#', TRIM(v_token));
+      v_resultado := v_resultado || replace(p_patron, '#', trim(v_token));
     
       -- Agregar separador si no es el último elemento
-      IF regexp_substr(v_lista, '[^,]+', 1, v_pos + 1) IS NOT NULL THEN
+      if regexp_substr(v_lista, '[^,]+', 1, v_pos + 1) is not null then
         v_resultado := v_resultado || p_separador_salida;
-      END IF;
+      end if;
     
       v_pos := v_pos + 1;
-    END LOOP;
+    end loop;
   
-    RETURN v_resultado;
-  END f_formatear_cadena;
+    return v_resultado;
+  end f_formatear_cadena;
 
-  FUNCTION f_reemplazar_etiquetas(i_cadena       IN CLOB,
-                                  i_etiquetas    IN y_cadenas,
-                                  i_valores      IN y_cadenas,
-                                  i_encapsulador IN VARCHAR2 DEFAULT '#')
-    RETURN CLOB IS
-    l_result CLOB := i_cadena;
-  BEGIN
-    FOR i IN 1 .. i_etiquetas.count LOOP
-      l_result := REPLACE(l_result,
+  function f_reemplazar_etiquetas(i_cadena       in clob,
+                                  i_etiquetas    in y_cadenas,
+                                  i_valores      in y_cadenas,
+                                  i_encapsulador in varchar2 default '#')
+    return clob is
+    l_result clob := i_cadena;
+  begin
+    for i in 1 .. i_etiquetas.count loop
+      l_result := replace(l_result,
                           i_encapsulador || i_etiquetas(i) || i_encapsulador,
                           nvl(i_valores(i), ''));
-    END LOOP;
-    RETURN l_result;
-  END f_reemplazar_etiquetas;
+    end loop;
+    return l_result;
+  end f_reemplazar_etiquetas;
 
-END;
+end;
 /
