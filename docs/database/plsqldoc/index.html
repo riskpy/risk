@@ -1,14 +1,58 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<link REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
- <title>PL/SQL Doc - Index</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="plsqldoc.css">
+    <title>Documentaci&#243;n API PL/SQL - RISK</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Envolver cada seccion de SUB_TITLE y su contenido relacionado en un div
+            const sections = document.querySelectorAll('.SUB_TABLE');
+            sections.forEach(section => {
+                const title = section.querySelector('.SUB_TITLE');
+                if (title) {
+                    // Encontrar la tabla siguiente que contiene el contenido
+                    let content = section.nextElementSibling;
+                    if (content) {
+                        // Crear el wrapper para el acordeon
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'accordion-section';
+                        
+                        // Mover el titulo y contenido al wrapper
+                        section.parentNode.insertBefore(wrapper, section);
+                        wrapper.appendChild(section);
+                        wrapper.appendChild(content);
+                        
+                        // Agregar el boton de expandir/contraer
+                        const toggleBtn = document.createElement('span');
+                        toggleBtn.className = 'accordion-toggle';
+                        title.appendChild(toggleBtn);
+                        
+                        // Ocultar el contenido inicialmente
+                        content.style.display = 'none';
+                        
+                        // Agregar el evento click
+                        wrapper.querySelector('td').addEventListener('click', function() {
+                            const isExpanded = content.style.display === 'table';
+                            content.style.display = isExpanded ? 'none' : 'table';
+                            wrapper.classList.toggle('expanded');
+                        });
+                    }
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 
-<!--You can create your own header here-->
-<img height="50" src="../../logo/logo.png" alt="RISK">
-<h1>API PL/SQL</h1>
+<div class="header">
+    <img src="../../logo/logo.png" alt="RISK" height="50">
+    <div>
+        <h1>API PL/SQL</h1>
+        <p>Documentaci&#243;n de referencia de la API - RISK</p>
+    </div>
+</div>
 
 <!--plsqldoc_start-->
 <HR>
