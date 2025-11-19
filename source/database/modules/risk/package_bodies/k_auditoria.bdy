@@ -73,7 +73,7 @@ create or replace package body k_auditoria is
 BEGIN
   /*
   --------------------------------- MIT License ---------------------------------
-  Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
+  Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
   
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal

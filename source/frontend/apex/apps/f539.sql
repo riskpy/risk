@@ -17195,7 +17195,7 @@ wwv_flow_imp_shared.create_install(
 ,p_license_message=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'MIT License<br>',
 '<br>',
-'Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors<br>',
+'Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors<br>',
 '<br>',
 'Permission is hereby granted, free of charge, to any person obtaining a copy<br>',
 'of this software and associated documentation files (the "Software"), to deal<br>',

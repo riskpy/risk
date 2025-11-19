@@ -30,7 +30,7 @@ for module_dir in "$BASE_DIR"/*/ ; do
         cat > "$module_dir/install.sql" << 'INSTALL_EOF'
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -364,7 +364,7 @@ INSTALL_FOOTER
         cat > "$module_dir/uninstall.sql" << 'UNINSTALL_EOF'
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -667,7 +667,7 @@ if [ -d "$TEST_DIR" ]; then
     cat > "$TEST_DIR/install.sql" <<'TEST_INSTALL_EOF'
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -756,7 +756,7 @@ TEST_INSTALL_EOF
     cat > "$TEST_DIR/uninstall.sql" <<'TEST_UNINSTALL_EOF'
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and the RISK Project contributors
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
