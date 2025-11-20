@@ -18,7 +18,7 @@ else
     do
         echo $dir;
         export SQLPATH="$dir:$SQLPATH"
-        sql SYSTEM/$ORACLE_PASSWORD@$DB_HOST_NAME:1521/$DB_SERVICE_NAME @install.sql
+        sql SYSTEM/$ORACLE_PASSWORD@$DB_HOST_NAME:1521/$DB_SERVICE_NAME @install_with_sup_obj.sql
     done
 
 fi;

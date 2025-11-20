@@ -1,0 +1,188 @@
+prompt --application/pages/page_00002
+begin
+--   Manifest
+--     PAGE: 00002
+--   Manifest End
+wwv_flow_imp.component_begin (
+ p_version_yyyy_mm_dd=>'2024.05.31'
+,p_release=>'24.1.0'
+,p_default_workspace_id=>2000988041184963
+,p_default_application_id=>539
+,p_default_id_offset=>4719811504912323
+,p_default_owner=>'RISK'
+);
+wwv_flow_imp_page.create_page(
+ p_id=>2
+,p_name=>'Aplicaciones'
+,p_alias=>'APLICACIONES'
+,p_step_title=>'Aplicaciones'
+,p_autocomplete_on_off=>'OFF'
+,p_page_template_options=>'#DEFAULT#'
+,p_protection_level=>'C'
+,p_page_component_map=>'18'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(112341143134178824)
+,p_plug_name=>'Report 1'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_imp.id(86086331603308303)
+,p_plug_display_sequence=>10
+,p_query_type=>'TABLE'
+,p_query_table=>'T_APLICACIONES'
+,p_include_rowid_column=>false
+,p_plug_source_type=>'NATIVE_IR'
+,p_prn_page_header=>'Report 1'
+);
+wwv_flow_imp_page.create_worksheet(
+ p_id=>wwv_flow_imp.id(112341455352178825)
+,p_name=>'Report 1'
+,p_max_row_count_message=>'The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.'
+,p_no_data_found_message=>'No data found.'
+,p_pagination_type=>'ROWS_X_TO_Y'
+,p_pagination_display_pos=>'BOTTOM_RIGHT'
+,p_report_list_mode=>'TABS'
+,p_lazy_loading=>false
+,p_show_detail_link=>'C'
+,p_download_formats=>'CSV:HTML:XLSX:PDF'
+,p_enable_mail_download=>'Y'
+,p_detail_link=>'f?p=&APP_ID.:3:&SESSION.::&DEBUG.:RP:P3_ID_APLICACION:\#ID_APLICACION#\'
+,p_detail_link_text=>'<span aria-label="Edit"><span class="fa fa-edit" aria-hidden="true" title="Edit"></span></span>'
+,p_owner=>'JMEZA'
+,p_internal_uid=>93811308370491510
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112341580895178831)
+,p_db_column_name=>'ID_APLICACION'
+,p_display_order=>1
+,p_column_identifier=>'A'
+,p_column_label=>'Id Aplicacion'
+,p_column_type=>'STRING'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112342035850178845)
+,p_db_column_name=>'NOMBRE'
+,p_display_order=>2
+,p_column_identifier=>'B'
+,p_column_label=>'Nombre'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112342368643178846)
+,p_db_column_name=>'TIPO'
+,p_display_order=>3
+,p_column_identifier=>'C'
+,p_column_label=>'Tipo'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112342823436178846)
+,p_db_column_name=>'ACTIVO'
+,p_display_order=>4
+,p_column_identifier=>'D'
+,p_column_label=>'Activo'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112343186483178847)
+,p_db_column_name=>'CLAVE'
+,p_display_order=>5
+,p_column_identifier=>'E'
+,p_column_label=>'Clave'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112343624966178847)
+,p_db_column_name=>'DETALLE'
+,p_display_order=>6
+,p_column_identifier=>'F'
+,p_column_label=>'Detalle'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112343966035178847)
+,p_db_column_name=>'VERSION_ACTUAL'
+,p_display_order=>7
+,p_column_identifier=>'G'
+,p_column_label=>'Version Actual'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112344362146178848)
+,p_db_column_name=>'TIEMPO_EXPIRACION_ACCESS_TOKEN'
+,p_display_order=>8
+,p_column_identifier=>'H'
+,p_column_label=>'Tiempo Expiracion Access Token'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112344765913178848)
+,p_db_column_name=>'TIEMPO_EXPIRACION_REFRESH_TOKEN'
+,p_display_order=>9
+,p_column_identifier=>'I'
+,p_column_label=>'Tiempo Expiracion Refresh Token'
+,p_column_type=>'NUMBER'
+,p_heading_alignment=>'RIGHT'
+,p_column_alignment=>'RIGHT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(112345190566178848)
+,p_db_column_name=>'PLATAFORMA_NOTIFICACION'
+,p_display_order=>10
+,p_column_identifier=>'J'
+,p_column_label=>'Plataforma Notificacion'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_tz_dependent=>'N'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_rpt(
+ p_id=>wwv_flow_imp.id(112830594557242956)
+,p_application_user=>'APXWS_DEFAULT'
+,p_report_seq=>10
+,p_report_alias=>'943005'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'ID_APLICACION:NOMBRE:TIPO:ACTIVO:CLAVE:DETALLE:VERSION_ACTUAL:TIEMPO_EXPIRACION_ACCESS_TOKEN:TIEMPO_EXPIRACION_REFRESH_TOKEN:PLATAFORMA_NOTIFICACION'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(112346424029178858)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_imp.id(112341143134178824)
+,p_button_name=>'CREATE'
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>wwv_flow_imp.id(86150669999308397)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Create'
+,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
+,p_button_alignment=>'RIGHT'
+,p_button_redirect_url=>'f?p=&APP_ID.:3:&SESSION.::&DEBUG.:3'
+);
+wwv_flow_imp.component_end;
+end;
+/
