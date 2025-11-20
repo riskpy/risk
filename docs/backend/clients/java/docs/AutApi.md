@@ -1,6 +1,6 @@
 # AutApi
 
-All URIs are relative to *https://localhost:5001*
+All URIs are relative to *http://localhost:5000*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -52,7 +52,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
 
         AutApi apiInstance = new AutApi(defaultClient);
         String key = "key_example"; // String | Clave para la activación
@@ -126,7 +126,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -212,7 +212,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -298,7 +298,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -384,7 +384,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -472,7 +472,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -560,7 +560,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -646,7 +646,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -732,7 +732,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -815,7 +815,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -909,7 +909,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -990,7 +990,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1071,7 +1071,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1152,7 +1152,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -1240,7 +1240,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1321,7 +1321,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1402,7 +1402,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1483,7 +1483,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -1569,7 +1569,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1650,7 +1650,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1731,7 +1731,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1812,7 +1812,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1895,7 +1895,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -1983,7 +1983,7 @@ import org.openapitools.client.api.AutApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");

@@ -2,14 +2,14 @@
 
 # Error
 
-Agrupa datos de Errores
+Agrupa datos de Errores o textos
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**idError** | **String** | Identificador del error |  [optional] |
-|**mensaje** | **String** | Mensaje del error |  [optional] |
+|**clave** | **String** | Clave del error o texto |  [optional] |
+|**mensaje** | **String** | Mensaje del error o texto |  [optional] |
 
 
 

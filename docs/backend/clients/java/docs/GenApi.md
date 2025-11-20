@@ -1,6 +1,6 @@
 # GenApi
 
-All URIs are relative to *https://localhost:5001*
+All URIs are relative to *http://localhost:5000*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -41,7 +41,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -139,7 +139,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -208,11 +208,11 @@ public class Example {
 
 ## listarErrores
 
-> ErrorPaginaRespuesta listarErrores(idError, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion)
+> ErrorPaginaRespuesta listarErrores(clave, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion)
 
 ListarErrores
 
-Obtiene una lista de errores
+Obtiene una lista de errores o textos
 
 ### Example
 
@@ -228,7 +228,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -237,14 +237,14 @@ public class Example {
         //RiskAppKey.setApiKeyPrefix("Token");
 
         GenApi apiInstance = new GenApi(defaultClient);
-        String idError = "idError_example"; // String | Identificador del error
+        String clave = "clave_example"; // String | Clave del error o texto
         Integer pagina = 56; // Integer | Número de la página
         Integer porPagina = 56; // Integer | Cantidad de elementos por página
         Boolean noPaginar = true; // Boolean | No paginar?
         String riskDeviceToken = "riskDeviceToken_example"; // String | Token del dispositivo desde el cual se realiza la petición
         String riskServiceVersion = "riskServiceVersion_example"; // String | Versión del servicio
         try {
-            ErrorPaginaRespuesta result = apiInstance.listarErrores(idError, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion);
+            ErrorPaginaRespuesta result = apiInstance.listarErrores(clave, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling GenApi#listarErrores");
@@ -262,7 +262,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **idError** | **String**| Identificador del error | [optional] |
+| **clave** | **String**| Clave del error o texto | [optional] |
 | **pagina** | **Integer**| Número de la página | [optional] |
 | **porPagina** | **Integer**| Cantidad de elementos por página | [optional] |
 | **noPaginar** | **Boolean**| No paginar? | [optional] |
@@ -315,7 +315,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -407,7 +407,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -499,7 +499,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -580,7 +580,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -668,7 +668,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -754,7 +754,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -842,7 +842,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure HTTP bearer authorization: AccessToken
         HttpBearerAuth AccessToken = (HttpBearerAuth) defaultClient.getAuthentication("AccessToken");
@@ -928,7 +928,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
         
         // Configure API key authorization: RiskAppKey
         ApiKeyAuth RiskAppKey = (ApiKeyAuth) defaultClient.getAuthentication("RiskAppKey");
@@ -1008,7 +1008,7 @@ import org.openapitools.client.api.GenApi;
 public class Example {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        defaultClient.setBasePath("https://localhost:5001");
+        defaultClient.setBasePath("http://localhost:5000");
 
         GenApi apiInstance = new GenApi(defaultClient);
         String riskDeviceToken = "riskDeviceToken_example"; // String | Token del dispositivo desde el cual se realiza la petición

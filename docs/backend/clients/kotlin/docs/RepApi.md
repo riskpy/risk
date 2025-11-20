@@ -1,6 +1,6 @@
 # RepApi
 
-All URIs are relative to *https://localhost:5001*
+All URIs are relative to *http://localhost:5000*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
