@@ -5,6 +5,6 @@ set FECHA=%DATE:~11,4%%DATE:~8,2%%DATE:~5,2%
 set RISK_HOME=%CD%
 
 :: Ubicacion de instalacion de PL/SQL Developer
-set PLSQLDEV_HOME=C:\Users\jmeza\AppData\Local\Programs\PLSQL Developer 16
+set PLSQLDEV_HOME=C:\Program Files\PLSQL Developer 16
 
 exit /b 0

@@ -303,8 +303,8 @@ goto :Menu
 :DecimoPrimero
 cls
 cd %RISK_HOME%
-call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\docs\database\generate_plsqldoc_list.sql"
-call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\docs\database\generate_docs.sql"
+call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev[risk]/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\docs\database\generate_plsqldoc_list.sql"
+call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev[risk]/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\docs\database\generate_docs.sql"
 echo Presione cualquier tecla ( menos ALT+F4 ) para continuar...
 pause >nul
 goto :Menu
@@ -313,7 +313,7 @@ goto :Menu
 cls
 cd %RISK_HOME%
 call generate_beautify_list.bat
-call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\beautify_list.sql"
+call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev[risk]/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\beautify_list.sql"
 echo Presione cualquier tecla ( menos ALT+F4 ) para continuar...
 pause >nul
 goto :Menu
