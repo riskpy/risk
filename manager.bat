@@ -1,7 +1,18 @@
 @echo off
 :: ======================= Variables de entorno =======================
-set RISK_HOME=%CD%\..\..\..
-set SWAGGER_SPEC_URL=
+:: Se definen las variables de entorno globales
+
+if exist ".\setenv.bat" call ".\setenv.bat"
+:: --------------------------------------------------------------------
+:: Se definen las variables de entorno especificas
+
+:: Ubicacion de repositorio risk
+set RISK_HOME=%RISK_HOME%
+
+:: Ubicacion de instalacion de PL/SQL Developer
+set PLSQLDEV_HOME=%PLSQLDEV_HOME%
+
+set SWAGGER_SPEC_URL=http://localhost:5000/swagger/v0.1.0/swagger.json
 set CLIENT_VERSION=
 set API_KEY=
 :: ====================================================================
@@ -32,27 +43,51 @@ set client[3].dir=Risk.API.KotlinClient
 :Menu
 setlocal EnableDelayedExpansion
 cls
-echo ************************************************************
 echo.
-echo Seleccione una opcion:
+echo Seleccionar una opcion:
 echo.
-echo ************************************************************
+echo ============================================================
+echo.
+echo backend
+echo.
+echo ============================================================
 echo.
 echo 1. Descargar generador
 echo.
 echo 2. Generar cliente
 echo.
-echo 3. Actualizar documentacion
+echo 3. Actualizar documentacion de cliente
 echo.
 echo 4. Publicar cliente
 echo.
+echo 5. Seleccionar generador
+echo.
+echo ============================================================
+echo.
+echo database
+echo.
+echo ============================================================
+echo.
+echo 11. Actualizar documentacion PL/SQL
+echo.
+echo 12. Aplicar PL/SQL Beautifier
+echo.
+echo 13. Abrir documentacion PL/SQL
+echo.
+echo ------------------------------------------------------------
+echo. 
+echo 21. Levantar contenedores
+echo.
+echo 22. Bajar contenedores
+echo.
 echo ------------------------------------------------------------
 echo.
-echo 5. Mostrar variables de entorno
+echo 31. Mostrar variables de entorno
 echo.
-echo 6. Seleccionar generador
+echo ------------------------------------------------------------
 echo.
 echo 99. Salir
+echo.
 set var=
 set /p var=
 if %var%==99 (
@@ -62,16 +97,22 @@ if %var%==99 (
   if %var% LSS 0 (
     echo Error
     goto :Menu
-  ) else if %var% GTR 6 (
+  ) else if %var% GTR 31 (
     echo Error
     goto :Menu
   ) else (
-	if %var%==1 goto :Primero
-	if %var%==2 goto :Segundo
-	if %var%==3 goto :Tercero
-	if %var%==4 goto :Cuarto
-	if %var%==5 goto :Quinto
-	if %var%==6 goto :Sexto
+    if %var%==1 goto :Primero
+    if %var%==2 goto :Segundo
+    if %var%==3 goto :Tercero
+    if %var%==4 goto :Cuarto
+    if %var%==5 goto :Quinto
+    if %var%==11 goto :DecimoPrimero
+    if %var%==12 goto :DecimoSegundo
+    if %var%==13 goto :DecimoTercero
+    if %var%==21 goto :VigesimoPrimero
+    if %var%==22 goto :VigesimoSegundo
+    if %var%==31 goto :TrigesimoPrimero
+    else goto :Menu
   )
 )
 goto :Menu
@@ -103,11 +144,11 @@ if %var%==99 (
     goto :Primero
   ) else (
     if %var%==0 (
-	  (for /L %%j in (1,1,%generator_count%) do (
-		call :DescargarGenerador %%j 0
+      (for /L %%j in (1,1,%generator_count%) do (
+        call :DescargarGenerador %%j 0
       ))
     ) else (
-	  call :DescargarGenerador %var% 1
+      call :DescargarGenerador %var% 1
     )
   )
 )
@@ -140,11 +181,11 @@ if %var%==99 (
     goto :Segundo
   ) else (
     if %var%==0 (
-	  (for /L %%j in (1,1,%client_count%) do (
-	    call :GenerarCliente %%j 0
+      (for /L %%j in (1,1,%client_count%) do (
+        call :GenerarCliente %%j 0
       ))
     ) else (
-	  call :GenerarCliente %var% 1
+      call :GenerarCliente %var% 1
     )
   )
 )
@@ -177,11 +218,11 @@ if %var%==99 (
     goto :Tercero
   ) else (
     if %var%==0 (
-	  (for /L %%j in (1,1,%client_count%) do (
-	    call :ActualizarDocumentacion %%j 0
+      (for /L %%j in (1,1,%client_count%) do (
+        call :ActualizarDocumentacion %%j 0
       ))
     ) else (
-	  call :ActualizarDocumentacion %var% 1
+      call :ActualizarDocumentacion %var% 1
     )
   )
 )
@@ -214,38 +255,17 @@ if %var%==99 (
     goto :Cuarto
   ) else (
     if %var%==0 (
-	  (for /L %%j in (1,1,%client_count%) do (
-	    call :PublicarCliente %%j 0
+      (for /L %%j in (1,1,%client_count%) do (
+        call :PublicarCliente %%j 0
       ))
     ) else (
-	  call :PublicarCliente %var% 1
+      call :PublicarCliente %var% 1
     )
   )
 )
 goto :Cuarto
 
 :Quinto
-cls
-echo ************************************************************
-echo.
-echo Variables de entorno
-echo.
-echo ************************************************************
-echo.
-echo RISK_HOME=%RISK_HOME%
-echo.
-echo SWAGGER_SPEC_URL=%SWAGGER_SPEC_URL%
-echo.
-echo CLIENT_VERSION=%CLIENT_VERSION%
-echo.
-echo API_KEY=%API_KEY%
-echo.
-echo GENERATOR=!generator[%generator%]!
-echo.
-Pause
-goto :Menu
-
-:Sexto
 cls
 echo ************************************************************
 echo.
@@ -274,10 +294,103 @@ if %var%==99 (
     echo Error
     goto :Sexto
   ) else (
-	if %var%==1 set generator=1
-	if %var%==2 set generator=2
+    if %var%==1 set generator=1
+    if %var%==2 set generator=2
   )
 )
+goto :Menu
+
+:DecimoPrimero
+cls
+cd %RISK_HOME%
+call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\docs\database\generate_plsqldoc_list.sql"
+call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\docs\database\generate_docs.sql"
+echo Presione cualquier tecla ( menos ALT+F4 ) para continuar...
+pause >nul
+goto :Menu
+
+:DecimoSegundo
+cls
+cd %RISK_HOME%
+call generate_beautify_list.bat
+call "%PLSQLDEV_HOME%\plsqldev.exe" UserID=risk_dev/risk@localhost:1521/FREEPDB1 CommandFile="%RISK_HOME%\beautify_list.sql"
+echo Presione cualquier tecla ( menos ALT+F4 ) para continuar...
+pause >nul
+goto :Menu
+
+:DecimoTercero
+cls
+cd %RISK_HOME%\docs\database\plsqldoc
+start "" "index.html"
+echo Presione cualquier tecla ( menos ALT+F4 ) para continuar...
+pause >nul
+goto :Menu
+
+:VigesimoPrimero
+cls
+echo Esta seguro de que desea Levantar contenedores? (S/n)
+set conf=
+set /p conf=
+if "%conf%"=="S" (
+  echo Continuando...
+) else if "%conf%"=="s" (
+  echo Continuando...
+) else if "%conf%"=="N" (
+  goto :Menu
+) else if "%conf%"=="n" (
+  goto :Menu
+) else (
+  goto :VigesimoPrimero
+)
+cd %RISK_HOME%
+docker compose up -d
+echo Presione cualquier tecla ( menos ALT+F4 ) para continuar...
+pause >nul
+goto :Menu
+
+:VigesimoSegundo
+cls
+echo Esta seguro de que desea Bajar contenedores? (S/n)
+set conf=
+set /p conf=
+if "%conf%"=="S" (
+  echo Continuando...
+) else if "%conf%"=="s" (
+  echo Continuando...
+) else if "%conf%"=="N" (
+  goto :Menu
+) else if "%conf%"=="n" (
+  goto :Menu
+) else (
+  goto :VigesimoSegundo
+)
+cd %RISK_HOME%
+docker compose down
+echo Presione cualquier tecla ( menos ALT+F4 ) para continuar...
+pause >nul
+goto :Menu
+
+:TrigesimoPrimero
+cls
+echo ************************************************************
+echo.
+echo Variables de entorno
+echo.
+echo ************************************************************
+echo.
+echo RISK_HOME=%RISK_HOME%
+echo.
+echo PLSQLDEV_HOME=%PLSQLDEV_HOME%
+echo.
+echo SWAGGER_SPEC_URL=%SWAGGER_SPEC_URL%
+echo.
+echo CLIENT_VERSION=%CLIENT_VERSION%
+echo.
+echo API_KEY=%API_KEY%
+echo.
+echo GENERATOR=!generator[%generator%]!
+echo.
+Pause
 goto :Menu
 
 :DescargarGenerador
