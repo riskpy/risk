@@ -50,10 +50,6 @@ prompt
 prompt Creating sequences...
 prompt -----------------------------------
 prompt
-@@sequences/s_id_correo.seq
-@@sequences/s_id_correo_adjunto.seq
-@@sequences/s_id_mensaje.seq
-@@sequences/s_id_notificacion.seq
 
 prompt
 prompt Creating tables...
@@ -136,10 +132,6 @@ prompt Creating triggers...
 prompt -----------------------------------
 prompt
 @@triggers/gb_mensajes.trg
-@@triggers/gs_correo_adjuntos.trg
-@@triggers/gs_correos.trg
-@@triggers/gs_mensajes.trg
-@@triggers/gs_notificaciones.trg
 
 @@../../compile_schema.sql
 

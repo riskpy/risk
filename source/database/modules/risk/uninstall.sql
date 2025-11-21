@@ -60,20 +60,9 @@ drop trigger gb_trabajos;
 drop trigger gb_usuarios;
 drop trigger gf_archivos;
 drop trigger gf_operaciones;
-drop trigger gs_barrios;
-drop trigger gs_ciudades;
-drop trigger gs_departamentos;
-drop trigger gs_dispositivos;
-drop trigger gs_errores;
-drop trigger gs_idiomas;
 drop trigger gs_monitoreo_ejecuciones;
 drop trigger gs_operacion_logs;
 drop trigger gs_operaciones;
-drop trigger gs_paises;
-drop trigger gs_personas;
-drop trigger gs_roles;
-drop trigger gs_sesiones;
-drop trigger gs_usuarios;
 
 prompt
 prompt Dropping packages...
@@ -209,19 +198,8 @@ prompt
 prompt Dropping sequences...
 prompt -----------------------------------
 prompt
-drop sequence s_id_barrio;
-drop sequence s_id_ciudad;
-drop sequence s_id_departamento;
-drop sequence s_id_dispositivo;
-drop sequence s_id_error;
-drop sequence s_id_idioma;
 drop sequence s_id_monitoreo_ejecucion;
 drop sequence s_id_operacion_log;
-drop sequence s_id_pais;
-drop sequence s_id_persona;
-drop sequence s_id_rol;
-drop sequence s_id_sesion;
-drop sequence s_id_usuario;
 
 prompt
 prompt Purging recycle bin...

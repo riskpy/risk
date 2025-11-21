@@ -49,19 +49,8 @@ prompt
 prompt Creating sequences...
 prompt -----------------------------------
 prompt
-@@sequences/s_id_barrio.seq
-@@sequences/s_id_ciudad.seq
-@@sequences/s_id_departamento.seq
-@@sequences/s_id_dispositivo.seq
-@@sequences/s_id_error.seq
-@@sequences/s_id_idioma.seq
 @@sequences/s_id_monitoreo_ejecucion.seq
 @@sequences/s_id_operacion_log.seq
-@@sequences/s_id_pais.seq
-@@sequences/s_id_persona.seq
-@@sequences/s_id_rol.seq
-@@sequences/s_id_sesion.seq
-@@sequences/s_id_usuario.seq
 
 prompt
 prompt Creating tables...
@@ -301,20 +290,9 @@ prompt
 @@triggers/gb_usuarios.trg
 @@triggers/gf_archivos.trg
 @@triggers/gf_operaciones.trg
-@@triggers/gs_barrios.trg
-@@triggers/gs_ciudades.trg
-@@triggers/gs_departamentos.trg
-@@triggers/gs_dispositivos.trg
-@@triggers/gs_errores.trg
-@@triggers/gs_idiomas.trg
 @@triggers/gs_monitoreo_ejecuciones.trg
 @@triggers/gs_operacion_logs.trg
 @@triggers/gs_operaciones.trg
-@@triggers/gs_paises.trg
-@@triggers/gs_personas.trg
-@@triggers/gs_roles.trg
-@@triggers/gs_sesiones.trg
-@@triggers/gs_usuarios.trg
 
 @@../../compile_schema.sql
 

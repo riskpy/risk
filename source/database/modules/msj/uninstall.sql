@@ -49,10 +49,6 @@ prompt Dropping triggers...
 prompt -----------------------------------
 prompt
 drop trigger gb_mensajes;
-drop trigger gs_correo_adjuntos;
-drop trigger gs_correos;
-drop trigger gs_mensajes;
-drop trigger gs_notificaciones;
 
 prompt
 prompt Dropping packages...
@@ -106,10 +102,6 @@ prompt
 prompt Dropping sequences...
 prompt -----------------------------------
 prompt
-drop sequence s_id_correo;
-drop sequence s_id_correo_adjunto;
-drop sequence s_id_mensaje;
-drop sequence s_id_notificacion;
 
 prompt
 prompt Purging recycle bin...
