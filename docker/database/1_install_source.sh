@@ -20,7 +20,8 @@ sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objec
 modules=(
     # Module,Schema,Run Syn/Grant
     "risk,$RISK_CODE_USER,false"
-    "msj,$RISK_CODE_USER,true"
+    "msj,$RISK_CODE_USER,false"
+    "flj,$RISK_CODE_USER,true"
 )
 
 for module in "${modules[@]}"; do

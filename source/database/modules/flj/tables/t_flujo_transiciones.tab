@@ -28,9 +28,3 @@ comment on column T_FLUJO_TRANSICIONES.accion
   is 'Acción en el paso origen que lleva al paso destino del flujo';
 alter table T_FLUJO_TRANSICIONES
   add constraint PK_FLUJO_TRANSICIONES primary key (ID_TRANSICION);
-alter table T_FLUJO_TRANSICIONES
-  add constraint FK_FLUJO_TRANSICIONES_PASOS_DESTINO foreign key (ID_PASO_DESTINO)
-  references T_FLUJO_PASOS (ID_PASO);
-alter table T_FLUJO_TRANSICIONES
-  add constraint FK_FLUJO_TRANSICIONES_PASOS_ORIGEN foreign key (ID_PASO_ORIGEN)
-  references T_FLUJO_PASOS (ID_PASO);

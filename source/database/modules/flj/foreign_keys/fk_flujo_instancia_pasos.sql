@@ -1,0 +1,6 @@
+alter table T_FLUJO_INSTANCIA_PASOS
+  add constraint FK_FLUJO_INSTANCIA_PASOS_INSTANCIAS foreign key (ID_INSTANCIA)
+  references T_FLUJO_INSTANCIAS (ID_INSTANCIA);
+alter table T_FLUJO_INSTANCIA_PASOS
+  add constraint FK_FLUJO_INSTANCIA_PASOS_PASOS foreign key (ID_PASO)
+  references T_FLUJO_PASOS (ID_PASO);

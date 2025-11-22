@@ -35,9 +35,3 @@ comment on column T_FLUJO_INSTANCIA_HISTORIAL.fecha
   is 'Fecha del historial';
 alter table T_FLUJO_INSTANCIA_HISTORIAL
   add constraint PK_FLUJO_INSTANCIA_HISTORIAL primary key (ID_HISTORIAL);
-alter table T_FLUJO_INSTANCIA_HISTORIAL
-  add constraint FK_FLUJO_INSTANCIA_HISTORIAL_INSTANCIAS foreign key (ID_INSTANCIA)
-  references T_FLUJO_INSTANCIAS (ID_INSTANCIA);
-alter table T_FLUJO_INSTANCIA_HISTORIAL
-  add constraint FK_FLUJO_INSTANCIA_HISTORIAL_PASOS foreign key (ID_PASO)
-  references T_FLUJO_PASOS (ID_PASO);

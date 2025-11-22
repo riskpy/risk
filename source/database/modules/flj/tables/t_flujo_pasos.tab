@@ -41,9 +41,6 @@ comment on column T_FLUJO_PASOS.usuarios_responsables
 alter table T_FLUJO_PASOS
   add constraint PK_FLUJO_PASOS primary key (ID_PASO);
 alter table T_FLUJO_PASOS
-  add constraint FK_FLUJO_PASOS_FLUJOS foreign key (ID_FLUJO)
-  references T_FLUJOS (ID_FLUJO);
-alter table T_FLUJO_PASOS
   add constraint CK_FLJ_PAS_ACC_POSIBLES_JSON
   check (acciones_posibles IS JSON STRICT WITH UNIQUE KEYS);
 alter table T_FLUJO_PASOS

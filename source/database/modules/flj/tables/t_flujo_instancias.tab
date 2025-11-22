@@ -35,12 +35,6 @@ comment on column T_FLUJO_INSTANCIAS.usuario_ingreso
 alter table T_FLUJO_INSTANCIAS
   add constraint PK_FLUJO_INSTANCIAS primary key (ID_INSTANCIA);
 alter table T_FLUJO_INSTANCIAS
-  add constraint FK_FLUJO_INSTANCIAS_FLUJOS foreign key (ID_FLUJO)
-  references T_FLUJOS (ID_FLUJO);
-alter table T_FLUJO_INSTANCIAS
-  add constraint FK_FFLUJO_INSTANCIAS_USUARIO_INGRESO foreign key (USUARIO_INGRESO)
-  references T_USUARIOS (ALIAS);
-alter table T_FLUJO_INSTANCIAS
   add constraint CK_FLUJO_INSTANCIAS_ESTADO
   check (estado IN ('EN_PROGRESO', 'FINALIZADO', 'CANCELADO'));
 alter table T_FLUJO_INSTANCIAS

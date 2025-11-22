@@ -1,9 +1,8 @@
-CREATE OR REPLACE PACKAGE k_modulo IS
-
+CREATE OR REPLACE PACKAGE k_flujo_util AS
   /**
-  Agrupa operaciones relacionadas con los módulos
+  Agrupa herramientas para facilitar el manejo del motor de flujos
   
-  %author jtsoya539 27/3/2020 16:58:36
+  %author dmezac 04/05/2025
   */
 
   /*
@@ -30,14 +29,23 @@ CREATE OR REPLACE PACKAGE k_modulo IS
   -------------------------------------------------------------------------------
   */
 
-  -- Constantes
-  c_instalado_risk CONSTANT BOOLEAN := TRUE;
-  c_instalado_msj  CONSTANT BOOLEAN := TRUE;
-  c_instalado_flj  CONSTANT BOOLEAN := TRUE;
+  FUNCTION f_obtener_variable(i_variables IN CLOB,
+                              i_clave     IN VARCHAR2) RETURN VARCHAR2;
 
-END;
-/
-CREATE OR REPLACE PACKAGE BODY k_modulo IS
+  FUNCTION f_editar_variable(i_variables IN CLOB,
+                             i_clave     IN VARCHAR2,
+                             i_valor     IN VARCHAR2) RETURN CLOB;
 
-END;
+  FUNCTION f_reemplazar_variables(i_expresion         IN VARCHAR2,
+                                  i_variables         IN CLOB,
+                                  i_delimitador_texto IN VARCHAR2 := '''')
+    RETURN VARCHAR2;
+
+  FUNCTION f_evaluar_condicion(i_condicion IN VARCHAR2,
+                               i_variables IN CLOB) RETURN BOOLEAN;
+
+  FUNCTION f_contiene_valor(i_valor     IN VARCHAR2,
+                            i_variables IN CLOB) RETURN BOOLEAN;
+
+END k_flujo_util;
 /

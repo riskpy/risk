@@ -116,7 +116,6 @@ prompt Creating package specs...
 prompt -----------------------------------
 prompt
 @@package_specs/k_mensajeria.spc
-@@package_specs/k_modulo.spc
 @@package_specs/k_servicio_msj.spc
 
 prompt
@@ -124,7 +123,6 @@ prompt Creating package bodies...
 prompt -----------------------------------
 prompt
 @@package_bodies/k_mensajeria.bdy
-@@package_bodies/k_modulo.bdy
 @@package_bodies/k_servicio_msj.bdy
 
 prompt

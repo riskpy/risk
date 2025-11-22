@@ -55,7 +55,6 @@ prompt Dropping packages...
 prompt -----------------------------------
 prompt
 drop package k_mensajeria;
-drop package k_modulo;
 drop package k_servicio_msj;
 
 prompt

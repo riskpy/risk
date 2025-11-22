@@ -1,6 +1,6 @@
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,37 +45,69 @@ prompt ===================================
 prompt
 
 prompt
-prompt Droping packages...
+prompt Dropping triggers...
+prompt -----------------------------------
+prompt
+drop trigger gb_flujo_instancia_pasos;
+drop trigger gb_roles;
+
+prompt
+prompt Dropping packages...
 prompt -----------------------------------
 prompt
 drop package k_flujo;
 drop package k_flujo_util;
 
 prompt
-prompt Droping views...
+prompt Dropping procedures...
 prompt -----------------------------------
 prompt
-drop view v_estado_flujo;
-drop view v_historial_instancia;
-drop view v_proximos_pasos;
-drop view v_usuarios_responsables_paso;
-drop view v_roles_responsables_en_progreso;
-drop view v_historial_aprobaciones;
-drop view v_roles_responsables_paso;
-drop view v_pasos_en_progreso;
-drop view v_flujo_aprobador;
 
 prompt
-prompt Droping tables...
+prompt Dropping functions...
 prompt -----------------------------------
 prompt
-drop table t_flujo_instancia_historial cascade constraints;
-drop table t_flujo_instancia_aprobaciones cascade constraints;
-drop table t_flujo_instancia_pasos cascade constraints;
-drop table t_flujo_instancias cascade constraints;
-drop table t_flujo_transiciones cascade constraints;
-drop table t_flujo_pasos cascade constraints;
-drop table t_flujos cascade constraints;
+
+prompt
+prompt Dropping java sources...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Dropping types...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Dropping views...
+prompt -----------------------------------
+prompt
+drop view v_estado_flujo cascade constraints;
+drop view v_flujo_aprobador cascade constraints;
+drop view v_historial_aprobaciones cascade constraints;
+drop view v_historial_instancia cascade constraints;
+drop view v_pasos_en_progreso cascade constraints;
+drop view v_proximos_pasos cascade constraints;
+drop view v_roles_responsables_en_progreso cascade constraints;
+drop view v_roles_responsables_paso cascade constraints;
+drop view v_usuarios_responsables_paso cascade constraints;
+
+prompt
+prompt Dropping tables...
+prompt -----------------------------------
+prompt
+drop table t_flujo_instancia_aprobaciones cascade constraints purge;
+drop table t_flujo_instancia_historial cascade constraints purge;
+drop table t_flujo_instancia_pasos cascade constraints purge;
+drop table t_flujo_instancias cascade constraints purge;
+drop table t_flujo_pasos cascade constraints purge;
+drop table t_flujo_transiciones cascade constraints purge;
+drop table t_flujos cascade constraints purge;
+
+prompt
+prompt Dropping sequences...
+prompt -----------------------------------
+prompt
 
 prompt
 prompt Purging recycle bin...
@@ -83,13 +115,25 @@ prompt -----------------------------------
 prompt
 purge recyclebin;
 
+--@@../../packages/k_modulo.pck
+@@../../compile_schema.sql
+
+prompt
+prompt Running additional scripts...
+prompt -----------------------------------
+prompt
+@@uninstall_scripts.sql
+commit;
+/
+
 prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
---@@../../packages/k_modulo.pck
-@@../../compile_schema.sql
+@@scripts/del_t_errores.sql
+@@scripts/del_t_aplicaciones.sql
 @@scripts/del_t_parametros.sql
+@@scripts/del_t_parametro_definiciones.sql
 @@scripts/del_t_significados.sql
 @@scripts/del_t_significado_dominios.sql
 @@scripts/del_t_dominios.sql
