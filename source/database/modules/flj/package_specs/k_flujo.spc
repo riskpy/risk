@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_flujo AS
+create or replace package k_flujo as
   /**
   Agrupa procesos relacionados con el motor de flujos del sistema
   
@@ -30,35 +30,35 @@ CREATE OR REPLACE PACKAGE k_flujo AS
   */
   --Constantes
   --Estados de instancias y pasos de los flujos
-  c_estado_finalizado  CONSTANT VARCHAR2(30) := 'FINALIZADO';
-  c_estado_en_progreso CONSTANT VARCHAR2(30) := 'EN_PROGRESO';
-  c_estado_cancelado   CONSTANT VARCHAR2(30) := 'CANCELADO';
+  c_estado_finalizado  constant varchar2(30) := 'FINALIZADO';
+  c_estado_en_progreso constant varchar2(30) := 'EN_PROGRESO';
+  c_estado_cancelado   constant varchar2(30) := 'CANCELADO';
 
   --Tipos de pasos de los flujos
-  c_tipo_paso_inicio     CONSTANT VARCHAR2(30) := 'INICIO';
-  c_tipo_paso_manual     CONSTANT VARCHAR2(30) := 'MANUAL';
-  c_tipo_paso_automatico CONSTANT VARCHAR2(30) := 'AUTOMATICO';
-  c_tipo_paso_aprobacion CONSTANT VARCHAR2(30) := 'APROBACION';
+  c_tipo_paso_inicio     constant varchar2(30) := 'INICIO';
+  c_tipo_paso_manual     constant varchar2(30) := 'MANUAL';
+  c_tipo_paso_automatico constant varchar2(30) := 'AUTOMATICO';
+  c_tipo_paso_aprobacion constant varchar2(30) := 'APROBACION';
 
   --Acción por defecto
-  c_accion_aprobar CONSTANT VARCHAR2(30) := 'APROBAR';
+  c_accion_aprobar constant varchar2(30) := 'APROBAR';
 
-  PROCEDURE iniciar_flujo(i_id_flujo     IN NUMBER,
-                          i_usuario      IN VARCHAR2,
-                          i_variables    IN CLOB,
-                          o_id_instancia OUT NUMBER);
+  procedure iniciar_flujo(i_id_flujo     in number,
+                          i_usuario      in varchar2,
+                          i_variables    in clob,
+                          o_id_instancia out number);
 
-  FUNCTION obtener_estado_flujo(i_id_instancia IN NUMBER) RETURN CLOB;
+  function obtener_estado_flujo(i_id_instancia in number) return clob;
 
-  PROCEDURE avanzar_flujo(i_id_instancia IN NUMBER,
-                          i_accion       IN VARCHAR2,
-                          i_usuario      IN VARCHAR2,
-                          i_comentario   IN VARCHAR2);
+  procedure avanzar_flujo(i_id_instancia in number,
+                          i_accion       in varchar2,
+                          i_usuario      in varchar2,
+                          i_comentario   in varchar2);
 
-  PROCEDURE aprobar_paso(i_id_instancia IN NUMBER,
-                         i_accion       IN VARCHAR2, --APROBAR / RECHAZAR / CONDICIONAR, ETC
-                         i_usuario      IN VARCHAR2,
-                         i_comentario   IN VARCHAR2);
+  procedure aprobar_paso(i_id_instancia in number,
+                         i_accion       in varchar2, --APROBAR / RECHAZAR / CONDICIONAR, ETC
+                         i_usuario      in varchar2,
+                         i_comentario   in varchar2);
 
-END k_flujo;
+end k_flujo;
 /

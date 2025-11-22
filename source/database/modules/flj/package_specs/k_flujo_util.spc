@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE k_flujo_util AS
+create or replace package k_flujo_util as
   /**
   Agrupa herramientas para facilitar el manejo del motor de flujos
   
@@ -29,23 +29,23 @@ CREATE OR REPLACE PACKAGE k_flujo_util AS
   -------------------------------------------------------------------------------
   */
 
-  FUNCTION f_obtener_variable(i_variables IN CLOB,
-                              i_clave     IN VARCHAR2) RETURN VARCHAR2;
+  function f_obtener_variable(i_variables in clob,
+                              i_clave     in varchar2) return varchar2;
 
-  FUNCTION f_editar_variable(i_variables IN CLOB,
-                             i_clave     IN VARCHAR2,
-                             i_valor     IN VARCHAR2) RETURN CLOB;
+  function f_editar_variable(i_variables in clob,
+                             i_clave     in varchar2,
+                             i_valor     in varchar2) return clob;
 
-  FUNCTION f_reemplazar_variables(i_expresion         IN VARCHAR2,
-                                  i_variables         IN CLOB,
-                                  i_delimitador_texto IN VARCHAR2 := '''')
-    RETURN VARCHAR2;
+  function f_reemplazar_variables(i_expresion         in varchar2,
+                                  i_variables         in clob,
+                                  i_delimitador_texto in varchar2 := '''')
+    return varchar2;
 
-  FUNCTION f_evaluar_condicion(i_condicion IN VARCHAR2,
-                               i_variables IN CLOB) RETURN BOOLEAN;
+  function f_evaluar_condicion(i_condicion in varchar2,
+                               i_variables in clob) return boolean;
 
-  FUNCTION f_contiene_valor(i_valor     IN VARCHAR2,
-                            i_variables IN CLOB) RETURN BOOLEAN;
+  function f_contiene_valor(i_valor     in varchar2,
+                            i_variables in clob) return boolean;
 
-END k_flujo_util;
+end k_flujo_util;
 /

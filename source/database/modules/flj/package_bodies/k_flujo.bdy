@@ -1,255 +1,255 @@
-CREATE OR REPLACE PACKAGE BODY k_flujo AS
+create or replace package body k_flujo as
 
-  PROCEDURE iniciar_flujo(i_id_flujo     IN NUMBER,
-                          i_usuario      IN VARCHAR2,
-                          i_variables    IN CLOB,
-                          o_id_instancia OUT NUMBER) IS
-    l_id_paso_inicio t_flujo_pasos.id_paso%TYPE;
-    l_nombre_flujo   t_flujos.nombre%TYPE;
-  BEGIN
+  procedure iniciar_flujo(i_id_flujo     in number,
+                          i_usuario      in varchar2,
+                          i_variables    in clob,
+                          o_id_instancia out number) is
+    l_id_paso_inicio t_flujo_pasos.id_paso%type;
+    l_nombre_flujo   t_flujos.nombre%type;
+  begin
     -- Obtener información actual
-    BEGIN
-      SELECT nombre
-        INTO l_nombre_flujo
-        FROM t_flujos f
-       WHERE f.id_flujo = i_id_flujo;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select nombre
+        into l_nombre_flujo
+        from t_flujos f
+       where f.id_flujo = i_id_flujo;
+    exception
+      when no_data_found then
         raise_application_error(-20001, 'Flujo no encontrado.');
-    END;
+    end;
   
     -- Crear nueva instancia
-    INSERT INTO t_flujo_instancias
+    insert into t_flujo_instancias
       (id_flujo, usuario_ingreso, variables)
-    VALUES
+    values
       (i_id_flujo, i_usuario, i_variables)
-    RETURNING id_instancia INTO o_id_instancia;
+    returning id_instancia into o_id_instancia;
   
     -- Obtener primer paso (orden mínimo)
-    SELECT id_paso
-      INTO l_id_paso_inicio
-      FROM t_flujo_pasos
-     WHERE id_flujo = i_id_flujo
-     ORDER BY orden
-     FETCH FIRST 1 rows ONLY;
+    select id_paso
+      into l_id_paso_inicio
+      from t_flujo_pasos
+     where id_flujo = i_id_flujo
+     order by orden
+     fetch first 1 rows only;
   
     -- Insertar paso inicial
-    INSERT INTO t_flujo_instancia_pasos
+    insert into t_flujo_instancia_pasos
       (id_instancia, id_paso, estado)
-    VALUES
+    values
       (o_id_instancia, l_id_paso_inicio, c_estado_en_progreso);
   
     -- Si el siguiente paso es automático, avanzamos
-    DECLARE
-      l_tipo t_flujo_pasos.tipo%TYPE;
-    BEGIN
-      SELECT tipo
-        INTO l_tipo
-        FROM t_flujo_pasos
-       WHERE id_paso = l_id_paso_inicio;
+    declare
+      l_tipo t_flujo_pasos.tipo%type;
+    begin
+      select tipo
+        into l_tipo
+        from t_flujo_pasos
+       where id_paso = l_id_paso_inicio;
     
-      IF l_tipo = c_tipo_paso_inicio THEN
+      if l_tipo = c_tipo_paso_inicio then
         avanzar_flujo(o_id_instancia,
                       c_accion_aprobar,
                       i_usuario,
                       'Instancia inicializada');
-      ELSE
+      else
         raise_application_error(-20001,
                                 'Error al inicializar instancia. Paso inicial no definido correctamente');
-      END IF;
-    END;
+      end if;
+    end;
   
-  END iniciar_flujo;
+  end iniciar_flujo;
 
-  FUNCTION obtener_estado_flujo(i_id_instancia IN NUMBER) RETURN CLOB IS
-    l_resultado CLOB;
-  BEGIN
-    SELECT json_object('id_instancia' VALUE i.id_instancia,
-                       'estado' VALUE i.estado,
-                       'variables' VALUE
-                       json_query(i.variables, '$' RETURNING CLOB),
-                       'pasos' VALUE
-                       (SELECT json_arrayagg(json_object('id_paso' VALUE
+  function obtener_estado_flujo(i_id_instancia in number) return clob is
+    l_resultado clob;
+  begin
+    select json_object('id_instancia' value i.id_instancia,
+                       'estado' value i.estado,
+                       'variables' value
+                       json_query(i.variables, '$' returning clob),
+                       'pasos' value
+                       (select json_arrayagg(json_object('id_paso' value
                                                          pi.id_paso,
-                                                         'nombre' VALUE
+                                                         'nombre' value
                                                          p.nombre,
-                                                         'estado' VALUE
+                                                         'estado' value
                                                          pi.estado,
-                                                         'resultado' VALUE
+                                                         'resultado' value
                                                          pi.resultado,
-                                                         'fecha_inicio' VALUE
+                                                         'fecha_inicio' value
                                                          to_char(pi.fecha_inicio,
                                                                  'YYYY-MM-DD"T"HH24:MI:SS'),
-                                                         'fecha_fin' VALUE
+                                                         'fecha_fin' value
                                                          to_char(pi.fecha_fin,
                                                                  'YYYY-MM-DD"T"HH24:MI:SS')))
-                          FROM t_flujo_instancia_pasos pi
-                          JOIN t_flujo_pasos p
-                            ON pi.id_paso = p.id_paso
-                         WHERE pi.id_instancia = i.id_instancia))
-      INTO l_resultado
-      FROM t_flujo_instancias i
-     WHERE id_instancia = i_id_instancia;
+                          from t_flujo_instancia_pasos pi
+                          join t_flujo_pasos p
+                            on pi.id_paso = p.id_paso
+                         where pi.id_instancia = i.id_instancia))
+      into l_resultado
+      from t_flujo_instancias i
+     where id_instancia = i_id_instancia;
   
-    RETURN l_resultado;
-  END obtener_estado_flujo;
+    return l_resultado;
+  end obtener_estado_flujo;
 
-  PROCEDURE avanzar_flujo(i_id_instancia IN NUMBER,
-                          i_accion       IN VARCHAR2,
-                          i_usuario      IN VARCHAR2,
-                          i_comentario   IN VARCHAR2) IS
-    l_id_flujo t_flujos.id_flujo%TYPE;
+  procedure avanzar_flujo(i_id_instancia in number,
+                          i_accion       in varchar2,
+                          i_usuario      in varchar2,
+                          i_comentario   in varchar2) is
+    l_id_flujo t_flujos.id_flujo%type;
     --
-    l_id_paso_actual    t_flujo_instancia_pasos.id_paso%TYPE;
-    l_variables         t_flujo_instancias.variables%TYPE;
-    l_id_paso_instancia t_flujo_instancia_pasos.id_paso_instancia%TYPE;
-    l_usuario_ingreso   t_flujo_instancias.usuario_ingreso%TYPE;
+    l_id_paso_actual    t_flujo_instancia_pasos.id_paso%type;
+    l_variables         t_flujo_instancias.variables%type;
+    l_id_paso_instancia t_flujo_instancia_pasos.id_paso_instancia%type;
+    l_usuario_ingreso   t_flujo_instancias.usuario_ingreso%type;
     --
-    l_nombre_paso       t_flujo_pasos.nombre%TYPE;
-    l_id_paso_sig       t_flujo_pasos.id_paso%TYPE;
-    l_acciones_posibles t_flujo_pasos.acciones_posibles%TYPE;
-    l_roles             t_flujo_pasos.roles_responsables%TYPE;
-    l_usuarios          t_flujo_pasos.usuarios_responsables%TYPE;
-    l_bloque_plsql      t_flujo_pasos.bloque_plsql%TYPE;
-    l_bloque_final      t_flujo_pasos.bloque_plsql%TYPE;
+    l_nombre_paso       t_flujo_pasos.nombre%type;
+    l_id_paso_sig       t_flujo_pasos.id_paso%type;
+    l_acciones_posibles t_flujo_pasos.acciones_posibles%type;
+    l_roles             t_flujo_pasos.roles_responsables%type;
+    l_usuarios          t_flujo_pasos.usuarios_responsables%type;
+    l_bloque_plsql      t_flujo_pasos.bloque_plsql%type;
+    l_bloque_final      t_flujo_pasos.bloque_plsql%type;
     --
-    l_aprobadores_requeridos PLS_INTEGER;
-    l_pendientes             PLS_INTEGER;
-    l_puede_avanzar          BOOLEAN := FALSE;
+    l_aprobadores_requeridos pls_integer;
+    l_pendientes             pls_integer;
+    l_puede_avanzar          boolean := false;
     --
-    l_es_final VARCHAR2(1) := 'N';
-  BEGIN
+    l_es_final varchar2(1) := 'N';
+  begin
     -- Obtener información actual
-    BEGIN
-      SELECT i.variables, i.id_flujo, i.usuario_ingreso
-        INTO l_variables, l_id_flujo, l_usuario_ingreso
-        FROM t_flujo_instancias i
-       WHERE id_instancia = i_id_instancia;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select i.variables, i.id_flujo, i.usuario_ingreso
+        into l_variables, l_id_flujo, l_usuario_ingreso
+        from t_flujo_instancias i
+       where id_instancia = i_id_instancia;
+    exception
+      when no_data_found then
         raise_application_error(-20001, 'Instancia no encontrada.');
-    END;
+    end;
   
     -- Obtener el paso actual activo
-    BEGIN
-      SELECT id_paso_instancia,
+    begin
+      select id_paso_instancia,
              id_paso,
              roles_responsables,
              usuarios_responsables
-        INTO l_id_paso_instancia, l_id_paso_actual, l_roles, l_usuarios
-        FROM t_flujo_instancia_pasos
-       WHERE id_instancia = i_id_instancia
-         AND estado = c_estado_en_progreso;
-    EXCEPTION
-      WHEN no_data_found THEN
+        into l_id_paso_instancia, l_id_paso_actual, l_roles, l_usuarios
+        from t_flujo_instancia_pasos
+       where id_instancia = i_id_instancia
+         and estado = c_estado_en_progreso;
+    exception
+      when no_data_found then
         raise_application_error(-20001, 'Instancia ya fue finalizada.');
-    END;
+    end;
   
     -- Obtener datos del paso actual
-    SELECT nombre, acciones_posibles, bloque_plsql
-      INTO l_nombre_paso, l_acciones_posibles, l_bloque_plsql
-      FROM t_flujo_pasos
-     WHERE id_paso = l_id_paso_actual;
+    select nombre, acciones_posibles, bloque_plsql
+      into l_nombre_paso, l_acciones_posibles, l_bloque_plsql
+      from t_flujo_pasos
+     where id_paso = l_id_paso_actual;
   
     -- Verificar si hay múltiples aprobadores y si todos aprobaron
-    SELECT COUNT(*)
-      INTO l_aprobadores_requeridos
-      FROM v_flujo_aprobador
-     WHERE id_paso = l_id_paso_actual;
+    select count(*)
+      into l_aprobadores_requeridos
+      from v_flujo_aprobador
+     where id_paso = l_id_paso_actual;
   
-    SELECT SUM(nvl(pendientes, 0))
-      INTO l_pendientes
-      FROM v_roles_responsables_en_progreso
-     WHERE id_paso_instancia = l_id_paso_instancia;
+    select sum(nvl(pendientes, 0))
+      into l_pendientes
+      from v_roles_responsables_en_progreso
+     where id_paso_instancia = l_id_paso_instancia;
   
     --DBMS_OUTPUT.PUT_LINE( UTL_CALL_STACK.SUBPROGRAM(UTL_CALL_STACK.DYNAMIC_DEPTH - 1)(2) );
-    IF l_aprobadores_requeridos > 0 AND
+    if l_aprobadores_requeridos > 0 and
        utl_call_stack.subprogram(utl_call_stack.dynamic_depth - 1)
-     (2) NOT IN ('APROBAR_PASO') THEN
+     (2) not in ('APROBAR_PASO') then
       raise_application_error(-20001,
                               'No se puede avanzar. Faltan aprobaciones en el paso [' ||
                               l_nombre_paso || '].');
-    END IF;
+    end if;
   
-    IF i_accion = c_accion_aprobar THEN
-      IF l_aprobadores_requeridos > 0 AND l_pendientes > 0 THEN
+    if i_accion = c_accion_aprobar then
+      if l_aprobadores_requeridos > 0 and l_pendientes > 0 then
         raise_application_error(-20001,
                                 'Faltan aprobaciones en el paso [' ||
                                 l_nombre_paso || ']. Verifique.');
-      END IF;
-    END IF;
+      end if;
+    end if;
   
     -- Verificar las acciones permitidas
-    IF NOT k_flujo_util.f_contiene_valor(i_accion, l_acciones_posibles) THEN
+    if not k_flujo_util.f_contiene_valor(i_accion, l_acciones_posibles) then
       raise_application_error(-20001,
                               'Acción [' || i_accion ||
                               '] no permitida para el paso ' ||
                               l_nombre_paso || '. ' ||
                               'Acciones posibles: ' || l_acciones_posibles || '');
-    END IF;
+    end if;
   
     -- Verificar si el usuario tiene permiso a avanzar en el flujo
-    IF l_roles IS NULL AND l_usuarios IS NULL THEN
-      l_puede_avanzar := TRUE;
-    END IF;
+    if l_roles is null and l_usuarios is null then
+      l_puede_avanzar := true;
+    end if;
   
-    IF l_roles IS NOT NULL THEN
-      DECLARE
-        l_cant_roles PLS_INTEGER;
-      BEGIN
-        SELECT COUNT(*) usuario_responsable
-          INTO l_cant_roles
-          FROM v_roles_responsables_paso a
-         WHERE a.id_paso_instancia = l_id_paso_instancia
-           AND EXISTS
-         (SELECT 1
-                  FROM t_rol_usuarios y
-                 WHERE y.id_usuario = k_usuario.f_id_usuario(i_usuario)
-                   AND (SELECT z.nombre
-                          FROM t_roles z
-                         WHERE z.id_rol = y.id_rol) = a.id_rol);
-        IF l_cant_roles > 0 THEN
-          l_puede_avanzar := TRUE;
-        END IF;
-      END;
-    END IF;
+    if l_roles is not null then
+      declare
+        l_cant_roles pls_integer;
+      begin
+        select count(*) usuario_responsable
+          into l_cant_roles
+          from v_roles_responsables_paso a
+         where a.id_paso_instancia = l_id_paso_instancia
+           and exists
+         (select 1
+                  from t_rol_usuarios y
+                 where y.id_usuario = k_usuario.f_id_usuario(i_usuario)
+                   and (select z.nombre
+                          from t_roles z
+                         where z.id_rol = y.id_rol) = a.id_rol);
+        if l_cant_roles > 0 then
+          l_puede_avanzar := true;
+        end if;
+      end;
+    end if;
   
-    IF l_usuarios IS NOT NULL THEN
-      DECLARE
-        l_cant_usuario PLS_INTEGER;
-      BEGIN
-        SELECT COUNT(*) usuario_responsable
-          INTO l_cant_usuario
-          FROM v_usuarios_responsables_paso a
-         WHERE a.id_paso_instancia = l_id_paso_instancia
-           AND a.id_usuario = i_usuario;
-        IF l_cant_usuario > 0 THEN
-          l_puede_avanzar := TRUE;
-        END IF;
-      END;
-    END IF;
+    if l_usuarios is not null then
+      declare
+        l_cant_usuario pls_integer;
+      begin
+        select count(*) usuario_responsable
+          into l_cant_usuario
+          from v_usuarios_responsables_paso a
+         where a.id_paso_instancia = l_id_paso_instancia
+           and a.id_usuario = i_usuario;
+        if l_cant_usuario > 0 then
+          l_puede_avanzar := true;
+        end if;
+      end;
+    end if;
   
-    IF NOT l_puede_avanzar THEN
+    if not l_puede_avanzar then
       raise_application_error(-20002,
                               'Usuario no tiene permiso para avanzar en el paso [' ||
                               l_nombre_paso || '].');
-    END IF;
+    end if;
   
     -- Buscar transiciones posibles desde el paso actual al siguiente paso
-    FOR t IN (SELECT id_transicion, id_paso_destino, condicion
-                FROM t_flujo_transiciones
-               WHERE id_paso_origen = l_id_paso_actual
-                 AND accion = nvl(i_accion, c_accion_aprobar)) LOOP
-      IF t.condicion IS NULL OR
-         k_flujo_util.f_evaluar_condicion(t.condicion, l_variables) THEN
+    for t in (select id_transicion, id_paso_destino, condicion
+                from t_flujo_transiciones
+               where id_paso_origen = l_id_paso_actual
+                 and accion = nvl(i_accion, c_accion_aprobar)) loop
+      if t.condicion is null or
+         k_flujo_util.f_evaluar_condicion(t.condicion, l_variables) then
         l_id_paso_sig := t.id_paso_destino;
-        EXIT;
-      END IF;
-    END LOOP;
+        exit;
+      end if;
+    end loop;
   
     -- Ejecutar las acciones definidas en el bloque PLSQL
-    BEGIN
-      IF l_bloque_plsql IS NOT NULL THEN
+    begin
+      if l_bloque_plsql is not null then
         l_bloque_plsql := k_flujo_util.f_reemplazar_variables(l_bloque_plsql,
                                                               l_variables);
         l_bloque_final := 'DECLARE' || chr(10) || chr(10) || 'BEGIN' ||
@@ -261,67 +261,67 @@ CREATE OR REPLACE PACKAGE BODY k_flujo AS
                           'END;';
       
         --DBMS_OUTPUT.PUT_LINE( l_bloque_final );
-        EXECUTE IMMEDIATE l_bloque_final
+        execute immediate l_bloque_final
         /*USING IN i_prms, OUT io_rsp*/
         ;
-      END IF;
-    END;
+      end if;
+    end;
   
     -- Obtener si es paso final
-    IF l_id_paso_sig IS NULL THEN
+    if l_id_paso_sig is null then
       l_es_final := 'S';
-    END IF;
+    end if;
   
     -- Cerrar paso actual
-    UPDATE t_flujo_instancia_pasos
-       SET estado    = c_estado_finalizado,
+    update t_flujo_instancia_pasos
+       set estado    = c_estado_finalizado,
            resultado = i_accion,
            fecha_fin = systimestamp
-     WHERE id_paso_instancia = l_id_paso_instancia;
+     where id_paso_instancia = l_id_paso_instancia;
   
     -- Registrar en historial
-    INSERT INTO t_flujo_instancia_historial
+    insert into t_flujo_instancia_historial
       (id_instancia, id_paso, accion, usuario, comentario)
-    VALUES
+    values
       (i_id_instancia, l_id_paso_actual, i_accion, i_usuario, i_comentario);
   
     -- Si es el paso final se finaliza la instancia, sino se registra el siguiente paso
-    IF l_es_final = 'S' THEN
-      UPDATE t_flujo_instancias
-         SET estado = c_estado_finalizado, fecha_fin = systimestamp
-       WHERE id_instancia = i_id_instancia;
-      RETURN;
-    ELSE
-      DECLARE
-        l_tipo         t_flujo_pasos.tipo%TYPE;
-        l_roles_sig    t_flujo_pasos.roles_responsables%TYPE;
-        l_usuarios_sig t_flujo_pasos.usuarios_responsables%TYPE;
-      BEGIN
+    if l_es_final = 'S' then
+      update t_flujo_instancias
+         set estado = c_estado_finalizado, fecha_fin = systimestamp
+       where id_instancia = i_id_instancia;
+      return;
+    else
+      declare
+        l_tipo         t_flujo_pasos.tipo%type;
+        l_roles_sig    t_flujo_pasos.roles_responsables%type;
+        l_usuarios_sig t_flujo_pasos.usuarios_responsables%type;
+      begin
         -- Obtener los roles y usuarios responsables del siguiente paso
-        SELECT tipo,
+        select tipo,
                roles_responsables,
-               REPLACE(usuarios_responsables,
+               replace(usuarios_responsables,
                        ':usuario_ingreso',
                        l_usuario_ingreso)
-          INTO l_tipo, l_roles_sig, l_usuarios_sig
-          FROM t_flujo_pasos
-         WHERE id_paso = l_id_paso_sig;
+          into l_tipo, l_roles_sig, l_usuarios_sig
+          from t_flujo_pasos
+         where id_paso = l_id_paso_sig;
       
         l_roles_sig    := k_flujo_util.f_reemplazar_variables(l_roles_sig,
                                                               l_variables,
-                                                              NULL);
+                                                              null);
         l_usuarios_sig := k_flujo_util.f_reemplazar_variables(l_usuarios_sig,
                                                               l_variables,
-                                                              NULL);
+                                                              null);
       
         -- Insertar nuevo paso
-        INSERT INTO t_flujo_instancia_pasos
+        insert into t_flujo_instancia_pasos
           (id_instancia,
            id_paso,
            estado,
            roles_responsables,
            usuarios_responsables)
-        VALUES
+        values
           (i_id_instancia,
            l_id_paso_sig,
            c_estado_en_progreso,
@@ -329,180 +329,180 @@ CREATE OR REPLACE PACKAGE BODY k_flujo AS
            l_usuarios_sig);
       
         -- Si el siguiente paso es automático, avanzamos
-        IF l_tipo = c_tipo_paso_automatico THEN
+        if l_tipo = c_tipo_paso_automatico then
           avanzar_flujo(i_id_instancia,
                         c_accion_aprobar,
                         i_usuario,
                         'Realizado automaticamente');
-        END IF;
-      END;
-    END IF;
+        end if;
+      end;
+    end if;
   
-  END;
+  end;
 
-  PROCEDURE aprobar_paso(i_id_instancia IN NUMBER,
-                         i_accion       IN VARCHAR2, --APROBAR / RECHAZAR / CONDICIONAR, ETC
-                         i_usuario      IN VARCHAR2,
-                         i_comentario   IN VARCHAR2) IS
-    l_id_flujo t_flujos.id_flujo%TYPE;
+  procedure aprobar_paso(i_id_instancia in number,
+                         i_accion       in varchar2, --APROBAR / RECHAZAR / CONDICIONAR, ETC
+                         i_usuario      in varchar2,
+                         i_comentario   in varchar2) is
+    l_id_flujo t_flujos.id_flujo%type;
     --
-    l_variables t_flujo_instancias.variables%TYPE;
+    l_variables t_flujo_instancias.variables%type;
     --
-    l_nombre_paso       t_flujo_pasos.nombre%TYPE;
-    l_acciones_posibles t_flujo_pasos.acciones_posibles%TYPE;
-    l_roles             t_flujo_pasos.roles_responsables%TYPE;
-    l_usuarios          t_flujo_pasos.usuarios_responsables%TYPE;
+    l_nombre_paso       t_flujo_pasos.nombre%type;
+    l_acciones_posibles t_flujo_pasos.acciones_posibles%type;
+    l_roles             t_flujo_pasos.roles_responsables%type;
+    l_usuarios          t_flujo_pasos.usuarios_responsables%type;
     --
-    l_id_paso_instancia t_flujo_instancia_pasos.id_paso_instancia%TYPE;
-    l_id_paso_actual    t_flujo_instancia_pasos.id_paso%TYPE;
-    l_estado_actual     t_flujo_instancia_pasos.estado%TYPE;
+    l_id_paso_instancia t_flujo_instancia_pasos.id_paso_instancia%type;
+    l_id_paso_actual    t_flujo_instancia_pasos.id_paso%type;
+    l_estado_actual     t_flujo_instancia_pasos.estado%type;
     --
-    l_aprobado t_flujo_instancia_aprobaciones.aprobado%TYPE := 'N';
+    l_aprobado t_flujo_instancia_aprobaciones.aprobado%type := 'N';
     --
-    l_aprobadores_requeridos PLS_INTEGER;
-    l_pendientes             PLS_INTEGER;
-    l_usuario_firmado        PLS_INTEGER;
-    l_puede_avanzar          BOOLEAN := FALSE;
-  BEGIN
+    l_aprobadores_requeridos pls_integer;
+    l_pendientes             pls_integer;
+    l_usuario_firmado        pls_integer;
+    l_puede_avanzar          boolean := false;
+  begin
     -- Obtener información actual
-    BEGIN
-      SELECT variables, i.id_flujo
-        INTO l_variables, l_id_flujo
-        FROM t_flujo_instancias i
-       WHERE id_instancia = i_id_instancia;
-    EXCEPTION
-      WHEN no_data_found THEN
+    begin
+      select variables, i.id_flujo
+        into l_variables, l_id_flujo
+        from t_flujo_instancias i
+       where id_instancia = i_id_instancia;
+    exception
+      when no_data_found then
         raise_application_error(-20001, 'Instancia no encontrada.');
-    END;
+    end;
   
     -- Obtener el paso actual activo
-    BEGIN
-      SELECT id_paso_instancia,
+    begin
+      select id_paso_instancia,
              id_paso,
              estado,
              roles_responsables,
              usuarios_responsables
-        INTO l_id_paso_instancia,
+        into l_id_paso_instancia,
              l_id_paso_actual,
              l_estado_actual,
              l_roles,
              l_usuarios
-        FROM t_flujo_instancia_pasos
-       WHERE id_instancia = i_id_instancia
-         AND estado = c_estado_en_progreso;
-    EXCEPTION
-      WHEN no_data_found THEN
+        from t_flujo_instancia_pasos
+       where id_instancia = i_id_instancia
+         and estado = c_estado_en_progreso;
+    exception
+      when no_data_found then
         raise_application_error(-20001, 'Instancia ya fue finalizada.');
-    END;
+    end;
   
     -- Verificar si el usuario ya aprobó el paso actual activo
-    SELECT COUNT(*)
-      INTO l_usuario_firmado
-      FROM t_flujo_instancia_aprobaciones a
-     WHERE a.id_paso_instancia = l_id_paso_instancia
-       AND a.usuario_aprobador = i_usuario
-       AND a.aprobado = 'S';
-    IF l_usuario_firmado > 0 THEN
+    select count(*)
+      into l_usuario_firmado
+      from t_flujo_instancia_aprobaciones a
+     where a.id_paso_instancia = l_id_paso_instancia
+       and a.usuario_aprobador = i_usuario
+       and a.aprobado = 'S';
+    if l_usuario_firmado > 0 then
       raise_application_error(-20001,
                               'Paso actual ya fue aprobado por el usuario.');
-    END IF;
+    end if;
   
     -- Verificar las acciones permitidas
-    SELECT nombre, acciones_posibles
-      INTO l_nombre_paso, l_acciones_posibles
-      FROM t_flujo_pasos
-     WHERE id_paso = l_id_paso_actual;
+    select nombre, acciones_posibles
+      into l_nombre_paso, l_acciones_posibles
+      from t_flujo_pasos
+     where id_paso = l_id_paso_actual;
   
-    IF NOT k_flujo_util.f_contiene_valor(i_accion, l_acciones_posibles) THEN
+    if not k_flujo_util.f_contiene_valor(i_accion, l_acciones_posibles) then
       raise_application_error(-20001,
                               'Acción [' || i_accion ||
                               '] no permitida para el paso ' ||
                               l_nombre_paso || '. ' ||
                               'Acciones posibles: ' || l_acciones_posibles || '');
-    END IF;
+    end if;
   
     -- Verificar si el usuario tiene permiso a avanzar en el flujo
-    IF l_roles IS NULL AND l_usuarios IS NULL THEN
-      l_puede_avanzar := TRUE;
-    END IF;
+    if l_roles is null and l_usuarios is null then
+      l_puede_avanzar := true;
+    end if;
   
-    IF l_roles IS NOT NULL THEN
-      DECLARE
-        l_cant_roles PLS_INTEGER;
-      BEGIN
-        SELECT COUNT(*) usuario_responsable
-          INTO l_cant_roles
-          FROM v_roles_responsables_paso a
-         WHERE a.id_paso_instancia = l_id_paso_instancia
-           AND EXISTS
-         (SELECT 1
-                  FROM t_rol_usuarios y
-                 WHERE y.id_usuario = k_usuario.f_id_usuario(i_usuario)
-                   AND (SELECT z.nombre
-                          FROM t_roles z
-                         WHERE z.id_rol = y.id_rol) = a.id_rol);
-        IF l_cant_roles > 0 THEN
-          l_puede_avanzar := TRUE;
-        END IF;
-      END;
-    END IF;
+    if l_roles is not null then
+      declare
+        l_cant_roles pls_integer;
+      begin
+        select count(*) usuario_responsable
+          into l_cant_roles
+          from v_roles_responsables_paso a
+         where a.id_paso_instancia = l_id_paso_instancia
+           and exists
+         (select 1
+                  from t_rol_usuarios y
+                 where y.id_usuario = k_usuario.f_id_usuario(i_usuario)
+                   and (select z.nombre
+                          from t_roles z
+                         where z.id_rol = y.id_rol) = a.id_rol);
+        if l_cant_roles > 0 then
+          l_puede_avanzar := true;
+        end if;
+      end;
+    end if;
   
-    IF l_usuarios IS NOT NULL THEN
-      DECLARE
-        l_cant_usuario PLS_INTEGER;
-      BEGIN
-        SELECT COUNT(*) usuario_responsable
-          INTO l_cant_usuario
-          FROM v_usuarios_responsables_paso a
-         WHERE a.id_paso_instancia = l_id_paso_instancia
-           AND a.id_usuario = i_usuario;
-        IF l_cant_usuario > 0 THEN
-          l_puede_avanzar := TRUE;
-        END IF;
-      END;
-    END IF;
+    if l_usuarios is not null then
+      declare
+        l_cant_usuario pls_integer;
+      begin
+        select count(*) usuario_responsable
+          into l_cant_usuario
+          from v_usuarios_responsables_paso a
+         where a.id_paso_instancia = l_id_paso_instancia
+           and a.id_usuario = i_usuario;
+        if l_cant_usuario > 0 then
+          l_puede_avanzar := true;
+        end if;
+      end;
+    end if;
   
     -- Verificar si hay múltiples aprobadores
-    SELECT COUNT(*)
-      INTO l_aprobadores_requeridos
-      FROM v_flujo_aprobador
-     WHERE id_paso = l_id_paso_actual;
+    select count(*)
+      into l_aprobadores_requeridos
+      from v_flujo_aprobador
+     where id_paso = l_id_paso_actual;
   
-    IF l_aprobadores_requeridos = 0 THEN
+    if l_aprobadores_requeridos = 0 then
       raise_application_error(-20001,
                               'Paso actual NO requiere aprobaciones.');
-    END IF;
+    end if;
   
     -- Lanzar mensaje de error si el usuario no tiene permiso a avanzar
-    IF NOT l_puede_avanzar THEN
+    if not l_puede_avanzar then
       raise_application_error(-20002,
                               'Usuario no tiene permiso para realizar el paso [' ||
                               l_nombre_paso || '].');
-    END IF;
+    end if;
   
     -- Registro la aprobacion, rechazo o condicionamiento, etc
-    IF i_accion = c_accion_aprobar THEN
+    if i_accion = c_accion_aprobar then
       l_aprobado := 'S';
-    END IF;
+    end if;
   
-    INSERT INTO t_flujo_instancia_aprobaciones
+    insert into t_flujo_instancia_aprobaciones
       (rol_aprobador,
        id_paso_instancia,
        usuario_aprobador,
        aprobado,
        fecha_aprobacion,
        comentario)
-    VALUES
-      ((SELECT json_arrayagg(a.id_rol) AS valores_json
-         FROM v_roles_responsables_en_progreso a
-        WHERE a.id_paso_instancia = l_id_paso_instancia
-          AND EXISTS
-        (SELECT 1
-                 FROM t_rol_usuarios y
-                WHERE y.id_usuario = k_usuario.f_id_usuario(i_usuario)
-                  AND (SELECT z.nombre
-                         FROM t_roles z
-                        WHERE z.id_rol = y.id_rol) = a.id_rol)),
+    values
+      ((select json_arrayagg(a.id_rol) as valores_json
+         from v_roles_responsables_en_progreso a
+        where a.id_paso_instancia = l_id_paso_instancia
+          and exists
+        (select 1
+                 from t_rol_usuarios y
+                where y.id_usuario = k_usuario.f_id_usuario(i_usuario)
+                  and (select z.nombre
+                         from t_roles z
+                        where z.id_rol = y.id_rol) = a.id_rol)),
        l_id_paso_instancia,
        i_usuario,
        l_aprobado,
@@ -510,27 +510,27 @@ CREATE OR REPLACE PACKAGE BODY k_flujo AS
        i_comentario);
   
     -- Verificar si hay múltiples aprobadores y si todos los múltiples aprobadores, aprobaron
-    SELECT SUM(nvl(pendientes, 0))
-      INTO l_pendientes
-      FROM v_roles_responsables_en_progreso
-     WHERE id_paso_instancia = l_id_paso_instancia;
+    select sum(nvl(pendientes, 0))
+      into l_pendientes
+      from v_roles_responsables_en_progreso
+     where id_paso_instancia = l_id_paso_instancia;
   
-    IF l_aprobado = 'N' THEN
+    if l_aprobado = 'N' then
       -- Actualizar estado en caso de rechazo, condicionado u otros.
       avanzar_flujo(i_id_instancia, i_accion, i_usuario, i_comentario);
-    ELSE
-      IF l_aprobadores_requeridos > 0 AND l_pendientes > 0 THEN
-        NULL;
-      ELSE
+    else
+      if l_aprobadores_requeridos > 0 and l_pendientes > 0 then
+        null;
+      else
         -- Actualizar estado en caso de aprobaciones completadas
         avanzar_flujo(i_id_instancia,
                       i_accion,
                       i_usuario,
                       'Completadas las aprobaciones múltiples');
-      END IF;
-    END IF;
+      end if;
+    end if;
   
-  END;
+  end;
 
-END k_flujo;
+end k_flujo;
 /
