@@ -1,0 +1,15 @@
+create table T_ROL_USUARIOS
+(
+  id_rol     NUMBER(3) not null,
+  id_usuario NUMBER(10) not null
+)
+;
+comment on table T_ROL_USUARIOS
+  is 'Usuarios por Rol';
+comment on column T_ROL_USUARIOS.id_rol
+  is 'Identificador del rol';
+comment on column T_ROL_USUARIOS.id_usuario
+  is 'Identificador del usuario';
+alter table T_ROL_USUARIOS
+  add constraint PK_ROL_USUARIOS primary key (ID_ROL, ID_USUARIO);
+

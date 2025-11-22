@@ -1,12 +1,16 @@
-FROM gvenzl/oracle-xe:21.3.0-full-faststart
+FROM gvenzl/oracle-free:23.9-full
+ENV TZ="America/Asuncion"
 
 ENV ORACLE_PASSWORD=$ORACLE_PASSWORD
 
 ENV NLS_LANG=AMERICAN_AMERICA.WE8MSWIN1252
 
+ENV DB_SERVICE_NAME=$DB_SERVICE_NAME
+
 ENV RISK_DB_USER=$RISK_DB_USER
 ENV RISK_DB_PASSWORD=$RISK_DB_PASSWORD
 
+ENV SKIP_TESTS_INSTALL=$SKIP_TESTS_INSTALL
 ENV SKIP_TESTS=$SKIP_TESTS
 
 ENV JAVA_HOME /usr/lib/jvm/msopenjdk-21-amd64
@@ -17,4 +21,4 @@ COPY ./source/database /usr/src/risk/source/
 COPY ./test/database /usr/src/risk/test/
 COPY ./docker/database/[0-9]*.sh /container-entrypoint-initdb.d/
 
-HEALTHCHECK --start-period=6m --start-interval=3m CMD healthcheck.sh >/dev/null || exit 1
+HEALTHCHECK --start-period=6m --start-interval=3m --retries=10 CMD healthcheck.sh >/dev/null || exit 1

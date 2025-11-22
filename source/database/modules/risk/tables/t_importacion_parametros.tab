@@ -1,0 +1,32 @@
+create table T_IMPORTACION_PARAMETROS
+(
+  id_importacion   NUMBER not null,
+  nombre           VARCHAR2(100) not null,
+  version          VARCHAR2(100) not null,
+  posicion_inicial NUMBER(5),
+  longitud         NUMBER(5),
+  posicion_decimal NUMBER(2),
+  mapeador         VARCHAR2(1000) default 'trim(:variable)'
+);
+comment on table T_IMPORTACION_PARAMETROS
+  is 'Parámetros de Importaciones de Archivos';
+comment on column T_IMPORTACION_PARAMETROS.id_importacion
+  is 'Identificador de la operación';
+comment on column T_IMPORTACION_PARAMETROS.nombre
+  is 'Nombre del parámetro';
+comment on column T_IMPORTACION_PARAMETROS.version
+  is 'Versión de la operación';
+comment on column T_IMPORTACION_PARAMETROS.posicion_inicial
+  is 'Posición inicial';
+comment on column T_IMPORTACION_PARAMETROS.longitud
+  is 'Longitud del parámetro en el archivo';
+comment on column T_IMPORTACION_PARAMETROS.posicion_decimal
+  is 'Posiciones decimales';
+comment on column T_IMPORTACION_PARAMETROS.mapeador
+  is 'Programa mapeador del parámetro. Requiere enlace de variable con el formato ":variable" para reemplazar por el dato correspondiente.';
+alter table T_IMPORTACION_PARAMETROS
+  add constraint PK_IMPORTACION_PARAMETROS primary key (ID_IMPORTACION, NOMBRE, VERSION);
+alter table T_IMPORTACION_PARAMETROS
+  add constraint CK_IMP_PARAMETROS_MAPEADOR
+  check (lower(mapeador) like '%:variable%');
+

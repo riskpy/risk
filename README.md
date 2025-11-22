@@ -11,7 +11,7 @@ RISK es un mini framework que sigue el paradigma ["SmartDB"](https://asktom.orac
 Consiste en una colección de objetos de Base de Datos Oracle (paquetes, types, tablas, entre otros) y una API web ASP.NET Core.
 
 # Características
-* Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos): Parámetros, Logs, Paginación
+* Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos, Importaciones): Parámetros, Logs, Paginación
 * Configuración: Módulos, Dominios, Aplicaciones, Parámetros, Significados, Archivos, Datos Adicionales, Migraciones
 * Autenticación: Personas, Usuarios, Claves, Sesiones, Dispositivos
 * Autorización: Roles, Permisos
@@ -21,22 +21,23 @@ Consiste en una colección de objetos de Base de Datos Oracle (paquetes, types, 
 * Definición de interfaz HTTP con la especificación OpenAPI (Swagger)
 
 # Documentación
-La documentación está disponible en la carpeta [docs](/docs/) del repositorio, o en línea en https://jtsoya539.github.io/risk/. La documentación generada de la API PL/SQL se puede consultar en https://jtsoya539.github.io/risk/database/plsqldoc/index.html.
+La documentación está disponible en la carpeta [docs](/docs/) del repositorio, o en línea en https://riskpy.github.io/risk/. La documentación generada de la API PL/SQL se puede consultar en https://riskpy.github.io/risk/database/plsqldoc/index.html.
 
 # Estructura del Repositorio
 * **[/docs/](/docs/)** Archivos de documentación
 * **[/source/](/source/)** Archivos de código fuente separados en Base de Datos y Back-End
 * **[/test/](/test/)** Archivos de pruebas unitarias y extras
 
-# Autores
-* Javier Meza ([github.com/jtsoya539](https://github.com/jtsoya539))
-* Damián Meza ([github.com/DamyGenius](https://github.com/DamyGenius))
+# Colaboradores
+<a href="https://github.com/riskpy/risk/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=riskpy/risk" />
+</a>
 
 # Sugerencias
-Si tenés alguna duda o consulta, o querés reportar un error en el código o en la documentación, creá un nuevo [issue](https://github.com/jtsoya539/risk/issues).
+Si tenés alguna duda o consulta, o querés reportar un error en el código o en la documentación, creá un nuevo [issue](https://github.com/riskpy/risk/issues).
 
 # Contribuciones
-Cualquier contribución es siempre bienvenida. Si querés corregir un error o agregar una nueva característica, creá un [pull request](https://github.com/jtsoya539/risk/pulls).
+Cualquier contribución es siempre bienvenida. Si querés corregir un error o agregar una nueva característica, creá un [pull request](https://github.com/riskpy/risk/pulls).
 
 # Licencia
 El Proyecto RISK está licenciado bajo la licencia MIT. Ver el archivo [LICENSE](/LICENSE) para más detalles.

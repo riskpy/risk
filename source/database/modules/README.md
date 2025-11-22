@@ -5,6 +5,4 @@ Para una mejor organización, se recomienda que los scripts de cada módulo se a
 Cada módulo debe obligatoriamente contar con los siguientes scripts:
 
 * install.sql
-* install_dependencies.sql
 * uninstall.sql
-* uninstall_dependencies.sql

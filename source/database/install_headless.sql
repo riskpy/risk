@@ -1,6 +1,6 @@
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,61 +31,91 @@ set define on
 DEFINE v_app_name = '&1'
 DEFINE v_password = '&2'
 
+prompt
+prompt Creating roles...
+prompt -----------------------------------
+prompt
+-- Create roles
+DEFINE v_data_role = '&v_app_name._data_role'
+DEFINE v_util_role = '&v_app_name._util_role'
+DEFINE v_code_role = '&v_app_name._code_role'
+DEFINE v_dev_role = '&v_app_name._dev_role'
+DEFINE v_access_role = '&v_app_name._access_role'
+
+CREATE ROLE &v_data_role;
+CREATE ROLE &v_util_role;
+CREATE ROLE &v_code_role;
+CREATE ROLE &v_dev_role;
+CREATE ROLE &v_access_role;
+
+prompt
+prompt Creating users...
+prompt -----------------------------------
+prompt
+-- Create users
 DEFINE v_data_user = '&v_app_name._data'
 DEFINE v_util_user = '&v_app_name._util'
 DEFINE v_code_user = '&v_app_name.'
+DEFINE v_dev_user = '&v_app_name._dev'
 DEFINE v_access_user = '&v_app_name._access'
 
--- Create users
-@@create_data_user.sql &v_data_user &v_password
-@@create_code_user.sql &v_util_user &v_password
-@@create_code_user.sql &v_code_user &v_password
-@@create_access_user.sql &v_access_user &v_password
+CREATE USER &v_data_user NO AUTHENTICATION;
+CREATE USER &v_util_user NO AUTHENTICATION;
+CREATE USER &v_code_user NO AUTHENTICATION;
+CREATE USER &v_dev_user IDENTIFIED BY &v_password;
+CREATE USER &v_access_user IDENTIFIED BY &v_password;
 
--- Install dependencies
-exec execute immediate 'ALTER SESSION SET CURRENT_SCHEMA=&v_util_user'
-@@install_dependencies.sql
-set define on
--- Grant object privileges to code user
-GRANT EXECUTE ON &v_util_user..as_crypto TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..as_pdf TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..as_xlsx TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..as_zip TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..csv TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..oos_util_totp TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..zt_qr TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..zt_word TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..fn_gen_inserts TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..console TO &v_code_user;
-GRANT SELECT ON &v_util_user..console_conf TO &v_code_user;
-GRANT SELECT ON &v_util_user..console_logs TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..om_tapigen TO &v_code_user;
-GRANT EXECUTE ON &v_util_user..plex TO &v_code_user;
-CREATE OR REPLACE SYNONYM &v_code_user..as_crypto FOR &v_util_user..as_crypto;
-CREATE OR REPLACE SYNONYM &v_code_user..as_pdf FOR &v_util_user..as_pdf;
-CREATE OR REPLACE SYNONYM &v_code_user..as_xlsx FOR &v_util_user..as_xlsx;
-CREATE OR REPLACE SYNONYM &v_code_user..as_zip FOR &v_util_user..as_zip;
-CREATE OR REPLACE SYNONYM &v_code_user..csv FOR &v_util_user..csv;
-CREATE OR REPLACE SYNONYM &v_code_user..oos_util_totp FOR &v_util_user..oos_util_totp;
-CREATE OR REPLACE SYNONYM &v_code_user..zt_qr FOR &v_util_user..zt_qr;
-CREATE OR REPLACE SYNONYM &v_code_user..zt_word FOR &v_util_user..zt_word;
-CREATE OR REPLACE SYNONYM &v_code_user..fn_gen_inserts FOR &v_util_user..fn_gen_inserts;
-CREATE OR REPLACE SYNONYM &v_code_user..console FOR &v_util_user..console;
-CREATE OR REPLACE SYNONYM &v_code_user..console_conf FOR &v_util_user..console_conf;
-CREATE OR REPLACE SYNONYM &v_code_user..console_logs FOR &v_util_user..console_logs;
-CREATE OR REPLACE SYNONYM &v_code_user..om_tapigen FOR &v_util_user..om_tapigen;
-CREATE OR REPLACE SYNONYM &v_code_user..plex FOR &v_util_user..plex;
---
+ALTER USER &v_data_user GRANT CONNECT THROUGH &v_dev_user;
+ALTER USER &v_util_user GRANT CONNECT THROUGH &v_dev_user;
+ALTER USER &v_code_user GRANT CONNECT THROUGH &v_dev_user;
 
--- Install source
-exec execute immediate 'ALTER SESSION SET CURRENT_SCHEMA=&v_code_user'
-@@install.sql
-set define on
--- Grant object privileges to access user
-GRANT EXECUTE ON &v_code_user..k_servicio TO &v_access_user;
-GRANT EXECUTE ON &v_code_user..k_reporte TO &v_access_user;
-CREATE OR REPLACE SYNONYM &v_access_user..k_servicio FOR &v_code_user..k_servicio;
-CREATE OR REPLACE SYNONYM &v_access_user..k_reporte FOR &v_code_user..k_reporte;
+prompt
+prompt Granting privileges to roles...
+prompt -----------------------------------
+prompt
+-- Grant system privileges
+GRANT CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW, CREATE ANY PROCEDURE, CREATE PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE, CREATE ANY TRIGGER, CREATE TYPE, CREATE VIEW TO &v_data_role, &v_util_role, &v_code_role;
+GRANT DEBUG CONNECT SESSION TO &v_data_role, &v_util_role, &v_code_role;
 --
+GRANT CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW, CREATE ANY PROCEDURE, CREATE PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE, CREATE ANY TRIGGER, CREATE TYPE, CREATE VIEW TO &v_dev_role;
+GRANT DEBUG CONNECT SESSION TO &v_dev_role;
+GRANT ALL PRIVILEGES TO &v_dev_role;
+--
+GRANT CREATE SESSION TO &v_access_role;
+-- Grant object privileges
+
+prompt
+prompt Granting privileges to users...
+prompt -----------------------------------
+prompt
+-- Grant roles
+GRANT &v_data_role TO &v_data_user;
+GRANT &v_util_role TO &v_util_user;
+GRANT &v_code_role TO &v_code_user;
+GRANT &v_dev_role TO &v_dev_user;
+GRANT &v_access_role TO &v_access_user;
+
+-- Grant system privileges
+GRANT UNLIMITED TABLESPACE TO &v_data_user;
+GRANT CREATE JOB TO &v_data_user;
+--
+GRANT UNLIMITED TABLESPACE TO &v_util_user;
+GRANT CREATE JOB TO &v_util_user;
+--
+GRANT UNLIMITED TABLESPACE TO &v_code_user;
+GRANT CREATE JOB TO &v_code_user;
+-- Grant object privileges
+GRANT EXECUTE ON sys.dbms_crypto TO &v_util_user;
+--
+GRANT EXECUTE ON sys.dbms_crypto TO &v_code_user;
+--
+GRANT SELECT  ON sys.v_$session  TO &v_dev_user;
+GRANT SELECT  ON sys.v_$sesstat  TO &v_dev_user;
+GRANT SELECT  ON sys.v_$statname TO &v_dev_user;
+GRANT EXECUTE ON sys.dbms_crypto TO &v_dev_user;
+--
+GRANT SELECT  ON sys.v_$session  TO &v_access_user;
+GRANT SELECT  ON sys.v_$sesstat  TO &v_access_user;
+GRANT SELECT  ON sys.v_$statname TO &v_access_user;
 
 spool off

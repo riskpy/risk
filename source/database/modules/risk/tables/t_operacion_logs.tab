@@ -1,0 +1,35 @@
+create table T_OPERACION_LOGS
+(
+  id_operacion_log  NUMBER not null,
+  id_operacion      NUMBER,
+  contexto          CLOB,
+  version           VARCHAR2(100),
+  parametros        CLOB,
+  respuesta         CLOB,
+  fecha_hora_inicio TIMESTAMP(3),
+  fecha_hora_fin    TIMESTAMP(3),
+  duracion          INTERVAL DAY(3) TO SECOND(3)
+)
+;
+comment on table T_OPERACION_LOGS
+  is 'Logs de Operaciones';
+comment on column T_OPERACION_LOGS.id_operacion_log
+  is 'Identificador del log';
+comment on column T_OPERACION_LOGS.id_operacion
+  is 'Identificador de la operación';
+comment on column T_OPERACION_LOGS.contexto
+  is 'Contexto de la operación';
+comment on column T_OPERACION_LOGS.version
+  is 'Versión de la operación';
+comment on column T_OPERACION_LOGS.parametros
+  is 'Parámetros recibidos';
+comment on column T_OPERACION_LOGS.respuesta
+  is 'Respuesta enviada';
+comment on column T_OPERACION_LOGS.fecha_hora_inicio
+  is 'Fecha/hora de inicio de la ejecución de la operación';
+comment on column T_OPERACION_LOGS.fecha_hora_fin
+  is 'Fecha/hora de fin de la ejecución de la operación';
+comment on column T_OPERACION_LOGS.duracion
+  is 'Duración de la ejecución de la operación';
+alter table T_OPERACION_LOGS
+  add constraint PK_OPERACION_LOGS primary key (ID_OPERACION_LOG);

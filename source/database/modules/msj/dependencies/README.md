@@ -1,1 +1,0 @@
-En este directorio se guardan las dependencias de terceros que son referenciadas por los objetos de Base de Datos del Proyecto RISK

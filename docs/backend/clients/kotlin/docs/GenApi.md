@@ -1,6 +1,6 @@
 # GenApi
 
-All URIs are relative to *https://localhost:5001*
+All URIs are relative to *http://localhost:5000*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -150,11 +150,11 @@ Configure RiskAppKey:
 
 <a id="listarErrores"></a>
 # **listarErrores**
-> ErrorPaginaRespuesta listarErrores(idError, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion)
+> ErrorPaginaRespuesta listarErrores(clave, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion)
 
 ListarErrores
 
-Obtiene una lista de errores
+Obtiene una lista de errores o textos
 
 ### Example
 ```kotlin
@@ -163,14 +163,14 @@ Obtiene una lista de errores
 //import py.com.risk.client.models.*
 
 val apiInstance = GenApi()
-val idError : kotlin.String = idError_example // kotlin.String | Identificador del error
+val clave : kotlin.String = clave_example // kotlin.String | Clave del error o texto
 val pagina : kotlin.Int = 56 // kotlin.Int | Número de la página
 val porPagina : kotlin.Int = 56 // kotlin.Int | Cantidad de elementos por página
 val noPaginar : kotlin.Boolean = true // kotlin.Boolean | No paginar?
 val riskDeviceToken : kotlin.String = riskDeviceToken_example // kotlin.String | Token del dispositivo desde el cual se realiza la petición
 val riskServiceVersion : kotlin.String = riskServiceVersion_example // kotlin.String | Versión del servicio
 try {
-    val result : ErrorPaginaRespuesta = apiInstance.listarErrores(idError, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion)
+    val result : ErrorPaginaRespuesta = apiInstance.listarErrores(clave, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion)
     println(result)
 } catch (e: ClientException) {
     println("4xx response calling GenApi#listarErrores")
@@ -185,7 +185,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **idError** | **kotlin.String**| Identificador del error | [optional]
+ **clave** | **kotlin.String**| Clave del error o texto | [optional]
  **pagina** | **kotlin.Int**| Número de la página | [optional]
  **porPagina** | **kotlin.Int**| Cantidad de elementos por página | [optional]
  **noPaginar** | **kotlin.Boolean**| No paginar? | [optional]

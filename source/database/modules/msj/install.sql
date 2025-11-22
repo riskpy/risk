@@ -1,6 +1,6 @@
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -43,27 +43,37 @@ prompt ===================================
 prompt Installation started
 prompt ===================================
 prompt
+@@../../set_compiler_flags.sql msj
+@@../risk/package_specs/k_modulo.spc
 
 prompt
 prompt Creating sequences...
 prompt -----------------------------------
 prompt
-@@sequences/s_id_correo.seq
-@@sequences/s_id_correo_adjunto.seq
-@@sequences/s_id_mensaje.seq
-@@sequences/s_id_notificacion.seq
 
 prompt
 prompt Creating tables...
 prompt -----------------------------------
 prompt
-@@tables/t_correos.tab
 @@tables/t_correo_adjuntos.tab
-@@tables/t_mensajes.tab
-@@tables/t_notificaciones.tab
-@@tables/t_notificacion_plantillas.tab
+@@tables/t_correos.tab
 @@tables/t_dispositivo_suscripciones.tab
+@@tables/t_mensajes.tab
+@@tables/t_notificacion_plantillas.tab
+@@tables/t_notificaciones.tab
 @@tables/t_usuario_suscripciones.tab
+
+prompt
+prompt Creating foreign keys...
+prompt -----------------------------------
+prompt
+@@foreign_keys/fk_correo_adjuntos.sql
+@@foreign_keys/fk_correos.sql
+@@foreign_keys/fk_dispositivo_suscripciones.sql
+@@foreign_keys/fk_mensajes.sql
+@@foreign_keys/fk_notificacion_plantillas.sql
+@@foreign_keys/fk_notificaciones.sql
+@@foreign_keys/fk_usuario_suscripciones.sql
 
 prompt
 prompt Creating views...
@@ -71,45 +81,81 @@ prompt -----------------------------------
 prompt
 
 prompt
-prompt Creating types...
+prompt Creating type specs...
 prompt -----------------------------------
 prompt
-@@types/y_correo.typ
-@@types/y_mensaje.typ
-@@types/y_notificacion.typ
+@@type_specs/y_correo.tps
+@@type_specs/y_mensaje.tps
+@@type_specs/y_notificacion.tps
 
 prompt
-prompt Creating packages...
+prompt Creating type bodies...
 prompt -----------------------------------
 prompt
-@@packages/k_mensajeria.pck
-@@packages/k_servicio_msj.pck
+@@type_bodies/y_correo.tpb
+@@type_bodies/y_mensaje.tpb
+@@type_bodies/y_notificacion.tpb
+
+prompt
+prompt Creating java sources...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating functions...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating procedures...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Creating package specs...
+prompt -----------------------------------
+prompt
+@@package_specs/k_mensajeria.spc
+@@package_specs/k_modulo.spc
+@@package_specs/k_servicio_msj.spc
+
+prompt
+prompt Creating package bodies...
+prompt -----------------------------------
+prompt
+@@package_bodies/k_mensajeria.bdy
+@@package_bodies/k_modulo.bdy
+@@package_bodies/k_servicio_msj.bdy
 
 prompt
 prompt Creating triggers...
 prompt -----------------------------------
 prompt
-@@triggers/gs_correos.trg
-@@triggers/gs_correo_adjuntos.trg
-@@triggers/gs_mensajes.trg
-@@triggers/gs_notificaciones.trg
 @@triggers/gb_mensajes.trg
+
+@@../../compile_schema.sql
 
 prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
-@@packages/k_modulo.pck
-@@../../compile_schema.sql
 @@scripts/ins_t_modulos.sql
 @@scripts/ins_t_dominios.sql
 @@scripts/ins_t_significado_dominios.sql
 @@scripts/ins_t_significados.sql
+@@scripts/ins_t_parametro_definiciones.sql
 @@scripts/ins_t_parametros.sql
-@@scripts/ins_t_notificacion_plantillas.sql
 @@scripts/ins_t_aplicaciones.sql
-@@scripts/ins_t_archivo_definiciones.sql
+@@scripts/ins_t_errores.sql
 @@scripts/operations/install.sql
+commit;
+/
+
+prompt
+prompt Running additional scripts...
+prompt -----------------------------------
+prompt
+@@install_scripts.sql
 commit;
 /
 

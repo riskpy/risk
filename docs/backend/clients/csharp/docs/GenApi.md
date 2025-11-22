@@ -1,6 +1,6 @@
 # Risk.API.Client.Api.GenApi
 
-All URIs are relative to *https://localhost:5001*
+All URIs are relative to *http://localhost:5000*
 
 | Method | HTTP request | Description |
 |--------|--------------|-------------|
@@ -40,7 +40,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure Bearer token for authorization: AccessToken
             config.AccessToken = "YOUR_BEARER_TOKEN";
             // Configure API key authorization: RiskAppKey
@@ -159,7 +159,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure API key authorization: RiskAppKey
             config.AddApiKey("Risk-App-Key", "YOUR_API_KEY");
             // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -250,11 +250,11 @@ catch (ApiException e)
 
 <a id="listarerrores"></a>
 # **ListarErrores**
-> ErrorPaginaRespuesta ListarErrores (string idError = null, int? pagina = null, int? porPagina = null, bool? noPaginar = null, string riskDeviceToken = null, string riskServiceVersion = null)
+> ErrorPaginaRespuesta ListarErrores (string clave = null, int? pagina = null, int? porPagina = null, bool? noPaginar = null, string riskDeviceToken = null, string riskServiceVersion = null)
 
 ListarErrores
 
-Obtiene una lista de errores
+Obtiene una lista de errores o textos
 
 ### Example
 ```csharp
@@ -271,14 +271,14 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure API key authorization: RiskAppKey
             config.AddApiKey("Risk-App-Key", "YOUR_API_KEY");
             // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
             // config.AddApiKeyPrefix("Risk-App-Key", "Bearer");
 
             var apiInstance = new GenApi(config);
-            var idError = "idError_example";  // string | Identificador del error (optional) 
+            var clave = "clave_example";  // string | Clave del error o texto (optional) 
             var pagina = 56;  // int? | Número de la página (optional) 
             var porPagina = 56;  // int? | Cantidad de elementos por página (optional) 
             var noPaginar = true;  // bool? | No paginar? (optional) 
@@ -288,7 +288,7 @@ namespace Example
             try
             {
                 // ListarErrores
-                ErrorPaginaRespuesta result = apiInstance.ListarErrores(idError, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion);
+                ErrorPaginaRespuesta result = apiInstance.ListarErrores(clave, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion);
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
@@ -309,7 +309,7 @@ This returns an ApiResponse object which contains the response data, status code
 try
 {
     // ListarErrores
-    ApiResponse<ErrorPaginaRespuesta> response = apiInstance.ListarErroresWithHttpInfo(idError, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion);
+    ApiResponse<ErrorPaginaRespuesta> response = apiInstance.ListarErroresWithHttpInfo(clave, pagina, porPagina, noPaginar, riskDeviceToken, riskServiceVersion);
     Debug.Write("Status Code: " + response.StatusCode);
     Debug.Write("Response Headers: " + response.Headers);
     Debug.Write("Response Body: " + response.Data);
@@ -326,7 +326,7 @@ catch (ApiException e)
 
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| **idError** | **string** | Identificador del error | [optional]  |
+| **clave** | **string** | Clave del error o texto | [optional]  |
 | **pagina** | **int?** | Número de la página | [optional]  |
 | **porPagina** | **int?** | Cantidad de elementos por página | [optional]  |
 | **noPaginar** | **bool?** | No paginar? | [optional]  |
@@ -381,7 +381,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure Bearer token for authorization: AccessToken
             config.AccessToken = "YOUR_BEARER_TOKEN";
             // Configure API key authorization: RiskAppKey
@@ -494,7 +494,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure Bearer token for authorization: AccessToken
             config.AccessToken = "YOUR_BEARER_TOKEN";
             // Configure API key authorization: RiskAppKey
@@ -607,7 +607,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure API key authorization: RiskAppKey
             config.AddApiKey("Risk-App-Key", "YOUR_API_KEY");
             // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -711,7 +711,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure Bearer token for authorization: AccessToken
             config.AccessToken = "YOUR_BEARER_TOKEN";
             // Configure API key authorization: RiskAppKey
@@ -820,7 +820,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure Bearer token for authorization: AccessToken
             config.AccessToken = "YOUR_BEARER_TOKEN";
             // Configure API key authorization: RiskAppKey
@@ -927,7 +927,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure Bearer token for authorization: AccessToken
             config.AccessToken = "YOUR_BEARER_TOKEN";
             // Configure API key authorization: RiskAppKey
@@ -1036,7 +1036,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure Bearer token for authorization: AccessToken
             config.AccessToken = "YOUR_BEARER_TOKEN";
             // Configure API key authorization: RiskAppKey
@@ -1143,7 +1143,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             // Configure API key authorization: RiskAppKey
             config.AddApiKey("Risk-App-Key", "YOUR_API_KEY");
             // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -1247,7 +1247,7 @@ namespace Example
         public static void Main()
         {
             Configuration config = new Configuration();
-            config.BasePath = "https://localhost:5001";
+            config.BasePath = "http://localhost:5000";
             var apiInstance = new GenApi(config);
             var riskDeviceToken = "riskDeviceToken_example";  // string | Token del dispositivo desde el cual se realiza la petición (optional) 
             var riskServiceVersion = "riskServiceVersion_example";  // string | Versión del servicio (optional) 

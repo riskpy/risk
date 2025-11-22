@@ -1,6 +1,9 @@
 FROM container-registry.oracle.com/database/ords-developer:latest
 EXPOSE 8181
 
+ENV DB_HOST_NAME=$DB_HOST_NAME
+ENV DB_SERVICE_NAME=$DB_SERVICE_NAME
+
 ENV IGNORE_APEX=$IGNORE_APEX
 
 USER oracle

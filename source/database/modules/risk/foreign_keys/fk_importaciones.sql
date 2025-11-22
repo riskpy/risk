@@ -1,0 +1,3 @@
+alter table T_IMPORTACIONES
+  add constraint FK_IMPORTACIONES_OPERACIONES foreign key (ID_IMPORTACION)
+  references T_OPERACIONES (ID_OPERACION);

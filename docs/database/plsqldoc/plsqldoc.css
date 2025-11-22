@@ -1,103 +1,227 @@
-/* PL/SQL Developer, plsqldoc styles */
+/* Modern PL/SQL Documentation styles */
 
-BODY
-{ 
-  font-family: Verdana,Arial,Helvetica,sans-serif;
-  background-color : #ECECEC;
-  font-size : 12px;
-  font-weight: normal;
-  font-style: normal;
-  margin-left: 15px;
-  margin-top: 25px;
+:root {
+    --primary-color: #0066cc;
+    --secondary-color: #003366;
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e0e0;
 }
 
-A         {color: #333300; text-decoration: underline;}
-A:active  {color: #2020C0; text-decoration: underline;}    
-A:hover   {color: #4040C0; text-decoration: underline;}
-A:visited {color: #101060; text-decoration: underline;} 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+BODY { 
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+A {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+A:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+A:active, A:visited {
+    color: var(--primary-color);
+}
 
 
 /* Style for Title of document (Package ...) */
     
-.MAIN_TITLE
-{
- font-family: Verdana,Arial,Helvetica,sans-serif;
- font-size : medium;
- color: #992266;
- font-weight: bold;
- margin-bottom : 12px;
+.MAIN_TITLE {
+    font-family: inherit;
+    font-size: 2rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+    margin: 1.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
 }    
-
 
 /* Style for smaller Titles (Program Units, Exceptions, ...) */
-
-.SUB_TITLE
-{
- font-family: Verdana,Arial,Helvetica,sans-serif;
- font-size: medium;
- color: #992266;
- font-weight: normal;
- margin-bottom: 12px;
+.SUB_TITLE {
+    font-family: inherit;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    font-weight: 500;
+    margin: 1.2rem 0;
+    padding: 0.5rem 0;
 }    
 
-
 /* Type name in description */
-
-.TYPE_TITLE
-{
- font-family: Verdana,Arial,Helvetica,sans-serif;
- font-size: small;
- color: #992266;
- font-weight: bold;
- margin-bottom: 0px;
+.TYPE_TITLE {
+    font-family: inherit;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin: 1rem 0;
+    padding: 0.3rem 0;
 }    
 
 
 /* Type name in list */
-
-.TYPE_ITEM
-{
- font-family: Verdana,Arial,Helvetica,sans-serif;
- font-size: x-small;
- color: #101060;
- font-weight: bold;
- margin-bottom: 0px;
+.TYPE_ITEM {
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin: 0.5rem 0;
 }    
 
 /* 'See Also' list title */
-
-.LIST_TITLE
-{ 
- font-family: Verdana,Arial,Helvetica,sans-serif;
- font-size: small;
- color: #301080;
- font-weight: bold;
- font-style: normal;
- margin-bottom: 0px;
+.LIST_TITLE { 
+    font-family: inherit;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+    margin: 1rem 0 0.5rem 0;
 }
 
-
 /* 'See Also' list item description */
-/* Specific style can be specified for the different groups like Usage, Parameter, ets */
-/* with a .LIST_ITEM_[GROUP] tag like .LIST_ITEM_USAGE                                 */                  
+.LIST_ITEM { 
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    font-weight: 500;
+    margin: 0.3rem 0;
+}
 
-.LIST_ITEM
-{ 
- font-family: Verdana,Arial,Helvetica,sans-serif;
- font-size: x-small;
- color: #101060;
- font-weight: bold;
- margin-bottom: 0px;
+/* Table styles */
+.SUB_TABLE {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+
+.SUB_TABLE td {
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.SUB_TABLE tr:last-child td {
+    border-bottom: none;
+}
+
+.SUB_TABLE tr:hover {
+    background-color: #f8f9fa;
 }
 
        	
-/* Description */
-/* Specific style can be specified for the different groups like Usage, Parameter, ets */
-/* with a .DESC_TEXT_[GROUP] tag like .DESC_TEXT_USAGE                                 */                  
+/* Description text styles */
+.DESC_TEXT { 
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0.5rem 0;
+}
 
-.DESC_TEXT
-{ 
- font-family: Verdana,Arial,Helvetica,sans-serif;
+/* Code blocks and pre-formatted text */
+pre, code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    background-color: #f8f9fa;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+pre {
+    padding: 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    margin: 1rem 0;
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0 2rem 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+.header img {
+    height: 50px;
+    width: auto;
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Accordion styles */
+.accordion-section {
+    margin: 0.5rem 0;
+}
+
+.accordion-section .SUB_TABLE td {
+    cursor: pointer;
+    user-select: none;
+}
+
+.accordion-toggle {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    float: right;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.accordion-toggle::after {
+    content: '›';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.accordion-section.expanded .accordion-toggle::after {
+    transform: translateY(-50%) rotate(270deg);
+}
+
+.accordion-section table {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Ajuste del espacio para el ícono */
+.SUB_TABLE td.SUB_TITLE {
+    padding-right: 40px;
+    position: relative;
+}
+
+.accordion-section .SUB_TABLE:hover {
+    background-color: #f0f4f8;
+}
  font-size: x-small;
  color: #101060;
  font-weight: normal;

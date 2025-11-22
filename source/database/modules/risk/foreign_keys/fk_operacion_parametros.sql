@@ -1,0 +1,3 @@
+alter table T_OPERACION_PARAMETROS
+  add constraint FK_OPE_PARAMETROS_OPERACIONES foreign key (ID_OPERACION)
+  references T_OPERACIONES (ID_OPERACION);

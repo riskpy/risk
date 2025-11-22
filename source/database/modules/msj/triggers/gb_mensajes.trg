@@ -1,10 +1,10 @@
-CREATE OR REPLACE TRIGGER gb_mensajes
-  BEFORE INSERT OR UPDATE OR DELETE ON t_mensajes
-  FOR EACH ROW
-BEGIN
+create or replace trigger gb_mensajes
+  before insert or update or delete on t_mensajes
+  for each row
+begin
   /*
   --------------------------------- MIT License ---------------------------------
-  Copyright (c) 2019 jtsoya539
+  Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
   
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,11 @@ BEGIN
   */
 
   -- Valida número de teléfono
-  IF inserting OR (updating AND nvl(:new.numero_telefono, 'X') <>
-     nvl(:old.numero_telefono, 'X')) THEN
-    IF NOT k_mensajeria.f_validar_numero_telefono(:new.numero_telefono) THEN
+  if inserting or (updating and nvl(:new.numero_telefono, 'X') <>
+     nvl(:old.numero_telefono, 'X')) then
+    if not k_mensajeria.f_validar_numero_telefono(:new.numero_telefono) then
       raise_application_error(-20000, 'Número de teléfono inválido');
-    END IF;
-  END IF;
-END;
+    end if;
+  end if;
+end;
 /

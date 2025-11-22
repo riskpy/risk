@@ -4,8 +4,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**idError** | **kotlin.String** | Identificador del error |  [optional]
-**mensaje** | **kotlin.String** | Mensaje del error |  [optional]
+**clave** | **kotlin.String** | Clave del error o texto |  [optional]
+**mensaje** | **kotlin.String** | Mensaje del error o texto |  [optional]
 
 
 

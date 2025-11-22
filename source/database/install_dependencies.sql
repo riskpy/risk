@@ -1,6 +1,6 @@
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -63,6 +63,7 @@ prompt
 @@dependencies/ZT_WORD.pks
 @@dependencies/ZT_WORD.pkb
 @@dependencies/fn_gen_inserts.sql
+@@dependencies/lob2table.sql
 @@dependencies/create_console_objects.sql
 @@dependencies/om_tapigen_install.sql
 @@dependencies/plex_install.sql

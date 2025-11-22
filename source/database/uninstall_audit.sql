@@ -1,6 +1,6 @@
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,34 +24,34 @@ SOFTWARE.
 
 set serveroutput on size unlimited
 
-DECLARE
-  CURSOR cr_tablas IS
-    SELECT lower(table_name) AS tabla
-      FROM user_tables
-     WHERE lower(table_name) LIKE 't\_%' ESCAPE '\';
-BEGIN
-  FOR t IN cr_tablas LOOP
-    dbms_output.put_line('Droping audit triggers for table ' ||
+declare
+  cursor cr_tablas is
+    select lower(table_name) as tabla
+      from user_tables
+     where lower(table_name) like 't\_%' escape '\';
+begin
+  for t in cr_tablas loop
+    dbms_output.put_line('Dropping audit triggers for table ' ||
                          upper(t.tabla) || '...');
     dbms_output.put_line('-----------------------------------');
-    BEGIN
+    begin
       k_auditoria.p_eliminar_trigger_auditoria(i_tabla => t.tabla);
-    EXCEPTION
-      WHEN OTHERS THEN
-        dbms_output.put_line(SQLERRM);
-    END;
+    exception
+      when others then
+        dbms_output.put_line(sqlerrm);
+    end;
   
-    dbms_output.put_line('Droping audit columns for table ' ||
+    dbms_output.put_line('Dropping audit columns for table ' ||
                          upper(t.tabla) || '...');
     dbms_output.put_line('-----------------------------------');
-    BEGIN
+    begin
       k_auditoria.p_eliminar_campos_auditoria(i_tabla => t.tabla);
-    EXCEPTION
-      WHEN OTHERS THEN
-        dbms_output.put_line(SQLERRM);
-    END;
-  END LOOP;
-END;
+    exception
+      when others then
+        dbms_output.put_line(sqlerrm);
+    end;
+  end loop;
+end;
 /
 
 set serveroutput off

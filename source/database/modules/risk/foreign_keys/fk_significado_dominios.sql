@@ -1,0 +1,3 @@
+alter table T_SIGNIFICADO_DOMINIOS
+  add constraint FK_SIGNIFICADO_DOMINIOS_DOMINIOS foreign key (ID_DOMINIO)
+  references T_DOMINIOS (ID_DOMINIO);

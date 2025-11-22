@@ -1,6 +1,6 @@
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,45 +45,63 @@ prompt ===================================
 prompt
 
 prompt
-prompt Droping packages...
+prompt Dropping triggers...
 prompt -----------------------------------
 prompt
-drop package k_servicio_msj;
+drop trigger gb_mensajes;
+
+prompt
+prompt Dropping packages...
+prompt -----------------------------------
+prompt
 drop package k_mensajeria;
+drop package k_modulo;
+drop package k_servicio_msj;
 
 prompt
-prompt Droping types...
+prompt Dropping procedures...
 prompt -----------------------------------
 prompt
-drop type y_notificacion force;
-drop type y_mensaje force;
+
+prompt
+prompt Dropping functions...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Dropping java sources...
+prompt -----------------------------------
+prompt
+
+prompt
+prompt Dropping types...
+prompt -----------------------------------
+prompt
 drop type y_correo force;
+drop type y_mensaje force;
+drop type y_notificacion force;
 
 prompt
-prompt Droping views...
+prompt Dropping views...
 prompt -----------------------------------
 prompt
 
 prompt
-prompt Droping tables...
+prompt Dropping tables...
 prompt -----------------------------------
 prompt
-drop table t_usuario_suscripciones cascade constraints;
-drop table t_dispositivo_suscripciones cascade constraints;
-drop table t_notificacion_plantillas cascade constraints;
-drop table t_notificaciones cascade constraints;
-drop table t_mensajes cascade constraints;
-drop table t_correo_adjuntos cascade constraints;
-drop table t_correos cascade constraints;
+drop table t_correo_adjuntos cascade constraints purge;
+drop table t_correos cascade constraints purge;
+drop table t_dispositivo_suscripciones cascade constraints purge;
+drop table t_mensajes cascade constraints purge;
+drop table t_notificacion_plantillas cascade constraints purge;
+drop table t_notificaciones cascade constraints purge;
+drop table t_usuario_suscripciones cascade constraints purge;
 
 prompt
-prompt Droping sequences...
+prompt Dropping sequences...
 prompt -----------------------------------
 prompt
-drop sequence s_id_correo;
-drop sequence s_id_correo_adjunto;
-drop sequence s_id_mensaje;
-drop sequence s_id_notificacion;
 
 prompt
 prompt Purging recycle bin...
@@ -91,16 +109,26 @@ prompt -----------------------------------
 prompt
 purge recyclebin;
 
+--@@../../packages/k_modulo.pck
+@@../../compile_schema.sql
+
+prompt
+prompt Running additional scripts...
+prompt -----------------------------------
+prompt
+@@uninstall_scripts.sql
+commit;
+/
+
 prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
-@@../../packages/k_modulo.pck
-@@../../compile_schema.sql
 @@scripts/operations/uninstall.sql
-@@scripts/del_t_archivo_definiciones.sql
+@@scripts/del_t_errores.sql
 @@scripts/del_t_aplicaciones.sql
 @@scripts/del_t_parametros.sql
+@@scripts/del_t_parametro_definiciones.sql
 @@scripts/del_t_significados.sql
 @@scripts/del_t_significado_dominios.sql
 @@scripts/del_t_dominios.sql

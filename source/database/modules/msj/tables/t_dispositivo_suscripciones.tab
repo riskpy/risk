@@ -15,7 +15,4 @@ comment on column T_DISPOSITIVO_SUSCRIPCIONES.fecha_expiracion
   is 'Fecha de expiración de la suscripción';
 alter table T_DISPOSITIVO_SUSCRIPCIONES
   add constraint PK_DISPOSITIVO_SUSCRIPCIONES primary key (ID_DISPOSITIVO, SUSCRIPCION);
-alter table T_DISPOSITIVO_SUSCRIPCIONES
-  add constraint FK_DIS_SUS_DISPOSITIVOS foreign key (ID_DISPOSITIVO)
-  references T_DISPOSITIVOS (ID_DISPOSITIVO);
 

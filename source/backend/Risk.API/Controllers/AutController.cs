@@ -1,6 +1,6 @@
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Risk.API.Controllers
 {
-    [SwaggerTag("Servicios del dominio AUTENTICACIÓN", "https://jtsoya539.github.io/risk/")]
+    [SwaggerTag("Servicios del dominio AUTENTICACIÓN", "https://riskpy.github.io/risk/")]
     [Authorize(Roles = "ADMINISTRADOR,USUARIO,USUARIO_NUEVO")]
     [Route("Api/[controller]")]
     [ApiController]
