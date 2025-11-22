@@ -1,6 +1,7 @@
 set beautifierrules C:\repo\risk\rules.br
+beautify C:\repo\risk\source\database\modules\flj\package_specs\k_flujo.spc
+beautify C:\repo\risk\source\database\modules\flj\package_specs\k_flujo_util.spc
 beautify C:\repo\risk\source\database\modules\msj\package_specs\k_mensajeria.spc
-beautify C:\repo\risk\source\database\modules\msj\package_specs\k_modulo.spc
 beautify C:\repo\risk\source\database\modules\msj\package_specs\k_servicio_msj.spc
 beautify C:\repo\risk\source\database\modules\risk\package_specs\k_aplicacion.spc
 beautify C:\repo\risk\source\database\modules\risk\package_specs\k_archivo.spc
@@ -60,8 +61,9 @@ beautify C:\repo\risk\test\database\package_specs\test_k_usuario.spc
 beautify C:\repo\risk\test\database\package_specs\test_k_util.spc
 beautify C:\repo\risk\test\database\package_specs\test_y_dato.spc
 beautify C:\repo\risk\test\database\package_specs\test_y_respuesta.spc
+beautify C:\repo\risk\source\database\modules\flj\package_bodies\k_flujo.bdy
+beautify C:\repo\risk\source\database\modules\flj\package_bodies\k_flujo_util.bdy
 beautify C:\repo\risk\source\database\modules\msj\package_bodies\k_mensajeria.bdy
-beautify C:\repo\risk\source\database\modules\msj\package_bodies\k_modulo.bdy
 beautify C:\repo\risk\source\database\modules\msj\package_bodies\k_servicio_msj.bdy
 beautify C:\repo\risk\source\database\modules\risk\package_bodies\k_aplicacion.bdy
 beautify C:\repo\risk\source\database\modules\risk\package_bodies\k_archivo.bdy
@@ -121,11 +123,9 @@ beautify C:\repo\risk\test\database\package_bodies\test_k_usuario.bdy
 beautify C:\repo\risk\test\database\package_bodies\test_k_util.bdy
 beautify C:\repo\risk\test\database\package_bodies\test_y_dato.bdy
 beautify C:\repo\risk\test\database\package_bodies\test_y_respuesta.bdy
+beautify C:\repo\risk\source\database\modules\flj\triggers\gb_flujo_instancia_pasos.trg
+beautify C:\repo\risk\source\database\modules\flj\triggers\gb_roles.trg
 beautify C:\repo\risk\source\database\modules\msj\triggers\gb_mensajes.trg
-beautify C:\repo\risk\source\database\modules\msj\triggers\gs_correos.trg
-beautify C:\repo\risk\source\database\modules\msj\triggers\gs_correo_adjuntos.trg
-beautify C:\repo\risk\source\database\modules\msj\triggers\gs_mensajes.trg
-beautify C:\repo\risk\source\database\modules\msj\triggers\gs_notificaciones.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gb_archivos.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gb_datos.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gb_operaciones.trg
@@ -138,20 +138,9 @@ beautify C:\repo\risk\source\database\modules\risk\triggers\gb_trabajos.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gb_usuarios.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gf_archivos.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gf_operaciones.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_barrios.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_ciudades.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_departamentos.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_dispositivos.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_errores.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_idiomas.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gs_monitoreo_ejecuciones.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gs_operaciones.trg
 beautify C:\repo\risk\source\database\modules\risk\triggers\gs_operacion_logs.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_paises.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_personas.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_roles.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_sesiones.trg
-beautify C:\repo\risk\source\database\modules\risk\triggers\gs_usuarios.trg
 beautify C:\repo\risk\source\database\modules\msj\type_specs\y_correo.tps
 beautify C:\repo\risk\source\database\modules\msj\type_specs\y_mensaje.tps
 beautify C:\repo\risk\source\database\modules\msj\type_specs\y_notificacion.tps

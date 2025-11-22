@@ -1,9 +1,8 @@
-create or replace package k_modulo is
-
+create or replace package k_flujo_util as
   /**
-  Agrupa operaciones relacionadas con los módulos
+  Agrupa herramientas para facilitar el manejo del motor de flujos
   
-  %author jtsoya539 27/3/2020 16:58:36
+  %author dmezac 04/05/2025
   */
 
   /*
@@ -30,9 +29,23 @@ create or replace package k_modulo is
   -------------------------------------------------------------------------------
   */
 
-  -- Constantes
-  c_instalado_risk constant boolean := true;
-  c_instalado_msj  constant boolean := true;
+  function f_obtener_variable(i_variables in clob,
+                              i_clave     in varchar2) return varchar2;
 
-end;
+  function f_editar_variable(i_variables in clob,
+                             i_clave     in varchar2,
+                             i_valor     in varchar2) return clob;
+
+  function f_reemplazar_variables(i_expresion         in varchar2,
+                                  i_variables         in clob,
+                                  i_delimitador_texto in varchar2 := '''')
+    return varchar2;
+
+  function f_evaluar_condicion(i_condicion in varchar2,
+                               i_variables in clob) return boolean;
+
+  function f_contiene_valor(i_valor     in varchar2,
+                            i_variables in clob) return boolean;
+
+end k_flujo_util;
 /

@@ -31,8 +31,28 @@ create or replace package k_modulo is
   */
 
   -- Constantes
+
+  -- Indicadores de instalación
+  $if $$mi_risk $then
   c_instalado_risk constant boolean := true;
-  c_instalado_msj  constant boolean := false;
+  $else
+  c_instalado_risk constant boolean := false;
+  $end
+  $if $$mi_msj $then
+  c_instalado_msj constant boolean := true;
+  $else
+  c_instalado_msj constant boolean := false;
+  $end
+  $if $$mi_flj $then
+  c_instalado_flj constant boolean := true;
+  $else
+  c_instalado_flj constant boolean := false;
+  $end
+
+  -- Identificadores de módulos
+  c_id_risk constant varchar2(30) := 'RISK';
+  c_id_msj  constant varchar2(30) := 'MSJ';
+  c_id_flj  constant varchar2(30) := 'FLJ';
 
 end;
 /

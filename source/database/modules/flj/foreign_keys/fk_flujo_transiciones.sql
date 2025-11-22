@@ -1,0 +1,6 @@
+alter table T_FLUJO_TRANSICIONES
+  add constraint FK_FLUJO_TRANSICIONES_PASOS_DESTINO foreign key (ID_PASO_DESTINO)
+  references T_FLUJO_PASOS (ID_PASO);
+alter table T_FLUJO_TRANSICIONES
+  add constraint FK_FLUJO_TRANSICIONES_PASOS_ORIGEN foreign key (ID_PASO_ORIGEN)
+  references T_FLUJO_PASOS (ID_PASO);
