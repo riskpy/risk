@@ -21,7 +21,7 @@ create or replace package body k_auditoria is
     -- Genera comentarios
     l_sentencia := 'comment on column ' || i_tabla || '.' ||
                    g_nombre_campo_created_by ||
-                   ' is ''Usuario que realizó la inserción del registro''';
+                   ' is ''Usuario que creó el registro''';
     if i_ejecutar then
       execute immediate l_sentencia;
     else
@@ -30,7 +30,7 @@ create or replace package body k_auditoria is
   
     l_sentencia := 'comment on column ' || i_tabla || '.' ||
                    g_nombre_campo_created ||
-                   ' is ''Fecha en que se realizó la inserción del registro''';
+                   ' is ''Fecha de creación del registro''';
     if i_ejecutar then
       execute immediate l_sentencia;
     else
@@ -39,7 +39,7 @@ create or replace package body k_auditoria is
   
     l_sentencia := 'comment on column ' || i_tabla || '.' ||
                    g_nombre_campo_updated_by ||
-                   ' is ''Usuario que realizó la última modificación en el registro''';
+                   ' is ''Usuario que realizó la última actualización del registro''';
     if i_ejecutar then
       execute immediate l_sentencia;
     else
@@ -48,7 +48,7 @@ create or replace package body k_auditoria is
   
     l_sentencia := 'comment on column ' || i_tabla || '.' ||
                    g_nombre_campo_updated ||
-                   ' is ''Fecha en que se realizó la última modificación en el registro''';
+                   ' is ''Fecha de la última actualización del registro''';
     if i_ejecutar then
       execute immediate l_sentencia;
     else
@@ -74,17 +74,17 @@ BEGIN
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
-  
+
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-  
+
   The above copyright notice and this permission notice shall be included in all
   copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -96,13 +96,13 @@ BEGIN
   */
 
   IF inserting THEN
-    -- Auditoría para inserción de registros
+    -- Auditoría de creación
     :new.' || lower(g_nombre_campo_created_by) ||
                    ' := substr(coalesce(k_sistema.f_usuario, USER), 1, 300);
     :new.' || lower(g_nombre_campo_created) || ' := CURRENT_TIMESTAMP;
   END IF;
 
-  -- Auditoría para modificación de registros
+  -- Auditoría de actualización
   :new.' || lower(g_nombre_campo_updated_by) || ' := substr(coalesce(k_sistema.f_usuario, USER), 1, 300);
   :new.' || lower(g_nombre_campo_updated) || ' := CURRENT_TIMESTAMP;
 END;';
@@ -174,3 +174,4 @@ END;';
 
 end;
 /
+

@@ -29,17 +29,17 @@ BEGIN
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
-  
+
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
   in the Software without restriction, including without limitation the rights
   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
   copies of the Software, and to permit persons to whom the Software is
   furnished to do so, subject to the following conditions:
-  
+
   The above copyright notice and this permission notice shall be included in all
   copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -49,7 +49,7 @@ BEGIN
   SOFTWARE.
   -------------------------------------------------------------------------------
   */
-  
+
   IF :new.' || lower(i_campo) || ' IS NULL THEN
     :new.' || lower(i_campo) || ' := s_' ||
                    lower(i_campo) || '.nextval;
@@ -86,11 +86,11 @@ END;';
          and lower(c.table_name) like 't\_%' escape
        '\'
          and lower(c.table_name) = lower(i_tabla)
-         and lower(c.column_name) not in
-             ('usuario_insercion',
-              'fecha_insercion',
-              'usuario_modificacion',
-              'fecha_modificacion')
+         and upper(c.column_name) not in
+             (k_auditoria.g_nombre_campo_created_by,
+              k_auditoria.g_nombre_campo_created,
+              k_auditoria.g_nombre_campo_updated_by,
+              k_auditoria.g_nombre_campo_updated)
        order by c.column_id;
   begin
     l_type := lower(nvl(i_type,
@@ -219,7 +219,7 @@ SOFTWARE.
     l_json_object json_object_t;
   BEGIN
     l_json_object := json_object_t.parse(i_json);
-  
+
     l_objeto := NEW ' || l_type || '();
 ' || l_campos2 || '
     RETURN l_objeto;
@@ -567,3 +567,4 @@ END;'
 
 end;
 /
+
