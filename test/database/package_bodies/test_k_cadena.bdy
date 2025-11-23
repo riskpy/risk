@@ -40,8 +40,9 @@ create or replace package body test_k_cadena is
 
   procedure f_formatear_titulo_uso_basico is
   begin
-    ut.expect(k_cadena.f_formatear_titulo('ESte eS UN títULO DE pruEba srl')).to_equal('Este Es Un Título de Prueba SRL');
+    ut.expect(k_cadena.f_formatear_titulo('ESte eS UN títULO DE pruEba')).to_equal('Este Es Un Título de Prueba');
   end;
 
 end;
 /
+

@@ -196,6 +196,8 @@ prompt
 prompt Creating functions...
 prompt -----------------------------------
 prompt
+@@functions/f_procesar_reporte.fnc
+@@functions/f_procesar_servicio.fnc
 
 prompt
 prompt Creating procedures...

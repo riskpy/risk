@@ -109,6 +109,8 @@ prompt
 prompt Dropping functions...
 prompt -----------------------------------
 prompt
+drop function f_procesar_reporte;
+drop function f_procesar_servicio;
 
 prompt
 prompt Dropping java sources...

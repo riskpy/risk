@@ -22,8 +22,8 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
---GRANT EXECUTE ON &v_code_role..k_servicio TO &v_access_role;
---GRANT EXECUTE ON &v_code_role..k_reporte TO &v_access_role;
+--GRANT EXECUTE ON &v_code_role..f_procesar_servicio TO &v_access_role;
+--GRANT EXECUTE ON &v_code_role..f_procesar_reporte TO &v_access_role;
 
-GRANT EXECUTE ON risk.k_servicio TO risk_access_role;
-GRANT EXECUTE ON risk.k_reporte TO risk_access_role;
+GRANT EXECUTE ON risk.f_procesar_servicio TO risk_access_role;
+GRANT EXECUTE ON risk.f_procesar_reporte TO risk_access_role;

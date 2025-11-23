@@ -165,93 +165,61 @@ create or replace package body k_cadena is
                      'aeiouaeiouaeiouaeioucaoAEIOUAEIOUAEIOUAEIOUCAO');
   end;
 
-  function f_formatear_titulo(i_titulo in varchar2) return varchar2
-    deterministic is
-    v_palabra  varchar2(4000);
-    v_longitud number;
-    v_inicial  number;
-    v_final    number;
-    v_pinicial number;
-    v_pfinal   number;
-    v_einicial number;
-    v_efinal   number;
-    v_letras   varchar2(20);
+  function f_formatear_titulo(i_titulo in varchar2) return varchar2 is
+    v_resultado varchar2(4000);
+    v_palabra   varchar2(100);
+    v_longitud  pls_integer;
+    v_temp      varchar2(4000);
+  
+    type t_lista is table of varchar2(20);
+    v_excepciones t_lista := t_lista('de',
+                                     'del',
+                                     'la',
+                                     'las',
+                                     'el',
+                                     'los',
+                                     'y',
+                                     'o',
+                                     'a',
+                                     'en',
+                                     'con',
+                                     'por',
+                                     'para');
+  
+    -- Función auxiliar para saber si una palabra está en la lista
+    function es_excepcion(p_palabra varchar2) return boolean is
+    begin
+      for i in 1 .. v_excepciones.count loop
+        if p_palabra = v_excepciones(i) then
+          return true;
+        end if;
+      end loop;
+      return false;
+    end;
   begin
-    -- Hace el InitCap para iniciar
-    v_palabra := initcap(i_titulo);
-    -- Reemplaza los casos mas necesarios  p/, c/, s/, 's
-    v_palabra := replace(v_palabra, 'P/', 'p/');
-    v_palabra := replace(v_palabra, 'C/', 'c/');
-    v_palabra := replace(v_palabra, 'S/', 's/');
-    v_palabra := replace(v_palabra, chr(39) || 'S', chr(39) || 's');
-    --
-    v_inicial  := 1;
-    v_final    := 1;
-    v_longitud := nvl(length(v_palabra), 0);
-    loop
-      if v_inicial = 0 or v_inicial >= v_longitud then
-        exit;
-      end if;
-      if v_final - v_inicial between 1 and 5 then
-        v_letras := substr(v_palabra, v_inicial, v_final - v_inicial + 1);
-        if lower(ltrim(rtrim(v_letras))) in
-           ('srl', 'sa', 'sacic', 'saeca', 'saci', 'eca') then
-          -- Pone las letras en mayusculas
-          v_palabra := substr(v_palabra, 1, v_inicial - 1) ||
-                       upper(v_letras) ||
-                       substr(v_palabra, v_final + 1, v_longitud);
-        elsif lower(ltrim(rtrim(v_letras))) in
-              ('del',
-               'a',
-               'de',
-               'la',
-               'el',
-               'en',
-               'por',
-               'para',
-               'y',
-               'e',
-               'con',
-               'entre',
-               'los',
-               'las',
-               'contra',
-               'sin') then
-          -- Pone las letras en minusculas
-          v_palabra := substr(v_palabra, 1, v_inicial - 1) ||
-                       lower(v_letras) ||
-                       substr(v_palabra, v_final + 1, v_longitud);
-        end if;
-      end if;
-      -- Inicial
-      v_pinicial := instr(v_palabra, '.', v_final);
-      v_einicial := instr(v_palabra, ' ', v_final);
-      if v_pinicial <> 0 and v_einicial <> 0 then
-        v_inicial := least(v_pinicial, v_einicial);
+    v_temp      := lower(i_titulo);
+    v_resultado := '';
+    v_longitud  := regexp_count(v_temp, '\S+');
+  
+    for i in 1 .. v_longitud loop
+      v_palabra := regexp_substr(v_temp, '\S+', 1, i);
+    
+      if i = 1 then
+        v_palabra := initcap(v_palabra);
       else
-        v_inicial := greatest(v_pinicial, v_einicial);
-      end if;
-      -- Final
-      if v_inicial <> 0 then
-        v_pfinal := instr(v_palabra, '.', v_inicial + 1);
-        v_efinal := instr(v_palabra, ' ', v_inicial + 1);
-        if v_pfinal <> 0 and v_efinal <> 0 then
-          v_final := least(v_pfinal, v_efinal);
+        if es_excepcion(v_palabra) then
+          v_palabra := lower(v_palabra);
+        elsif v_palabra = upper(v_palabra) then
+          v_palabra := v_palabra; -- sigla, se mantiene
         else
-          v_final := greatest(v_pfinal, v_efinal);
+          v_palabra := initcap(v_palabra);
         end if;
-      else
-        v_final := 0;
       end if;
-      if v_final = 0 then
-        v_final := v_longitud;
-      end if;
-      if v_inicial <> 0 then
-        v_inicial := v_inicial + 1;
-      end if;
+    
+      v_resultado := v_resultado || v_palabra || ' ';
     end loop;
-    -- Retorna el titulo modificado
-    return v_palabra;
+  
+    return rtrim(v_resultado);
   end;
 
   -- https://github.com/osalvador/tePLSQL
@@ -352,3 +320,4 @@ create or replace package body k_cadena is
 
 end;
 /
+

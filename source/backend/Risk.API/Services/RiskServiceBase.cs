@@ -50,8 +50,8 @@ namespace Risk.API.Services
         protected readonly ISettingsService _settingsService;
         protected readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDbConnectionFactory _dbConnectionFactory;
-        private const string SQL_PROCESAR_SERVICIO = "K_SERVICIO.F_PROCESAR_SERVICIO";
-        private const string SQL_PROCESAR_REPORTE = "K_REPORTE.F_PROCESAR_REPORTE";
+        private const string SQL_PROCESAR_SERVICIO = "F_PROCESAR_SERVICIO";
+        private const string SQL_PROCESAR_REPORTE = "F_PROCESAR_REPORTE";
 
         public RiskServiceBase(ILogger<RiskServiceBase> logger, ISettingsService settingsService, IHttpContextAccessor httpContextAccessor, IDbConnectionFactory dbConnectionFactory)
         {
