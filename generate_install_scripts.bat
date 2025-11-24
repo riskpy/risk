@@ -63,7 +63,7 @@ for /d %%d in ("%BASE_DIR%\*") do (
     echo prompt
     echo @@../../set_compiler_flags.sql %%~nxd
     if not "%%~nxd"=="risk" (
-        echo @@../risk/package_specs/k_modulo.spc
+        echo alter package risk.k_modulo compile package;
     )
 
     echo.
