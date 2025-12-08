@@ -20,11 +20,11 @@ compile_schema.sql|Compila objetos inválidos del esquema actual.
 create_public_synonyms.sql|TO-DO
 drop_public_synonyms.sql|TO-DO
 grant_objects.sql|TO-DO
-grant_objects_access_role.sql|TO-DO
 install_audit.sql|Genera campos y triggers de auditoría para tablas del esquema actual.
 install_dependencies.sql|Instala en el esquema actual las dependencias de terceros (Ver [Dependencias](#dependencias)).
 install_headless.sql|Crea usuarios, otorga permisos necesarios e instala los objetos de Base de Datos del Proyecto RISK.
 install_tapi.sql|Genera API's para tablas del esquema actual.
+grant_objects_access_role.sql|Otorga permisos necesarios al rol de acceso a la Base de Datos desde el Backend.
 set_compiler_flags.sql|TO-DO
 uninstall_audit.sql|Elimina campos y triggers de auditoría para tablas del esquema actual.
 uninstall_dependencies.sql|Desinstala del esquema actual las dependencias de terceros.

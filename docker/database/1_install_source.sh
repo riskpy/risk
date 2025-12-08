@@ -45,3 +45,4 @@ for module in "${modules[@]}"; do
 done
 
 sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @compile_schema.sql
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects_access_role.sql $RISK_DB_USER

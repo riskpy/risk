@@ -22,8 +22,30 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
---GRANT EXECUTE ON &v_code_role..k_servicio TO &v_access_role;
---GRANT EXECUTE ON &v_code_role..k_reporte TO &v_access_role;
+spool grant_objects_access_role.log
 
-GRANT EXECUTE ON risk.k_servicio TO risk_access_role;
-GRANT EXECUTE ON risk.k_reporte TO risk_access_role;
+set define on
+
+--accept v_app_name char default 'risk' prompt 'Enter app name (default ''risk''):'
+DEFINE v_app_name = '&1'
+
+prompt
+prompt Defining code user...
+prompt -----------------------------------
+prompt
+-- Define code user
+DEFINE v_code_user = '&v_app_name.'
+
+prompt
+prompt Defining access role...
+prompt -----------------------------------
+prompt
+-- Define access role
+DEFINE v_access_role = '&v_app_name._access_role'
+
+prompt
+prompt Granting privileges to role...
+prompt -----------------------------------
+prompt
+GRANT EXECUTE ON &v_code_user..k_servicio TO &v_access_role;
+GRANT EXECUTE ON &v_code_user..k_reporte TO &v_access_role;
