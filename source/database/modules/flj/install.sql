@@ -44,7 +44,7 @@ prompt Installation started
 prompt ===================================
 prompt
 @@../../set_compiler_flags.sql flj
-@@../risk/package_specs/k_modulo.spc
+alter package risk.k_modulo compile package;
 
 prompt
 prompt Creating sequences...
