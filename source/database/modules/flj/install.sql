@@ -43,8 +43,8 @@ prompt ===================================
 prompt Installation started
 prompt ===================================
 prompt
-@@../../set_compiler_flags.sql msj
-alter package risk.k_modulo compile package;
+@@../../set_compiler_flags.sql flj
+@@../risk/package_specs/k_modulo.spc
 
 prompt
 prompt Creating sequences...
@@ -55,46 +55,48 @@ prompt
 prompt Creating tables...
 prompt -----------------------------------
 prompt
-@@tables/t_correo_adjuntos.tab
-@@tables/t_correos.tab
-@@tables/t_dispositivo_suscripciones.tab
-@@tables/t_mensajes.tab
-@@tables/t_notificacion_plantillas.tab
-@@tables/t_notificaciones.tab
-@@tables/t_usuario_suscripciones.tab
+@@tables/t_flujo_instancia_aprobaciones.tab
+@@tables/t_flujo_instancia_historial.tab
+@@tables/t_flujo_instancia_pasos.tab
+@@tables/t_flujo_instancias.tab
+@@tables/t_flujo_pasos.tab
+@@tables/t_flujo_transiciones.tab
+@@tables/t_flujos.tab
 
 prompt
 prompt Creating foreign keys...
 prompt -----------------------------------
 prompt
-@@foreign_keys/fk_correo_adjuntos.sql
-@@foreign_keys/fk_correos.sql
-@@foreign_keys/fk_dispositivo_suscripciones.sql
-@@foreign_keys/fk_mensajes.sql
-@@foreign_keys/fk_notificacion_plantillas.sql
-@@foreign_keys/fk_notificaciones.sql
-@@foreign_keys/fk_usuario_suscripciones.sql
+@@foreign_keys/fk_flujo_instancia_aprobaciones.sql
+@@foreign_keys/fk_flujo_instancia_historial.sql
+@@foreign_keys/fk_flujo_instancia_pasos.sql
+@@foreign_keys/fk_flujo_instancias.sql
+@@foreign_keys/fk_flujo_pasos.sql
+@@foreign_keys/fk_flujo_transiciones.sql
 
 prompt
 prompt Creating views...
 prompt -----------------------------------
 prompt
+@@views/v_estado_flujo.vw
+@@views/v_flujo_aprobador.vw
+@@views/v_historial_aprobaciones.vw
+@@views/v_historial_instancia.vw
+@@views/v_pasos_en_progreso.vw
+@@views/v_proximos_pasos.vw
+@@views/v_roles_responsables_en_progreso.vw
+@@views/v_roles_responsables_paso.vw
+@@views/v_usuarios_responsables_paso.vw
 
 prompt
 prompt Creating type specs...
 prompt -----------------------------------
 prompt
-@@type_specs/y_correo.tps
-@@type_specs/y_mensaje.tps
-@@type_specs/y_notificacion.tps
 
 prompt
 prompt Creating type bodies...
 prompt -----------------------------------
 prompt
-@@type_bodies/y_correo.tpb
-@@type_bodies/y_mensaje.tpb
-@@type_bodies/y_notificacion.tpb
 
 prompt
 prompt Creating java sources...
@@ -115,21 +117,22 @@ prompt
 prompt Creating package specs...
 prompt -----------------------------------
 prompt
-@@package_specs/k_mensajeria.spc
-@@package_specs/k_servicio_msj.spc
+@@package_specs/k_flujo.spc
+@@package_specs/k_flujo_util.spc
 
 prompt
 prompt Creating package bodies...
 prompt -----------------------------------
 prompt
-@@package_bodies/k_mensajeria.bdy
-@@package_bodies/k_servicio_msj.bdy
+@@package_bodies/k_flujo.bdy
+@@package_bodies/k_flujo_util.bdy
 
 prompt
 prompt Creating triggers...
 prompt -----------------------------------
 prompt
-@@triggers/gb_mensajes.trg
+@@triggers/gb_flujo_instancia_pasos.trg
+@@triggers/gb_roles.trg
 
 @@../../compile_schema.sql
 
@@ -145,7 +148,6 @@ prompt
 @@scripts/ins_t_parametros.sql
 @@scripts/ins_t_aplicaciones.sql
 @@scripts/ins_t_errores.sql
-@@scripts/operations/install.sql
 commit;
 /
 

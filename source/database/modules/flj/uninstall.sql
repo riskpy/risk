@@ -22,7 +22,7 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-spool install.log
+spool uninstall.log
 
 set feedback off
 set define off
@@ -40,126 +40,110 @@ prompt ###################################
 
 prompt
 prompt ===================================
-prompt Installation started
+prompt Uninstallation started
 prompt ===================================
 prompt
-@@../../set_compiler_flags.sql msj
-alter package risk.k_modulo compile package;
 
 prompt
-prompt Creating sequences...
+prompt Dropping triggers...
+prompt -----------------------------------
+prompt
+drop trigger gb_flujo_instancia_pasos;
+drop trigger gb_roles;
+
+prompt
+prompt Dropping packages...
+prompt -----------------------------------
+prompt
+drop package k_flujo;
+drop package k_flujo_util;
+
+prompt
+prompt Dropping procedures...
 prompt -----------------------------------
 prompt
 
 prompt
-prompt Creating tables...
-prompt -----------------------------------
-prompt
-@@tables/t_correo_adjuntos.tab
-@@tables/t_correos.tab
-@@tables/t_dispositivo_suscripciones.tab
-@@tables/t_mensajes.tab
-@@tables/t_notificacion_plantillas.tab
-@@tables/t_notificaciones.tab
-@@tables/t_usuario_suscripciones.tab
-
-prompt
-prompt Creating foreign keys...
-prompt -----------------------------------
-prompt
-@@foreign_keys/fk_correo_adjuntos.sql
-@@foreign_keys/fk_correos.sql
-@@foreign_keys/fk_dispositivo_suscripciones.sql
-@@foreign_keys/fk_mensajes.sql
-@@foreign_keys/fk_notificacion_plantillas.sql
-@@foreign_keys/fk_notificaciones.sql
-@@foreign_keys/fk_usuario_suscripciones.sql
-
-prompt
-prompt Creating views...
+prompt Dropping functions...
 prompt -----------------------------------
 prompt
 
 prompt
-prompt Creating type specs...
-prompt -----------------------------------
-prompt
-@@type_specs/y_correo.tps
-@@type_specs/y_mensaje.tps
-@@type_specs/y_notificacion.tps
-
-prompt
-prompt Creating type bodies...
-prompt -----------------------------------
-prompt
-@@type_bodies/y_correo.tpb
-@@type_bodies/y_mensaje.tpb
-@@type_bodies/y_notificacion.tpb
-
-prompt
-prompt Creating java sources...
+prompt Dropping java sources...
 prompt -----------------------------------
 prompt
 
 prompt
-prompt Creating functions...
+prompt Dropping types...
 prompt -----------------------------------
 prompt
 
 prompt
-prompt Creating procedures...
+prompt Dropping views...
+prompt -----------------------------------
+prompt
+drop view v_estado_flujo cascade constraints;
+drop view v_flujo_aprobador cascade constraints;
+drop view v_historial_aprobaciones cascade constraints;
+drop view v_historial_instancia cascade constraints;
+drop view v_pasos_en_progreso cascade constraints;
+drop view v_proximos_pasos cascade constraints;
+drop view v_roles_responsables_en_progreso cascade constraints;
+drop view v_roles_responsables_paso cascade constraints;
+drop view v_usuarios_responsables_paso cascade constraints;
+
+prompt
+prompt Dropping tables...
+prompt -----------------------------------
+prompt
+drop table t_flujo_instancia_aprobaciones cascade constraints purge;
+drop table t_flujo_instancia_historial cascade constraints purge;
+drop table t_flujo_instancia_pasos cascade constraints purge;
+drop table t_flujo_instancias cascade constraints purge;
+drop table t_flujo_pasos cascade constraints purge;
+drop table t_flujo_transiciones cascade constraints purge;
+drop table t_flujos cascade constraints purge;
+
+prompt
+prompt Dropping sequences...
 prompt -----------------------------------
 prompt
 
 prompt
-prompt Creating package specs...
+prompt Purging recycle bin...
 prompt -----------------------------------
 prompt
-@@package_specs/k_mensajeria.spc
-@@package_specs/k_servicio_msj.spc
+purge recyclebin;
 
-prompt
-prompt Creating package bodies...
-prompt -----------------------------------
-prompt
-@@package_bodies/k_mensajeria.bdy
-@@package_bodies/k_servicio_msj.bdy
-
-prompt
-prompt Creating triggers...
-prompt -----------------------------------
-prompt
-@@triggers/gb_mensajes.trg
-
+--@@../../packages/k_modulo.pck
 @@../../compile_schema.sql
-
-prompt
-prompt Running scripts...
-prompt -----------------------------------
-prompt
-@@scripts/ins_t_modulos.sql
-@@scripts/ins_t_dominios.sql
-@@scripts/ins_t_significado_dominios.sql
-@@scripts/ins_t_significados.sql
-@@scripts/ins_t_parametro_definiciones.sql
-@@scripts/ins_t_parametros.sql
-@@scripts/ins_t_aplicaciones.sql
-@@scripts/ins_t_errores.sql
-@@scripts/operations/install.sql
-commit;
-/
 
 prompt
 prompt Running additional scripts...
 prompt -----------------------------------
 prompt
-@@install_scripts.sql
+@@uninstall_scripts.sql
+commit;
+/
+
+prompt
+prompt Running scripts...
+prompt -----------------------------------
+prompt
+@@scripts/del_t_errores.sql
+@@scripts/del_t_aplicaciones.sql
+@@scripts/del_t_parametros.sql
+@@scripts/del_t_parametro_definiciones.sql
+@@scripts/del_t_significados.sql
+@@scripts/del_t_significado_dominios.sql
+@@scripts/del_t_dominios.sql
+@@scripts/del_t_modulos.sql
 commit;
 /
 
 prompt
 prompt ===================================
-prompt Installation completed
+prompt Uninstallation completed
 prompt ===================================
 prompt
 
