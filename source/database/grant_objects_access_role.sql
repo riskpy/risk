@@ -47,5 +47,7 @@ prompt
 prompt Granting privileges to role...
 prompt -----------------------------------
 prompt
-GRANT EXECUTE ON &v_code_user..k_servicio TO &v_access_role;
-GRANT EXECUTE ON &v_code_user..k_reporte TO &v_access_role;
+GRANT EXECUTE ON &v_code_user..f_procesar_servicio TO &v_access_role;
+GRANT EXECUTE ON &v_code_user..f_procesar_reporte TO &v_access_role;
+
+spool off
