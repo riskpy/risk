@@ -8,7 +8,7 @@ Agrupa datos de una página con resultados para una consulta.
 
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 jtsoya539
+Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
