@@ -1,7 +1,27 @@
 create or replace package body k_significado is
 
+  function f_dominio(i_dominio in varchar2)
+    return t_significado_dominios%rowtype is
+    rw_dominio t_significado_dominios%rowtype;
+  begin
+    begin
+      select a.*
+        into rw_dominio
+        from t_significado_dominios a
+       where a.dominio = i_dominio;
+    exception
+      when no_data_found then
+        rw_dominio := null;
+      when others then
+        rw_dominio := null;
+    end;
+    return rw_dominio;
+  end;
+
   function f_significado_codigo(i_dominio in varchar2,
-                                i_codigo  in varchar2) return varchar2 is
+                                i_codigo  in varchar2,
+                                i_activo  in varchar2 default null)
+    return varchar2 is
     l_significado t_significados.significado%type;
   begin
     begin
@@ -9,7 +29,8 @@ create or replace package body k_significado is
         into l_significado
         from t_significados a
        where a.dominio = i_dominio
-         and a.codigo = i_codigo;
+         and a.codigo = i_codigo
+         and a.activo = nvl(i_activo, a.activo);
     exception
       when others then
         l_significado := null;
@@ -18,7 +39,9 @@ create or replace package body k_significado is
   end;
 
   function f_referencia_codigo(i_dominio in varchar2,
-                               i_codigo  in varchar2) return varchar2 is
+                               i_codigo  in varchar2,
+                               i_activo  in varchar2 default null)
+    return varchar2 is
     l_referencia t_significados.referencia%type;
   begin
     begin
@@ -26,7 +49,8 @@ create or replace package body k_significado is
         into l_referencia
         from t_significados a
        where a.dominio = i_dominio
-         and a.codigo = i_codigo;
+         and a.codigo = i_codigo
+         and a.activo = nvl(i_activo, a.activo);
     exception
       when others then
         l_referencia := null;
@@ -34,8 +58,29 @@ create or replace package body k_significado is
     return l_referencia;
   end;
 
+  function f_referencia_2_codigo(i_dominio in varchar2,
+                                 i_codigo  in varchar2,
+                                 i_activo  in varchar2 default null)
+    return varchar2 is
+    l_referencia_2 t_significados.referencia_2%type;
+  begin
+    begin
+      select a.referencia_2
+        into l_referencia_2
+        from t_significados a
+       where a.dominio = i_dominio
+         and a.codigo = i_codigo
+         and a.activo = nvl(i_activo, a.activo);
+    exception
+      when others then
+        l_referencia_2 := null;
+    end;
+    return l_referencia_2;
+  end;
+
   function f_existe_codigo(i_dominio in varchar2,
-                           i_codigo  in varchar2) return boolean is
+                           i_codigo  in varchar2,
+                           i_activo  in varchar2 default null) return boolean is
     l_existe varchar2(1);
   begin
     begin
@@ -43,7 +88,8 @@ create or replace package body k_significado is
         into l_existe
         from t_significados a
        where a.dominio = i_dominio
-         and a.codigo = i_codigo;
+         and a.codigo = i_codigo
+         and a.activo = nvl(i_activo, a.activo);
     exception
       when no_data_found then
         l_existe := 'N';
@@ -69,6 +115,23 @@ create or replace package body k_significado is
         l_id_modulo := null;
     end;
     return l_id_modulo;
+  end;
+
+  function f_codigo_referencia(i_dominio    in varchar2,
+                               i_referencia in varchar2) return varchar2 is
+    l_codigo t_significados.referencia%type;
+  begin
+    begin
+      select a.codigo
+        into l_codigo
+        from t_significados a
+       where a.dominio = i_dominio
+         and a.referencia = i_referencia;
+    exception
+      when others then
+        l_codigo := null;
+    end;
+    return l_codigo;
   end;
 
 end;

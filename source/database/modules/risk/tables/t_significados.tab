@@ -1,10 +1,11 @@
 create table T_SIGNIFICADOS
 (
-  dominio     VARCHAR2(50) not null,
-  codigo      VARCHAR2(50) not null,
-  significado VARCHAR2(500),
-  referencia  VARCHAR2(500),
-  activo      VARCHAR2(1) default 'N' not null
+  dominio      VARCHAR2(50) not null,
+  codigo       VARCHAR2(50) not null,
+  significado  VARCHAR2(500),
+  referencia   VARCHAR2(500),
+  activo       VARCHAR2(1) default 'N' not null,
+  referencia_2 VARCHAR2(500)
 )
 ;
 comment on table T_SIGNIFICADOS
@@ -19,6 +20,8 @@ comment on column T_SIGNIFICADOS.referencia
   is 'Referencia adicional';
 comment on column T_SIGNIFICADOS.activo
   is 'El significado esta activo? (S/N)';
+comment on column T_SIGNIFICADOS.referencia_2
+  is 'Referencia adicional 2';
 alter table T_SIGNIFICADOS
   add constraint PK_SIGNIFICADOS primary key (DOMINIO, CODIGO);
 alter table T_SIGNIFICADOS

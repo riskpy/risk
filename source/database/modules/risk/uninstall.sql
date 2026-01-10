@@ -97,6 +97,7 @@ drop package k_servicio_gen;
 drop package k_servicio_glo;
 drop package k_sesion;
 drop package k_significado;
+drop package k_significado_util;
 drop package k_sistema;
 drop package k_trabajo;
 drop package k_usuario;

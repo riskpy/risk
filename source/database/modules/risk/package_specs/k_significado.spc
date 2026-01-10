@@ -30,6 +30,9 @@ create or replace package k_significado is
   -------------------------------------------------------------------------------
   */
 
+  function f_dominio(i_dominio in varchar2)
+    return t_significado_dominios%rowtype;
+
   /**
   Retorna el significado de un codigo dentro de un dominio de significados
   
@@ -39,15 +42,28 @@ create or replace package k_significado is
   %return Significado
   */
   function f_significado_codigo(i_dominio in varchar2,
-                                i_codigo  in varchar2) return varchar2;
+                                i_codigo  in varchar2,
+                                i_activo  in varchar2 default null)
+    return varchar2;
 
   function f_referencia_codigo(i_dominio in varchar2,
-                               i_codigo  in varchar2) return varchar2;
+                               i_codigo  in varchar2,
+                               i_activo  in varchar2 default null)
+    return varchar2;
+
+  function f_referencia_2_codigo(i_dominio in varchar2,
+                                 i_codigo  in varchar2,
+                                 i_activo  in varchar2 default null)
+    return varchar2;
 
   function f_existe_codigo(i_dominio in varchar2,
-                           i_codigo  in varchar2) return boolean;
+                           i_codigo  in varchar2,
+                           i_activo  in varchar2 default null) return boolean;
 
   function f_id_modulo_dominio(i_dominio in varchar2) return varchar2;
+
+  function f_codigo_referencia(i_dominio    in varchar2,
+                               i_referencia in varchar2) return varchar2;
 
 end;
 /

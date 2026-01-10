@@ -247,6 +247,7 @@ prompt
 @@package_specs/k_servicio_glo.spc
 @@package_specs/k_sesion.spc
 @@package_specs/k_significado.spc
+@@package_specs/k_significado_util.spc
 @@package_specs/k_sistema.spc
 @@package_specs/k_trabajo.spc
 @@package_specs/k_usuario.spc
@@ -285,6 +286,7 @@ prompt
 @@package_bodies/k_servicio_glo.bdy
 @@package_bodies/k_sesion.bdy
 @@package_bodies/k_significado.bdy
+@@package_bodies/k_significado_util.bdy
 @@package_bodies/k_sistema.bdy
 @@package_bodies/k_trabajo.bdy
 @@package_bodies/k_usuario.bdy

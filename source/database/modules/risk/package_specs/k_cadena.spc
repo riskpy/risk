@@ -126,5 +126,7 @@ create or replace package k_cadena is
                                   i_encapsulador in varchar2 default '#')
     return clob;
 
+  function f_comentar(i_comentario in varchar2) return varchar2;
+
 end;
 /

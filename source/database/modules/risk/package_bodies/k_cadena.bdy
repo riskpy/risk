@@ -165,7 +165,8 @@ create or replace package body k_cadena is
                      'aeiouaeiouaeiouaeioucaoAEIOUAEIOUAEIOUAEIOUCAO');
   end;
 
-  function f_formatear_titulo(i_titulo in varchar2) return varchar2 is
+  function f_formatear_titulo(i_titulo in varchar2) return varchar2
+    deterministic is
     v_resultado varchar2(4000);
     v_palabra   varchar2(100);
     v_longitud  pls_integer;
@@ -318,6 +319,12 @@ create or replace package body k_cadena is
     return l_result;
   end f_reemplazar_etiquetas;
 
+  function f_comentar(i_comentario in varchar2) return varchar2 is
+  begin
+    return '/* ' || lpad('=', 20, '=') || ' ' || upper(i_comentario) || ' ' || lpad('=',
+                                                                                    20,
+                                                                                    '=') || ' */';
+  end;
+
 end;
 /
-
