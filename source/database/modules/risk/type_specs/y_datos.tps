@@ -7,7 +7,7 @@ Lista de datos en formato de texto.
 
 /*
 --------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
+Copyright (c) 2019 - 2026 jtsoya539, DamyGenius and RISK contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -18,7 +18,7 @@ for /d %%d in ("%BASE_DIR%\*") do (
 (
     echo /*
     echo --------------------------------- MIT License ---------------------------------
-    echo Copyright ^(c^) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
+    echo Copyright ^(c^) 2019 - 2026 jtsoya539, DamyGenius and RISK contributors
     echo.
     echo Permission is hereby granted, free of charge, to any person obtaining a copy
     echo of this software and associated documentation files ^(the ^"Software^"^), to deal
@@ -300,7 +300,7 @@ for /d %%d in ("%BASE_DIR%\*") do (
 (
     echo /*
     echo --------------------------------- MIT License ---------------------------------
-    echo Copyright ^(c^) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
+    echo Copyright ^(c^) 2019 - 2026 jtsoya539, DamyGenius and RISK contributors
     echo.
     echo Permission is hereby granted, free of charge, to any person obtaining a copy
     echo of this software and associated documentation files ^(the ^"Software^"^), to deal
@@ -541,7 +541,7 @@ if exist "%TEST_DIR%" (
 (
     echo /*
     echo --------------------------------- MIT License ---------------------------------
-    echo Copyright ^(c^) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
+    echo Copyright ^(c^) 2019 - 2026 jtsoya539, DamyGenius and RISK contributors
     echo.
     echo Permission is hereby granted, free of charge, to any person obtaining a copy
     echo of this software and associated documentation files ^(the ^"Software^"^), to deal
@@ -624,7 +624,7 @@ if exist "%TEST_DIR%" (
 (
     echo /*
     echo --------------------------------- MIT License ---------------------------------
-    echo Copyright ^(c^) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
+    echo Copyright ^(c^) 2019 - 2026 jtsoya539, DamyGenius and RISK contributors
     echo.
     echo Permission is hereby granted, free of charge, to any person obtaining a copy
     echo of this software and associated documentation files ^(the ^"Software^"^), to deal
