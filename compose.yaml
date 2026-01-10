@@ -3,7 +3,7 @@ name: risk
 services:
 
   database:
-    image: jtsoya539/risk-database:latest
+    image: riskpy/risk-database:latest
     build:
       context: .
       dockerfile: ./Dockerfile.database
@@ -20,7 +20,7 @@ services:
       - 6379:6379
 
   backend:
-    image: jtsoya539/risk-backend:latest
+    image: riskpy/risk-backend:latest
     build:
       context: .
       dockerfile: ./Dockerfile.backend
@@ -37,7 +37,7 @@ services:
         condition: service_started
   
   frontend:
-    image: jtsoya539/risk-frontend:latest
+    image: riskpy/risk-frontend:latest
     build:
       context: .
       dockerfile: ./Dockerfile.frontend
