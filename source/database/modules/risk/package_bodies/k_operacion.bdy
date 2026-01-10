@@ -589,13 +589,13 @@ create or replace package body k_operacion is
           end if;
         
           if l_json_element is not null and l_json_element.is_object then
-            l_parametro.valor := k_util.json_to_objeto(l_json_element.to_clob,
-                                                       par.formato);
+            l_parametro.valor := k_objeto_util.json_to_objeto(l_json_element.to_clob,
+                                                              par.formato);
           end if;
         
           if l_parametro.valor is null and par.valor_defecto is not null then
-            l_parametro.valor := k_util.json_to_objeto(par.valor_defecto,
-                                                       par.formato);
+            l_parametro.valor := k_objeto_util.json_to_objeto(par.valor_defecto,
+                                                              par.formato);
           end if;
           if l_parametro.valor is null and par.obligatorio = 'S' then
             raise_application_error(-20000,
@@ -1080,3 +1080,4 @@ create or replace package body k_operacion is
 
 end;
 /
+

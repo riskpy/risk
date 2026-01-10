@@ -36,7 +36,8 @@ create or replace type body y_respuesta is
         -- Busca nombre del tipo para hacer el parse
         l_tipo := k_sistema.f_desencolar;
         --
-        l_anydata := k_util.json_to_objeto(l_json_element.to_clob, l_tipo);
+        l_anydata := k_objeto_util.json_to_objeto(l_json_element.to_clob,
+                                                  l_tipo);
         l_result  := l_anydata.getobject(l_respuesta.datos);
       exception
         when others then
@@ -65,3 +66,4 @@ create or replace type body y_respuesta is
 
 end;
 /
+

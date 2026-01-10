@@ -81,6 +81,7 @@ prompt
 @@tables/t_operacion_parametros.tab
 @@tables/t_operaciones.tab
 @@tables/t_paises.tab
+@@tables/t_parametro_definiciones.tab
 @@tables/t_parametros.tab
 @@tables/t_permisos.tab
 @@tables/t_personas.tab
@@ -118,7 +119,7 @@ prompt
 @@foreign_keys/fk_operacion_logs.sql
 @@foreign_keys/fk_operacion_parametros.sql
 @@foreign_keys/fk_operaciones.sql
-@@foreign_keys/fk_parametros.sql
+@@foreign_keys/fk_parametro_definiciones.sql
 @@foreign_keys/fk_personas.sql
 @@foreign_keys/fk_reportes.sql
 @@foreign_keys/fk_rol_permisos.sql
@@ -151,6 +152,8 @@ prompt
 @@type_specs/y_departamento.tps
 @@type_specs/y_dispositivo.tps
 @@type_specs/y_error.tps
+@@type_specs/y_lista.tps
+@@type_specs/y_lista_parametros.tps
 @@type_specs/y_objeto.tps
 @@type_specs/y_objetos.tps
 @@type_specs/y_pagina.tps
@@ -163,6 +166,8 @@ prompt
 @@type_specs/y_rol.tps
 @@type_specs/y_sesion.tps
 @@type_specs/y_significado.tps
+@@type_specs/y_tipo_atributo.tps
+@@type_specs/y_tipo_atributos.tps
 @@type_specs/y_usuario.tps
 
 prompt
@@ -176,6 +181,8 @@ prompt
 @@type_bodies/y_departamento.tpb
 @@type_bodies/y_dispositivo.tpb
 @@type_bodies/y_error.tpb
+@@type_bodies/y_lista.tpb
+@@type_bodies/y_lista_parametros.tpb
 @@type_bodies/y_pagina.tpb
 @@type_bodies/y_pagina_parametros.tpb
 @@type_bodies/y_pais.tpb
@@ -185,6 +192,7 @@ prompt
 @@type_bodies/y_rol.tpb
 @@type_bodies/y_sesion.tpb
 @@type_bodies/y_significado.tpb
+@@type_bodies/y_tipo_atributo.tpb
 @@type_bodies/y_usuario.tpb
 
 prompt
@@ -226,7 +234,9 @@ prompt
 @@package_specs/k_modulo.spc
 @@package_specs/k_monitoreo.spc
 @@package_specs/k_monitoreo_aut.spc
+@@package_specs/k_objeto_util.spc
 @@package_specs/k_operacion.spc
+@@package_specs/k_parametro.spc
 @@package_specs/k_reporte.spc
 @@package_specs/k_reporte_gen.spc
 @@package_specs/k_servicio.spc
@@ -262,7 +272,9 @@ prompt
 @@package_bodies/k_modulo.bdy
 @@package_bodies/k_monitoreo.bdy
 @@package_bodies/k_monitoreo_aut.bdy
+@@package_bodies/k_objeto_util.bdy
 @@package_bodies/k_operacion.bdy
+@@package_bodies/k_parametro.bdy
 @@package_bodies/k_reporte.bdy
 @@package_bodies/k_reporte_gen.bdy
 @@package_bodies/k_servicio.bdy

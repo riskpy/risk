@@ -1,1 +1,1 @@
-DELETE t_parametros WHERE k_dominio.f_id_modulo(id_dominio) = 'FLJ';
+delete t_parametros p where (select pd.id_dominio from t_parametro_definiciones pd where pd.id_parametro = p.id_parametro) = 'FLJ';

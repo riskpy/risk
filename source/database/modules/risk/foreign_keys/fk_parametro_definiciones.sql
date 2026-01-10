@@ -1,0 +1,3 @@
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint FK_PARAMETRO_DEFINICIONES_DOMINIOS foreign key (ID_DOMINIO)
+  references T_DOMINIOS (ID_DOMINIO);

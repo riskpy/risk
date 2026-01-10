@@ -28,7 +28,7 @@ create or replace package body k_util is
 BEGIN
   /*
   --------------------------------- MIT License ---------------------------------
-  Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
+  Copyright (c) 2019 jtsoya539
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -62,206 +62,42 @@ END;';
     end if;
   end;
 
-  procedure p_generar_type_objeto(i_tabla    in varchar2,
-                                  i_type     in varchar2 default null,
-                                  i_ejecutar in boolean default true) is
-    l_sentencia varchar2(4000);
-    l_type      varchar2(30);
-    l_comments  varchar2(4000);
-    l_campos1   varchar2(4000);
-    l_campos2   varchar2(4000);
-    l_campos3   varchar2(4000);
-    l_data_type varchar2(100);
-  
-    cursor cr_campos is
-      select m.comments,
-             c.column_name,
-             c.data_type,
-             c.data_length,
-             c.data_precision,
-             c.data_scale
-        from user_tab_columns c, user_col_comments m
-       where m.table_name = c.table_name
-         and m.column_name = c.column_name
-         and lower(c.table_name) like 't\_%' escape
-       '\'
-         and lower(c.table_name) = lower(i_tabla)
-         and upper(c.column_name) not in
-             (k_auditoria.g_nombre_campo_created_by,
-              k_auditoria.g_nombre_campo_created,
-              k_auditoria.g_nombre_campo_updated_by,
-              k_auditoria.g_nombre_campo_updated)
-       order by c.column_id;
-  begin
-    l_type := lower(nvl(i_type,
-                        'y_' || substr(i_tabla, 3, length(i_tabla) - 3)));
-  
-    -- Genera type spec
-    select c.comments
-      into l_comments
-      from user_tab_comments c
-     where lower(c.table_name) like 't\_%' escape
-     '\'
-       and lower(c.table_name) = lower(i_tabla);
-  
-    l_campos1 := '';
-    for c in cr_campos loop
-      l_campos1 := l_campos1 || '/** ' || c.comments || ' */' ||
-                   utl_tcp.crlf;
-      l_campos1 := l_campos1 || lower(c.column_name) || ' ';
-    
-      case c.data_type
-        when 'NUMBER' then
-          if c.data_precision is not null then
-            if c.data_scale > 0 then
-              l_data_type := c.data_type || '(' ||
-                             to_char(c.data_precision) || ',' ||
-                             to_char(c.data_scale) || ')';
-            else
-              l_data_type := c.data_type || '(' ||
-                             to_char(c.data_precision) || ')';
-            end if;
-          else
-            l_data_type := c.data_type;
-          end if;
-        when 'VARCHAR2' then
-          l_data_type := c.data_type || '(' || to_char(c.data_length) || ')';
-        else
-          l_data_type := c.data_type;
-      end case;
-      l_campos1 := l_campos1 || l_data_type || ',' || utl_tcp.crlf;
-    end loop;
-  
-    l_sentencia := 'CREATE OR REPLACE TYPE ' || l_type || ' UNDER y_objeto
-(
-/**
-Agrupa datos de ' || l_comments || '.
-
-%author jtsoya539 30/3/2020 10:54:26
-*/
-
-/*
---------------------------------- MIT License ---------------------------------
-Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
--------------------------------------------------------------------------------
-*/
-
-' || l_campos1 || '
-
-  CONSTRUCTOR FUNCTION ' || l_type || ' RETURN SELF AS RESULT,
-
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto,
-
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB
-)';
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
-  
-    -- Genera type body
-    l_campos1 := '';
-    for c in cr_campos loop
-      l_campos1 := l_campos1 || 'self.' || lower(c.column_name) ||
-                   ' := NULL;' || utl_tcp.crlf;
-    end loop;
-  
-    l_campos2 := '';
-    for c in cr_campos loop
-      case c.data_type
-        when 'VARCHAR2' then
-          l_data_type := 'string';
-        else
-          l_data_type := lower(c.data_type);
-      end case;
-    
-      l_campos2 := l_campos2 || 'l_objeto.' || lower(c.column_name) ||
-                   ' := l_json_object.get_' || l_data_type || '(''' ||
-                   lower(c.column_name) || ''');' || utl_tcp.crlf;
-    end loop;
-  
-    l_campos3 := '';
-    for c in cr_campos loop
-      l_campos3 := l_campos3 || 'l_json_object.put(''' ||
-                   lower(c.column_name) || ''', self.' ||
-                   lower(c.column_name) || ');' || utl_tcp.crlf;
-    end loop;
-  
-    l_sentencia := 'CREATE OR REPLACE TYPE BODY ' || l_type || ' IS
-
-  CONSTRUCTOR FUNCTION ' || l_type || ' RETURN SELF AS RESULT AS
-  BEGIN
-' || l_campos1 || '
-    RETURN;
-  END;
-
-  STATIC FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto IS
-    l_objeto      ' || l_type || ';
-    l_json_object json_object_t;
-  BEGIN
-    l_json_object := json_object_t.parse(i_json);
-
-    l_objeto := NEW ' || l_type || '();
-' || l_campos2 || '
-    RETURN l_objeto;
-  END;
-
-  OVERRIDING MEMBER FUNCTION to_json RETURN CLOB IS
-    l_json_object json_object_t;
-  BEGIN
-    l_json_object := NEW json_object_t();
-' || l_campos3 || '
-    RETURN l_json_object.to_clob;
-  END;
-
-END;';
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
-  end;
-
-  function f_valor_parametro(i_id_parametro in varchar2) return varchar2 is
-    l_valor t_parametros.valor%type;
+  function f_valor_secuencia_id(i_tabla in varchar2) return number is
+    l_valor     number;
+    l_secuencia all_sequences.sequence_name%type;
   begin
     begin
-      select a.valor
-        into l_valor
-        from t_parametros a
-       where a.id_parametro = i_id_parametro;
+      select 'ISEQ$$_' || object_id
+        into l_secuencia
+        from all_objects
+       where object_type = 'TABLE'
+         and object_name = upper(i_tabla);
+    
+      execute immediate 'select ' || l_secuencia || '.nextval from dual'
+        into l_valor;
     exception
       when others then
         l_valor := null;
     end;
+  
     return l_valor;
+  end;
+
+  function f_valor_parametro(i_id_parametro in varchar2) return varchar2 is
+  begin
+    return k_parametro.f_valor_parametro(k_parametro.c_tabla_parametros,
+                                         i_id_parametro);
+  exception
+    when others then
+      return null;
   end;
 
   procedure p_actualizar_valor_parametro(i_id_parametro in varchar2,
                                          i_valor        in varchar2) is
   begin
-    update t_parametros a
-       set a.valor = i_valor
-     where a.id_parametro = i_id_parametro;
+    k_parametro.p_definir_parametro(k_parametro.c_tabla_parametros,
+                                    i_id_parametro,
+                                    i_valor);
   end;
 
   function f_hash(i_data      in varchar2,
@@ -270,6 +106,42 @@ END;';
     return rawtohex(as_crypto.hash(utl_raw.cast_to_raw(i_data),
                                    i_hash_type));
   end;
+
+  -- https://stackoverflow.com/a/16900226
+  function get_dotnet_ticks(intimestamp in timestamp) return number as
+    -- **********************************************************************************
+    -- File name:         Get_DotNet_Ticks
+    -- Original Author:   Roberto Lopes
+    -- Creation Date:     October 2012
+    -- Description:       Returns the number of ticks for the provided timestamp, based
+    --                    on the Microsoft .Net algorithm
+    -- **********************************************************************************
+    begindate timestamp := to_timestamp('0001-01-03', 'YYYY-MM-DD'); --.Net Ticks are counted starting from this date
+  begin
+    return(extract(day from(intimestamp - begindate)) * 86400000 +
+           (to_number(to_char(intimestamp, 'SSSSSFF3')))) * 10000;
+  end;
+
+  -- https://stackoverflow.com/a/50413505
+  function guid return varchar2 as
+  begin
+    return regexp_replace(sys_guid(),
+                          '(.{8})(.{4})(.{4})(.{4})(.{12})',
+                          '\1-\2-\3-\4-\5');
+  end;
+
+  function randomuuid return varchar2 as
+    language java name 'RandomUUID.create() return java.lang.String';
+
+  /**
+  Genera par de claves RSA separadas por punto (.)
+  Formato: public_key.private_key
+  
+  %author dmezac 01/04/2025
+  %return Par de claves RSA separadas por punto (.) en formato public_key.private_key
+  */
+  function rsakeypairgenerator return varchar2 as
+    language java name 'RsaKeyPairGenerator.create() return java.lang.String';
 
   function bool_to_string(i_bool in boolean) return varchar2 is
   begin
@@ -322,7 +194,8 @@ END;';
     return l_clob;
   end;
 
-  function clob_to_blob(p_data in clob) return blob is
+  function clob_to_blob(p_data    in clob,
+                        p_charset in varchar2 default null) return blob is
     -- -----------------------------------------------------------------------------------
     -- File Name    : https://oracle-base.com/dba/miscellaneous/clob_to_blob.sql
     -- Author       : Tim Hall
@@ -334,6 +207,8 @@ END;';
     l_src_offset   pls_integer := 1;
     l_lang_context pls_integer := dbms_lob.default_lang_ctx;
     l_warning      pls_integer := dbms_lob.warn_inconvertible_char;
+    l_blob_csid    number := nvl(nls_charset_id(p_charset),
+                                 dbms_lob.default_csid);
   begin
     dbms_lob.createtemporary(lob_loc => l_blob, cache => true);
   
@@ -342,7 +217,7 @@ END;';
                            amount       => dbms_lob.lobmaxsize,
                            dest_offset  => l_dest_offset,
                            src_offset   => l_src_offset,
-                           blob_csid    => dbms_lob.default_csid,
+                           blob_csid    => l_blob_csid,
                            lang_context => l_lang_context,
                            warning      => l_warning);
   
@@ -415,52 +290,6 @@ END;';
                                 'AL32UTF8');
   end;
 
-  function json_to_objeto(i_json        in clob,
-                          i_nombre_tipo in varchar2) return anydata is
-    l_retorno anydata;
-    l_objeto  y_objeto;
-  begin
-    if i_json is not null and i_nombre_tipo is not null then
-      begin
-        execute immediate 'BEGIN :1 := ' || lower(i_nombre_tipo) ||
-                          '.parse_json(i_json => :2); END;'
-          using out l_objeto, in i_json;
-      exception
-        when ex_tipo_inexistente then
-          raise_application_error(-20000,
-                                  'Tipo ' || lower(i_nombre_tipo) ||
-                                  ' no existe');
-      end;
-    end if;
-  
-    l_retorno := anydata.convertobject(l_objeto);
-  
-    return l_retorno;
-  end;
-
-  function objeto_to_json(i_objeto in anydata) return clob is
-    l_json     clob;
-    l_typeinfo anytype;
-    l_typecode pls_integer;
-  begin
-    if i_objeto is not null then
-      l_typecode := i_objeto.gettype(l_typeinfo);
-      if l_typecode = dbms_types.typecode_object then
-        execute immediate 'DECLARE
-  l_retorno PLS_INTEGER;
-  l_anydata anydata := :1;
-  l_object  ' || i_objeto.gettypename || ';
-  l_clob    CLOB;
-BEGIN
-  l_retorno := l_anydata.getobject(obj => l_object);
-  :2        := l_object.to_json();
-END;'
-          using in i_objeto, out l_json;
-      end if;
-    end if;
-    return l_json;
-  end;
-
   function read_http_body(resp in out utl_http.resp) return clob as
     l_http_body clob;
     l_data      varchar2(1024);
@@ -530,6 +359,11 @@ END;'
   exception
     when others then
       return l_result;
+  end;
+
+  function f_es_valor_numerico_sn(i_valor in varchar2) return varchar2 is
+  begin
+    return bool_to_string(f_es_valor_numerico(i_valor));
   end;
 
   function f_zona_horaria(i_zona_horaria in varchar2) return varchar2 is

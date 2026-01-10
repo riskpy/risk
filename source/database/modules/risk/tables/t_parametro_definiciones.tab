@@ -1,0 +1,78 @@
+create table T_PARAMETRO_DEFINICIONES
+(
+  tabla             VARCHAR2(50) not null,
+  id_parametro      VARCHAR2(50) not null,
+  descripcion       VARCHAR2(500),
+  orden             NUMBER(3),
+  nombre_referencia VARCHAR2(50),
+  tipo_dato         VARCHAR2(1) not null,
+  observacion       VARCHAR2(1000),
+  id_dominio        VARCHAR2(30),
+  tipo_filtro       VARCHAR2(500),
+  formato           VARCHAR2(100),
+  longitud_maxima   NUMBER(15),
+  obligatorio       VARCHAR2(1) default 'N' not null,
+  valor_defecto     VARCHAR2(1000),
+  etiqueta          VARCHAR2(2000),
+  valores_posibles  VARCHAR2(50),
+  encriptado        VARCHAR2(1) default 'N' not null
+)
+;
+comment on table T_PARAMETRO_DEFINICIONES
+  is 'Definiciones de Parámetros adicionales';
+comment on column T_PARAMETRO_DEFINICIONES.tabla
+  is 'Nombre de la tabla relacionada';
+comment on column T_PARAMETRO_DEFINICIONES.id_parametro
+  is 'Nombre del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.descripcion
+  is 'Descripción del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.orden
+  is 'Número de orden del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.nombre_referencia
+  is 'Nombre del campo de referencia';
+comment on column T_PARAMETRO_DEFINICIONES.tipo_dato
+  is 'Tipo de dato del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.observacion
+  is 'Observación del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.id_dominio
+  is 'Dominio del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.tipo_filtro
+  is 'Tipo de registros a los cuales aplica el parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.formato
+  is 'Formato del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.longitud_maxima
+  is 'Longitud máxima del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.obligatorio
+  is 'El parámetro adicional es obligatorio? (S/N)';
+comment on column T_PARAMETRO_DEFINICIONES.valor_defecto
+  is 'Valor por defecto';
+comment on column T_PARAMETRO_DEFINICIONES.etiqueta
+  is 'Etiqueta del parámetro adicional';
+comment on column T_PARAMETRO_DEFINICIONES.valores_posibles
+  is 'Valores posibles. Dominio definido en tabla de significados';
+comment on column T_PARAMETRO_DEFINICIONES.encriptado
+  is 'El valor del parámetro adicional es encriptado? (S/N)';
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint PK_PARAMETRO_DEFINICIONES primary key (TABLA, ID_PARAMETRO);
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint CK_PARAMETRO_DEFINICIONES_TIPO_DATO
+  check (TIPO_DATO IN ('S', 'N', 'B', 'D'));
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint CK_PAR_DEF_ENCRIPTADO
+  check (ENCRIPTADO IN ('S', 'N'));
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint CK_PAR_DEF_OBLIGATORIO
+  check (OBLIGATORIO IN ('S', 'N'));
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint CK_PAR_DEF_TIP_DAT_ENCRIPTADO
+  check (ENCRIPTADO = 'N' OR (ENCRIPTADO = 'S' AND TIPO_DATO = 'S'));
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint CK_PAR_DEF_TIP_DAT_LON_MAXIMA
+  check (LONGITUD_MAXIMA IS NULL OR (LONGITUD_MAXIMA IS NOT NULL AND TIPO_DATO IN ('S', 'N')));
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint CK_PAR_DEF_TIP_DAT_VAL_POS
+  check (VALORES_POSIBLES IS NULL OR (VALORES_POSIBLES IS NOT NULL AND TIPO_DATO IN ('S', 'N')));
+alter table T_PARAMETRO_DEFINICIONES
+  add constraint CK_PAR_DEF_TIPO_DATO_FORMATO
+  check (TIPO_DATO <> 'O' OR (TIPO_DATO = 'O' AND FORMATO IS NOT NULL));
+

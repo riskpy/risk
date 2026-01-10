@@ -46,8 +46,8 @@ create or replace type body y_pagina is
         l_objetos := new y_objetos();
         for i in 0 .. l_json_array.get_size - 1 loop
           l_objeto  := null;
-          l_anydata := k_util.json_to_objeto(l_json_array.get(i).to_clob,
-                                             l_tipo);
+          l_anydata := k_objeto_util.json_to_objeto(l_json_array.get(i).to_clob,
+                                                    l_tipo);
           l_result  := l_anydata.getobject(l_objeto);
           l_objetos.extend;
           l_objetos(l_objetos.count) := l_objeto;
@@ -93,3 +93,4 @@ create or replace type body y_pagina is
 
 end;
 /
+

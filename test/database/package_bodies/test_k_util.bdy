@@ -4,6 +4,26 @@ create or replace package body test_k_util is
     l_valor t_parametros.valor%type;
   begin
     -- Arrange
+    insert into t_parametro_definiciones
+      (tabla,
+       id_parametro,
+       descripcion,
+       orden,
+       nombre_referencia,
+       tipo_dato,
+       observacion,
+       id_dominio,
+       tipo_filtro)
+    values
+      ('T_PARAMETROS',
+       'PARAMETRO_CON_VALOR',
+       null,
+       null,
+       'ID_PARAMETRO',
+       'S',
+       null,
+       null,
+       null);
     insert into t_parametros
       (id_parametro, valor)
     values
@@ -18,6 +38,26 @@ create or replace package body test_k_util is
     l_valor t_parametros.valor%type;
   begin
     -- Arrange
+    insert into t_parametro_definiciones
+      (tabla,
+       id_parametro,
+       descripcion,
+       orden,
+       nombre_referencia,
+       tipo_dato,
+       observacion,
+       id_dominio,
+       tipo_filtro)
+    values
+      ('T_PARAMETROS',
+       'PARAMETRO_SIN_VALOR',
+       null,
+       null,
+       'ID_PARAMETRO',
+       'S',
+       null,
+       null,
+       null);
     insert into t_parametros
       (id_parametro, valor)
     values
@@ -42,6 +82,26 @@ create or replace package body test_k_util is
     l_valor t_parametros.valor%type;
   begin
     -- Arrange
+    insert into t_parametro_definiciones
+      (tabla,
+       id_parametro,
+       descripcion,
+       orden,
+       nombre_referencia,
+       tipo_dato,
+       observacion,
+       id_dominio,
+       tipo_filtro)
+    values
+      ('T_PARAMETROS',
+       'PARAMETRO_CON_VALOR',
+       null,
+       null,
+       'ID_PARAMETRO',
+       'S',
+       null,
+       null,
+       null);
     insert into t_parametros
       (id_parametro, valor)
     values

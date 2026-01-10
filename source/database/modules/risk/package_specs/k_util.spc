@@ -8,7 +8,7 @@ create or replace package k_util is
 
   /*
   --------------------------------- MIT License ---------------------------------
-  Copyright (c) 2019 - 2025 jtsoya539, DamyGenius and RISK contributors
+  Copyright (c) 2019 jtsoya539
   
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -30,10 +30,6 @@ create or replace package k_util is
   -------------------------------------------------------------------------------
   */
 
-  -- Excepciones
-  ex_tipo_inexistente exception;
-  pragma exception_init(ex_tipo_inexistente, -6550);
-
   /**
   Genera trigger de secuencia para un campo de una tabla
   
@@ -48,9 +44,7 @@ create or replace package k_util is
                                         i_trigger  in varchar2 default null,
                                         i_ejecutar in boolean default true);
 
-  procedure p_generar_type_objeto(i_tabla    in varchar2,
-                                  i_type     in varchar2 default null,
-                                  i_ejecutar in boolean default true);
+  function f_valor_secuencia_id(i_tabla in varchar2) return number;
 
   function f_valor_parametro(i_id_parametro in varchar2) return varchar2;
 
@@ -60,13 +54,29 @@ create or replace package k_util is
   function f_hash(i_data      in varchar2,
                   i_hash_type in pls_integer) return varchar2 deterministic;
 
+  function get_dotnet_ticks(intimestamp in timestamp) return number;
+
+  function guid return varchar2;
+
+  function randomuuid return varchar2;
+
+  /**
+  Genera par de claves RSA separadas por punto (.)
+  Formato: public_key.private_key
+  
+  %author dmezac 01/04/2025
+  %return Par de claves RSA separadas por punto (.) en formato public_key.private_key
+  */
+  function rsakeypairgenerator return varchar2;
+
   function bool_to_string(i_bool in boolean) return varchar2;
 
   function string_to_bool(i_string in varchar2) return boolean;
 
   function blob_to_clob(p_data in blob) return clob;
 
-  function clob_to_blob(p_data in clob) return blob;
+  function clob_to_blob(p_data    in clob,
+                        p_charset in varchar2 default null) return blob;
 
   function base64encode(i_blob in blob) return clob;
 
@@ -75,11 +85,6 @@ create or replace package k_util is
   function encrypt(i_src in varchar2) return varchar2;
 
   function decrypt(i_src in varchar2) return varchar2;
-
-  function json_to_objeto(i_json        in clob,
-                          i_nombre_tipo in varchar2) return anydata;
-
-  function objeto_to_json(i_objeto in anydata) return clob;
 
   function read_http_body(resp in out utl_http.resp) return clob;
 
@@ -99,10 +104,19 @@ create or replace package k_util is
   Retorna si el valor recibido es de tipo numérico
   
   %author dmezac 26/1/2022 19:48:15
-  %param i_valor Zona horaria en formato decimal
+  %param i_valor valor a determinar si es numérico o no
   %return Si el valor recibido es de tipo numérico
   */
   function f_es_valor_numerico(i_valor in varchar2) return boolean;
+
+  /**
+  Retorna si el valor recibido es de tipo numérico
+  
+  %author dmezac 26/1/2022 19:48:15
+  %param i_valor valor a determinar si es numérico o no
+  %return Si el valor recibido es de tipo numérico
+  */
+  function f_es_valor_numerico_sn(i_valor in varchar2) return varchar2;
 
   /**
   Retorna una zona horaria en formato '(+|-)HH:MM'
@@ -115,3 +129,4 @@ create or replace package k_util is
 
 end;
 /
+
