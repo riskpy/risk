@@ -6,7 +6,8 @@ else
     echo "BUILDER: Tests execution started"
 
     # Get the url to latest release "zip" file
-    DOWNLOAD_URL=$(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL-cli/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
+    #DOWNLOAD_URL=$(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL-cli/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip\"" | sed 's/"//g')
+    DOWNLOAD_URL=https://github.com/utPLSQL/utPLSQL-cli/releases/download/3.1.9/utPLSQL-cli.zip
     # Download the latest release "zip" file
     curl -Lk "${DOWNLOAD_URL}" -o utPLSQL-cli.zip
     # Extract downloaded "zip" file
