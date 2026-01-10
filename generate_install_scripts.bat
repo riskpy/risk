@@ -248,8 +248,6 @@ for /d %%d in ("%BASE_DIR%\*") do (
     )
     echo @@scripts/ins_t_modulos.sql
     echo @@scripts/ins_t_dominios.sql
-    echo @@scripts/ins_t_significado_dominios.sql
-    echo @@scripts/ins_t_significados.sql
     echo @@scripts/ins_t_parametro_definiciones.sql
     echo @@scripts/ins_t_parametros.sql
     echo @@scripts/ins_t_aplicaciones.sql
@@ -257,6 +255,14 @@ for /d %%d in ("%BASE_DIR%\*") do (
     if "%%~nxd"=="risk" (
         echo @@scripts/ins_t_autenticacion_origenes.sql
         echo @@scripts/ins_t_roles.sql
+    )
+    :: Create sorted list of meaning install script files
+    if exist "%%d\scripts\meanings\install*.sql" (
+        dir /b "%%d\scripts\meanings\install*.sql" > "%TEMP_DIR%\meanings_install.txt"
+        sort "%TEMP_DIR%\meanings_install.txt" /o "%TEMP_DIR%\meanings_install_sorted.txt"
+        for /f "tokens=*" %%f in (%TEMP_DIR%\meanings_install_sorted.txt) do (
+            echo @@scripts/meanings/%%f
+        )
     )
     :: Create sorted list of operation install script files
     if exist "%%d\scripts\operations\install*.sql" (
@@ -510,13 +516,19 @@ for /d %%d in ("%BASE_DIR%\*") do (
             echo @@scripts/operations/%%f
         )
     )
+    :: Create sorted list of meaning uninstall script files
+    if exist "%%d\scripts\meanings\uninstall*.sql" (
+        dir /b "%%d\scripts\meanings\uninstall*.sql" > "%TEMP_DIR%\meanings_uninstall.txt"
+        sort "%TEMP_DIR%\meanings_uninstall.txt" /o "%TEMP_DIR%\meanings_uninstall_sorted.txt"
+        for /f "tokens=*" %%f in (%TEMP_DIR%\meanings_uninstall_sorted.txt) do (
+            echo @@scripts/meanings/%%f
+        )
+    )
     if not "%%~nxd"=="risk" (
         echo @@scripts/del_t_errores.sql
         echo @@scripts/del_t_aplicaciones.sql
         echo @@scripts/del_t_parametros.sql
         echo @@scripts/del_t_parametro_definiciones.sql
-        echo @@scripts/del_t_significados.sql
-        echo @@scripts/del_t_significado_dominios.sql
         echo @@scripts/del_t_dominios.sql
         echo @@scripts/del_t_modulos.sql
     )

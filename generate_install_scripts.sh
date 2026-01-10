@@ -304,8 +304,6 @@ INSTALL_EOF
         
         echo "@@scripts/ins_t_modulos.sql" >> "$module_dir/install.sql"
         echo "@@scripts/ins_t_dominios.sql" >> "$module_dir/install.sql"
-        echo "@@scripts/ins_t_significado_dominios.sql" >> "$module_dir/install.sql"
-        echo "@@scripts/ins_t_significados.sql" >> "$module_dir/install.sql"
         echo "@@scripts/ins_t_parametro_definiciones.sql" >> "$module_dir/install.sql"
         echo "@@scripts/ins_t_parametros.sql" >> "$module_dir/install.sql"
         echo "@@scripts/ins_t_aplicaciones.sql" >> "$module_dir/install.sql"
@@ -315,7 +313,17 @@ INSTALL_EOF
             echo "@@scripts/ins_t_autenticacion_origenes.sql" >> "$module_dir/install.sql"
             echo "@@scripts/ins_t_roles.sql" >> "$module_dir/install.sql"
         fi
-        
+
+        # Sort meaning install script files
+        if [ -d "$module_dir/scripts/meanings" ]; then
+            find "$module_dir/scripts/meanings" -name "install*.sql" -type f -printf "%f\n" | LC_ALL=C sort > "$TEMP_DIR/meanings_install.txt"
+            while IFS= read -r filename; do
+                if [ -n "$filename" ]; then
+                    echo "@@scripts/meanings/$filename" >> "$module_dir/install.sql"
+                fi
+            done < "$TEMP_DIR/meanings_install.txt"
+        fi
+
         # Sort operation install script files
         if [ -d "$module_dir/scripts/operations" ]; then
             find "$module_dir/scripts/operations" -name "install*.sql" -type f -printf "%f\n" | LC_ALL=C sort > "$TEMP_DIR/operations_install.txt"
@@ -618,14 +626,22 @@ UNINSTALL_EOF
                 fi
             done < "$TEMP_DIR/operations_uninstall.txt"
         fi
+
+        # Sort meaning uninstall script files
+        if [ -d "$module_dir/scripts/meanings" ]; then
+            find "$module_dir/scripts/meanings" -name "uninstall*.sql" -type f -printf "%f\n" | LC_ALL=C sort > "$TEMP_DIR/meanings_uninstall.txt"
+            while IFS= read -r filename; do
+                if [ -n "$filename" ]; then
+                    echo "@@scripts/meanings/$filename" >> "$module_dir/uninstall.sql"
+                fi
+            done < "$TEMP_DIR/meanings_uninstall.txt"
+        fi
         
         if [ "$module_name" != "risk" ]; then
             echo "@@scripts/del_t_errores.sql" >> "$module_dir/uninstall.sql"
             echo "@@scripts/del_t_aplicaciones.sql" >> "$module_dir/uninstall.sql"
             echo "@@scripts/del_t_parametros.sql" >> "$module_dir/uninstall.sql"
             echo "@@scripts/del_t_parametro_definiciones.sql" >> "$module_dir/uninstall.sql"
-            echo "@@scripts/del_t_significados.sql" >> "$module_dir/uninstall.sql"
-            echo "@@scripts/del_t_significado_dominios.sql" >> "$module_dir/uninstall.sql"
             echo "@@scripts/del_t_dominios.sql" >> "$module_dir/uninstall.sql"
             echo "@@scripts/del_t_modulos.sql" >> "$module_dir/uninstall.sql"
         fi

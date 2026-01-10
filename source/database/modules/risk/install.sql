@@ -320,14 +320,13 @@ prompt -----------------------------------
 prompt
 @@scripts/ins_t_modulos.sql
 @@scripts/ins_t_dominios.sql
-@@scripts/ins_t_significado_dominios.sql
-@@scripts/ins_t_significados.sql
 @@scripts/ins_t_parametro_definiciones.sql
 @@scripts/ins_t_parametros.sql
 @@scripts/ins_t_aplicaciones.sql
 @@scripts/ins_t_errores.sql
 @@scripts/ins_t_autenticacion_origenes.sql
 @@scripts/ins_t_roles.sql
+@@scripts/meanings/install.sql
 @@scripts/operations/install.sql
 commit;
 /

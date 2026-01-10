@@ -235,6 +235,7 @@ prompt Running scripts...
 prompt -----------------------------------
 prompt
 @@scripts/operations/uninstall.sql
+@@scripts/meanings/uninstall.sql
 commit;
 /
 

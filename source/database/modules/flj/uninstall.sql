@@ -130,12 +130,11 @@ prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
+@@scripts/meanings/uninstall.sql
 @@scripts/del_t_errores.sql
 @@scripts/del_t_aplicaciones.sql
 @@scripts/del_t_parametros.sql
 @@scripts/del_t_parametro_definiciones.sql
-@@scripts/del_t_significados.sql
-@@scripts/del_t_significado_dominios.sql
 @@scripts/del_t_dominios.sql
 @@scripts/del_t_modulos.sql
 commit;
