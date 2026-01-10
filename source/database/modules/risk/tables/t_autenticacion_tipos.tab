@@ -1,0 +1,33 @@
+create table T_AUTENTICACION_TIPOS
+(
+  id_autenticacion_tipo              VARCHAR2(1) not null,
+  nombre                             VARCHAR2(100) not null,
+  detalle                            VARCHAR2(2000),
+  activo                             VARCHAR2(1) default 'N' not null,
+  metodo_validacion_credenciales     VARCHAR2(10),
+  parametros_validacion_credenciales VARCHAR2(4000)
+)
+;
+comment on table T_AUTENTICACION_TIPOS
+  is 'Tipos de autenticación';
+comment on column T_AUTENTICACION_TIPOS.id_autenticacion_tipo
+  is 'Identificador del tipo de autenticación';
+comment on column T_AUTENTICACION_TIPOS.nombre
+  is 'Nombre del tipo de autenticación';
+comment on column T_AUTENTICACION_TIPOS.detalle
+  is 'Detalles adicionales del tipo de autenticación';
+comment on column T_AUTENTICACION_TIPOS.activo
+  is 'El tipo de autenticación está activo? (S/N)';
+comment on column T_AUTENTICACION_TIPOS.metodo_validacion_credenciales
+  is 'Método de validación de credenciales del tipo de autenticación';
+comment on column T_AUTENTICACION_TIPOS.parametros_validacion_credenciales
+  is 'Parámetros de validación de credenciales del tipo de autenticación';
+alter table T_AUTENTICACION_TIPOS
+  add constraint PK_AUTENTICACION_TIPOS primary key (ID_AUTENTICACION_TIPO);
+alter table T_AUTENTICACION_TIPOS
+  add constraint CK_AUTENTICACION_TIPOS_ACTIVO
+  check (ACTIVO IN ('S', 'N'));
+alter table T_AUTENTICACION_TIPOS
+  add constraint CK_AUT_TIP_PAR_VAL_CREDENCIALES
+  check (PARAMETROS_VALIDACION_CREDENCIALES IS JSON);
+

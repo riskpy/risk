@@ -166,6 +166,8 @@ drop table t_aplicaciones cascade constraints purge;
 drop table t_archivo_definiciones cascade constraints purge;
 drop table t_archivos cascade constraints purge;
 drop table t_archivos_hist cascade constraints purge;
+drop table t_autenticacion_origenes cascade constraints purge;
+drop table t_autenticacion_tipos cascade constraints purge;
 drop table t_barrios cascade constraints purge;
 drop table t_ciudades cascade constraints purge;
 drop table t_dato_definiciones cascade constraints purge;

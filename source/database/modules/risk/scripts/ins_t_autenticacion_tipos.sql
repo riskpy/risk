@@ -1,0 +1,23 @@
+prompt Importing table t_autenticacion_tipos...
+set feedback off
+set define off
+
+insert into t_autenticacion_tipos (ID_AUTENTICACION_TIPO, NOMBRE, DETALLE, ACTIVO, METODO_VALIDACION_CREDENCIALES, PARAMETROS_VALIDACION_CREDENCIALES)
+values ('A', 'CLAVE DE ACCESO', null, 'S', 'RISK', '{"tipo_clave":"A"}');
+
+insert into t_autenticacion_tipos (ID_AUTENTICACION_TIPO, NOMBRE, DETALLE, ACTIVO, METODO_VALIDACION_CREDENCIALES, PARAMETROS_VALIDACION_CREDENCIALES)
+values ('B', 'BIOMETRÍA', null, 'S', null, null);
+
+insert into t_autenticacion_tipos (ID_AUTENTICACION_TIPO, NOMBRE, DETALLE, ACTIVO, METODO_VALIDACION_CREDENCIALES, PARAMETROS_VALIDACION_CREDENCIALES)
+values ('K', 'TOTP SOFT TOKEN (2FA)', '2FA', 'S', 'EXTERNO', null);
+
+insert into t_autenticacion_tipos (ID_AUTENTICACION_TIPO, NOMBRE, DETALLE, ACTIVO, METODO_VALIDACION_CREDENCIALES, PARAMETROS_VALIDACION_CREDENCIALES)
+values ('M', 'TOTP MAIL (2FA)', '2FA', 'S', null, null);
+
+insert into t_autenticacion_tipos (ID_AUTENTICACION_TIPO, NOMBRE, DETALLE, ACTIVO, METODO_VALIDACION_CREDENCIALES, PARAMETROS_VALIDACION_CREDENCIALES)
+values ('S', 'TOTP SMS (2FA)', '2FA', 'S', null, null);
+
+insert into t_autenticacion_tipos (ID_AUTENTICACION_TIPO, NOMBRE, DETALLE, ACTIVO, METODO_VALIDACION_CREDENCIALES, PARAMETROS_VALIDACION_CREDENCIALES)
+values ('T', 'CLAVE TRANSACCIONAL', null, 'S', 'RISK', '{"tipo_clave":"T"}');
+
+prompt Done.

@@ -60,6 +60,8 @@ prompt
 @@tables/t_archivo_definiciones.tab
 @@tables/t_archivos.tab
 @@tables/t_archivos_hist.tab
+@@tables/t_autenticacion_origenes.tab
+@@tables/t_autenticacion_tipos.tab
 @@tables/t_barrios.tab
 @@tables/t_ciudades.tab
 @@tables/t_dato_definiciones.tab
