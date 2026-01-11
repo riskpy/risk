@@ -50,6 +50,32 @@ begin
   -----------------------------------
 
   l_clob(1) :=q'!TIPO_DATO_PARAMETRO!';
+  l_clob(2) :=q'!A!';
+  l_clob(3) :=q'!JSON ARRAY!';
+  l_clob(4) :=q'!!';
+  l_clob(5) :=q'!S!';
+  l_clob(6) :=q'!!';
+
+  insert into t_significados
+  (
+     "DOMINIO"
+    ,"CODIGO"
+    ,"SIGNIFICADO"
+    ,"REFERENCIA"
+    ,"ACTIVO"
+    ,"REFERENCIA_2"
+  )
+  values
+  (
+     to_char(l_clob(1))
+    ,to_char(l_clob(2))
+    ,to_char(l_clob(3))
+    ,to_char(l_clob(4))
+    ,to_char(l_clob(5))
+    ,to_char(l_clob(6))
+  );
+
+  l_clob(1) :=q'!TIPO_DATO_PARAMETRO!';
   l_clob(2) :=q'!B!';
   l_clob(3) :=q'!BOOLEAN!';
   l_clob(4) :=q'!!';
@@ -78,6 +104,32 @@ begin
   l_clob(1) :=q'!TIPO_DATO_PARAMETRO!';
   l_clob(2) :=q'!D!';
   l_clob(3) :=q'!DATE!';
+  l_clob(4) :=q'!!';
+  l_clob(5) :=q'!S!';
+  l_clob(6) :=q'!!';
+
+  insert into t_significados
+  (
+     "DOMINIO"
+    ,"CODIGO"
+    ,"SIGNIFICADO"
+    ,"REFERENCIA"
+    ,"ACTIVO"
+    ,"REFERENCIA_2"
+  )
+  values
+  (
+     to_char(l_clob(1))
+    ,to_char(l_clob(2))
+    ,to_char(l_clob(3))
+    ,to_char(l_clob(4))
+    ,to_char(l_clob(5))
+    ,to_char(l_clob(6))
+  );
+
+  l_clob(1) :=q'!TIPO_DATO_PARAMETRO!';
+  l_clob(2) :=q'!J!';
+  l_clob(3) :=q'!JSON OBJECT!';
   l_clob(4) :=q'!!';
   l_clob(5) :=q'!S!';
   l_clob(6) :=q'!!';

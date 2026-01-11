@@ -28,21 +28,9 @@ begin
 
   -- Valida alias de usuario
   if inserting or
-     (updating and nvl(:new.alias, 'X') <> nvl(:old.alias, 'X')) then
-    if not k_usuario.f_validar_alias(:new.alias) then
-      if nvl(:new.origen, k_autenticacion.c_origen_risk) =
-         k_autenticacion.c_origen_risk then
-        raise_application_error(-20000,
-                                'Caracteres no permitidos en el Usuario: ' ||
-                                regexp_replace(:new.alias,
-                                               trim(translate(k_util.f_valor_parametro('REGEXP_VALIDAR_ALIAS_USUARIO'),
-                                                              '^$',
-                                                              '  ')),
-                                               ''));
-      else
-        raise_application_error(-20000, 'Alias de usuario inválido');
-      end if;
-    end if;
+     (updating and (nvl(:new.alias, 'X') <> nvl(:old.alias, 'X') or
+     nvl(:new.origen, 'X') <> nvl(:old.origen, 'X'))) then
+    k_usuario.p_validar_alias(:new.alias, :new.origen);
   end if;
 
   $if k_modulo.c_instalado_msj $then

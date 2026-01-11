@@ -1,11 +1,13 @@
 create table T_ROL_PERMISOS
 (
-  id_rol     NUMBER(3) not null,
+  id_rol     NUMBER not null,
   id_permiso VARCHAR2(300) not null,
   consultar  VARCHAR2(1) default 'N' not null,
   insertar   VARCHAR2(1) default 'N' not null,
   actualizar VARCHAR2(1) default 'N' not null,
-  eliminar   VARCHAR2(1) default 'N' not null
+  eliminar   VARCHAR2(1) default 'N' not null,
+  verificar  VARCHAR2(1) default 'N' not null,
+  autorizar  VARCHAR2(1) default 'N' not null
 )
 ;
 comment on table T_ROL_PERMISOS
@@ -17,16 +19,23 @@ comment on column T_ROL_PERMISOS.id_permiso
 comment on column T_ROL_PERMISOS.consultar
   is 'Puede consultar? (S/N)';
 comment on column T_ROL_PERMISOS.insertar
-  is 'Puede insertar? (S/N)';
+  is 'Puede insertar/cargar? (S/N)';
 comment on column T_ROL_PERMISOS.actualizar
   is 'Puede actualizar? (S/N)';
 comment on column T_ROL_PERMISOS.eliminar
   is 'Puede eliminar? (S/N)';
+comment on column T_ROL_PERMISOS.verificar
+  is 'Puede verificar? (S/N)';
+comment on column T_ROL_PERMISOS.autorizar
+  is 'Puede autorizar? (S/N)';
 alter table T_ROL_PERMISOS
   add constraint PK_ROL_PERMISOS primary key (ID_ROL, ID_PERMISO);
 alter table T_ROL_PERMISOS
   add constraint CK_ROL_PERMISOS_ACTUALIZAR
   check (ACTUALIZAR IN ('S', 'N'));
+alter table T_ROL_PERMISOS
+  add constraint CK_ROL_PERMISOS_AUTORIZAR
+  check (AUTORIZAR IN ('S', 'N'));
 alter table T_ROL_PERMISOS
   add constraint CK_ROL_PERMISOS_CONSULTAR
   check (CONSULTAR IN ('S', 'N'));
@@ -36,4 +45,7 @@ alter table T_ROL_PERMISOS
 alter table T_ROL_PERMISOS
   add constraint CK_ROL_PERMISOS_INSERTAR
   check (INSERTAR IN ('S', 'N'));
+alter table T_ROL_PERMISOS
+  add constraint CK_ROL_PERMISOS_VERIFICAR
+  check (VERIFICAR IN ('S', 'N'));
 

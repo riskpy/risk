@@ -1,9 +1,7 @@
-create or replace type body y_respuesta is
+create or replace type body y_permiso is
 
-  constructor function y_respuesta return self as result as
+  constructor function y_permiso return self as result as
   begin
-    self.codigo  := '0';
-    self.mensaje := 'OK';
     return;
   end;
 

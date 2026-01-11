@@ -1,7 +1,8 @@
 create or replace package body test_k_operacion is
 
-  procedure p_inicializar_log_activo is
+  procedure p_registrar_log_activo is
     l_id_operacion t_operaciones.id_operacion%type;
+    l_id_log       t_operacion_logs.id_operacion_log%type;
   begin
     -- Arrange
     insert into t_operaciones
@@ -9,15 +10,19 @@ create or replace package body test_k_operacion is
     values
       ('S', 'OPERACION_DE_PRUEBA', 'GEN', 'S', '0.1.0', 2)
     returning id_operacion into l_id_operacion;
-    k_sistema.p_inicializar_parametros;
+    commit;
     -- Act
-    k_operacion.p_inicializar_log(l_id_operacion);
+    k_operacion.p_registrar_log(l_id_log, l_id_operacion, '{}');
+    --
+    delete t_operaciones where id_operacion = l_id_operacion;
+    commit;
     -- Assert
-    ut.expect(k_sistema.f_valor_parametro_number(k_operacion.c_id_log)).to_be_not_null();
+    ut.expect(l_id_log).to_be_not_null();
   end;
 
-  procedure p_inicializar_log_inactivo is
+  procedure p_registrar_log_inactivo is
     l_id_operacion t_operaciones.id_operacion%type;
+    l_id_log       t_operacion_logs.id_operacion_log%type;
   begin
     -- Arrange
     insert into t_operaciones
@@ -25,11 +30,14 @@ create or replace package body test_k_operacion is
     values
       ('S', 'OPERACION_DE_PRUEBA', 'GEN', 'S', '0.1.0', 0)
     returning id_operacion into l_id_operacion;
-    k_sistema.p_inicializar_parametros;
+    commit;
     -- Act
-    k_operacion.p_inicializar_log(l_id_operacion);
+    k_operacion.p_registrar_log(l_id_log, l_id_operacion, '{}');
+    --
+    delete t_operaciones where id_operacion = l_id_operacion;
+    commit;
     -- Assert
-    ut.expect(k_sistema.f_valor_parametro_number(k_operacion.c_id_log)).to_be_null();
+    ut.expect(l_id_log).to_be_null();
   end;
 
   procedure f_id_operacion_existente is
@@ -282,3 +290,4 @@ create or replace package body test_k_operacion is
 
 end;
 /
+

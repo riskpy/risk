@@ -50,6 +50,8 @@ prompt -----------------------------------
 prompt
 drop trigger gb_archivos;
 drop trigger gb_datos;
+drop trigger gb_entidades;
+drop trigger gb_errores_actualizar_clave;
 drop trigger gb_operacion_parametros;
 drop trigger gb_operaciones;
 drop trigger gb_personas;
@@ -61,8 +63,6 @@ drop trigger gb_usuarios;
 drop trigger gf_archivos;
 drop trigger gf_operaciones;
 drop trigger gs_monitoreo_ejecuciones;
-drop trigger gs_operacion_logs;
-drop trigger gs_operaciones;
 
 prompt
 prompt Dropping packages...
@@ -78,6 +78,7 @@ drop package k_clave;
 drop package k_dato;
 drop package k_dispositivo;
 drop package k_dominio;
+drop package k_entidad;
 drop package k_error;
 drop package k_html;
 drop package k_importacion;
@@ -88,6 +89,7 @@ drop package k_monitoreo;
 drop package k_monitoreo_aut;
 drop package k_objeto_util;
 drop package k_operacion;
+drop package k_operacion_util;
 drop package k_parametro;
 drop package k_reporte;
 drop package k_reporte_gen;
@@ -143,6 +145,8 @@ drop type y_pagina_parametros force;
 drop type y_pais force;
 drop type y_parametro force;
 drop type y_parametros force;
+drop type y_permiso force;
+drop type y_permisos force;
 drop type y_plantilla force;
 drop type y_respuesta force;
 drop type y_rol force;
@@ -176,7 +180,11 @@ drop table t_datos cascade constraints purge;
 drop table t_departamentos cascade constraints purge;
 drop table t_dispositivo_ubicaciones cascade constraints purge;
 drop table t_dispositivos cascade constraints purge;
+drop table t_documento_tipos cascade constraints purge;
 drop table t_dominios cascade constraints purge;
+drop table t_entidad_roles cascade constraints purge;
+drop table t_entidad_usuarios cascade constraints purge;
+drop table t_entidades cascade constraints purge;
 drop table t_errores cascade constraints purge;
 drop table t_idiomas cascade constraints purge;
 drop table t_importacion_parametros cascade constraints purge;
@@ -211,7 +219,6 @@ prompt Dropping sequences...
 prompt -----------------------------------
 prompt
 drop sequence s_id_monitoreo_ejecucion;
-drop sequence s_id_operacion_log;
 
 prompt
 prompt Purging recycle bin...

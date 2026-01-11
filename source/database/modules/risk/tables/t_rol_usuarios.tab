@@ -1,7 +1,9 @@
 create table T_ROL_USUARIOS
 (
-  id_rol     NUMBER(3) not null,
-  id_usuario NUMBER(10) not null
+  id_rol     NUMBER not null,
+  id_usuario NUMBER not null,
+  id_entidad NUMBER,
+  grupo      VARCHAR2(10)
 )
 ;
 comment on table T_ROL_USUARIOS
@@ -10,6 +12,16 @@ comment on column T_ROL_USUARIOS.id_rol
   is 'Identificador del rol';
 comment on column T_ROL_USUARIOS.id_usuario
   is 'Identificador del usuario';
+comment on column T_ROL_USUARIOS.id_entidad
+  is 'Identificador de la entidad';
+comment on column T_ROL_USUARIOS.grupo
+  is 'Grupo del usuario en la entidad';
+create index IDX_ROL_USUARIOS_ID_ENTIDAD on T_ROL_USUARIOS (ID_ENTIDAD);
+create index IDX_ROL_USUARIOS_ID_ROL_USUARIO_ENTIDAD on T_ROL_USUARIOS (ID_ROL, ID_USUARIO, ID_ENTIDAD);
+create index IDX_ROL_USUARIOS_ID_ROL on T_ROL_USUARIOS (ID_ROL);
+create index IDX_ROL_USUARIOS_ID_USUARIO on T_ROL_USUARIOS (ID_USUARIO);
 alter table T_ROL_USUARIOS
-  add constraint PK_ROL_USUARIOS primary key (ID_ROL, ID_USUARIO);
-
+  add constraint UK_ROL_USUARIOS unique (ID_ROL, ID_USUARIO, ID_ENTIDAD, GRUPO);
+alter table T_ROL_USUARIOS
+  add constraint CK_ROL_USUARIOS_ID_ENTIDAD_GRUPO
+  check ((ID_ENTIDAD IS NULL AND GRUPO IS NULL) OR (ID_ENTIDAD IS NOT NULL AND GRUPO IS NOT NULL));

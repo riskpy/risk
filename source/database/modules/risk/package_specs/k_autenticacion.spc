@@ -30,14 +30,23 @@ create or replace package k_autenticacion is
   -------------------------------------------------------------------------------
   */
 
-  -- Origenes de usuario
-  c_origen_risk     constant char(1) := 'R';
-  c_origen_google   constant char(1) := 'G';
-  c_origen_facebook constant char(1) := 'F';
+  -- Orígenes de autenticación
+  c_origen_risk     constant varchar2(1) := 'R';
+  c_origen_google   constant varchar2(1) := 'G';
+  c_origen_facebook constant varchar2(1) := 'F';
+  --
+  c_origen_ldap   constant varchar2(1) := 'L';
+  c_origen_oracle constant varchar2(1) := 'O';
 
   -- Métodos de validación de credenciales
-  c_metodo_validacion_risk   constant varchar2(10) := 'RISK';
-  c_metodo_validacion_oracle constant varchar2(10) := 'ORACLE';
+  c_metodo_validacion_risk    constant varchar2(10) := 'RISK';
+  c_metodo_validacion_oracle  constant varchar2(10) := 'ORACLE';
+  c_metodo_validacion_ldap    constant varchar2(10) := 'LDAP';
+  c_metodo_validacion_externo constant varchar2(10) := 'EXTERNO';
+
+  -- Excepciones
+  ex_credenciales_invalidas exception;
+  ex_tokens_invalidos       exception;
 
   function f_registrar_usuario(i_alias            in varchar2,
                                i_clave            in varchar2,
@@ -58,23 +67,27 @@ create or replace package k_autenticacion is
 
   function f_validar_credenciales_risk(i_id_usuario in number,
                                        i_clave      in varchar2,
-                                       i_tipo_clave in char default 'A')
+                                       i_parametros in y_parametros)
     return boolean;
 
-  function f_validar_credenciales_oracle(i_usuario in varchar2,
-                                         i_clave   in varchar2)
+  function f_validar_credenciales_oracle(i_usuario    in varchar2,
+                                         i_clave      in varchar2,
+                                         i_parametros in y_parametros)
     return boolean;
 
-  function f_validar_credenciales(i_usuario    in varchar2,
-                                  i_clave      in varchar2,
-                                  i_tipo_clave in char default 'A',
-                                  i_metodo     in varchar2 default null)
+  function f_validar_credenciales_ldap(i_usuario    in varchar2,
+                                       i_clave      in varchar2,
+                                       i_parametros in y_parametros)
     return boolean;
 
-  procedure p_validar_credenciales(i_usuario    in varchar2,
-                                   i_clave      in varchar2,
-                                   i_tipo_clave in char default 'A',
-                                   i_metodo     in varchar2 default null);
+  function f_validar_credenciales(i_usuario in varchar2,
+                                  i_clave   in varchar2,
+                                  i_origen  in varchar2 default null)
+    return boolean;
+
+  procedure p_validar_credenciales(i_usuario in varchar2,
+                                   i_clave   in varchar2,
+                                   i_origen  in varchar2 default null);
 
   function f_iniciar_sesion(i_id_aplicacion     in varchar2,
                             i_usuario           in varchar2,
@@ -95,6 +108,10 @@ create or replace package k_autenticacion is
     return number;
 
   function f_generar_url_activacion(i_alias in varchar2) return varchar2;
+
+  procedure p_importar_usuarios_ldap(i_origen  in varchar2,
+                                     i_usuario in varchar2,
+                                     i_clave   in varchar2);
 
 end;
 /

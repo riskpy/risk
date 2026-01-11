@@ -175,9 +175,10 @@ create or replace package body k_trabajo is
              upper(o.nombre),
              upper(o.dominio),
              t.accion,
-             i_fecha_inicio + (nvl(t.tiempo_inicio, 0) / 86400),
-             i_intervalo_repeticion,
-             i_fecha_fin,
+             nvl(i_fecha_inicio, nvl(t.fecha_inicio, current_timestamp)) +
+             (nvl(t.tiempo_inicio, 0) / 86400),
+             nvl(i_intervalo_repeticion, t.intervalo_repeticion),
+             nvl(i_fecha_fin, t.fecha_fin),
              t.comentarios
         into l_tipo_trabajo,
              l_nombre_trabajo,
@@ -233,21 +234,21 @@ create or replace package body k_trabajo is
     end;
   
     -- Editar fecha de inicio del trabajo
-    if i_fecha_inicio is not null then
+    if l_fecha_inicio is not null then
       dbms_scheduler.set_attribute(name      => l_nombre_trabajo,
                                    attribute => 'start_date',
                                    value     => l_fecha_inicio);
     end if;
   
     -- Editar intérvalo de repetición del trabajo
-    if i_intervalo_repeticion is not null then
+    if l_intervalo_repeticion is not null then
       dbms_scheduler.set_attribute(name      => l_nombre_trabajo,
                                    attribute => 'repeat_interval',
                                    value     => l_intervalo_repeticion);
     end if;
   
     -- Editar fecha de fin del trabajo
-    if i_fecha_fin is not null then
+    if l_fecha_fin is not null then
       dbms_scheduler.set_attribute(name      => l_nombre_trabajo,
                                    attribute => 'end_date',
                                    value     => l_fecha_fin);
@@ -309,7 +310,7 @@ create or replace package body k_trabajo is
              l_nombre_programa
         from t_trabajos t, t_operaciones o
        where o.id_operacion = t.id_trabajo
-         and o.activo = 'S'
+            -- and o.activo = 'S'
          and t.id_trabajo = i_id_trabajo;
     exception
       when no_data_found then
@@ -357,6 +358,63 @@ create or replace package body k_trabajo is
       end;
     end if;
   
+  end;
+
+  procedure p_mantener_trabajos(i_id_modulo in varchar2 default null) is
+    l_cantidad_ok    integer := 0; -- Cantidad de trabajos
+    l_cantidad_error integer := 0; -- Cantidad de trabajos que tuvieron error al mantener
+  
+    cursor c_trabajos is
+      select t.id_trabajo, o.nombre, o.activo
+        from t_trabajos t, t_operaciones o
+       where o.id_operacion = t.id_trabajo
+         and o.tipo = 'T'
+         and (i_id_modulo is null or
+             k_dominio.f_id_modulo(o.dominio) = i_id_modulo);
+  begin
+    execute immediate 'ALTER SESSION SET TIME_ZONE = ''' ||
+                      k_util.f_valor_parametro('ZONA_HORARIA') || '''';
+  
+    for t in c_trabajos loop
+      begin
+        if t.activo = 'S' then
+          p_crear_o_editar_trabajo(i_id_trabajo => t.id_trabajo);
+        else
+          p_eliminar_trabajo(i_id_trabajo => t.id_trabajo);
+        end if;
+      
+        l_cantidad_ok := l_cantidad_ok + 1;
+      exception
+        when others then
+          /*k_log.p_registrar_log(k_log.cg_tipo_log_error,
+          'Error en mantenimiento de trabajo Id. ' ||
+          to_char(t.id_trabajo) || ': ' ||
+          dbms_utility.format_error_stack,
+          k_modulo.c_id_risk,
+          to_char(t.id_trabajo),
+          t.nombre,
+          null,
+          null,
+          null,
+          true);*/
+        
+          l_cantidad_error := l_cantidad_error + 1;
+      end;
+    end loop;
+  
+    /*k_log.p_registrar_log(k_log.cg_tipo_log_info,
+    'Proceso de mantenimiento de trabajos finalizado.' ||
+    utl_tcp.crlf || 'Cantidad Ok: ' ||
+    to_char(l_cantidad_ok) || utl_tcp.crlf ||
+    'Cantidad Error: ' || to_char(l_cantidad_error) ||
+    utl_tcp.crlf,
+    k_modulo.c_id_risk,
+    null,
+    null,
+    null,
+    null,
+    null,
+    true);*/
   end;
 
 end;

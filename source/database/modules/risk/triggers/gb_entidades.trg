@@ -1,5 +1,5 @@
-create or replace trigger gs_operaciones
-  before insert on t_operaciones
+create or replace trigger risk.gb_entidades
+  before insert or update or delete on t_entidades
   for each row
 begin
   /*
@@ -26,9 +26,32 @@ begin
   -------------------------------------------------------------------------------
   */
 
-  if :new.id_operacion is null then
-    :new.id_operacion := to_number(sys_guid(),
-                                   'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+  -- Valida alias de entidad
+  if inserting or
+     (updating and (nvl(:new.alias, 'X') <> nvl(:old.alias, 'X') or
+     nvl(:new.origen, 'X') <> nvl(:old.origen, 'X'))) then
+    k_entidad.p_validar_alias(:new.alias, :new.origen);
   end if;
+
+  $if k_modulo.c_instalado_msj $then
+  -- Valida dirección de correo
+  if inserting or (updating and nvl(:new.direccion_correo, 'X') <>
+     nvl(:old.direccion_correo, 'X')) then
+    if not k_mensajeria.f_validar_direccion_correo(:new.direccion_correo) then
+      raise_application_error(-20000,
+                              'Dirección de correo electrónico inválida');
+    end if;
+  end if;
+  $end
+
+  $if k_modulo.c_instalado_msj $then
+  -- Valida número de teléfono
+  if inserting or (updating and nvl(:new.numero_telefono, 'X') <>
+     nvl(:old.numero_telefono, 'X')) then
+    if not k_mensajeria.f_validar_numero_telefono(:new.numero_telefono) then
+      raise_application_error(-20000, 'Número de teléfono inválido');
+    end if;
+  end if;
+  $end
 end;
 /

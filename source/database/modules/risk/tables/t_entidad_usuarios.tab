@@ -1,0 +1,29 @@
+create table T_ENTIDAD_USUARIOS
+(
+  id_entidad       NUMBER not null,
+  id_usuario       NUMBER not null,
+  grupo            VARCHAR2(10) not null,
+  estado           VARCHAR2(1),
+  fecha_expiracion DATE,
+  direccion_correo VARCHAR2(320),
+  numero_telefono  VARCHAR2(160)
+)
+;
+comment on table T_ENTIDAD_USUARIOS
+  is 'Usuarios por Entidad';
+comment on column T_ENTIDAD_USUARIOS.id_entidad
+  is 'Identificador de la entidad';
+comment on column T_ENTIDAD_USUARIOS.id_usuario
+  is 'Identificador del usuario';
+comment on column T_ENTIDAD_USUARIOS.grupo
+  is 'Grupo del usuario en la entidad';
+comment on column T_ENTIDAD_USUARIOS.estado
+  is 'Estado del usuario en la entidad';
+comment on column T_ENTIDAD_USUARIOS.fecha_expiracion
+  is 'Fecha de expiracion del usuario en la entidad';
+comment on column T_ENTIDAD_USUARIOS.direccion_correo
+  is 'Direccion de correo electronico del usuario en la entidad';
+comment on column T_ENTIDAD_USUARIOS.numero_telefono
+  is 'Numero de telefono del usuario en la entidad';
+alter table T_ENTIDAD_USUARIOS
+  add constraint PK_ENTIDAD_USUARIOS primary key (ID_ENTIDAD, ID_USUARIO, GRUPO);

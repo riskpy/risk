@@ -7,6 +7,9 @@ prompt
 @@scripts/operations/monitoreo/aut/sesiones_expiradas.sql
 @@scripts/operations/parametros/_/contexto.sql
 @@scripts/operations/parametros/_/parametros_automaticos.sql
+@@scripts/operations/parametros/_/parametros_validacion_credenciales_ldap.sql
+@@scripts/operations/parametros/_/parametros_validacion_credenciales_oracle.sql
+@@scripts/operations/parametros/_/parametros_validacion_credenciales_risk.sql
 @@scripts/operations/reporte/gen/listar_significados.sql
 @@scripts/operations/reporte/gen/version_sistema.sql
 @@scripts/operations/servicio/aut/cambiar_clave.sql

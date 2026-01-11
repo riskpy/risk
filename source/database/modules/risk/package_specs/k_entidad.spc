@@ -1,7 +1,11 @@
-create or replace trigger gs_operacion_logs
-  before insert on t_operacion_logs
-  for each row
-begin
+create or replace package k_entidad is
+
+  /**
+  Agrupa operaciones relacionadas con las entidades
+  
+  %author jtsoya539 27/3/2020 16:16:59
+  */
+
   /*
   --------------------------------- MIT License ---------------------------------
   Copyright (c) 2019 - 2026 jtsoya539, DamyGenius and RISK contributors
@@ -26,8 +30,33 @@ begin
   -------------------------------------------------------------------------------
   */
 
-  if :new.id_operacion_log is null then
-    :new.id_operacion_log := s_id_operacion_log.nextval;
-  end if;
+  function f_buscar_id(i_entidad in varchar2) return number;
+
+  function f_id_entidad(i_alias in varchar2) return number;
+
+  function f_id_entidad(i_id_persona in number,
+                        i_origen     in varchar2 default null) return number;
+
+  function f_id_persona(i_id_entidad in number) return number;
+
+  function f_alias(i_id_entidad in number) return varchar2;
+
+  function f_estado(i_id_entidad in number) return varchar2;
+
+  function f_origen(i_id_entidad in number) return varchar2;
+
+  function f_validar_alias(i_alias  varchar2,
+                           i_origen in varchar2 default null) return boolean;
+
+  procedure p_validar_alias(i_alias  varchar2,
+                            i_origen in varchar2 default null);
+
+  function f_grupo_usuario(i_id_entidad in number,
+                           i_id_usuario in number) return varchar2;
+
+  procedure p_separar_dominio_entidad(i_alias   in varchar2,
+                                      o_dominio out varchar2,
+                                      o_entidad out varchar2);
+
 end;
 /

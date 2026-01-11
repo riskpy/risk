@@ -1,9 +1,8 @@
-create or replace type y_respuesta force under y_objeto
-(
+create or replace type y_permisos force is table of y_permiso
 /**
-Agrupa datos de una respuesta de servicio o proceso.
+Lista de permisos.
 
-%author jtsoya539 30/3/2020 10:03:16
+%author jmeza 08/08/2025 08:32:01
 */
 
 /*
@@ -29,36 +28,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -------------------------------------------------------------------------------
 */
-
-/** Código de la respuesta. */
-  codigo varchar2(100),
-/** Mensaje de la respuesta. */
-  mensaje varchar2(4000),
-/** Mensaje de Base de Datos. */
-  mensaje_bd varchar2(4000),
-/** Tipo de la excepción en caso de error (OPE/UDE). */
-  tipo_error varchar2(3),
-/** Lugar en el proceso. */
-  lugar varchar2(1000),
-/** Datos adicionales. */
-  datos y_objeto,
-
-/**
-Constructor del objeto sin parámetros.
-
-%author jtsoya539 30/3/2020 10:08:08
-%return Objeto del tipo y_respuesta.
-*/
-  constructor function y_respuesta return self as result,
-
-  static function parse_json(i_json in clob) return y_objeto,
-
-/**
-Retorna el objeto serializado en formato JSON.
-
-%author jtsoya539 30/3/2020 09:42:09
-%return JSON con los atributos del objeto.
-*/
-  overriding member function to_json return clob
-)
 /
+

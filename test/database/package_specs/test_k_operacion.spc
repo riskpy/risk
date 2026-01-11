@@ -3,13 +3,14 @@ create or replace package test_k_operacion is
   --%suite(Tests unitarios del paquete k_operacion)
   --%tags(package)
 
-  --%context(Tests unitarios de p_inicializar_log)
-  --%name(p_inicializar_log)
+  --%context(Tests unitarios de p_registrar_log)
+  --%name(p_registrar_log)
+  --%rollback(manual)
 
   --%test()
-  procedure p_inicializar_log_activo;
+  procedure p_registrar_log_activo;
   --%test()
-  procedure p_inicializar_log_inactivo;
+  procedure p_registrar_log_inactivo;
   --%endcontext
 
   --%context(Tests unitarios de f_id_operacion)
@@ -46,9 +47,9 @@ create or replace package test_k_operacion is
   procedure f_valor_parametro_lista_null;
   --%test()
   procedure f_valor_parametro_lista_vacia;
-  --%test() 
+  --%test()
   procedure f_valor_parametro_nombre_con_diferente_case;
-  --%test() 
+  --%test()
   procedure f_valor_parametro_nombre_inexistente;
   --%test()
   procedure f_valor_parametro_string;

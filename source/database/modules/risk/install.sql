@@ -50,7 +50,6 @@ prompt Creating sequences...
 prompt -----------------------------------
 prompt
 @@sequences/s_id_monitoreo_ejecucion.seq
-@@sequences/s_id_operacion_log.seq
 
 prompt
 prompt Creating tables...
@@ -69,7 +68,11 @@ prompt
 @@tables/t_departamentos.tab
 @@tables/t_dispositivo_ubicaciones.tab
 @@tables/t_dispositivos.tab
+@@tables/t_documento_tipos.tab
 @@tables/t_dominios.tab
+@@tables/t_entidad_roles.tab
+@@tables/t_entidad_usuarios.tab
+@@tables/t_entidades.tab
 @@tables/t_errores.tab
 @@tables/t_idiomas.tab
 @@tables/t_importacion_parametros.tab
@@ -112,13 +115,15 @@ prompt
 @@foreign_keys/fk_dispositivo_ubicaciones.sql
 @@foreign_keys/fk_dispositivos.sql
 @@foreign_keys/fk_dominios.sql
+@@foreign_keys/fk_entidad_roles.sql
+@@foreign_keys/fk_entidad_usuarios.sql
+@@foreign_keys/fk_entidades.sql
 @@foreign_keys/fk_errores.sql
 @@foreign_keys/fk_importacion_parametros.sql
 @@foreign_keys/fk_importaciones.sql
 @@foreign_keys/fk_monedas.sql
 @@foreign_keys/fk_monitoreo_ejecuciones.sql
 @@foreign_keys/fk_monitoreos.sql
-@@foreign_keys/fk_operacion_logs.sql
 @@foreign_keys/fk_operacion_parametros.sql
 @@foreign_keys/fk_operaciones.sql
 @@foreign_keys/fk_parametro_definiciones.sql
@@ -126,6 +131,7 @@ prompt
 @@foreign_keys/fk_reportes.sql
 @@foreign_keys/fk_rol_permisos.sql
 @@foreign_keys/fk_rol_usuarios.sql
+@@foreign_keys/fk_roles.sql
 @@foreign_keys/fk_servicios.sql
 @@foreign_keys/fk_sesiones.sql
 @@foreign_keys/fk_significado_dominios.sql
@@ -163,6 +169,8 @@ prompt
 @@type_specs/y_pais.tps
 @@type_specs/y_parametro.tps
 @@type_specs/y_parametros.tps
+@@type_specs/y_permiso.tps
+@@type_specs/y_permisos.tps
 @@type_specs/y_plantilla.tps
 @@type_specs/y_respuesta.tps
 @@type_specs/y_rol.tps
@@ -189,6 +197,7 @@ prompt
 @@type_bodies/y_pagina_parametros.tpb
 @@type_bodies/y_pais.tpb
 @@type_bodies/y_parametro.tpb
+@@type_bodies/y_permiso.tpb
 @@type_bodies/y_plantilla.tpb
 @@type_bodies/y_respuesta.tpb
 @@type_bodies/y_rol.tpb
@@ -228,6 +237,7 @@ prompt
 @@package_specs/k_dato.spc
 @@package_specs/k_dispositivo.spc
 @@package_specs/k_dominio.spc
+@@package_specs/k_entidad.spc
 @@package_specs/k_error.spc
 @@package_specs/k_html.spc
 @@package_specs/k_importacion.spc
@@ -238,6 +248,7 @@ prompt
 @@package_specs/k_monitoreo_aut.spc
 @@package_specs/k_objeto_util.spc
 @@package_specs/k_operacion.spc
+@@package_specs/k_operacion_util.spc
 @@package_specs/k_parametro.spc
 @@package_specs/k_reporte.spc
 @@package_specs/k_reporte_gen.spc
@@ -267,6 +278,7 @@ prompt
 @@package_bodies/k_dato.bdy
 @@package_bodies/k_dispositivo.bdy
 @@package_bodies/k_dominio.bdy
+@@package_bodies/k_entidad.bdy
 @@package_bodies/k_error.bdy
 @@package_bodies/k_html.bdy
 @@package_bodies/k_importacion.bdy
@@ -277,6 +289,7 @@ prompt
 @@package_bodies/k_monitoreo_aut.bdy
 @@package_bodies/k_objeto_util.bdy
 @@package_bodies/k_operacion.bdy
+@@package_bodies/k_operacion_util.bdy
 @@package_bodies/k_parametro.bdy
 @@package_bodies/k_reporte.bdy
 @@package_bodies/k_reporte_gen.bdy
@@ -298,6 +311,8 @@ prompt -----------------------------------
 prompt
 @@triggers/gb_archivos.trg
 @@triggers/gb_datos.trg
+@@triggers/gb_entidades.trg
+@@triggers/gb_errores_actualizar_clave.trg
 @@triggers/gb_operacion_parametros.trg
 @@triggers/gb_operaciones.trg
 @@triggers/gb_personas.trg
@@ -309,8 +324,6 @@ prompt
 @@triggers/gf_archivos.trg
 @@triggers/gf_operaciones.trg
 @@triggers/gs_monitoreo_ejecuciones.trg
-@@triggers/gs_operacion_logs.trg
-@@triggers/gs_operaciones.trg
 
 @@../../compile_schema.sql
 

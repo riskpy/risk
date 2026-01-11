@@ -1,7 +1,7 @@
 create table T_SERVICIOS
 (
   id_servicio            NUMBER not null,
-  tipo                   VARCHAR2(1),
+  tipo                   VARCHAR2(1) not null,
   cantidad_ejecuciones   NUMBER,
   fecha_ultima_ejecucion DATE,
   consulta_sql           CLOB,
@@ -24,6 +24,9 @@ comment on column T_SERVICIOS.sql_ultima_ejecucion
   is 'SQL de la ultima ejecucion del servicio';
 alter table T_SERVICIOS
   add constraint PK_SERVICIOS primary key (ID_SERVICIO);
+alter table T_SERVICIOS
+  add constraint CK_SERVICIOS_TIPO
+  check (TIPO IN ('T', 'X', 'P', 'C', 'U'));
 alter table T_SERVICIOS
   add constraint CK_SERVICIOS_TIPO_CONSULTA_SQL
   check (TIPO <> 'C' OR (TIPO = 'C' AND CONSULTA_SQL IS NOT NULL));

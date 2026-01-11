@@ -1,6 +1,59 @@
 create or replace package body k_operacion is
 
-  procedure p_inicializar_log(i_id_operacion in number) is
+  procedure p_crear_parametro(i_id_operacion     in t_operacion_parametros.id_operacion %type,
+                              i_nombre           in t_operacion_parametros.nombre%type,
+                              i_tipo_dato        in t_operacion_parametros.tipo_dato%type,
+                              i_orden            in t_operacion_parametros.orden%type,
+                              i_obligatorio      in t_operacion_parametros.obligatorio%type default 'N',
+                              i_version          in t_operacion_parametros.version%type default '0.1.0',
+                              i_formato          in t_operacion_parametros.formato%type default null,
+                              i_longitud_maxima  in t_operacion_parametros.longitud_maxima%type default null,
+                              i_valor_defecto    in t_operacion_parametros.valor_defecto%type default null,
+                              i_valores_posibles in t_operacion_parametros.valores_posibles%type default null,
+                              i_etiqueta         in t_operacion_parametros.etiqueta%type default null,
+                              i_detalle          in t_operacion_parametros.detalle%type default null,
+                              i_encriptado       in t_operacion_parametros.encriptado%type default 'N') is
+  begin
+    insert into t_operacion_parametros
+      (id_operacion,
+       nombre,
+       version,
+       orden,
+       activo,
+       tipo_dato,
+       formato,
+       longitud_maxima,
+       obligatorio,
+       valor_defecto,
+       etiqueta,
+       detalle,
+       valores_posibles,
+       encriptado)
+    values
+      (i_id_operacion,
+       i_nombre,
+       nvl(i_version, '0.1.0'),
+       i_orden,
+       'S',
+       i_tipo_dato,
+       i_formato,
+       i_longitud_maxima,
+       nvl(i_obligatorio, 'N'),
+       i_valor_defecto,
+       i_etiqueta,
+       i_detalle,
+       i_valores_posibles,
+       nvl(i_encriptado, 'N'));
+  end;
+
+  procedure p_registrar_log(io_id_log          in out number,
+                            i_id_operacion     in number,
+                            i_parametros       in clob,
+                            i_codigo_respuesta in varchar2 default null,
+                            i_respuesta        in clob default null,
+                            i_contexto         in clob default null,
+                            i_version          in varchar2 default null) is
+    pragma autonomous_transaction;
     l_nivel_log t_operaciones.nivel_log%type;
   begin
     begin
@@ -10,71 +63,70 @@ create or replace package body k_operacion is
        where id_operacion = i_id_operacion;
     exception
       when others then
-        l_nivel_log := 0;
+        l_nivel_log := cg_nivel_log_error;
     end;
   
-    if l_nivel_log > 0 then
-      k_sistema.p_definir_parametro_number(c_id_log,
-                                           s_id_operacion_log.nextval);
-      k_sistema.p_definir_parametro_string(c_fecha_hora_inicio_log,
-                                           to_char(current_timestamp,
-                                                   'YYYY-MM-DD HH24:MI:SS.FF'));
-    end if;
-  exception
-    when others then
-      null;
-  end;
-
-  procedure p_registrar_log(i_id_operacion     in number,
-                            i_parametros       in clob,
-                            i_codigo_respuesta in varchar2,
-                            i_respuesta        in clob,
-                            i_contexto         in clob default null,
-                            i_version          in varchar2 default null) is
-    pragma autonomous_transaction;
-    l_nivel_log         t_operaciones.nivel_log%type;
-    l_fecha_hora_inicio t_operacion_logs.fecha_hora_inicio%type;
-  begin
-    begin
-      select nivel_log
-        into l_nivel_log
-        from t_operaciones
-       where id_operacion = i_id_operacion;
-    exception
-      when others then
-        l_nivel_log := 0;
-    end;
-  
-    if (l_nivel_log > 1 and i_codigo_respuesta = c_ok) or
-       (l_nivel_log > 0 and i_codigo_respuesta <> c_ok) then
-      l_fecha_hora_inicio := nvl(to_timestamp(k_sistema.f_valor_parametro_string(c_fecha_hora_inicio_log),
-                                              'YYYY-MM-DD HH24:MI:SS.FF'),
-                                 current_timestamp);
-      insert into t_operacion_logs
-        (id_operacion_log,
-         id_operacion,
-         contexto,
-         version,
-         parametros,
-         respuesta,
-         fecha_hora_inicio,
-         fecha_hora_fin,
-         duracion)
-      values
-        (k_sistema.f_valor_parametro_number(c_id_log),
-         i_id_operacion,
-         i_contexto,
-         substr(i_version, 1, 100),
-         i_parametros,
-         i_respuesta,
-         l_fecha_hora_inicio,
-         current_timestamp,
-         current_timestamp - l_fecha_hora_inicio);
+    if (l_nivel_log > cg_nivel_log_error and
+       nvl(i_codigo_respuesta, c_ok) = c_ok) or
+       (l_nivel_log > cg_nivel_log_off and
+       nvl(i_codigo_respuesta, c_ok) <> c_ok) then
+      if io_id_log is not null then
+        -- Actualiza log
+        update t_operacion_logs l
+           set l.id_operacion = i_id_operacion,
+               l.contexto     = i_contexto,
+               l.version      = substr(i_version, 1, 100),
+               l.parametros   = i_parametros,
+               l.respuesta    = i_respuesta,
+               --l.fecha_hora_inicio = null,
+               l.fecha_hora_fin = current_timestamp,
+               l.duracion       = current_timestamp -
+                                  nvl(l.fecha_hora_inicio, current_timestamp),
+               l.sql_ejecucion  = k_sistema.f_valor_parametro_string(k_operacion.c_sql_ejecucion),
+               l.id_usuario     = k_sistema.f_id_usuario,
+               l.id_entidad     = k_sistema.f_id_entidad,
+               l.id_sesion      = k_sistema.f_valor_parametro_number(k_sistema.c_id_sesion),
+               l.id_dispositivo = k_sistema.f_valor_parametro_number(k_sistema.c_id_dispositivo)
+         where l.id_operacion_log = io_id_log;
+      else
+        -- Inserta log
+        insert into t_operacion_logs
+          (id_operacion,
+           contexto,
+           version,
+           parametros,
+           respuesta,
+           fecha_hora_inicio,
+           fecha_hora_fin,
+           duracion,
+           sql_ejecucion,
+           id_usuario,
+           id_entidad,
+           id_sesion,
+           id_dispositivo)
+        values
+          (i_id_operacion,
+           i_contexto,
+           substr(i_version, 1, 100),
+           i_parametros,
+           i_respuesta,
+           current_timestamp,
+           case when i_respuesta is not null then current_timestamp else null end,
+           case when i_respuesta is not null then
+           current_timestamp - current_timestamp else null end,
+           k_sistema.f_valor_parametro_string(k_operacion.c_sql_ejecucion),
+           k_sistema.f_id_usuario,
+           k_sistema.f_id_entidad,
+           k_sistema.f_valor_parametro_number(k_sistema.c_id_sesion),
+           k_sistema.f_valor_parametro_number(k_sistema.c_id_dispositivo))
+        returning id_operacion_log into io_id_log;
+      end if;
     end if;
   
     commit;
   exception
     when others then
+      console.error('Error al registrar log: ' || sqlerrm);
       rollback;
   end;
 
@@ -82,8 +134,9 @@ create or replace package body k_operacion is
                            i_datos      in y_objeto default null) is
   begin
     io_respuesta.codigo     := c_ok;
-    io_respuesta.mensaje    := 'OK';
+    io_respuesta.mensaje    := nvl(io_respuesta.mensaje, 'OK');
     io_respuesta.mensaje_bd := null;
+    io_respuesta.tipo_error := null;
     io_respuesta.lugar      := null;
     io_respuesta.datos      := i_datos;
   end;
@@ -92,19 +145,25 @@ create or replace package body k_operacion is
                               i_codigo     in varchar2,
                               i_mensaje    in varchar2 default null,
                               i_mensaje_bd in varchar2 default null,
-                              i_datos      in y_objeto default null) is
-    l_mensaje varchar2(32767) := substr(i_mensaje, 1, 32767);
+                              i_datos      in y_objeto default null,
+                              i_tipo_error in varchar2 default null) is
+    l_mensaje varchar2(32767);
   begin
     if i_codigo = c_ok then
       io_respuesta.codigo := c_error_general;
     else
-      io_respuesta.codigo := substr(i_codigo, 1, 10);
+      io_respuesta.codigo := substr(i_codigo, 1, 100);
     end if;
+    l_mensaje               := substr(i_mensaje, 1, 32767);
     io_respuesta.mensaje    := substr(k_error.f_mensaje_excepcion(nvl(l_mensaje,
                                                                       k_error.f_mensaje_error(i_codigo))),
                                       1,
                                       4000);
     io_respuesta.mensaje_bd := substr(i_mensaje_bd, 1, 4000);
+    io_respuesta.tipo_error := substr(nvl(i_tipo_error,
+                                          k_error.c_user_defined_error),
+                                      1,
+                                      3);
     io_respuesta.datos      := i_datos;
   end;
 
@@ -112,21 +171,33 @@ create or replace package body k_operacion is
                                   i_error_number in number,
                                   i_error_msg    in varchar2,
                                   i_error_stack  in varchar2) is
+    l_codigo_error varchar2(100);
   begin
     if k_error.f_tipo_excepcion(i_error_number) =
        k_error.c_user_defined_error then
       p_respuesta_error(io_respuesta,
                         c_error_general,
                         i_error_msg,
-                        i_error_stack);
+                        i_error_stack,
+                        io_respuesta.datos,
+                        k_error.c_user_defined_error);
     elsif k_error.f_tipo_excepcion(i_error_number) =
           k_error.c_oracle_predefined_error then
+      if abs(i_error_number) = 1 or i_error_stack like '%ORA-00001%' then
+        -- https://docs.oracle.com/en/error-help/db/ora-00001/
+        l_codigo_error := c_error_clave_duplicada;
+      elsif abs(i_error_number) = 54 or i_error_stack like '%ORA-00054%' then
+        -- https://docs.oracle.com/en/error-help/db/ora-00054/
+        l_codigo_error := c_error_registro_bloqueado;
+      else
+        l_codigo_error := c_error_inesperado;
+      end if;
       p_respuesta_error(io_respuesta,
-                        c_error_inesperado,
-                        k_error.f_mensaje_error(c_error_inesperado,
-                                                to_char(nvl(k_sistema.f_valor_parametro_number(c_id_log),
-                                                            0))),
-                        i_error_stack);
+                        l_codigo_error,
+                        k_error.f_mensaje_error(l_codigo_error, c_id_log),
+                        i_error_stack,
+                        io_respuesta.datos,
+                        k_error.c_oracle_predefined_error);
     end if;
   end;
 
@@ -148,6 +219,9 @@ create or replace package body k_operacion is
     l_id_sesion      t_sesiones.id_sesion%type;
     l_id_dispositivo t_dispositivos.id_dispositivo%type;
     l_dispositivo    y_dispositivo;
+    --
+    l_sub_session_iid number;
+    l_device_iid      number;
   begin
     declare
       l_nombre_operacion  t_operaciones.nombre%type;
@@ -171,33 +245,55 @@ create or replace package body k_operacion is
         null;
     end;
     --
-    k_sistema.p_definir_parametro_string(k_sistema.c_direccion_ip,
-                                         k_operacion.f_valor_parametro_string(i_contexto,
-                                                                              'direccion_ip'));
-    k_sistema.p_definir_parametro_string(k_sistema.c_id_aplicacion,
-                                         k_aplicacion.f_id_aplicacion(k_operacion.f_valor_parametro_string(i_contexto,
-                                                                                                           'clave_aplicacion')));
     k_sistema.p_definir_parametro_string(k_sistema.c_usuario,
-                                         k_operacion.f_valor_parametro_string(i_contexto,
-                                                                              'usuario'));
+                                         f_valor_parametro_string(i_contexto,
+                                                                  'usuario'));
     k_sistema.p_definir_parametro_number(k_sistema.c_id_usuario,
-                                         k_usuario.f_id_usuario(k_operacion.f_valor_parametro_string(i_contexto,
-                                                                                                     'usuario')));
+                                         nvl(f_valor_parametro_number(i_contexto,
+                                                                      k_sistema.c_id_usuario),
+                                             k_usuario.f_id_usuario(f_valor_parametro_string(i_contexto,
+                                                                                             'usuario'))));
+    k_sistema.p_definir_parametro_string(k_sistema.c_entidad,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  'entidad'));
+    k_sistema.p_definir_parametro_number(k_sistema.c_id_entidad,
+                                         nvl(f_valor_parametro_number(i_contexto,
+                                                                      k_sistema.c_id_entidad),
+                                             k_entidad.f_id_entidad(f_valor_parametro_string(i_contexto,
+                                                                                             'entidad'))));
     --
-    l_id_sesion := k_sesion.f_id_sesion(k_operacion.f_valor_parametro_string(i_contexto,
-                                                                             'access_token'));
-    k_sistema.p_definir_parametro_number(k_sistema.c_id_sesion,
-                                         l_id_sesion);
+    k_sistema.p_definir_parametro_string(k_sistema.c_direccion_ip,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  'direccion_ip'));
     --
-    l_id_dispositivo := k_dispositivo.f_id_dispositivo(k_operacion.f_valor_parametro_string(i_contexto,
-                                                                                            'token_dispositivo'));
+    k_sistema.p_definir_parametro_string(k_sistema.c_clave_aplicacion,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  'clave_aplicacion'));
+    k_sistema.p_definir_parametro_string(k_sistema.c_id_aplicacion,
+                                         nvl(f_valor_parametro_string(i_contexto,
+                                                                      k_sistema.c_id_aplicacion),
+                                             k_aplicacion.f_id_aplicacion(f_valor_parametro_string(i_contexto,
+                                                                                                   'clave_aplicacion'))));
+    --
+    k_sistema.p_definir_parametro_string(k_sistema.c_access_token,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  'access_token'));
+    l_id_sesion := k_sesion.f_id_sesion(f_valor_parametro_string(i_contexto,
+                                                                 'access_token'));
   
+    k_sistema.p_definir_parametro_number(k_sistema.c_id_sesion,
+                                         coalesce(l_id_sesion,
+                                                  l_sub_session_iid));
+    --
+    l_id_dispositivo := k_dispositivo.f_id_dispositivo(f_valor_parametro_string(i_contexto,
+                                                                                'token_dispositivo'));
     if l_id_dispositivo is null and l_id_sesion is not null then
       l_id_dispositivo := k_sesion.f_dispositivo_sesion(l_id_sesion);
     end if;
   
     k_sistema.p_definir_parametro_number(k_sistema.c_id_dispositivo,
-                                         l_id_dispositivo);
+                                         coalesce(l_id_dispositivo,
+                                                  l_device_iid));
   
     if l_id_dispositivo is not null then
       l_dispositivo := k_dispositivo.f_datos_dispositivo(l_id_dispositivo);
@@ -239,6 +335,33 @@ create or replace package body k_operacion is
           null;
       end;
     end if;
+  
+    -- Se agregan los valores nuevos del contexto.
+    k_sistema.p_definir_parametro_string(k_sistema.cg_id_ejecucion,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  k_sistema.cg_id_ejecucion));
+  
+    k_sistema.p_definir_parametro_string(k_sistema.cg_id_tracking,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  k_sistema.cg_id_tracking));
+  
+    k_sistema.p_definir_parametro_string(k_sistema.cg_dispositivo_origen,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  k_sistema.cg_dispositivo_origen));
+  
+    k_sistema.p_definir_parametro_string(k_sistema.cg_timestamp,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  k_sistema.cg_timestamp));
+  
+    k_sistema.p_definir_parametro_string(k_sistema.cg_tipo_persona,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  k_sistema.cg_tipo_persona));
+  
+    k_sistema.p_definir_parametro_string(k_sistema.cg_dato_usuario,
+                                         f_valor_parametro_string(i_contexto,
+                                                                  k_sistema.cg_dato_usuario));
+    -- Inicializa permisos de la sesión
+    k_autorizacion.p_inicializar_permisos;
   end;
 
   function f_operacion(i_id_operacion in number) return t_operaciones%rowtype is
@@ -348,286 +471,26 @@ create or replace package body k_operacion is
                                  i_parametros   in clob,
                                  i_version      in varchar2 default null)
     return y_parametros is
-    l_parametros   y_parametros;
-    l_parametro    y_parametro;
-    l_json_object  json_object_t;
-    l_json_element json_element_t;
-  
-    cursor cr_parametros is
-      select op.id_operacion,
-             lower(op.nombre) nombre,
-             op.orden,
-             op.activo,
-             op.tipo_dato,
-             op.formato,
-             op.longitud_maxima,
-             op.obligatorio,
-             op.valor_defecto,
-             op.etiqueta,
-             op.detalle,
-             op.valores_posibles,
-             op.encriptado
-        from t_operacion_parametros op, t_operaciones o
-       where o.id_operacion = op.id_operacion
-         and op.activo = 'S'
-         and op.id_operacion = i_id_operacion
-         and op.version = nvl(i_version, o.version_actual)
-      union
-      -- Parámetros automáticos
-      select op.id_operacion,
-             lower(op.nombre) nombre,
-             op.orden,
-             op.activo,
-             op.tipo_dato,
-             op.formato,
-             op.longitud_maxima,
-             op.obligatorio,
-             op.valor_defecto,
-             op.etiqueta,
-             op.detalle,
-             op.valores_posibles,
-             op.encriptado
-        from t_operacion_parametros op
-       where op.activo = 'S'
-         and op.id_operacion = c_id_ope_par_automaticos
-         and exists (select 1
-                from t_operaciones o
-               where lower(op.nombre) in
-                     (select lower(trim(column_value))
-                        from k_cadena.f_separar_cadenas(o.parametros_automaticos,
-                                                        ','))
-                 and o.id_operacion = i_id_operacion)
-       order by orden;
+    l_lista_parametros y_lista_parametros;
   begin
-    -- Inicializa respuesta
-    l_parametros := new y_parametros();
-  
-    if i_parametros is null or dbms_lob.getlength(i_parametros) = 0 then
-      l_json_object := json_object_t.parse('{}');
-    else
-      l_json_object := json_object_t.parse(i_parametros);
-    end if;
-  
-    for par in cr_parametros loop
-      l_parametro        := new y_parametro();
-      l_parametro.nombre := par.nombre;
-    
-      l_json_element := l_json_object.get(par.nombre);
-    
-      if par.obligatorio = 'S' then
-        if not l_json_object.has(par.nombre) then
-          raise_application_error(-20000,
-                                  k_error.f_mensaje_error('ora0003',
-                                                          nvl(par.etiqueta,
-                                                              par.nombre)));
-        else
-          if l_json_element.is_null then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0004',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        end if;
-      end if;
-    
-      case par.tipo_dato
-      
-        when 'S' then
-          -- String
-          if l_json_element is not null and not l_json_element.is_null and
-             not l_json_element.is_string then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0005',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-          if par.encriptado = 'S' then
-            begin
-              l_parametro.valor := anydata.convertvarchar2(k_util.decrypt(l_json_object.get_string(par.nombre)));
-            exception
-              when value_error then
-                raise_application_error(-20000,
-                                        k_error.f_mensaje_error('ora0008',
-                                                                nvl(par.etiqueta,
-                                                                    par.nombre)));
-              when others then
-                raise_application_error(-20000,
-                                        k_error.f_mensaje_error('ora0009',
-                                                                nvl(par.etiqueta,
-                                                                    par.nombre)));
-            end;
-          else
-            l_parametro.valor := anydata.convertvarchar2(l_json_object.get_string(par.nombre));
-          end if;
-          if l_parametro.valor.accessvarchar2 is null and
-             par.valor_defecto is not null then
-            l_parametro.valor := anydata.convertvarchar2(par.valor_defecto);
-          end if;
-          if l_parametro.valor.accessvarchar2 is null and
-             par.obligatorio = 'S' then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0004',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-          if par.longitud_maxima is not null and
-             nvl(length(l_parametro.valor.accessvarchar2), 0) >
-             par.longitud_maxima then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0006',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre),
-                                                            to_char(par.longitud_maxima)));
-          end if;
-          if par.valores_posibles is not null and
-             l_parametro.valor.accessvarchar2 is not null and not
-              k_significado.f_existe_codigo(par.valores_posibles,
-                                                                                             l_parametro.valor.accessvarchar2) then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0007',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-        when 'N' then
-          -- Number
-          if l_json_element is not null and not l_json_element.is_null and
-             not l_json_element.is_number then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0005',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-          l_parametro.valor := anydata.convertnumber(l_json_object.get_number(par.nombre));
-          if l_parametro.valor.accessnumber is null and
-             par.valor_defecto is not null then
-            l_parametro.valor := anydata.convertnumber(to_number(par.valor_defecto));
-          end if;
-          if l_parametro.valor.accessnumber is null and
-             par.obligatorio = 'S' then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0004',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-          if par.longitud_maxima is not null and
-             nvl(length(to_char(abs(trunc(l_parametro.valor.accessnumber)))),
-                 0) > par.longitud_maxima then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0006',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre),
-                                                            to_char(par.longitud_maxima)));
-          end if;
-          if par.valores_posibles is not null and
-             l_parametro.valor.accessnumber is not null and not
-              k_significado.f_existe_codigo(par.valores_posibles,
-                                                                                           to_char(l_parametro.valor.accessnumber)) then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0007',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-        when 'B' then
-          -- Boolean
-          if l_json_element is not null and not l_json_element.is_null and
-             not l_json_element.is_boolean then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0005',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-          l_parametro.valor := anydata.convertnumber(sys.diutil.bool_to_int(l_json_object.get_boolean(par.nombre)));
-          if l_parametro.valor.accessnumber is null and
-             par.valor_defecto is not null then
-            l_parametro.valor := anydata.convertnumber(to_number(par.valor_defecto));
-          end if;
-          if l_parametro.valor.accessnumber is null and
-             par.obligatorio = 'S' then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0004',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-        when 'D' then
-          -- Date
-          if l_json_element is not null and not l_json_element.is_null and
-             not l_json_element.is_string /*l_json_element.is_date*/
-           then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0005',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-          l_parametro.valor := anydata.convertdate(l_json_object.get_date(par.nombre));
-          if l_parametro.valor.accessdate is null and
-             par.valor_defecto is not null then
-            l_parametro.valor := anydata.convertdate(to_date(par.valor_defecto,
-                                                             par.formato));
-          end if;
-          if l_parametro.valor.accessdate is null and par.obligatorio = 'S' then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0004',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-        when 'O' then
-          -- Object
-          if l_json_element is not null and not l_json_element.is_null and
-             not l_json_element.is_object then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0005',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-          if l_json_element is not null and l_json_element.is_object then
-            l_parametro.valor := k_objeto_util.json_to_objeto(l_json_element.to_clob,
-                                                              par.formato);
-          end if;
-        
-          if l_parametro.valor is null and par.valor_defecto is not null then
-            l_parametro.valor := k_objeto_util.json_to_objeto(par.valor_defecto,
-                                                              par.formato);
-          end if;
-          if l_parametro.valor is null and par.obligatorio = 'S' then
-            raise_application_error(-20000,
-                                    k_error.f_mensaje_error('ora0004',
-                                                            nvl(par.etiqueta,
-                                                                par.nombre)));
-          end if;
-        
-        else
-          raise_application_error(-20000,
-                                  k_error.f_mensaje_error('ora0002',
-                                                          'parámetro',
-                                                          nvl(par.etiqueta,
-                                                              par.nombre)));
-        
-      end case;
-    
-      l_parametros.extend;
-      l_parametros(l_parametros.count) := l_parametro;
-    end loop;
-    return l_parametros;
+    l_lista_parametros := new y_lista_parametros(i_parametros,
+                                                 i_id_operacion,
+                                                 i_version,
+                                                 null,
+                                                 null);
+    return l_lista_parametros.parametros;
   end;
 
   function f_nombre_programa(i_id_operacion in number,
                              i_version      in varchar2 default null)
     return varchar2 is
-    l_nombre_programa     varchar2(4000);
-    l_tipo_operacion      t_operaciones.tipo%type;
-    l_nombre_operacion    t_operaciones.nombre%type;
-    l_dominio_operacion   t_operaciones.dominio%type;
-    l_version_actual      t_operaciones.version_actual%type;
-    l_tipo_implementacion t_operaciones.tipo_implementacion%type;
+    l_nombre_programa                varchar2(4000);
+    l_tipo_operacion                 t_operaciones.tipo%type;
+    l_nombre_operacion               t_operaciones.nombre%type;
+    l_dominio_operacion              t_operaciones.dominio%type;
+    l_version_actual                 t_operaciones.version_actual%type;
+    l_tipo_implementacion            t_operaciones.tipo_implementacion%type;
+    l_nombre_programa_implementacion t_operaciones.nombre_programa_implementacion%type;
   begin
   
     begin
@@ -635,12 +498,14 @@ create or replace package body k_operacion is
              upper(o.nombre),
              upper(o.dominio),
              o.version_actual,
-             nvl(o.tipo_implementacion, c_tipo_implementacion_paquete)
+             nvl(o.tipo_implementacion, c_tipo_implementacion_paquete),
+             o.nombre_programa_implementacion
         into l_tipo_operacion,
              l_nombre_operacion,
              l_dominio_operacion,
              l_version_actual,
-             l_tipo_implementacion
+             l_tipo_implementacion,
+             l_nombre_programa_implementacion
         from t_operaciones o
        where o.id_operacion = i_id_operacion;
     exception
@@ -648,22 +513,25 @@ create or replace package body k_operacion is
         raise_application_error(-20000, 'Operación inexistente');
     end;
   
-    if l_tipo_implementacion in
-       (k_operacion.c_tipo_implementacion_paquete,
-        k_operacion.c_tipo_implementacion_funcion) then
-      l_nombre_programa := k_significado.f_referencia_codigo('TIPO_IMPLEMENTACION',
-                                                             l_tipo_implementacion) || '_' ||
-                           k_significado.f_significado_codigo('TIPO_OPERACION',
-                                                              l_tipo_operacion) || '_' ||
-                           l_dominio_operacion ||
-                           case l_tipo_implementacion
-                             when c_tipo_implementacion_paquete then
-                              '.'
-                             else
-                              '_'
-                           end || l_nombre_operacion;
-    elsif l_tipo_implementacion = k_operacion.c_tipo_implementacion_bloque then
-      l_nombre_programa := l_nombre_operacion;
+    if l_nombre_programa_implementacion is not null then
+      l_nombre_programa := l_nombre_programa_implementacion;
+    else
+      if l_tipo_implementacion in
+         (c_tipo_implementacion_paquete, c_tipo_implementacion_funcion) then
+        l_nombre_programa := k_significado.f_referencia_codigo('TIPO_IMPLEMENTACION',
+                                                               l_tipo_implementacion) || '_' ||
+                             k_significado.f_significado_codigo('TIPO_OPERACION',
+                                                                l_tipo_operacion) || '_' ||
+                             l_dominio_operacion ||
+                             case l_tipo_implementacion
+                               when c_tipo_implementacion_paquete then
+                                '.'
+                               else
+                                '_'
+                             end || l_nombre_operacion;
+      elsif l_tipo_implementacion = c_tipo_implementacion_bloque then
+        l_nombre_programa := l_nombre_operacion;
+      end if;
     end if;
   
     if nvl(i_version, l_version_actual) <> l_version_actual then
@@ -672,6 +540,27 @@ create or replace package body k_operacion is
     end if;
   
     return l_nombre_programa;
+  end;
+
+  function f_tipo_argumento_parametros(i_id_operacion in number,
+                                       i_version      in varchar2 default null)
+    return varchar2 is
+    l_tipo_argumento_parametros varchar2(4000);
+  begin
+    begin
+      select arg.type_name
+        into l_tipo_argumento_parametros
+        from all_arguments arg
+       where upper(f_nombre_programa(i_id_operacion, i_version)) in
+             (arg.object_name, arg.package_name || '.' || arg.object_name)
+         and arg.in_out = 'IN'
+         and arg.argument_name like '%I%PARAMETROS%';
+    exception
+      when others then
+        l_tipo_argumento_parametros := null;
+    end;
+  
+    return l_tipo_argumento_parametros;
   end;
 
   function f_filtros_sql(i_parametros      in y_parametros,
@@ -787,297 +676,220 @@ create or replace package body k_operacion is
       raise_application_error(-20000, k_error.f_mensaje_error('ora0001'));
   end;
 
+  function f_filtros_sql_dinamico(i_parametros      in y_parametros,
+                                  i_consulta_sql    in clob default null,
+                                  i_nombres_excluir in y_cadenas default null)
+    return clob is
+    -- l_resultado           clob;
+    l_filtros_sql         clob := '';
+    l_consulta_modificada clob;
+    l_seen_one            boolean := false;
+    l_nombres_excluir     y_cadenas;
+    l_parametros_usados   y_cadenas := new y_cadenas();
+    c_id_ope_par_automaticos constant pls_integer := 1000;
+  
+    -- Función auxiliar para verificar si un parámetro debe ser excluido
+    function f_debe_excluir(p_nombre in varchar2) return boolean is
+      l_existe varchar2(1);
+    begin
+      begin
+        select 'S'
+          into l_existe
+          from table(l_nombres_excluir)
+         where lower(column_value) = lower(p_nombre);
+        return true;
+      exception
+        when no_data_found then
+          return false;
+      end;
+    end f_debe_excluir;
+  
+    -- Función auxiliar para procesar el valor de un parámetro
+    function f_procesar_valor(p_valor in anydata) return varchar2 is
+      l_typecode pls_integer;
+      l_typeinfo anytype;
+    begin
+      l_typecode := p_valor.gettype(l_typeinfo);
+    
+      if l_typecode = dbms_types.typecode_varchar2 then
+        return '''' || replace(anydata.accessvarchar2(p_valor),
+                               '''',
+                               '''''') || '''';
+      elsif l_typecode = dbms_types.typecode_number then
+        return to_char(anydata.accessnumber(p_valor),
+                       'TM',
+                       'NLS_NUMERIC_CHARACTERS = ''.,''');
+      elsif l_typecode = dbms_types.typecode_date then
+        return 'DATE ''' || to_char(anydata.accessdate(p_valor),
+                                    'YYYY-MM-DD') || '''';
+      else
+        raise_application_error(-20000,
+                                k_error.f_mensaje_error('ora0002',
+                                                        'tipo de parámetro',
+                                                        'no soportado'));
+      end if;
+    end f_procesar_valor;
+  
+  begin
+    if i_parametros is null then
+      return '';
+    end if;
+  
+    -- Inicializar lista de exclusiones
+    if i_nombres_excluir is not null then
+      l_nombres_excluir := i_nombres_excluir;
+    else
+      l_nombres_excluir := new y_cadenas();
+    end if;
+  
+    -- Cargar lista de nombres a excluir (parámetros automáticos)
+    select x.nombre
+      bulk collect
+      into l_nombres_excluir
+      from (select lower(p.nombre) nombre
+              from t_operacion_parametros p
+             where p.id_operacion = c_id_ope_par_automaticos
+            union
+            select lower(column_value)
+              from table(l_nombres_excluir)) x;
+  
+    -- Inicializar consulta modificada si se proporcionó SQL
+    if i_consulta_sql is not null then
+      l_consulta_modificada := i_consulta_sql;
+    end if;
+  
+    -- Procesar todos los parámetros
+    for i in 1 .. i_parametros.count loop
+      if i_parametros(i)
+       .nombre is not null and not f_debe_excluir(i_parametros(i).nombre) then
+        -- Verificar si es un parámetro dinámico en la consulta SQL
+        if i_consulta_sql is not null and
+           instr(upper(i_consulta_sql),
+                 ':' || upper(i_parametros(i).nombre)) > 0 then
+        
+          -- Marcar parámetro como usado
+          l_parametros_usados.extend;
+          l_parametros_usados(l_parametros_usados.count) := lower(i_parametros(i).nombre);
+        
+          -- Reemplazar en la consulta SQL
+          if i_parametros(i).valor is not null then
+            l_consulta_modificada := replace(l_consulta_modificada,
+                                             ':' || i_parametros(i).nombre,
+                                             f_procesar_valor(i_parametros(i).valor));
+          else
+            l_consulta_modificada := replace(l_consulta_modificada,
+                                             ':' || i_parametros(i).nombre,
+                                             'NULL');
+          end if;
+        else
+          -- Si no es parámetro dinámico o no hay consulta SQL, agregar a filtros WHERE
+          if i_parametros(i).valor is not null then
+            l_filtros_sql := l_filtros_sql || case
+                               when l_seen_one then
+                                ' AND '
+                               else
+                                ' WHERE '
+                             end || i_parametros(i).nombre || ' = ' ||
+                             f_procesar_valor(i_parametros(i).valor);
+            l_seen_one    := true;
+          end if;
+        end if;
+      end if;
+    end loop;
+  
+    -- Validar parámetros dinámicos no reemplazados
+    if i_consulta_sql is not null then
+      if regexp_count(l_consulta_modificada, ':[A-Za-z_][A-Za-z0-9_]*') > 0 then
+        raise_application_error(-20001,
+                                'Existen parámetros dinámicos sin reemplazar en la consulta');
+      end if;
+    
+      -- Si había parámetros dinámicos, devolver la consulta modificada
+      if l_parametros_usados.count > 0 then
+        return l_consulta_modificada;
+      end if;
+    end if;
+  
+    -- Devolver los filtros WHERE construidos
+    return l_filtros_sql;
+  exception
+    when value_error then
+      raise_application_error(-20000, k_error.f_mensaje_error('ora0001'));
+  end;
+
   function f_valor_parametro(i_parametros in y_parametros,
                              i_nombre     in varchar2) return anydata is
-    l_valor anydata;
-    i       integer;
+    l_lista_parametros y_lista_parametros;
   begin
-    if i_parametros is not null then
-      -- Busca el parámetro en la lista
-      i := i_parametros.first;
-      while i is not null and l_valor is null loop
-        if lower(i_parametros(i).nombre) = lower(i_nombre) then
-          l_valor := i_parametros(i).valor;
-        end if;
-        i := i_parametros.next(i);
-      end loop;
-    end if;
-  
-    -- Si el parámetro no se encuentra en la lista carga un valor nulo de tipo
-    -- VARCHAR2 para evitar el error ORA-30625 al acceder al valor a través de
-    -- AnyData.Access*
-    if l_valor is null then
-      l_valor := anydata.convertvarchar2(null);
-    end if;
-  
-    return l_valor;
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro(i_nombre);
   end;
 
   function f_valor_parametro_string(i_parametros in y_parametros,
                                     i_nombre     in varchar2) return varchar2 is
+    l_lista_parametros y_lista_parametros;
   begin
-    return anydata.accessvarchar2(f_valor_parametro(i_parametros, i_nombre));
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro_string(i_nombre);
   end;
 
   function f_valor_parametro_number(i_parametros in y_parametros,
                                     i_nombre     in varchar2) return number is
+    l_lista_parametros y_lista_parametros;
   begin
-    return anydata.accessnumber(f_valor_parametro(i_parametros, i_nombre));
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro_number(i_nombre);
   end;
 
   function f_valor_parametro_boolean(i_parametros in y_parametros,
                                      i_nombre     in varchar2) return boolean is
+    l_lista_parametros y_lista_parametros;
   begin
-    return sys.diutil.int_to_bool(anydata.accessnumber(f_valor_parametro(i_parametros,
-                                                                         i_nombre)));
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro_boolean(i_nombre);
   end;
 
   function f_valor_parametro_date(i_parametros in y_parametros,
                                   i_nombre     in varchar2) return date is
+    l_lista_parametros y_lista_parametros;
   begin
-    return anydata.accessdate(f_valor_parametro(i_parametros, i_nombre));
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro_date(i_nombre);
   end;
 
   function f_valor_parametro_object(i_parametros in y_parametros,
                                     i_nombre     in varchar2) return y_objeto is
-    l_objeto   y_objeto;
-    l_anydata  anydata;
-    l_result   pls_integer;
-    l_typeinfo anytype;
-    l_typecode pls_integer;
+    l_lista_parametros y_lista_parametros;
   begin
-    l_anydata := f_valor_parametro(i_parametros, i_nombre);
-  
-    l_typecode := l_anydata.gettype(l_typeinfo);
-    if l_typecode = dbms_types.typecode_object then
-      l_result := l_anydata.getobject(l_objeto);
-    end if;
-  
-    return l_objeto;
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro_object(i_nombre);
   end;
 
-  function f_inserts_operacion(i_operacion in t_operaciones%rowtype)
-    return clob is
-    l_inserts clob;
-    l_insert  clob;
-  
-    procedure lp_comentar(i_comentario in varchar2) is
-    begin
-      l_inserts := l_inserts || '/* ' || lpad('=', 20, '=') || ' ' ||
-                   upper(i_comentario) || ' ' || lpad('=', 20, '=') ||
-                   ' */' || utl_tcp.crlf;
-    end;
+  function f_valor_parametro_json_object(i_parametros in y_parametros,
+                                         i_nombre     in varchar2)
+    return json_object_t is
+    l_lista_parametros y_lista_parametros;
   begin
-    lp_comentar('T_OPERACIONES');
-    l_insert  := fn_gen_inserts('SELECT * FROM t_operaciones WHERE id_operacion = ' ||
-                                to_char(i_operacion.id_operacion),
-                                't_operaciones');
-    l_inserts := l_inserts || l_insert;
-    --
-    lp_comentar('T_OPERACION_PARAMETROS');
-    l_insert  := fn_gen_inserts('SELECT * FROM t_operacion_parametros WHERE id_operacion = ' ||
-                                to_char(i_operacion.id_operacion) ||
-                                ' ORDER BY version, orden',
-                                't_operacion_parametros');
-    l_inserts := l_inserts || l_insert;
-    --
-    lp_comentar('T_SERVICIOS');
-    l_insert  := fn_gen_inserts('SELECT id_servicio, tipo, consulta_sql FROM t_servicios WHERE id_servicio = ' ||
-                                to_char(i_operacion.id_operacion),
-                                't_servicios');
-    l_inserts := l_inserts || l_insert;
-    --
-    lp_comentar('T_REPORTES');
-    l_insert  := fn_gen_inserts('SELECT id_reporte, tipo, consulta_sql FROM t_reportes WHERE id_reporte = ' ||
-                                to_char(i_operacion.id_operacion),
-                                't_reportes');
-    l_inserts := l_inserts || l_insert;
-    --
-    lp_comentar('T_TRABAJOS');
-    l_insert  := fn_gen_inserts('SELECT id_trabajo, tipo, accion, fecha_inicio, tiempo_inicio, intervalo_repeticion, fecha_fin, comentarios FROM t_trabajos WHERE id_trabajo = ' ||
-                                to_char(i_operacion.id_operacion),
-                                't_trabajos');
-    l_inserts := l_inserts || l_insert;
-    --
-    lp_comentar('T_MONITOREOS');
-    l_insert  := fn_gen_inserts('SELECT id_monitoreo, causa, consulta_sql, plan_accion, prioridad, id_rol_responsable, id_usuario_responsable, nivel_aviso, frecuencia, comentarios FROM t_monitoreos WHERE id_monitoreo = ' ||
-                                to_char(i_operacion.id_operacion),
-                                't_monitoreos');
-    l_inserts := l_inserts || l_insert;
-    --
-    lp_comentar('T_IMPORTACIONES');
-    l_insert  := fn_gen_inserts('SELECT id_importacion, separador_campos, delimitador_campo, linea_inicial, nombre_tabla, truncar_tabla, proceso_previo, proceso_posterior FROM t_importaciones WHERE id_importacion = ' ||
-                                to_char(i_operacion.id_operacion),
-                                't_importaciones');
-    l_inserts := l_inserts || l_insert;
-    --
-    lp_comentar('T_IMPORTACION_PARAMETROS');
-    l_insert  := fn_gen_inserts('SELECT a.id_importacion, a.nombre, a.version, a.posicion_inicial, a.longitud, a.posicion_decimal, a.mapeador FROM t_importacion_parametros a, t_operacion_parametros b WHERE a.id_importacion = ' ||
-                                to_char(i_operacion.id_operacion) ||
-                                ' AND b.id_operacion=a.id_importacion AND b.nombre=a.nombre AND b.version=a.version ORDER BY b.version, b.orden',
-                                't_importacion_parametros');
-    l_inserts := l_inserts || l_insert;
-    --
-    lp_comentar('T_ROL_PERMISOS');
-    l_insert  := fn_gen_inserts('SELECT * FROM t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(' ||
-                                to_char(i_operacion.id_operacion) ||
-                                ') ORDER BY id_rol',
-                                't_rol_permisos');
-    l_inserts := l_inserts || l_insert;
-    --
-    if i_operacion.tipo_implementacion = c_tipo_implementacion_funcion then
-      lp_comentar('FUNCTION');
-      l_insert  := dbms_metadata.get_ddl('FUNCTION',
-                                         upper(f_nombre_programa(i_operacion.id_operacion)));
-      l_insert  := trim(utl_tcp.crlf from l_insert);
-      l_insert  := trim(' ' from l_insert);
-      l_insert  := l_insert || utl_tcp.crlf || '/';
-      l_inserts := l_inserts || l_insert;
-    end if;
-  
-    return l_inserts;
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro_json_object(i_nombre);
   end;
 
-  function f_inserts_operacion(i_id_operacion in number) return clob is
+  function f_valor_parametro_json_array(i_parametros in y_parametros,
+                                        i_nombre     in varchar2)
+    return json_array_t is
+    l_lista_parametros y_lista_parametros;
   begin
-    return f_inserts_operacion(f_operacion(i_id_operacion));
-  end;
-
-  function f_inserts_operacion(i_tipo    in varchar2,
-                               i_nombre  in varchar2,
-                               i_dominio in varchar2) return clob is
-  begin
-    return f_inserts_operacion(f_id_operacion(i_tipo, i_nombre, i_dominio));
-  end;
-
-  function f_deletes_operacion(i_operacion in t_operaciones%rowtype)
-    return clob is
-    l_deletes clob;
-  
-    procedure lp_comentar(i_comentario in varchar2) is
-    begin
-      l_deletes := l_deletes || '/* ' || lpad('=', 20, '=') || ' ' ||
-                   upper(i_comentario) || ' ' || lpad('=', 20, '=') ||
-                   ' */' || utl_tcp.crlf;
-    end;
-  begin
-    lp_comentar('ID_OPERACION = ' || to_char(i_operacion.id_operacion));
-    --
-    l_deletes := l_deletes ||
-                 'DELETE t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(' ||
-                 to_char(i_operacion.id_operacion) || ');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_importacion_parametros WHERE id_operacion = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_importaciones WHERE id_importacion = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_monitoreos WHERE id_monitoreo = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_trabajos WHERE id_trabajo = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_reportes WHERE id_reporte = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_servicios WHERE id_servicio = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_operacion_parametros WHERE id_operacion = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_operaciones WHERE id_operacion = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    --
-    if i_operacion.tipo_implementacion = c_tipo_implementacion_funcion then
-      l_deletes := l_deletes || 'DROP FUNCTION ' ||
-                   lower(f_nombre_programa(i_operacion.id_operacion)) || ';' ||
-                   utl_tcp.crlf;
-    end if;
-  
-    return l_deletes;
-  end;
-
-  function f_deletes_operacion(i_id_operacion in number) return clob is
-  begin
-    return f_deletes_operacion(f_operacion(i_id_operacion));
-  end;
-
-  function f_deletes_operacion(i_tipo    in varchar2,
-                               i_nombre  in varchar2,
-                               i_dominio in varchar2) return clob is
-  begin
-    return f_deletes_operacion(f_id_operacion(i_tipo, i_nombre, i_dominio));
-  end;
-
-  function f_scripts_operaciones(i_id_modulo in varchar2 default null)
-    return blob is
-    l_zip       blob;
-    l_inserts   clob;
-    l_deletes   clob;
-    l_install   clob;
-    l_uninstall clob;
-  
-    cursor c_modulos is
-      select m.id_modulo
-        from t_modulos m
-       where m.id_modulo = nvl(i_id_modulo, m.id_modulo);
-  
-    cursor c_operaciones(i_id_modulo in varchar2) is
-      select a.id_operacion,
-             lower(f_id_modulo(a.id_operacion)) id_modulo,
-             lower(k_cadena.f_reemplazar_acentos(k_significado.f_significado_codigo('TIPO_OPERACION',
-                                                                                    a.tipo) || '/' ||
-                                                 nvl(a.dominio, '_') || '/' ||
-                                                 a.nombre)) || '.sql' nombre_archivo
-        from t_operaciones a
-       where f_id_modulo(a.id_operacion) = i_id_modulo
-       order by 3;
-  begin
-    for m in c_modulos loop
-      l_install := '';
-      l_install := l_install || 'prompt' || utl_tcp.crlf;
-      l_install := l_install || 'prompt Instalando operaciones...' ||
-                   utl_tcp.crlf;
-      l_install := l_install ||
-                   'prompt -----------------------------------' ||
-                   utl_tcp.crlf;
-      l_install := l_install || 'prompt' || utl_tcp.crlf;
-      --
-      l_uninstall := '';
-      l_uninstall := l_uninstall || 'prompt' || utl_tcp.crlf;
-      l_uninstall := l_uninstall || 'prompt Desinstalando operaciones...' ||
-                     utl_tcp.crlf;
-      l_uninstall := l_uninstall ||
-                     'prompt -----------------------------------' ||
-                     utl_tcp.crlf;
-      l_uninstall := l_uninstall || 'prompt' || utl_tcp.crlf;
-    
-      for ope in c_operaciones(m.id_modulo) loop
-        l_inserts := f_inserts_operacion(ope.id_operacion);
-        l_deletes := f_deletes_operacion(ope.id_operacion);
-        --
-        l_install   := l_install || '@@scripts/operations/' ||
-                       ope.nombre_archivo || utl_tcp.crlf;
-        l_uninstall := l_uninstall || l_deletes || utl_tcp.crlf;
-        --
-        as_zip.add1file(l_zip,
-                        ope.id_modulo || '/' || ope.nombre_archivo,
-                        k_util.clob_to_blob(l_inserts));
-      end loop;
-    
-      as_zip.add1file(l_zip,
-                      lower(m.id_modulo) || '/' || 'install.sql',
-                      k_util.clob_to_blob(l_install));
-      as_zip.add1file(l_zip,
-                      lower(m.id_modulo) || '/' || 'uninstall.sql',
-                      k_util.clob_to_blob(l_uninstall));
-    end loop;
-  
-    if l_zip is not null and dbms_lob.getlength(l_zip) > 0 then
-      as_zip.finish_zip(l_zip);
-    end if;
-  
-    return l_zip;
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro_json_array(i_nombre);
   end;
 
 end;
 /
-

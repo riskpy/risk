@@ -50,13 +50,15 @@ create or replace package k_trabajo is
   pragma exception_init(ex_programa_con_dependencia, -27479);
 
   -- Códigos de trabajos del sistema
-  c_monitoreo_conflictos_mensual  constant number(15) := 2000;
-  c_monitoreo_conflictos_semanal  constant number(15) := 2001;
-  c_monitoreo_conflictos_diario   constant number(15) := 2002;
-  c_monitoreo_conflictos_12_horas constant number(15) := 2003;
-  c_monitoreo_conflictos_6_horas  constant number(15) := 2004;
-  c_monitoreo_conflictos_2_horas  constant number(15) := 2005;
-  c_monitoreo_conflictos_hora     constant number(15) := 2006;
+  c_monitoreo_conflictos_mensual    constant number(15) := 2000;
+  c_monitoreo_conflictos_semanal    constant number(15) := 2001;
+  c_monitoreo_conflictos_diario     constant number(15) := 2002;
+  c_monitoreo_conflictos_12_horas   constant number(15) := 2003;
+  c_monitoreo_conflictos_6_horas    constant number(15) := 2004;
+  c_monitoreo_conflictos_2_horas    constant number(15) := 2005;
+  c_monitoreo_conflictos_hora       constant number(15) := 2006;
+  c_monitoreo_conflictos_30_minutos constant number(15) := 2007;
+  c_monitoreo_conflictos_15_minutos constant number(15) := 2008;
 
   -- Crea un trabajo en el sistema
   -- Para crear un trabajo el usuario debe tener permiso de CREATE JOB
@@ -92,5 +94,8 @@ create or replace package k_trabajo is
   procedure p_eliminar_trabajo(i_id_trabajo in number,
                                i_parametros in clob default null);
 
+  procedure p_mantener_trabajos(i_id_modulo in varchar2 default null);
+
 end;
 /
+

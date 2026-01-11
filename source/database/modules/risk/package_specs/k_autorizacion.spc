@@ -31,15 +31,34 @@ create or replace package k_autorizacion is
   */
 
   -- Acciones
-  c_accion_consultar  constant char(1) := 'C';
-  c_accion_insertar   constant char(1) := 'I';
-  c_accion_actualizar constant char(1) := 'A';
-  c_accion_eliminar   constant char(1) := 'E';
+  c_accion_consultar  constant varchar2(1) := 'C';
+  c_accion_insertar   constant varchar2(1) := 'I';
+  c_accion_actualizar constant varchar2(1) := 'A';
+  c_accion_eliminar   constant varchar2(1) := 'E';
+  c_accion_cargar     constant varchar2(1) := 'I';
+  c_accion_verificar  constant varchar2(1) := 'V';
+  c_accion_autorizar  constant varchar2(1) := 'T';
+
+  procedure p_inicializar_permisos;
+
+  procedure p_limpiar_permisos;
+
+  procedure p_eliminar_permisos;
+
+  procedure p_imprimir_permisos;
+
+  function f_permisos_usuario(i_id_usuario in number,
+                              i_id_entidad in number default null,
+                              i_grupo      in varchar2 default null)
+    return y_permisos;
 
   function f_validar_permiso(i_id_usuario in number,
                              i_id_permiso in varchar2,
-                             i_accion     in varchar2 default null)
+                             i_accion     in varchar2 default null,
+                             i_id_entidad in number default null,
+                             i_grupo      in varchar2 default null)
     return boolean;
 
 end;
 /
+

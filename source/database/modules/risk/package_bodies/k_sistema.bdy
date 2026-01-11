@@ -27,6 +27,21 @@ create or replace package body k_sistema is
     return f_valor_parametro_string(c_usuario);
   end;
 
+  function f_id_entidad return number is
+  begin
+    return f_valor_parametro_number(c_id_entidad);
+  end;
+
+  function f_entidad return varchar2 is
+  begin
+    return f_valor_parametro_string(c_entidad);
+  end;
+
+  function f_id_aplicacion return varchar2 is
+  begin
+    return f_valor_parametro_string(c_id_aplicacion);
+  end;
+
   function f_pais return number is
   begin
     return f_valor_parametro_number(c_id_pais);
@@ -124,7 +139,7 @@ create or replace package body k_sistema is
       select nombre, version_actual, fecha_actual
         into l_nombre, l_version_actual, l_fecha_actual
         from t_modulos
-       where id_modulo = 'RISK';
+       where id_modulo = k_modulo.c_id_risk;
       p_definir_parametro_string(c_sistema, l_nombre);
       p_definir_parametro_string(c_version, l_version_actual);
       p_definir_parametro_date(c_fecha, l_fecha_actual);
@@ -245,8 +260,31 @@ create or replace package body k_sistema is
   end;
   --
 
+  procedure p_configurar_modificacion(pin_aplicacion in varchar2,
+                                      pin_motivo     in varchar2 default null) is
+  begin
+    p_definir_parametro_string(i_parametro => cg_aplicacion_modificacion,
+                               i_valor     => pin_aplicacion);
+    p_definir_parametro_string(i_parametro => cg_motivo_modificacion,
+                               i_valor     => pin_motivo);
+  exception
+    when others then
+      null;
+  end;
+
+  function f_aplicacion_modificacion return varchar2 is
+  begin
+    return f_valor_parametro_string(cg_aplicacion_modificacion);
+  end;
+
+  function f_motivo_modificacion return varchar2 is
+  begin
+    return f_valor_parametro_string(cg_motivo_modificacion);
+  end;
+
 begin
   -- Define parámetros por defecto
   p_inicializar_parametros;
 end;
 /
+

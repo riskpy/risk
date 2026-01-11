@@ -1,9 +1,5 @@
 create or replace package body k_autenticacion is
 
-  -- Excepciones
-  ex_credenciales_invalidas exception;
-  ex_tokens_invalidos       exception;
-
   function f_registrar_usuario(i_alias            in varchar2,
                                i_clave            in varchar2,
                                i_nombre           in varchar2,
@@ -19,8 +15,12 @@ create or replace package body k_autenticacion is
     l_confirmacion_activa varchar2(1);
     l_estado_usuario      t_usuarios.estado%type;
     l_body                clob;
-    l_origen              varchar2(1) := nvl(i_origen, c_origen_risk);
+    l_plantilla           varchar2(20) := 'PLANTILLA_DEMO';
+    l_datos_extra         json_object_t := new json_object_t;
+    l_origen              t_usuarios.origen%type;
   begin
+    l_origen := nvl(i_origen, c_origen_risk);
+  
     -- Valida que no exista el usuario externo
     if l_origen <> c_origen_risk then
       if k_usuario.f_existe_usuario_externo(l_origen, i_id_externo) then
@@ -53,7 +53,9 @@ create or replace package body k_autenticacion is
        tipo_documento,
        numero_documento,
        id_pais,
-       fecha_nacimiento)
+       fecha_nacimiento,
+       id_externo_1,
+       id_externo_2)
     values
       (i_nombre,
        i_apellido,
@@ -62,6 +64,8 @@ create or replace package body k_autenticacion is
        null,
        null,
        null,
+       null,
+       i_id_externo,
        null)
     returning id_persona into l_id_persona;
   
@@ -134,16 +138,15 @@ create or replace package body k_autenticacion is
                                            'Confirmar',
                                            f_generar_url_activacion(l_alias));
     
-      if k_mensajeria.f_enviar_correo('Confirmación de correo',
-                                      l_body,
+      l_datos_extra.put('asunto', 'Confirmación de correo');
+      l_datos_extra.put('contenido', l_body);
+    
+      if k_mensajeria.f_enviar_correo(l_plantilla,
+                                      l_datos_extra.to_clob,
                                       null,
                                       i_direccion_correo,
                                       null,
-                                      null,
-                                      null,
-                                      null,
-                                      k_mensajeria.c_prioridad_importante) <>
-         k_mensajeria.c_ok then
+                                      null) <> k_mensajeria.c_ok then
         raise_application_error(-20000,
                                 'Error al enviar correo de verificación');
       end if;
@@ -152,6 +155,8 @@ create or replace package body k_autenticacion is
   
     return l_alias;
   exception
+    when k_usuario.ex_usuario_existente then
+      raise_application_error(-20000, 'Usuario ya existe');
     when dup_val_on_index then
       raise_application_error(-20000, 'Usuario ya existe');
   end;
@@ -191,44 +196,202 @@ create or replace package body k_autenticacion is
 
   function f_validar_credenciales_risk(i_id_usuario in number,
                                        i_clave      in varchar2,
-                                       i_tipo_clave in char default 'A')
+                                       i_parametros in y_parametros)
     return boolean is
+    l_tipo_clave varchar2(50);
   begin
-    return k_clave.f_validar_clave(i_id_usuario, i_clave, i_tipo_clave);
+    l_tipo_clave := k_operacion.f_valor_parametro_string(i_parametros,
+                                                         'tipo_clave');
+  
+    if not k_clave.f_validar_clave(i_id_usuario, i_clave, l_tipo_clave) then
+      raise ex_credenciales_invalidas;
+    end if;
+  
+    k_clave.p_registrar_autenticacion(i_id_usuario, l_tipo_clave);
+    return true;
+  exception
+    when ex_credenciales_invalidas then
+      k_clave.p_registrar_intento_fallido(i_id_usuario, l_tipo_clave);
+      return false;
+    when others then
+      k_clave.p_registrar_intento_fallido(i_id_usuario, l_tipo_clave);
+      return false;
   end;
 
   -- https://stackoverflow.com/a/33043760
-  function f_validar_credenciales_oracle(i_usuario in varchar2,
-                                         i_clave   in varchar2)
+  function f_validar_credenciales_oracle(i_usuario    in varchar2,
+                                         i_clave      in varchar2,
+                                         i_parametros in y_parametros)
     return boolean is
+    l_dblink varchar2(1000);
+  
+    l_dominio t_autenticacion_origenes.prefijo_dominio%type;
+    l_usuario t_usuarios.alias%type;
   begin
+    l_dblink := k_operacion.f_valor_parametro_string(i_parametros, 'dblink');
+  
     begin
-      execute immediate 'DROP DATABASE LINK password_test_loopback';
+      execute immediate 'DROP DATABASE LINK ' || l_dblink;
     exception
       when others then
         null;
     end;
   
-    execute immediate 'CREATE DATABASE LINK password_test_loopback CONNECT TO ' ||
-                      i_usuario || ' IDENTIFIED BY ' || i_clave ||
-                      ' USING ''' || k_util.f_base_datos || '''';
+    k_usuario.p_separar_dominio_usuario(i_usuario, l_dominio, l_usuario);
   
-    execute immediate 'SELECT * FROM dual@password_test_loopback';
+    execute immediate 'CREATE DATABASE LINK ' || l_dblink || ' CONNECT TO ' ||
+                      l_usuario || ' IDENTIFIED BY ' || i_clave ||
+                      ' USING ''' ||
+                      k_operacion.f_valor_parametro_string(i_parametros,
+                                                           'connect_string') || '''';
   
-    execute immediate 'DROP DATABASE LINK password_test_loopback';
+    execute immediate 'SELECT * FROM dual@' || l_dblink;
+  
+    execute immediate 'DROP DATABASE LINK ' || l_dblink;
   
     return true;
   exception
     when others then
+      console.error('Error al validar credenciales ' ||
+                    c_metodo_validacion_oracle || ': ' || sqlerrm);
       return false;
   end;
 
-  function f_validar_credenciales(i_usuario    in varchar2,
-                                  i_clave      in varchar2,
-                                  i_tipo_clave in char default 'A',
-                                  i_metodo     in varchar2 default null)
+  -- https://oracle-base.com/articles/misc/oracle-application-express-apex-ldap-authentication
+  function f_validar_credenciales_ldap(i_usuario    in varchar2,
+                                       i_clave      in varchar2,
+                                       i_parametros in y_parametros)
     return boolean is
-    l_id_usuario t_usuarios.id_usuario%type;
+    l_ldap_host  varchar2(256);
+    l_ldap_port  pls_integer;
+    l_ldap_base  varchar2(256);
+    l_dn_prefix  varchar2(100); -- Amend as desired'.
+    l_auth_group varchar2(100); -- Amend as desired'.
+  
+    l_retval      pls_integer;
+    l_session     dbms_ldap.session;
+    l_attrs       dbms_ldap.string_collection;
+    l_message     dbms_ldap.message;
+    l_entry       dbms_ldap.message;
+    l_attr_name   varchar2(256);
+    l_ber_element dbms_ldap.ber_element;
+    l_vals        dbms_ldap.string_collection;
+    l_ok          boolean;
+  
+    l_dominio t_autenticacion_origenes.prefijo_dominio%type;
+    l_usuario t_usuarios.alias%type;
+  begin
+    if i_usuario is null or i_clave is null then
+      raise_application_error(-20000, 'Credentials must be specified.');
+    end if;
+  
+    l_ldap_host  := k_operacion.f_valor_parametro_string(i_parametros,
+                                                         'ldap_host');
+    l_ldap_port  := k_operacion.f_valor_parametro_number(i_parametros,
+                                                         'ldap_port');
+    l_ldap_base  := k_operacion.f_valor_parametro_string(i_parametros,
+                                                         'ldap_base');
+    l_dn_prefix  := k_operacion.f_valor_parametro_string(i_parametros,
+                                                         'dn_prefix');
+    l_auth_group := k_operacion.f_valor_parametro_string(i_parametros,
+                                                         'auth_group');
+  
+    k_usuario.p_separar_dominio_usuario(i_usuario, l_dominio, l_usuario);
+    if l_dominio is null and l_dn_prefix is not null then
+      l_dominio := l_dn_prefix;
+    end if;
+  
+    -- Choose to raise exceptions.
+    dbms_ldap.use_exception := true;
+  
+    -- Connect to the LDAP server.
+    l_session := dbms_ldap.init(hostname => l_ldap_host,
+                                portnum  => l_ldap_port);
+  
+    l_retval := dbms_ldap.simple_bind_s(ld     => l_session,
+                                        dn     => l_dominio || l_usuario,
+                                        passwd => i_clave);
+  
+    if l_auth_group is null then
+      -- No exceptions mean you are authenticated.
+      l_ok := true;
+    else
+      -- No exceptions mean you are authenticated. Now check if authorized.
+    
+      -- Get all "memberOf" attributes
+      l_attrs(1) := 'memberOf';
+    
+      -- Searching for the user info using his samaccount (windows login)
+      l_retval := dbms_ldap.search_s(ld       => l_session,
+                                     base     => l_ldap_base,
+                                     scope    => dbms_ldap.scope_subtree,
+                                     filter   => '(&(objectClass=*)(sAMAccountName=' ||
+                                                 l_usuario || '))',
+                                     attrs    => l_attrs,
+                                     attronly => 0,
+                                     res      => l_message);
+    
+      -- Get the first and only entry.
+      l_entry := dbms_ldap.first_entry(ld => l_session, msg => l_message);
+    
+      -- Get the first Attribute for the entry.
+      l_attr_name := dbms_ldap.first_attribute(ld        => l_session,
+                                               ldapentry => l_entry,
+                                               ber_elem  => l_ber_element);
+    
+      -- Loop through all "memberOf" attributes
+      while l_attr_name is not null loop
+        -- Get the values of the attribute
+        l_vals := dbms_ldap.get_values(ld        => l_session,
+                                       ldapentry => l_entry,
+                                       attr      => l_attr_name);
+      
+        -- Check the contents of the value
+        for i in l_vals.first .. l_vals.last loop
+          -- Check the user is a member of the required group.
+          l_ok := instr(upper(l_vals(i)), upper(l_auth_group)) > 0;
+          exit when l_ok;
+        end loop;
+        exit when l_ok;
+      
+        l_attr_name := dbms_ldap.next_attribute(ld        => l_session,
+                                                ldapentry => l_entry,
+                                                ber_elem  => l_ber_element);
+      end loop;
+    end if;
+  
+    l_retval := dbms_ldap.unbind_s(ld => l_session);
+  
+    --if not l_ok then
+    --apex_util.set_custom_auth_status(p_status => 'You are not in the correct LDAP group to use this application.');
+    --end if;
+  
+    -- Return authentication + authorization result.
+    return l_ok;
+  exception
+    when others then
+      -- Exception means authentication failed.
+      begin
+        l_retval := dbms_ldap.unbind_s(ld => l_session);
+      exception
+        when others then
+          null;
+      end;
+      console.error('Error al validar credenciales ' ||
+                    c_metodo_validacion_ldap || ': ' || sqlerrm);
+      --apex_util.set_custom_auth_status(p_status => 'Incorrect username and/or password');
+      return false;
+  end;
+
+  function f_validar_credenciales(i_usuario in varchar2,
+                                  i_clave   in varchar2,
+                                  i_origen  in varchar2 default null)
+    return boolean is
+    l_id_usuario            t_usuarios.id_usuario%type;
+    l_origen                t_usuarios.origen%type;
+    l_metodo_validacion     t_autenticacion_origenes.metodo_validacion_credenciales%type;
+    l_parametros_validacion t_autenticacion_origenes.parametros_validacion_credenciales%type;
+    l_prms                  y_parametros;
   begin
     -- Busca usuario
     l_id_usuario := k_usuario.f_buscar_id(i_usuario);
@@ -237,43 +400,89 @@ create or replace package body k_autenticacion is
       raise k_usuario.ex_usuario_inexistente;
     end if;
   
-    case nvl(i_metodo,
-         k_util.f_valor_parametro('METODO_VALIDACION_CREDENCIALES'))
+    l_origen := coalesce(i_origen,
+                         k_usuario.f_origen(l_id_usuario),
+                         c_origen_risk);
+  
+    begin
+      select a.metodo_validacion_credenciales,
+             a.parametros_validacion_credenciales
+        into l_metodo_validacion, l_parametros_validacion
+        from t_autenticacion_origenes a
+       where a.id_autenticacion_origen = l_origen;
+    exception
+      when others then
+        l_metodo_validacion     := k_util.f_valor_parametro('METODO_VALIDACION_CREDENCIALES');
+        l_parametros_validacion := k_json_util.c_json_object_vacio;
+    end;
+  
+    case l_metodo_validacion
       when c_metodo_validacion_risk then
-        if not
-            f_validar_credenciales_risk(l_id_usuario, i_clave, i_tipo_clave) then
+        l_prms := k_operacion.f_procesar_parametros(k_significado.f_referencia_codigo('METODO_VALIDACION_CREDENCIALES',
+                                                                                      c_metodo_validacion_risk),
+                                                    l_parametros_validacion);
+        if not f_validar_credenciales_risk(l_id_usuario, i_clave, l_prms) then
           raise ex_credenciales_invalidas;
         end if;
       when c_metodo_validacion_oracle then
-        if not f_validar_credenciales_oracle(i_usuario, i_clave) then
+        l_prms := k_operacion.f_procesar_parametros(k_significado.f_referencia_codigo('METODO_VALIDACION_CREDENCIALES',
+                                                                                      c_metodo_validacion_oracle),
+                                                    l_parametros_validacion);
+        if not f_validar_credenciales_oracle(i_usuario, i_clave, l_prms) then
           raise ex_credenciales_invalidas;
         end if;
+      when c_metodo_validacion_ldap then
+        l_prms := k_operacion.f_procesar_parametros(k_significado.f_referencia_codigo('METODO_VALIDACION_CREDENCIALES',
+                                                                                      c_metodo_validacion_ldap),
+                                                    l_parametros_validacion);
+        if not f_validar_credenciales_ldap(i_usuario, i_clave, l_prms) then
+          raise ex_credenciales_invalidas;
+        end if;
+      when c_metodo_validacion_externo then
+        null; -- Valida externamente
       else
         raise ex_credenciales_invalidas;
     end case;
   
-    k_clave.p_registrar_autenticacion(l_id_usuario, i_tipo_clave);
     return true;
   exception
     when k_usuario.ex_usuario_inexistente then
       return false;
     when ex_credenciales_invalidas then
-      k_clave.p_registrar_intento_fallido(l_id_usuario, i_tipo_clave);
       return false;
     when others then
-      k_clave.p_registrar_intento_fallido(l_id_usuario, i_tipo_clave);
       return false;
   end;
 
-  procedure p_validar_credenciales(i_usuario    in varchar2,
-                                   i_clave      in varchar2,
-                                   i_tipo_clave in char default 'A',
-                                   i_metodo     in varchar2 default null) is
+  procedure p_validar_credenciales(i_usuario in varchar2,
+                                   i_clave   in varchar2,
+                                   i_origen  in varchar2 default null) is
   begin
-    if not
-        f_validar_credenciales(i_usuario, i_clave, i_tipo_clave, i_metodo) then
+    if not f_validar_credenciales(i_usuario, i_clave, i_origen) then
       raise_application_error(-20000, 'Credenciales inválidas');
     end if;
+  end;
+
+  function f_obtener_prefijo_origen(i_origen in varchar2) return varchar2 is
+    vl_prefijo_origen t_autenticacion_origenes.prefijo_dominio%type;
+    vl_origen_activo  t_autenticacion_origenes.activo%type;
+    -- Verificamos el origen especificado para el usuario.
+  begin
+    select ori.prefijo_dominio, ori.activo
+      into vl_prefijo_origen, vl_origen_activo
+      from t_autenticacion_origenes ori
+     where ori.id_autenticacion_origen = i_origen;
+  
+    if vl_origen_activo = 'N' then
+      raise_application_error(-20302,
+                              'El origen especificado para el usuario no está activo!!');
+    else
+      return vl_prefijo_origen;
+    end if;
+  exception
+    when no_data_found then
+      raise_application_error(-20301,
+                              'No existe el origen específicado para el usuario');
   end;
 
   function f_iniciar_sesion(i_id_aplicacion     in varchar2,
@@ -293,7 +502,9 @@ create or replace package body k_autenticacion is
     l_fecha_expiracion_access_token  date;
     l_fecha_expiracion_refresh_token date;
     --
-    l_origen varchar2(1) := nvl(i_origen, c_origen_risk);
+    l_origen t_sesiones.origen%type;
+    l_alias  t_usuarios.alias%type;
+  
   begin
     -- Valida aplicacion
     if i_id_aplicacion is null then
@@ -304,8 +515,26 @@ create or replace package body k_autenticacion is
     l_id_usuario := k_usuario.f_buscar_id(i_usuario);
   
     if l_id_usuario is null then
-      raise k_usuario.ex_usuario_inexistente;
+      /*si se autentica por backoffice y no existe el usuario, insertamos*/
+      if i_id_aplicacion = 108 then
+        l_alias := f_obtener_prefijo_origen(i_origen) || i_usuario;
+        begin
+          insert into t_usuarios
+            (alias, estado, origen, id_externo)
+          values
+            (l_alias, 'A', i_origen, i_usuario) return id_usuario into l_id_usuario;
+        exception
+          when others then
+            raise k_usuario.ex_usuario_inexistente;
+        end;
+      else
+        raise k_usuario.ex_usuario_inexistente;
+      end if;
     end if;
+  
+    l_origen := coalesce(i_origen,
+                         k_usuario.f_origen(l_id_usuario),
+                         c_origen_risk);
   
     -- Valida estado de usuario
     l_estado_usuario := k_usuario.f_estado(l_id_usuario);
@@ -370,38 +599,59 @@ create or replace package body k_autenticacion is
       end if;
     end if;
   
-    -- Inserta sesion
-    insert into t_sesiones
-      (id_usuario,
-       id_aplicacion,
-       estado,
-       fecha_autenticacion,
-       access_token,
-       fecha_expiracion_access_token,
-       refresh_token,
-       fecha_expiracion_refresh_token,
-       direccion_ip,
-       host,
-       terminal,
-       id_dispositivo,
-       origen,
-       dato_externo)
-    values
-      (l_id_usuario,
-       i_id_aplicacion,
-       'A',
-       sysdate,
-       i_access_token,
-       l_fecha_expiracion_access_token,
-       i_refresh_token,
-       l_fecha_expiracion_refresh_token,
-       k_sistema.f_valor_parametro_string(k_sistema.c_direccion_ip),
-       k_util.f_host,
-       k_util.f_terminal,
-       l_id_dispositivo,
-       l_origen,
-       i_dato_externo)
-    returning id_sesion into l_id_sesion;
+    begin
+      -- Inserta sesion
+      insert into t_sesiones
+        (id_usuario,
+         id_aplicacion,
+         estado,
+         fecha_autenticacion,
+         access_token,
+         fecha_expiracion_access_token,
+         refresh_token,
+         fecha_expiracion_refresh_token,
+         direccion_ip,
+         host,
+         terminal,
+         id_dispositivo,
+         origen,
+         dato_externo)
+      values
+        (l_id_usuario,
+         i_id_aplicacion,
+         'A',
+         sysdate,
+         i_access_token,
+         l_fecha_expiracion_access_token,
+         i_refresh_token,
+         l_fecha_expiracion_refresh_token,
+         k_sistema.f_valor_parametro_string(k_sistema.c_direccion_ip),
+         k_util.f_host,
+         k_util.f_terminal,
+         l_id_dispositivo,
+         l_origen,
+         i_dato_externo)
+      returning id_sesion into l_id_sesion;
+    exception
+      when dup_val_on_index then
+        -- Actualiza sesion
+        update t_sesiones
+           set id_usuario                     = l_id_usuario,
+               id_aplicacion                  = i_id_aplicacion,
+               estado                         = 'A',
+               fecha_autenticacion            = sysdate,
+               fecha_expiracion_access_token  = l_fecha_expiracion_access_token,
+               refresh_token                  = i_refresh_token,
+               fecha_expiracion_refresh_token = l_fecha_expiracion_refresh_token,
+               direccion_ip                   = k_sistema.f_valor_parametro_string(k_sistema.c_direccion_ip),
+               host                           = k_util.f_host,
+               terminal                       = k_util.f_terminal,
+               id_dispositivo                 = l_id_dispositivo,
+               origen                         = l_origen,
+               dato_externo                   = i_dato_externo
+         where access_token = i_access_token
+        returning id_sesion into l_id_sesion;
+    end;
   
     $if k_modulo.c_instalado_msj $then
     if l_id_dispositivo is not null then
@@ -429,7 +679,7 @@ create or replace package body k_autenticacion is
     l_fecha_expiracion_access_token  date;
     l_fecha_expiracion_refresh_token date;
     --
-    l_origen varchar2(1) := nvl(i_origen, c_origen_risk);
+    l_origen t_sesiones.origen%type;
   begin
     -- Valida aplicacion
     if i_id_aplicacion is null then
@@ -442,6 +692,10 @@ create or replace package body k_autenticacion is
     if l_id_sesion is null then
       raise ex_tokens_invalidos;
     end if;
+  
+    l_origen := coalesce(i_origen,
+                         k_sesion.f_origen(l_id_sesion),
+                         c_origen_risk);
   
     if l_origen = c_origen_risk then
       -- Obtiene la fecha de expiracion del Access Token y Refresh Token
@@ -503,6 +757,143 @@ create or replace package body k_autenticacion is
                             true);
   
     return k_util.f_valor_parametro('URL_SERVICIOS_PRODUCCION') || '/Aut/ActivarUsuario?key=' || l_key;
+  end;
+
+  procedure p_importar_usuarios_ldap(i_origen  in varchar2,
+                                     i_usuario in varchar2,
+                                     i_clave   in varchar2) is
+    l_session   dbms_ldap.session;
+    l_ret       pls_integer;
+    l_ldap_host varchar2(256);
+    l_ldap_port pls_integer;
+    l_base_dn   varchar2(256);
+    l_dn_prefix varchar2(100);
+    l_filter    varchar2(256);
+    l_attrs     dbms_ldap.string_collection;
+    l_message   dbms_ldap.message;
+    l_entry     dbms_ldap.message;
+    l_vals      dbms_ldap.string_collection;
+  
+    l_alias  varchar2(300);
+    l_nombre varchar2(200);
+    l_email  varchar2(200);
+    --
+    l_dominio t_autenticacion_origenes.prefijo_dominio%type;
+    l_usuario t_usuarios.alias%type;
+  
+    l_metodo_validacion     t_autenticacion_origenes.metodo_validacion_credenciales%type;
+    l_parametros_validacion t_autenticacion_origenes.parametros_validacion_credenciales%type;
+    l_prms                  y_parametros;
+  begin
+    begin
+      select a.metodo_validacion_credenciales,
+             a.parametros_validacion_credenciales
+        into l_metodo_validacion, l_parametros_validacion
+        from t_autenticacion_origenes a
+       where a.id_autenticacion_origen = i_origen;
+    exception
+      when others then
+        l_metodo_validacion     := k_util.f_valor_parametro('METODO_VALIDACION_CREDENCIALES');
+        l_parametros_validacion := k_json_util.c_json_object_vacio;
+    end;
+  
+    if l_metodo_validacion <> c_metodo_validacion_ldap then
+      raise_application_error(-20000,
+                              'Método de validación de credenciales del origen no es LDAP');
+    end if;
+  
+    l_prms := k_operacion.f_procesar_parametros(k_significado.f_referencia_codigo('METODO_VALIDACION_CREDENCIALES',
+                                                                                  c_metodo_validacion_ldap),
+                                                l_parametros_validacion);
+  
+    --
+    l_ldap_host := k_operacion.f_valor_parametro_string(l_prms, 'ldap_host');
+    l_ldap_port := k_operacion.f_valor_parametro_number(l_prms, 'ldap_port');
+    l_base_dn   := k_operacion.f_valor_parametro_string(l_prms, 'ldap_base');
+    l_dn_prefix := k_operacion.f_valor_parametro_string(l_prms, 'dn_prefix');
+    l_filter    := k_operacion.f_valor_parametro_string(l_prms,
+                                                        'search_filter');
+  
+    k_usuario.p_separar_dominio_usuario(i_usuario, l_dominio, l_usuario);
+    if l_dominio is null and l_dn_prefix is not null then
+      l_dominio := l_dn_prefix;
+    end if;
+  
+    -- Inicializar
+    dbms_ldap.use_exception := true;
+    l_attrs(1) := 'sAMAccountName';
+    l_attrs(2) := 'cn';
+    l_attrs(3) := 'mail';
+  
+    -- Conectar
+    l_session := dbms_ldap.init(l_ldap_host, l_ldap_port);
+    l_ret     := dbms_ldap.simple_bind_s(l_session,
+                                         l_dominio || l_usuario,
+                                         i_clave);
+  
+    -- Buscar usuarios del grupo
+    l_ret := dbms_ldap.search_s(ld       => l_session,
+                                base     => l_base_dn,
+                                scope    => dbms_ldap.scope_subtree,
+                                filter   => l_filter,
+                                attrs    => l_attrs,
+                                attronly => 0,
+                                res      => l_message);
+  
+    -- Procesar resultados
+    l_entry := dbms_ldap.first_entry(l_session, l_message);
+    while l_entry is not null loop
+      -- Alias
+      l_vals := dbms_ldap.get_values(l_session, l_entry, 'sAMAccountName');
+      if l_vals.count > 0 then
+        l_alias := l_vals(0);
+      end if;
+    
+      -- Nombre
+      l_vals := dbms_ldap.get_values(l_session, l_entry, 'cn');
+      if l_vals.count > 0 then
+        l_nombre := l_vals(0);
+      end if;
+    
+      -- Email
+      l_vals := dbms_ldap.get_values(l_session, l_entry, 'mail');
+      if l_vals.count > 0 then
+        l_email := l_vals(0);
+      end if;
+    
+      -- Upsert en tabla
+      merge into t_usuarios u
+      using (select l_dn_prefix || l_alias as alias from dual) s
+      on (u.alias = s.alias)
+      when matched then
+        update
+           set estado           = 'A',
+               direccion_correo = l_email,
+               origen           = i_origen,
+               id_externo       = l_alias
+      when not matched then
+        insert
+          (alias, estado, direccion_correo, origen, id_externo)
+        values
+          (l_dn_prefix || l_alias, 'A', l_email, i_origen, l_alias);
+    
+      -- Siguiente entrada
+      l_entry := dbms_ldap.next_entry(l_session, l_entry);
+    end loop;
+  
+    -- Desconectar
+    l_ret := dbms_ldap.unbind_s(l_session);
+  exception
+    when others then
+      begin
+        l_ret := dbms_ldap.unbind_s(l_session);
+      exception
+        when others then
+          null;
+      end;
+      raise_application_error(-20000,
+                              'Error al importar usuarios ' ||
+                              c_metodo_validacion_ldap || ': ' || sqlerrm);
   end;
 
 end;

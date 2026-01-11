@@ -38,6 +38,9 @@ create or replace package k_usuario is
 
   function f_id_usuario(i_alias in varchar2) return number;
 
+  function f_id_usuario(i_id_persona in number,
+                        i_origen     in varchar2 default null) return number;
+
   function f_id_persona(i_id_usuario in number) return number;
 
   function f_alias(i_id_usuario in number) return varchar2;
@@ -46,7 +49,11 @@ create or replace package k_usuario is
 
   function f_origen(i_id_usuario in number) return varchar2;
 
-  function f_validar_alias(i_alias varchar2) return boolean;
+  function f_validar_alias(i_alias  varchar2,
+                           i_origen in varchar2 default null) return boolean;
+
+  procedure p_validar_alias(i_alias  varchar2,
+                            i_origen in varchar2 default null);
 
   function f_version_avatar(i_alias in varchar2) return number;
 
@@ -54,6 +61,10 @@ create or replace package k_usuario is
 
   function f_existe_usuario_externo(i_origen     in varchar2,
                                     i_id_externo in varchar2) return boolean;
+
+  procedure p_separar_dominio_usuario(i_alias   in varchar2,
+                                      o_dominio out varchar2,
+                                      o_usuario out varchar2);
 
   procedure p_cambiar_estado(i_id_usuario in number,
                              i_estado     in varchar2);

@@ -1,0 +1,24 @@
+create table T_DOCUMENTO_TIPOS
+(
+  id_documento_tipo VARCHAR2(3) not null,
+  nombre            VARCHAR2(100) not null,
+  detalle           VARCHAR2(2000),
+  activo            VARCHAR2(1) default 'N' not null
+)
+;
+comment on table T_DOCUMENTO_TIPOS
+  is 'Tipos de documentos';
+comment on column T_DOCUMENTO_TIPOS.id_documento_tipo
+  is 'Identificador del tipo de documento';
+comment on column T_DOCUMENTO_TIPOS.nombre
+  is 'Nombre del tipo de documento';
+comment on column T_DOCUMENTO_TIPOS.detalle
+  is 'Detalles adicionales del tipo de documento';
+comment on column T_DOCUMENTO_TIPOS.activo
+  is 'El tipo de documento está activo? (S/N)';
+alter table T_DOCUMENTO_TIPOS
+  add constraint PK_DOCUMENTO_TIPOS primary key (ID_DOCUMENTO_TIPO);
+alter table T_DOCUMENTO_TIPOS
+  add constraint CK_DOCUMENTO_TIPOS_ACTIVO
+  check (ACTIVO IN ('S', 'N'));
+

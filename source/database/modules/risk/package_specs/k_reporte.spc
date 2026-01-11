@@ -30,6 +30,10 @@ create or replace package k_reporte is
   -------------------------------------------------------------------------------
   */
 
+  -- Tipos de reportes
+  c_tipo_ad_hoc   constant varchar2(1) := 'H';
+  c_tipo_consulta constant varchar2(1) := 'C';
+
   -- Formatos de salida
   c_formato_pdf  constant varchar2(10) := 'PDF';
   c_formato_docx constant varchar2(10) := 'DOCX';
@@ -49,7 +53,20 @@ create or replace package k_reporte is
   procedure p_registrar_sql_ejecucion(i_id_reporte in number,
                                       i_sql        in clob);
 
+  procedure p_crear_reporte(i_nombre                         in t_operaciones.nombre%type,
+                            i_dominio                        in t_operaciones.dominio%type,
+                            i_tipo                           in t_reportes.tipo%type default c_tipo_ad_hoc,
+                            i_version_actual                 in t_operaciones.version_actual%type default '0.1.0',
+                            i_tipo_implementacion            in t_operaciones.tipo_implementacion%type default k_operacion.c_tipo_implementacion_paquete,
+                            i_nombre_programa_implementacion in t_operaciones.nombre_programa_implementacion%type default null,
+                            i_detalle                        in t_operaciones.detalle%type default null,
+                            i_parametros_automaticos         in t_operaciones.parametros_automaticos%type default null,
+                            i_aplicaciones_permitidas        in t_operaciones.aplicaciones_permitidas%type default null,
+                            i_consulta_sql                   in t_reportes.consulta_sql%type default null);
+
   procedure p_limpiar_historial;
+
+  function f_tipo_reporte(i_id_reporte in number) return varchar2;
 
   function f_archivo_ok(i_contenido in blob,
                         i_formato   in varchar2 default null,
@@ -103,6 +120,13 @@ create or replace package k_reporte is
   function f_reporte_sql(i_id_reporte in number,
                          i_parametros in y_parametros) return y_archivo;
 
+  function f_procesar_reporte_principal(i_id_reporte        in number,
+                                        i_parametros        in clob,
+                                        i_contexto          in clob default null,
+                                        i_version           in varchar2 default null,
+                                        i_eliminar_contexto in boolean default false)
+    return y_respuesta;
+
   function f_procesar_reporte(i_id_reporte in number,
                               i_parametros in clob,
                               i_contexto   in clob default null,
@@ -118,3 +142,4 @@ create or replace package k_reporte is
 
 end;
 /
+

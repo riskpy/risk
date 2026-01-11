@@ -19,6 +19,23 @@ create or replace package body k_sesion is
     return l_id_sesion;
   end;
 
+  function f_origen(i_id_sesion in number) return varchar2 is
+    l_origen t_sesiones.origen %type;
+  begin
+    begin
+      select s.origen
+        into l_origen
+        from t_sesiones s
+       where s.id_sesion = i_id_sesion;
+    exception
+      when no_data_found then
+        l_origen := null;
+      when others then
+        l_origen := null;
+    end;
+    return l_origen;
+  end;
+
   function f_validar_sesion(i_access_token in varchar2) return boolean is
   begin
     if f_id_sesion(i_access_token, 'A') is null then
@@ -148,6 +165,18 @@ create or replace package body k_sesion is
   begin
     return sysdate +(f_tiempo_expiracion_token(i_id_aplicacion,
                                                c_refresh_token) / 24);
+  exception
+    when others then
+      return null;
+  end;
+
+  function f_usuario_access_token(i_access_token in varchar2) return varchar2 is
+    l_payload_json json_object_t;
+  begin
+    l_payload_json := json_object_t.parse(utl_raw.cast_to_varchar2(utl_encode.base64_decode(utl_raw.cast_to_raw(k_cadena.f_valor_posicion(i_access_token,
+                                                                                                                                          2,
+                                                                                                                                          '.')))));
+    return l_payload_json.get_string('unique_name');
   exception
     when others then
       return null;

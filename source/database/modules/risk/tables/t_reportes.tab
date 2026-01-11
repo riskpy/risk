@@ -1,7 +1,7 @@
 create table T_REPORTES
 (
   id_reporte             NUMBER not null,
-  tipo                   VARCHAR2(1),
+  tipo                   VARCHAR2(1) not null,
   cantidad_ejecuciones   NUMBER,
   fecha_ultima_ejecucion DATE,
   consulta_sql           CLOB,
@@ -24,6 +24,9 @@ comment on column T_REPORTES.sql_ultima_ejecucion
   is 'SQL de la ultima ejecucion del reporte';
 alter table T_REPORTES
   add constraint PK_REPORTES primary key (ID_REPORTE);
+alter table T_REPORTES
+  add constraint CK_REPORTES_TIPO
+  check (TIPO IN ('H', 'C'));
 alter table T_REPORTES
   add constraint CK_REPORTES_TIPO_CONSULTA_SQL
   check (TIPO <> 'C' OR (TIPO = 'C' AND CONSULTA_SQL IS NOT NULL));

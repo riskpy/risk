@@ -40,6 +40,8 @@ create or replace package k_sesion is
   function f_id_sesion(i_access_token in varchar2,
                        i_estado       in varchar2 default null) return number;
 
+  function f_origen(i_id_sesion in number) return varchar2;
+
   function f_validar_sesion(i_access_token in varchar2) return boolean;
 
   function f_datos_sesion(i_id_sesion in number) return y_sesion;
@@ -55,6 +57,8 @@ create or replace package k_sesion is
 
   function f_fecha_expiracion_refresh_token(i_id_aplicacion in varchar2)
     return date;
+
+  function f_usuario_access_token(i_access_token in varchar2) return varchar2;
 
   procedure p_validar_sesion(i_access_token in varchar2);
 

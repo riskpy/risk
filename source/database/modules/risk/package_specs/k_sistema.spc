@@ -34,19 +34,40 @@ create or replace package k_sistema is
   c_sistema constant varchar2(50) := 'SISTEMA';
   c_version constant varchar2(50) := 'VERSION';
   c_fecha   constant varchar2(50) := 'FECHA';
-  c_usuario constant varchar2(50) := 'USUARIO';
   --
-  c_direccion_ip      constant varchar2(50) := 'DIRECCION_IP';
   c_id_operacion      constant varchar2(50) := 'ID_OPERACION';
   c_nombre_operacion  constant varchar2(50) := 'NOMBRE_OPERACION';
   c_dominio_operacion constant varchar2(50) := 'DOMINIO_OPERACION';
-  c_id_aplicacion     constant varchar2(50) := 'ID_APLICACION';
-  c_id_sesion         constant varchar2(50) := 'ID_SESION';
-  c_id_usuario        constant varchar2(50) := 'ID_USUARIO';
-  c_id_pais           constant varchar2(50) := 'ID_PAIS';
-  c_zona_horaria      constant varchar2(50) := 'ZONA_HORARIA';
-  c_id_idioma         constant varchar2(50) := 'ID_IDIOMA';
-  c_id_dispositivo    constant varchar2(50) := 'ID_DISPOSITIVO';
+  --
+  c_usuario    constant varchar2(50) := 'USUARIO';
+  c_id_usuario constant varchar2(50) := 'ID_USUARIO';
+  c_entidad    constant varchar2(50) := 'ENTIDAD';
+  c_id_entidad constant varchar2(50) := 'ID_ENTIDAD';
+  --
+  c_clave_aplicacion constant varchar2(50) := 'CLAVE_APLICACION';
+  c_id_aplicacion    constant varchar2(50) := 'ID_APLICACION';
+  c_access_token     constant varchar2(50) := 'ACCESS_TOKEN';
+  c_id_sesion        constant varchar2(50) := 'ID_SESION';
+  --
+  c_direccion_ip   constant varchar2(50) := 'DIRECCION_IP';
+  c_id_pais        constant varchar2(50) := 'ID_PAIS';
+  c_zona_horaria   constant varchar2(50) := 'ZONA_HORARIA';
+  c_id_idioma      constant varchar2(50) := 'ID_IDIOMA';
+  c_id_dispositivo constant varchar2(50) := 'ID_DISPOSITIVO';
+
+  -- Valores de Contexto.
+  cg_id_ejecucion       constant varchar2(50) := 'ID_EJECUCION';
+  cg_id_tracking        constant varchar2(50) := 'ID_TRACKING';
+  cg_dispositivo_origen constant varchar2(50) := 'DISPOSITIVO_ORIGEN';
+  cg_timestamp          constant varchar2(50) := 'TIMESTAMP';
+  cg_tipo_persona       constant varchar2(50) := 'TIPO_PERSONA';
+  cg_dato_usuario       constant varchar2(50) := 'DATO_USUARIO';
+  --
+  cg_contexto constant varchar2(50) := 'CONTEXTO';
+
+  -- Valores de Auditoría.
+  cg_aplicacion_modificacion constant varchar2(50) := 'APLICACION_MODIFICACION';
+  cg_motivo_modificacion     constant varchar2(50) := 'MOTIVO_MODIFICACION';
 
   /**
   Indica si el ambiente de Base de Datos es de producción
@@ -79,6 +100,30 @@ create or replace package k_sistema is
   %return Valor del parámetro USUARIO
   */
   function f_usuario return varchar2;
+
+  /**
+  Retorna el valor del parámetro ID_ENTIDAD en la sesión
+  
+  %author jtsoya539 29/1/2022 10:22:38
+  %return Valor del parámetro ID_ENTIDAD
+  */
+  function f_id_entidad return number;
+
+  /**
+  Retorna el valor del parámetro ENTIDAD en la sesión
+  
+  %author jtsoya539 4/2/2021 08:54:38
+  %return Valor del parámetro ENTIDAD
+  */
+  function f_entidad return varchar2;
+
+  /**
+  Retorna el valor del parámetro ID_APLICACION en la sesión
+  
+  %author dmezac 20/6/2025 15:30:38
+  %return Valor del parámetro ID_APLICACION
+  */
+  function f_id_aplicacion return varchar2;
 
   /**
   Retorna el valor del parámetro ID_PAIS en la sesión
@@ -236,6 +281,19 @@ create or replace package k_sistema is
 
   procedure p_imprimir_cola;
   --
+
+  /*
+    p_configurar_modificacion: Aplica seteo de variables globales para auditoría.
+    f_aplicacion_modificacion: Retorna el valor de la variable de aplicacion.
+    f_motivo_modificacion    : Retorna el valor del motivo de la modificacion.
+  */
+
+  procedure p_configurar_modificacion(pin_aplicacion in varchar2,
+                                      pin_motivo     in varchar2 default null);
+
+  function f_aplicacion_modificacion return varchar2;
+
+  function f_motivo_modificacion return varchar2;
 
 end;
 /

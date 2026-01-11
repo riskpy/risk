@@ -39,6 +39,26 @@ create or replace package body k_usuario is
     return l_id_usuario;
   end;
 
+  function f_id_usuario(i_id_persona in number,
+                        i_origen     in varchar2 default null) return number is
+    l_id_usuario t_usuarios.id_usuario%type;
+  begin
+    begin
+      select id_usuario
+        into l_id_usuario
+        from t_usuarios
+       where id_persona = i_id_persona
+         and nvl(origen, k_autenticacion.c_origen_risk) =
+             nvl(i_origen, k_autenticacion.c_origen_risk);
+    exception
+      when no_data_found then
+        l_id_usuario := null;
+      when others then
+        l_id_usuario := null;
+    end;
+    return l_id_usuario;
+  end;
+
   function f_id_persona(i_id_usuario in number) return number is
     l_id_persona t_usuarios.id_persona%type;
   begin
@@ -107,11 +127,52 @@ create or replace package body k_usuario is
     return l_origen;
   end;
 
-  function f_validar_alias(i_alias varchar2) return boolean is
+  function f_validar_alias(i_alias  varchar2,
+                           i_origen in varchar2 default null) return boolean is
+    l_alias_valido    boolean := true;
+    l_origen          t_usuarios.origen%type;
+    l_prefijo_dominio t_autenticacion_origenes.prefijo_dominio%type;
   begin
-    return nvl(regexp_like(i_alias,
-                           k_util.f_valor_parametro('REGEXP_VALIDAR_ALIAS_USUARIO')),
-               true);
+    l_origen := coalesce(i_origen, k_autenticacion.c_origen_risk);
+  
+    begin
+      select a.prefijo_dominio
+        into l_prefijo_dominio
+        from t_autenticacion_origenes a
+       where a.id_autenticacion_origen = l_origen;
+    exception
+      when others then
+        l_prefijo_dominio := '';
+    end;
+  
+    l_alias_valido := nvl(regexp_like(i_alias,
+                                      k_util.f_valor_parametro('REGEXP_VALIDAR_ALIAS_USUARIO')),
+                          true);
+  
+    if l_alias_valido and l_prefijo_dominio is not null then
+      l_alias_valido := i_alias like l_prefijo_dominio || '%';
+    end if;
+  
+    return l_alias_valido;
+  end;
+
+  procedure p_validar_alias(i_alias  varchar2,
+                            i_origen in varchar2 default null) is
+  begin
+    if not f_validar_alias(i_alias, i_origen) then
+      if nvl(i_origen, k_autenticacion.c_origen_risk) =
+         k_autenticacion.c_origen_risk then
+        raise_application_error(-20000,
+                                'Caracteres no permitidos en el Usuario: ' ||
+                                regexp_replace(i_alias,
+                                               trim(translate(k_util.f_valor_parametro('REGEXP_VALIDAR_ALIAS_USUARIO'),
+                                                              '^$',
+                                                              '  ')),
+                                               ''));
+      else
+        raise_application_error(-20000, 'Alias de usuario inválido');
+      end if;
+    end if;
   end;
 
   function f_version_avatar(i_alias in varchar2) return number is
@@ -213,6 +274,19 @@ create or replace package body k_usuario is
     end if;
   end;
 
+  procedure p_separar_dominio_usuario(i_alias   in varchar2,
+                                      o_dominio out varchar2,
+                                      o_usuario out varchar2) is
+  begin
+    if regexp_like(i_alias, '^[A-Za-z0-9]{1,49}[_\]{1}[A-Za-z0-9:]{1,250}$') then
+      o_dominio := regexp_substr(i_alias, '^[A-Za-z0-9]{1,49}[_\]{1}');
+      o_usuario := regexp_substr(i_alias, '[A-Za-z0-9:]{1,250}$');
+    elsif regexp_like(i_alias, '^[A-Za-z0-9:]{1,300}$') then
+      o_dominio := regexp_substr(i_alias, '^[A-Za-z0-9]{1,49}[_\]{1}');
+      o_usuario := regexp_substr(i_alias, '[A-Za-z0-9:]{1,250}$');
+    end if;
+  end;
+
   procedure p_cambiar_estado(i_id_usuario in number,
                              i_estado     in varchar2) is
     l_estado_anterior t_usuarios.estado%type;
@@ -299,8 +373,7 @@ create or replace package body k_usuario is
   procedure p_guardar_dato_string(i_alias in varchar2,
                                   i_campo in varchar2,
                                   i_dato  in varchar2) is
-    l_id_persona t_personas.id_persona%type;
-    l_alias      t_usuarios.alias%type;
+    l_alias t_usuarios.alias%type;
   begin
     -- Verifica que exista usuario
     begin

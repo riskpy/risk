@@ -11,11 +11,11 @@ begin
   -- start generation of records
   -----------------------------------
 
-  l_clob(1) :=q'!TIPO_SERVICIO!';
-  l_clob(2) :=q'!Tipos de servicios!';
+  l_clob(1) :=q'!ESTADO_ENTIDAD!';
+  l_clob(2) :=q'!Estados de entidades!';
   l_clob(3) :=q'!!';
   l_clob(4) :=q'!S!';
-  l_clob(5) :=q'!API!';
+  l_clob(5) :=q'!GEN!';
 
   insert into t_significado_dominios
   (
@@ -49,9 +49,9 @@ begin
   -- start generation of records
   -----------------------------------
 
-  l_clob(1) :=q'!TIPO_SERVICIO!';
-  l_clob(2) :=q'!C!';
-  l_clob(3) :=q'!CONSULTA!';
+  l_clob(1) :=q'!ESTADO_ENTIDAD!';
+  l_clob(2) :=q'!A!';
+  l_clob(3) :=q'!ACTIVO!';
   l_clob(4) :=q'!!';
   l_clob(5) :=q'!S!';
   l_clob(6) :=q'!!';
@@ -75,87 +75,9 @@ begin
     ,to_char(l_clob(6))
   );
 
-  l_clob(1) :=q'!TIPO_SERVICIO!';
-  l_clob(2) :=q'!P!';
-  l_clob(3) :=q'!PROCESO!';
-  l_clob(4) :=q'!!';
-  l_clob(5) :=q'!S!';
-  l_clob(6) :=q'!!';
-
-  insert into t_significados
-  (
-     "DOMINIO"
-    ,"CODIGO"
-    ,"SIGNIFICADO"
-    ,"REFERENCIA"
-    ,"ACTIVO"
-    ,"REFERENCIA_2"
-  )
-  values
-  (
-     to_char(l_clob(1))
-    ,to_char(l_clob(2))
-    ,to_char(l_clob(3))
-    ,to_char(l_clob(4))
-    ,to_char(l_clob(5))
-    ,to_char(l_clob(6))
-  );
-
-  l_clob(1) :=q'!TIPO_SERVICIO!';
-  l_clob(2) :=q'!T!';
-  l_clob(3) :=q'!SERVICIO WEB!';
-  l_clob(4) :=q'!!';
-  l_clob(5) :=q'!S!';
-  l_clob(6) :=q'!!';
-
-  insert into t_significados
-  (
-     "DOMINIO"
-    ,"CODIGO"
-    ,"SIGNIFICADO"
-    ,"REFERENCIA"
-    ,"ACTIVO"
-    ,"REFERENCIA_2"
-  )
-  values
-  (
-     to_char(l_clob(1))
-    ,to_char(l_clob(2))
-    ,to_char(l_clob(3))
-    ,to_char(l_clob(4))
-    ,to_char(l_clob(5))
-    ,to_char(l_clob(6))
-  );
-
-  l_clob(1) :=q'!TIPO_SERVICIO!';
-  l_clob(2) :=q'!U!';
-  l_clob(3) :=q'!CONSULTA ÚNICA!';
-  l_clob(4) :=q'!!';
-  l_clob(5) :=q'!S!';
-  l_clob(6) :=q'!!';
-
-  insert into t_significados
-  (
-     "DOMINIO"
-    ,"CODIGO"
-    ,"SIGNIFICADO"
-    ,"REFERENCIA"
-    ,"ACTIVO"
-    ,"REFERENCIA_2"
-  )
-  values
-  (
-     to_char(l_clob(1))
-    ,to_char(l_clob(2))
-    ,to_char(l_clob(3))
-    ,to_char(l_clob(4))
-    ,to_char(l_clob(5))
-    ,to_char(l_clob(6))
-  );
-
-  l_clob(1) :=q'!TIPO_SERVICIO!';
-  l_clob(2) :=q'!X!';
-  l_clob(3) :=q'!TRANSACCIÓN!';
+  l_clob(1) :=q'!ESTADO_ENTIDAD!';
+  l_clob(2) :=q'!I!';
+  l_clob(3) :=q'!INACTIVO!';
   l_clob(4) :=q'!!';
   l_clob(5) :=q'!S!';
   l_clob(6) :=q'!!';

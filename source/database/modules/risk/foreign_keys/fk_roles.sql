@@ -1,0 +1,3 @@
+alter table T_ROLES
+  add constraint FK_ROL_AUTENTICACION_ORIGENES foreign key (ORIGEN)
+  references T_AUTENTICACION_ORIGENES (ID_AUTENTICACION_ORIGEN);
