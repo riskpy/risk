@@ -43,7 +43,7 @@ select l.id_operacion_log,
        json_value(l.contexto, '$.entidad') ctx_entidad,
        json_value(l.contexto, '$.id_aplicacion') ctx_id_aplicacion
   from t_operacion_logs l, t_operaciones s
- where s.id_operacion = l.id_operacion
+ where s.id_operacion(+) = l.id_operacion
 ;
 comment on table V_OPERACION_LOGS is 'Logs de Operaciones';
 comment on column V_OPERACION_LOGS.ID_OPERACION_LOG is 'Identificador del log';
