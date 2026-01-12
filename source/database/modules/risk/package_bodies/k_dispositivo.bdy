@@ -190,7 +190,9 @@ create or replace package body k_dispositivo is
              d.nombre_navegador,
              d.version_navegador,
              d.token_notificacion,
-             a.plataforma_notificacion,
+             k_parametro.f_valor_parametro(k_parametro.c_tabla_aplicaciones,
+                                           'PLATAFORMA_NOTIFICACION',
+                                           a.id_aplicacion),
              d.version_aplicacion,
              (select p.iso_alpha_2
                 from t_paises p
@@ -356,3 +358,4 @@ create or replace package body k_dispositivo is
 
 end;
 /
+

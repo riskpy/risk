@@ -84,7 +84,7 @@ begin
 
   l_varchar2(1) :=q'!58!';
   l_clob(2) :=q'!C!';
-  l_clob(3) :=q'!SELECT clave FROM t_aplicaciones WHERE activo = 'S'!';
+  l_clob(3) :=q'!SELECT k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'CLAVE', id_aplicacion) clave FROM t_aplicaciones WHERE activo = 'S'!';
 
   insert into t_servicios
   (

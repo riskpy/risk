@@ -1,16 +1,10 @@
 create table T_APLICACIONES
 (
-  id_aplicacion                   VARCHAR2(5) not null,
-  nombre                          VARCHAR2(100),
-  tipo                            VARCHAR2(1),
-  activo                          VARCHAR2(1) default 'N' not null,
-  clave                           VARCHAR2(4000),
-  detalle                         VARCHAR2(2000),
-  version_actual                  VARCHAR2(100),
-  tiempo_expiracion_access_token  NUMBER(6),
-  tiempo_expiracion_refresh_token NUMBER(6),
-  plataforma_notificacion         VARCHAR2(10),
-  version_minima                  VARCHAR2(100)
+  id_aplicacion VARCHAR2(5) not null,
+  nombre        VARCHAR2(100),
+  tipo          VARCHAR2(1),
+  activo        VARCHAR2(1) default 'N' not null,
+  detalle       VARCHAR2(2000)
 )
 ;
 comment on table T_APLICACIONES
@@ -23,20 +17,8 @@ comment on column T_APLICACIONES.tipo
   is 'Tipo de la aplicacion';
 comment on column T_APLICACIONES.activo
   is 'La aplicacion esta activa? (S/N)';
-comment on column T_APLICACIONES.clave
-  is 'Clave de la aplicacion';
 comment on column T_APLICACIONES.detalle
   is 'Detalles adicionales de la aplicacion';
-comment on column T_APLICACIONES.version_actual
-  is 'Version actual de la aplicacion';
-comment on column T_APLICACIONES.tiempo_expiracion_access_token
-  is 'Tiempo de expiración del Access Token en segundos';
-comment on column T_APLICACIONES.tiempo_expiracion_refresh_token
-  is 'Tiempo de expiración del Refresh Token en horas';
-comment on column T_APLICACIONES.plataforma_notificacion
-  is 'Plataforma para las notificaciones push de la aplicación';
-comment on column T_APLICACIONES.version_minima
-  is 'Version minima de la aplicacion';
 alter table T_APLICACIONES
   add constraint PK_APLICACIONES primary key (ID_APLICACION);
 alter table T_APLICACIONES

@@ -68,4 +68,22 @@ values ('T_PARAMETROS', 'ID_PAIS_ISO', 'Código del País por defecto según estánd
 insert into t_parametro_definiciones (TABLA, ID_PARAMETRO, DESCRIPCION, ORDEN, NOMBRE_REFERENCIA, TIPO_DATO, OBSERVACION, ID_DOMINIO, TIPO_FILTRO, FORMATO, LONGITUD_MAXIMA, OBLIGATORIO, VALOR_DEFECTO, ETIQUETA, VALORES_POSIBLES, ENCRIPTADO)
 values ('T_PARAMETROS', 'AUTENTICACION_CANTIDAD_INTENTOS_PERMITIDOS', 'Cantidad de intentos permitidos de autenticación antes del bloqueo de clave', null, 'ID_PARAMETRO', 'S', null, 'AUT', null, null, null, 'N', null, null, null, 'N');
 
+insert into t_parametro_definiciones (TABLA, ID_PARAMETRO, DESCRIPCION, ORDEN, NOMBRE_REFERENCIA, TIPO_DATO, OBSERVACION, ID_DOMINIO, TIPO_FILTRO, FORMATO, LONGITUD_MAXIMA, OBLIGATORIO, VALOR_DEFECTO, ETIQUETA, VALORES_POSIBLES, ENCRIPTADO)
+values ('T_APLICACION_PARAMETROS', 'VERSION_MINIMA', 'Version minima de la aplicación', null, 'ID_APLICACION', 'S', null, 'API', null, null, null, 'N', null, null, null, 'N');
+
+insert into t_parametro_definiciones (TABLA, ID_PARAMETRO, DESCRIPCION, ORDEN, NOMBRE_REFERENCIA, TIPO_DATO, OBSERVACION, ID_DOMINIO, TIPO_FILTRO, FORMATO, LONGITUD_MAXIMA, OBLIGATORIO, VALOR_DEFECTO, ETIQUETA, VALORES_POSIBLES, ENCRIPTADO)
+values ('T_APLICACION_PARAMETROS', 'PLATAFORMA_NOTIFICACION', 'Plataforma para las notificaciones push de la aplicación', null, 'ID_APLICACION', 'S', null, 'API', null, null, null, 'N', null, null, null, 'N');
+
+insert into t_parametro_definiciones (TABLA, ID_PARAMETRO, DESCRIPCION, ORDEN, NOMBRE_REFERENCIA, TIPO_DATO, OBSERVACION, ID_DOMINIO, TIPO_FILTRO, FORMATO, LONGITUD_MAXIMA, OBLIGATORIO, VALOR_DEFECTO, ETIQUETA, VALORES_POSIBLES, ENCRIPTADO)
+values ('T_APLICACION_PARAMETROS', 'TIEMPO_EXPIRACION_REFRESH_TOKEN', 'Tiempo de expiración del Refresh Token en horas', null, 'ID_APLICACION', 'S', null, 'API', null, null, null, 'N', null, null, null, 'N');
+
+insert into t_parametro_definiciones (TABLA, ID_PARAMETRO, DESCRIPCION, ORDEN, NOMBRE_REFERENCIA, TIPO_DATO, OBSERVACION, ID_DOMINIO, TIPO_FILTRO, FORMATO, LONGITUD_MAXIMA, OBLIGATORIO, VALOR_DEFECTO, ETIQUETA, VALORES_POSIBLES, ENCRIPTADO)
+values ('T_APLICACION_PARAMETROS', 'TIEMPO_EXPIRACION_ACCESS_TOKEN', 'Tiempo de expiración del Access Token en segundos', null, 'ID_APLICACION', 'S', null, 'API', null, null, null, 'N', null, null, null, 'N');
+
+insert into t_parametro_definiciones (TABLA, ID_PARAMETRO, DESCRIPCION, ORDEN, NOMBRE_REFERENCIA, TIPO_DATO, OBSERVACION, ID_DOMINIO, TIPO_FILTRO, FORMATO, LONGITUD_MAXIMA, OBLIGATORIO, VALOR_DEFECTO, ETIQUETA, VALORES_POSIBLES, ENCRIPTADO)
+values ('T_APLICACION_PARAMETROS', 'VERSION_ACTUAL', 'Version actual de la aplicación', null, 'ID_APLICACION', 'S', null, 'API', null, null, null, 'N', null, null, null, 'N');
+
+insert into t_parametro_definiciones (TABLA, ID_PARAMETRO, DESCRIPCION, ORDEN, NOMBRE_REFERENCIA, TIPO_DATO, OBSERVACION, ID_DOMINIO, TIPO_FILTRO, FORMATO, LONGITUD_MAXIMA, OBLIGATORIO, VALOR_DEFECTO, ETIQUETA, VALORES_POSIBLES, ENCRIPTADO)
+values ('T_APLICACION_PARAMETROS', 'CLAVE', 'Clave de la aplicación', null, 'ID_APLICACION', 'S', null, 'API', null, null, null, 'N', null, null, null, 'N');
+
 prompt Done.

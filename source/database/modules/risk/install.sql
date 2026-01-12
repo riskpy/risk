@@ -55,6 +55,7 @@ prompt
 prompt Creating tables...
 prompt -----------------------------------
 prompt
+@@tables/t_aplicacion_parametros.tab
 @@tables/t_aplicaciones.tab
 @@tables/t_archivo_definiciones.tab
 @@tables/t_archivos.tab
@@ -106,6 +107,7 @@ prompt
 prompt Creating foreign keys...
 prompt -----------------------------------
 prompt
+@@foreign_keys/fk_aplicacion_parametros.sql
 @@foreign_keys/fk_archivos.sql
 @@foreign_keys/fk_archivos_hist.sql
 @@foreign_keys/fk_barrios.sql
@@ -336,6 +338,7 @@ prompt
 @@scripts/ins_t_parametro_definiciones.sql
 @@scripts/ins_t_parametros.sql
 @@scripts/ins_t_aplicaciones.sql
+@@scripts/ins_t_aplicacion_parametros.sql
 @@scripts/ins_t_errores.sql
 @@scripts/ins_t_autenticacion_origenes.sql
 @@scripts/ins_t_roles.sql

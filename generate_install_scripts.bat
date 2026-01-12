@@ -251,6 +251,7 @@ for /d %%d in ("%BASE_DIR%\*") do (
     echo @@scripts/ins_t_parametro_definiciones.sql
     echo @@scripts/ins_t_parametros.sql
     echo @@scripts/ins_t_aplicaciones.sql
+    echo @@scripts/ins_t_aplicacion_parametros.sql
     echo @@scripts/ins_t_errores.sql
     if "%%~nxd"=="risk" (
         echo @@scripts/ins_t_autenticacion_origenes.sql
@@ -526,6 +527,7 @@ for /d %%d in ("%BASE_DIR%\*") do (
     )
     if not "%%~nxd"=="risk" (
         echo @@scripts/del_t_errores.sql
+        echo @@scripts/del_t_aplicacion_parametros.sql
         echo @@scripts/del_t_aplicaciones.sql
         echo @@scripts/del_t_parametros.sql
         echo @@scripts/del_t_parametro_definiciones.sql

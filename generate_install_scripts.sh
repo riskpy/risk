@@ -307,6 +307,7 @@ INSTALL_EOF
         echo "@@scripts/ins_t_parametro_definiciones.sql" >> "$module_dir/install.sql"
         echo "@@scripts/ins_t_parametros.sql" >> "$module_dir/install.sql"
         echo "@@scripts/ins_t_aplicaciones.sql" >> "$module_dir/install.sql"
+        echo "@@scripts/ins_t_aplicacion_parametros.sql" >> "$module_dir/install.sql"
         echo "@@scripts/ins_t_errores.sql" >> "$module_dir/install.sql"
         
         if [ "$module_name" = "risk" ]; then
@@ -639,6 +640,7 @@ UNINSTALL_EOF
         
         if [ "$module_name" != "risk" ]; then
             echo "@@scripts/del_t_errores.sql" >> "$module_dir/uninstall.sql"
+            echo "@@scripts/del_t_aplicacion_parametros.sql" >> "$module_dir/uninstall.sql"
             echo "@@scripts/del_t_aplicaciones.sql" >> "$module_dir/uninstall.sql"
             echo "@@scripts/del_t_parametros.sql" >> "$module_dir/uninstall.sql"
             echo "@@scripts/del_t_parametro_definiciones.sql" >> "$module_dir/uninstall.sql"

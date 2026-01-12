@@ -1,0 +1,17 @@
+create table T_APLICACION_PARAMETROS
+(
+  id_aplicacion VARCHAR2(5) not null,
+  id_parametro  VARCHAR2(50) not null,
+  valor         VARCHAR2(4000)
+)
+;
+comment on table T_APLICACION_PARAMETROS
+  is 'Parametros adicionales de aplicaciones';
+comment on column T_APLICACION_PARAMETROS.id_aplicacion
+  is 'Identificador de la aplicación';
+comment on column T_APLICACION_PARAMETROS.id_parametro
+  is 'Identificador del parámetro';
+comment on column T_APLICACION_PARAMETROS.valor
+  is 'Valor del parámetro';
+alter table T_APLICACION_PARAMETROS
+  add constraint PK_APLICACION_PARAMETROS primary key (ID_APLICACION, ID_PARAMETRO);

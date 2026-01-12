@@ -1,0 +1,1 @@
+delete t_aplicacion_parametros p where (select pd.id_dominio from t_parametro_definiciones pd where pd.id_parametro = p.id_parametro) = 'MSJ';

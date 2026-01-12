@@ -178,7 +178,18 @@ begin
 
   l_varchar2(1) :=q'!59!';
   l_clob(2) :=q'!C!';
-  l_clob(3) :=q'!SELECT * FROM t_aplicaciones!';
+  l_clob(3) :=q'!select id_aplicacion,
+       nombre,
+       tipo,
+       activo,
+       detalle,
+       k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'CLAVE', id_aplicacion) clave,
+       k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'PLATAFORMA_NOTIFICACION', id_aplicacion) plataforma_notificacion,
+       to_number(k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'TIEMPO_EXPIRACION_ACCESS_TOKEN', id_aplicacion)) tiempo_expiracion_access_token,
+       to_number(k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'TIEMPO_EXPIRACION_REFRESH_TOKEN', id_aplicacion)) tiempo_expiracion_refresh_token,
+       k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'VERSION_ACTUAL', id_aplicacion) version_actual,
+       k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'VERSION_MINIMA', id_aplicacion) version_minima
+  from t_aplicaciones!';
 
   insert into t_servicios
   (

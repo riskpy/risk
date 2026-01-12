@@ -145,6 +145,7 @@ prompt
 @@scripts/ins_t_parametro_definiciones.sql
 @@scripts/ins_t_parametros.sql
 @@scripts/ins_t_aplicaciones.sql
+@@scripts/ins_t_aplicacion_parametros.sql
 @@scripts/ins_t_errores.sql
 @@scripts/meanings/install.sql
 commit;

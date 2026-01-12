@@ -104,15 +104,19 @@ create or replace package body k_sesion is
   function f_tiempo_expiracion_token(i_id_aplicacion in varchar2,
                                      i_tipo_token    in varchar2)
     return number is
-    l_tiempo_expiracion_token t_aplicaciones.tiempo_expiracion_access_token%type;
+    l_tiempo_expiracion_token number;
   begin
     -- Busca el tiempo de expiración configurado para la aplicación
     begin
       select case i_tipo_token
                when c_refresh_token then -- Refresh Token
-                tiempo_expiracion_refresh_token
+                to_number(k_parametro.f_valor_parametro(k_parametro.c_tabla_aplicaciones,
+                                                        'TIEMPO_EXPIRACION_REFRESH_TOKEN',
+                                                        id_aplicacion))
                when c_access_token then -- Access Token
-                tiempo_expiracion_access_token
+                to_number(k_parametro.f_valor_parametro(k_parametro.c_tabla_aplicaciones,
+                                                        'TIEMPO_EXPIRACION_ACCESS_TOKEN',
+                                                        id_aplicacion))
                else
                 null
              end
@@ -233,3 +237,4 @@ create or replace package body k_sesion is
 
 end;
 /
+

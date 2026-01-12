@@ -38,5 +38,14 @@ create or replace package k_aplicacion is
 
   procedure p_validar_clave(i_clave_aplicacion in varchar2);
 
+  function f_nombre_aplicacion(i_id_aplicacion in varchar2,
+                               i_activo        in varchar2 default null)
+    return varchar2;
+
+  function f_parametro_aplicacion(i_id_aplicacion in varchar2,
+                                  i_parametro     in varchar2)
+    return varchar2;
+
 end;
 /
+

@@ -167,6 +167,7 @@ prompt
 prompt Dropping tables...
 prompt -----------------------------------
 prompt
+drop table t_aplicacion_parametros cascade constraints purge;
 drop table t_aplicaciones cascade constraints purge;
 drop table t_archivo_definiciones cascade constraints purge;
 drop table t_archivos cascade constraints purge;

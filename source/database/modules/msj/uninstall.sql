@@ -126,6 +126,7 @@ prompt
 @@scripts/operations/uninstall.sql
 @@scripts/meanings/uninstall.sql
 @@scripts/del_t_errores.sql
+@@scripts/del_t_aplicacion_parametros.sql
 @@scripts/del_t_aplicaciones.sql
 @@scripts/del_t_parametros.sql
 @@scripts/del_t_parametro_definiciones.sql
