@@ -1,7 +1,6 @@
 name: risk
 
 services:
-
   database:
     image: riskpy/risk-database:latest
     build:
@@ -35,7 +34,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
-  
+
   frontend:
     image: riskpy/risk-frontend:latest
     build:
@@ -50,3 +49,15 @@ services:
     depends_on:
       database:
         condition: service_healthy
+
+  mokapi:
+    image: mokapi/mokapi:latest
+    ports:
+      - 8080:8080 # Dashboard
+      - 80:80 # HTTP Mock
+      - 389:389 # LDAP Mock
+      - 25:25 # SMTP Mock
+    volumes:
+      - ./docker/mokapi:/mokapi
+    environment:
+      - MOKAPI_PROVIDERS_FILE_DIRECTORY=/mokapi

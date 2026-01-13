@@ -1,0 +1,7 @@
+ldap: "1.0"
+info:
+  title: Mock LDAP Server
+server:
+  host: :389
+files:
+  - example.ldif

@@ -1,0 +1,7 @@
+mail: "1.0"
+info:
+  title: Mock SMTP Server
+servers:
+  smtp:
+    host: :25
+    protocol: smtp

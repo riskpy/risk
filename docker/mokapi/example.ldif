@@ -1,0 +1,10 @@
+# Root DSE
+dn:
+namingContexts: dc=example,dc=com
+
+dn: dc=example,dc=com
+objectClass: top
+
+dn: cn=demouser,dc=example,dc=com
+objectClass: inetOrgPerson
+cn: demouser
