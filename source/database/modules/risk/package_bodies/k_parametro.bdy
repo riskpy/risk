@@ -14,18 +14,26 @@ create or replace package body k_parametro is
     return l_lista_parametros.parametros;
   end;
 
-  function f_valor_parametro(i_tabla        in varchar2,
-                             i_id_parametro in varchar2,
-                             i_referencia   in varchar2 default null)
-    return varchar2 is
-    l_valor             varchar2(32767);
-    l_nombre_referencia t_parametro_definiciones.nombre_referencia%type;
-    l_tipo_dato         t_parametro_definiciones.tipo_dato%type;
+  function f_datos_valor_parametro(i_tabla        in varchar2,
+                                   i_id_parametro in varchar2,
+                                   i_referencia   in varchar2 default null)
+    return ry_datos_valor_parametro is
+    l_valor                 varchar2(32767);
+    l_nombre_referencia     t_parametro_definiciones.nombre_referencia%type;
+    l_datos_valor_parametro ry_datos_valor_parametro;
   begin
     -- Valida definición
     begin
-      select d.nombre_referencia, d.tipo_dato
-        into l_nombre_referencia, l_tipo_dato
+      select d.nombre_referencia,
+             d.tipo_dato,
+             d.formato,
+             d.valor_defecto,
+             d.encriptado
+        into l_nombre_referencia,
+             l_datos_valor_parametro.tipo_dato,
+             l_datos_valor_parametro.formato,
+             l_datos_valor_parametro.valor_defecto,
+             l_datos_valor_parametro.encriptado
         from t_parametro_definiciones d
        where upper(d.tabla) = upper(i_tabla)
          and upper(d.id_parametro) = upper(i_id_parametro);
@@ -78,7 +86,72 @@ end;'
                                 sqlerrm);
     end;
   
-    return l_valor;
+    l_datos_valor_parametro.valor := l_valor;
+  
+    return l_datos_valor_parametro;
+  end;
+
+  function f_valor_parametro_string(i_tabla        in varchar2,
+                                    i_id_parametro in varchar2,
+                                    i_referencia   in varchar2 default null)
+    return varchar2 is
+    l_datos_valor_parametro ry_datos_valor_parametro;
+  begin
+    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
+                                                       i_id_parametro,
+                                                       i_referencia);
+    return nvl(l_datos_valor_parametro.valor,
+               l_datos_valor_parametro.valor_defecto);
+  end;
+
+  function f_valor_parametro_number(i_tabla        in varchar2,
+                                    i_id_parametro in varchar2,
+                                    i_referencia   in varchar2 default null)
+    return number is
+    l_datos_valor_parametro ry_datos_valor_parametro;
+  begin
+    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
+                                                       i_id_parametro,
+                                                       i_referencia);
+    return to_number(nvl(l_datos_valor_parametro.valor,
+                         l_datos_valor_parametro.valor_defecto),
+                     nvl(l_datos_valor_parametro.formato,
+                         '999G999G999G999G999D00'));
+  end;
+
+  function f_valor_parametro_boolean(i_tabla        in varchar2,
+                                     i_id_parametro in varchar2,
+                                     i_referencia   in varchar2 default null)
+    return boolean is
+    l_datos_valor_parametro ry_datos_valor_parametro;
+  begin
+    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
+                                                       i_id_parametro,
+                                                       i_referencia);
+    return k_util.string_to_bool(nvl(l_datos_valor_parametro.valor,
+                                     l_datos_valor_parametro.valor_defecto));
+  end;
+
+  function f_valor_parametro_date(i_tabla        in varchar2,
+                                  i_id_parametro in varchar2,
+                                  i_referencia   in varchar2 default null)
+    return date is
+    l_datos_valor_parametro ry_datos_valor_parametro;
+  begin
+    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
+                                                       i_id_parametro,
+                                                       i_referencia);
+    return to_date(nvl(l_datos_valor_parametro.valor,
+                       l_datos_valor_parametro.valor_defecto),
+                   nvl(l_datos_valor_parametro.formato, 'dd/mm/yyyy'));
+  end;
+
+  function f_valor_parametro(i_tabla        in varchar2,
+                             i_id_parametro in varchar2,
+                             i_referencia   in varchar2 default null)
+    return varchar2 is
+  begin
+    return f_valor_parametro_string(i_tabla, i_id_parametro, i_referencia);
   end;
 
   procedure p_definir_parametro(i_tabla        in varchar2,
