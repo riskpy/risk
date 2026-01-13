@@ -57,6 +57,7 @@ services:
       - 80:80 # HTTP Mock
       - 389:389 # LDAP Mock
       - 25:25 # SMTP Mock
+      - 143:143 # IMAP Mock
     volumes:
       - ./docker/mokapi:/mokapi
     environment:
