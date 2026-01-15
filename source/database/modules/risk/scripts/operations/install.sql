@@ -47,10 +47,12 @@ prompt
 @@scripts/operations/servicio/glo/listar_ciudades.sql
 @@scripts/operations/servicio/glo/listar_departamentos.sql
 @@scripts/operations/servicio/glo/listar_paises.sql
-@@scripts/operations/trabajo/gen/monitoreo_conflictos_12_horas.sql
-@@scripts/operations/trabajo/gen/monitoreo_conflictos_2_horas.sql
-@@scripts/operations/trabajo/gen/monitoreo_conflictos_6_horas.sql
 @@scripts/operations/trabajo/gen/monitoreo_conflictos_diario.sql
 @@scripts/operations/trabajo/gen/monitoreo_conflictos_hora.sql
 @@scripts/operations/trabajo/gen/monitoreo_conflictos_mensual.sql
 @@scripts/operations/trabajo/gen/monitoreo_conflictos_semanal.sql
+@@scripts/operations/trabajo/gen/monitoreo_conflictos_12_horas.sql
+@@scripts/operations/trabajo/gen/monitoreo_conflictos_15_minutos.sql
+@@scripts/operations/trabajo/gen/monitoreo_conflictos_2_horas.sql
+@@scripts/operations/trabajo/gen/monitoreo_conflictos_30_minutos.sql
+@@scripts/operations/trabajo/gen/monitoreo_conflictos_6_horas.sql
