@@ -108,12 +108,12 @@ create or replace package body k_monitoreo is
     commit;
   exception
     when others then
-      k_log.p_registrar_log(pin_tipo              => k_log.cg_tipo_log_error,
-                            pin_detalle           => sqlerrm,
-                            pin_modulo            => k_modulo.c_id_risk,
-                            pin_referencia1       => i_id_monitoreo,
-                            pin_referencia2       => k_sistema.f_valor_parametro_number(c_id_ejecucion),
-                            pin_registrar_siempre => true);
+      /*k_log.p_registrar_log(pin_tipo              => k_log.cg_tipo_log_error,
+      pin_detalle           => sqlerrm,
+      pin_modulo            => k_modulo.c_id_risk,
+      pin_referencia1       => i_id_monitoreo,
+      pin_referencia2       => k_sistema.f_valor_parametro_number(c_id_ejecucion),
+      pin_registrar_siempre => true);*/
       rollback;
   end;
 
@@ -561,12 +561,13 @@ SELECT n.prioridad,
   
   exception
     when others then
-      k_log.p_registrar_log(pin_tipo              => k_log.cg_tipo_log_error,
-                            pin_detalle           => sqlerrm,
-                            pin_modulo            => k_modulo.c_id_risk,
-                            pin_referencia1       => i_id_monitoreo,
-                            pin_referencia2       => i_id_ejecucion,
-                            pin_registrar_siempre => true);
+      /*k_log.p_registrar_log(pin_tipo              => k_log.cg_tipo_log_error,
+      pin_detalle           => sqlerrm,
+      pin_modulo            => k_modulo.c_id_risk,
+      pin_referencia1       => i_id_monitoreo,
+      pin_referencia2       => i_id_ejecucion,
+      pin_registrar_siempre => true);*/
+      null;
   end;
 
   procedure p_aviso_mensaje(i_id_ejecucion in number,
@@ -674,7 +675,7 @@ SELECT ''#'' || m.id_monitoreo_ejecucion "Id_Ejecucion",
     
       -- Envía SMS de monitoreo
       for c in c_usuarios(i_id_monitoreo) loop
-        if k_mensajeria.f_enviar_mensaje(i_id_plantilla    => c_plantilla_monitoreo,
+        /*if k_mensajeria.f_enviar_mensaje(i_id_plantilla    => c_plantilla_monitoreo,
                                          i_datos_extra     => l_datos_extra.to_clob,
                                          i_id_usuario      => c.id_usuario,
                                          i_numero_telefono => c.numero_telefono) <>
@@ -684,7 +685,8 @@ SELECT ''#'' || m.id_monitoreo_ejecucion "Id_Ejecucion",
                                i_id_monitoreo || ' por sms al usuario: ' ||
                                c.alias || ' con nro. de telefono: ' ||
                                c.numero_telefono);
-        end if;
+        end if;*/
+        null;
       end loop;
     end if;
     $end
@@ -692,12 +694,12 @@ SELECT ''#'' || m.id_monitoreo_ejecucion "Id_Ejecucion",
     commit;
   exception
     when others then
-      k_log.p_registrar_log(pin_tipo              => k_log.cg_tipo_log_error,
-                            pin_detalle           => sqlerrm,
-                            pin_modulo            => k_modulo.c_id_risk,
-                            pin_referencia1       => i_id_monitoreo,
-                            pin_referencia2       => i_id_ejecucion,
-                            pin_registrar_siempre => true);
+      /*k_log.p_registrar_log(pin_tipo              => k_log.cg_tipo_log_error,
+      pin_detalle           => sqlerrm,
+      pin_modulo            => k_modulo.c_id_risk,
+      pin_referencia1       => i_id_monitoreo,
+      pin_referencia2       => i_id_ejecucion,
+      pin_registrar_siempre => true);*/
       rollback;
   end;
 
@@ -788,7 +790,7 @@ SELECT ''MON-'' || m.id_monitoreo "Id",
     
       -- Envía PUSH de monitoreo
       for c in c_usuarios(i_id_monitoreo) loop
-        if k_mensajeria.f_enviar_notificacion(i_id_plantilla       => c_plantilla_monitoreo,
+        /*if k_mensajeria.f_enviar_notificacion(i_id_plantilla       => c_plantilla_monitoreo,
                                               i_datos_extra        => l_datos_extra.to_clob,
                                               i_id_usuario         => c.id_usuario,
                                               i_dispositivo_seguro => 'N') <>
@@ -797,7 +799,8 @@ SELECT ''MON-'' || m.id_monitoreo "Id",
                                ' - Error en envio de MON- ' ||
                                i_id_monitoreo || ' por push al usuario: ' ||
                                c.alias);
-        end if;
+        end if;*/
+        null;
       end loop;
     end if;
     $end
@@ -805,12 +808,12 @@ SELECT ''MON-'' || m.id_monitoreo "Id",
     commit;
   exception
     when others then
-      k_log.p_registrar_log(pin_tipo              => k_log.cg_tipo_log_error,
-                            pin_detalle           => sqlerrm,
-                            pin_modulo            => k_modulo.c_id_risk,
-                            pin_referencia1       => i_id_monitoreo,
-                            pin_referencia2       => i_id_ejecucion,
-                            pin_registrar_siempre => true);
+      /*k_log.p_registrar_log(pin_tipo              => k_log.cg_tipo_log_error,
+      pin_detalle           => sqlerrm,
+      pin_modulo            => k_modulo.c_id_risk,
+      pin_referencia1       => i_id_monitoreo,
+      pin_referencia2       => i_id_ejecucion,
+      pin_registrar_siempre => true);*/
       rollback;
   end;
 
