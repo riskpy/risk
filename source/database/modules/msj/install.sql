@@ -56,9 +56,13 @@ prompt Creating tables...
 prompt -----------------------------------
 prompt
 @@tables/t_correo_adjuntos.tab
+@@tables/t_correo_plantillas.tab
 @@tables/t_correos.tab
 @@tables/t_dispositivo_suscripciones.tab
+@@tables/t_mensaje_plantillas.tab
+@@tables/t_mensajeria_categorias.tab
 @@tables/t_mensajes.tab
+@@tables/t_mensajes_recibidos.tab
 @@tables/t_notificacion_plantillas.tab
 @@tables/t_notificaciones.tab
 @@tables/t_usuario_suscripciones.tab
@@ -68,8 +72,10 @@ prompt Creating foreign keys...
 prompt -----------------------------------
 prompt
 @@foreign_keys/fk_correo_adjuntos.sql
+@@foreign_keys/fk_correo_plantillas.sql
 @@foreign_keys/fk_correos.sql
 @@foreign_keys/fk_dispositivo_suscripciones.sql
+@@foreign_keys/fk_mensaje_plantillas.sql
 @@foreign_keys/fk_mensajes.sql
 @@foreign_keys/fk_notificacion_plantillas.sql
 @@foreign_keys/fk_notificaciones.sql

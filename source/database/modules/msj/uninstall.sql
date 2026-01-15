@@ -90,9 +90,13 @@ prompt Dropping tables...
 prompt -----------------------------------
 prompt
 drop table t_correo_adjuntos cascade constraints purge;
+drop table t_correo_plantillas cascade constraints purge;
 drop table t_correos cascade constraints purge;
 drop table t_dispositivo_suscripciones cascade constraints purge;
+drop table t_mensaje_plantillas cascade constraints purge;
+drop table t_mensajeria_categorias cascade constraints purge;
 drop table t_mensajes cascade constraints purge;
+drop table t_mensajes_recibidos cascade constraints purge;
 drop table t_notificacion_plantillas cascade constraints purge;
 drop table t_notificaciones cascade constraints purge;
 drop table t_usuario_suscripciones cascade constraints purge;

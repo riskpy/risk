@@ -49,7 +49,6 @@ prompt
 prompt Creating sequences...
 prompt -----------------------------------
 prompt
-@@sequences/s_id_monitoreo_ejecucion.seq
 
 prompt
 prompt Creating tables...
@@ -146,6 +145,8 @@ prompt Creating views...
 prompt -----------------------------------
 prompt
 @@views/v_monitoreo_datos.vw
+@@views/v_monitoreo_roles_responsables.vw
+@@views/v_monitoreo_usu_responsables.vw
 @@views/v_operacion_logs.vw
 
 prompt
@@ -325,7 +326,6 @@ prompt
 @@triggers/gb_usuarios.trg
 @@triggers/gf_archivos.trg
 @@triggers/gf_operaciones.trg
-@@triggers/gs_monitoreo_ejecuciones.trg
 
 @@../../compile_schema.sql
 

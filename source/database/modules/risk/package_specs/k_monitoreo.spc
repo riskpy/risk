@@ -31,10 +31,22 @@ create or replace package k_monitoreo is
   */
 
   -- Constantes
-  c_id_ejecucion constant varchar2(50) := 'ID_EJECUCION';
+  c_id_ejecucion        constant varchar2(50) := 'ID_EJECUCION';
+  c_plantilla_monitoreo constant t_correo_plantillas.id_plantilla%type := 'PLANTILLA_MONITOREO';
+  --
+  c_id_modulo constant t_modulos.id_modulo%type := 'RISK';
 
   -- Excepciones
   ex_frecuencia_no_existe exception;
+
+  -- Variables globales
+  g_est_modulo    varchar2(1);
+  g_mod_cerrado   varchar2(1);
+  g_dia_habil     varchar2(1);
+  g_fecha_real    date;
+  g_fecha_actual  date;
+  g_fecha_proceso date;
+  g_ini_timestamp t_monitoreo_ejecuciones.fecha_inicio_ejecucion%type;
 
   procedure p_limpiar_historial;
 
@@ -42,6 +54,12 @@ create or replace package k_monitoreo is
 
   procedure p_aviso_detallado(i_id_ejecucion in number,
                               i_id_monitoreo in number);
+
+  procedure p_aviso_mensaje(i_id_ejecucion in number,
+                            i_id_monitoreo in number);
+
+  procedure p_aviso_notificacion(i_id_ejecucion in number,
+                                 i_id_monitoreo in number);
 
   function f_pagina_parametros(i_parametros in y_parametros)
     return y_pagina_parametros;
@@ -75,3 +93,4 @@ create or replace package k_monitoreo is
 
 end;
 /
+

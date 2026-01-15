@@ -62,7 +62,6 @@ drop trigger gb_trabajos;
 drop trigger gb_usuarios;
 drop trigger gf_archivos;
 drop trigger gf_operaciones;
-drop trigger gs_monitoreo_ejecuciones;
 
 prompt
 prompt Dropping packages...
@@ -161,6 +160,8 @@ prompt Dropping views...
 prompt -----------------------------------
 prompt
 drop view v_monitoreo_datos cascade constraints;
+drop view v_monitoreo_roles_responsables cascade constraints;
+drop view v_monitoreo_usu_responsables cascade constraints;
 drop view v_operacion_logs cascade constraints;
 
 prompt
@@ -219,7 +220,6 @@ prompt
 prompt Dropping sequences...
 prompt -----------------------------------
 prompt
-drop sequence s_id_monitoreo_ejecucion;
 
 prompt
 prompt Purging recycle bin...

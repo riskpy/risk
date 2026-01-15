@@ -1,11 +1,20 @@
 create table T_NOTIFICACION_PLANTILLAS
 (
-  id_aplicacion VARCHAR2(5) not null,
-  id_plantilla  VARCHAR2(10) not null,
-  nombre        VARCHAR2(100),
-  activo        VARCHAR2(1) default 'N' not null,
-  detalle       VARCHAR2(2000),
-  plantilla     CLOB not null
+  id_aplicacion          VARCHAR2(5) not null,
+  id_plantilla           VARCHAR2(50) not null,
+  nombre                 VARCHAR2(100),
+  activo                 VARCHAR2(1) default 'N' not null,
+  detalle                VARCHAR2(2000),
+  fecha_ini_vigencia     DATE,
+  fecha_fin_vigencia     DATE,
+  accion                 VARCHAR2(300),
+  cantidad_max_enviar    NUMBER,
+  propiedades            VARCHAR2(1000),
+  cantidad_envio_por_dia NUMBER,
+  plantilla_titulo       VARCHAR2(1000),
+  plantilla_contenido    VARCHAR2(4000),
+  plantilla_datos_extra  VARCHAR2(4000),
+  id_categoria           NUMBER
 )
 ;
 comment on table T_NOTIFICACION_PLANTILLAS
@@ -20,8 +29,18 @@ comment on column T_NOTIFICACION_PLANTILLAS.activo
   is 'La plantilla esta activa? (S/N)';
 comment on column T_NOTIFICACION_PLANTILLAS.detalle
   is 'Detalles adicionales de la plantilla';
-comment on column T_NOTIFICACION_PLANTILLAS.plantilla
-  is 'Plantilla para las notificaciones push de la aplicación';
+comment on column T_NOTIFICACION_PLANTILLAS.fecha_ini_vigencia
+  is 'Fecha inicio vigencia de la notificación.';
+comment on column T_NOTIFICACION_PLANTILLAS.fecha_fin_vigencia
+  is 'Fecha fin vigencia de la notificación.';
+comment on column T_NOTIFICACION_PLANTILLAS.accion
+  is 'Acción de la notificación.';
+comment on column T_NOTIFICACION_PLANTILLAS.cantidad_max_enviar
+  is 'Cantidad máxima posible de envíos de esta notificación por persona.';
+comment on column T_NOTIFICACION_PLANTILLAS.propiedades
+  is 'Propiedades de la notificación.';
+comment on column T_NOTIFICACION_PLANTILLAS.cantidad_envio_por_dia
+  is 'Cantidad de veces posibles a enviar esta notificación por día por persona.';
 alter table T_NOTIFICACION_PLANTILLAS
   add constraint PK_NOTIFICACION_PLANTILLAS primary key (ID_APLICACION, ID_PLANTILLA);
 alter table T_NOTIFICACION_PLANTILLAS

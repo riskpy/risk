@@ -1,0 +1,41 @@
+create table T_MENSAJE_PLANTILLAS
+(
+  id_plantilla           VARCHAR2(50) not null,
+  nombre                 VARCHAR2(100),
+  activo                 VARCHAR2(1) default 'N' not null,
+  id_categoria           NUMBER not null,
+  detalle                VARCHAR2(2000),
+  plantilla              VARCHAR2(4000) not null,
+  fecha_ini_vigencia     DATE,
+  fecha_fin_vigencia     DATE,
+  cantidad_max_enviar    NUMBER,
+  cantidad_envio_por_dia NUMBER
+)
+;
+comment on table T_MENSAJE_PLANTILLAS
+  is 'Plantillas de mensajes SMS';
+comment on column T_MENSAJE_PLANTILLAS.id_plantilla
+  is 'Identificador de la plantilla';
+comment on column T_MENSAJE_PLANTILLAS.nombre
+  is 'Nombre de la plantilla';
+comment on column T_MENSAJE_PLANTILLAS.activo
+  is 'La plantilla esta activa? (S/N)';
+comment on column T_MENSAJE_PLANTILLAS.id_categoria
+  is 'Identificador de la categoría de la plantilla';
+comment on column T_MENSAJE_PLANTILLAS.detalle
+  is 'Detalles adicionales de la plantilla';
+comment on column T_MENSAJE_PLANTILLAS.plantilla
+  is 'Plantilla para los mensajes SMS';
+comment on column T_MENSAJE_PLANTILLAS.fecha_ini_vigencia
+  is 'Fecha inicio de la vigencia de la plantilla.';
+comment on column T_MENSAJE_PLANTILLAS.fecha_fin_vigencia
+  is 'Fecha fin vigencia de la plantilla.';
+comment on column T_MENSAJE_PLANTILLAS.cantidad_max_enviar
+  is 'Cantidad máxima posible de enviar mensaje con esta plantilla.';
+comment on column T_MENSAJE_PLANTILLAS.cantidad_envio_por_dia
+  is 'Cantidad máxima por día permitido para enviar mensajes con esta plantilla.';
+alter table T_MENSAJE_PLANTILLAS
+  add constraint PK_MENSAJE_PLANTILLAS primary key (ID_PLANTILLA);
+alter table T_MENSAJE_PLANTILLAS
+  add constraint CK_MENSAJE_PLANTILLAS_ACTIVO
+  check (ACTIVO IN ('S', 'N'));

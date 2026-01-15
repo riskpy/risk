@@ -1,18 +1,26 @@
 create table T_MONITOREOS
 (
-  id_monitoreo                     NUMBER NOT NULL,
+  id_monitoreo                     NUMBER not null,
   causa                            VARCHAR2(4000),
-  consulta_sql                     CLOB,
   plan_accion                      VARCHAR2(4000),
-  prioridad                        NUMBER(1) DEFAULT 3 NOT NULL,
+  activo                           CHAR(1) default 'N' not null,
+  consulta_sql                     CLOB,
+  bloque_plsql                     CLOB,
+  prioridad                        NUMBER(1) default 3 not null,
   cantidad_ejecuciones             NUMBER,
   fecha_ultima_ejecucion           TIMESTAMP(2) WITH TIME ZONE,
   cantidad_ejecuciones_conflicto   NUMBER,
   fecha_ultima_ejecucion_conflicto TIMESTAMP(2) WITH TIME ZONE,
-  id_rol_responsable               NUMBER(3),
-  id_usuario_responsable           NUMBER(10),
-  nivel_aviso                      NUMBER(1) DEFAULT 1 NOT NULL,
-  frecuencia                       VARCHAR2(3) DEFAULT 'D' NOT NULL,
+  roles_responsables               VARCHAR2(4000),
+  usuarios_responsables            VARCHAR2(4000),
+  nivel_aviso_correo               NUMBER(1) default 1 not null,
+  aviso_notificacion               CHAR(1) default 'N' not null,
+  aviso_mensaje                    CHAR(1) default 'N' not null,
+  frecuencia                       VARCHAR2(4) default 'D' not null,
+  opera_sistema_cerrado            CHAR(1) default 'N' not null,
+  opera_dia_no_habil               CHAR(1) default 'N' not null,
+  hora_minima                      VARCHAR2(2),
+  hora_maxima                      VARCHAR2(2),
   comentarios                      VARCHAR2(1000)
 )
 ;
@@ -22,12 +30,16 @@ comment on column T_MONITOREOS.id_monitoreo
   is 'Identificador del monitoreo';
 comment on column T_MONITOREOS.causa
   is 'Causa del conflicto';
-comment on column T_MONITOREOS.consulta_sql
-  is 'Consulta SQL del monitoreo';
-comment on column T_MONITOREOS.prioridad
-  is 'Prioridad del monitoreo (1-Muy alta, 2-Alta, 3-Media, 4-Baja, 5-Muy baja)';
 comment on column T_MONITOREOS.plan_accion
   is 'Plan de acción para resolución del conflicto';
+comment on column T_MONITOREOS.activo
+  is 'Monitoreo activo (S-Sí, N-No)';
+comment on column T_MONITOREOS.consulta_sql
+  is 'Consulta SQL del monitoreo';
+comment on column T_MONITOREOS.bloque_plsql
+  is 'Bloque PL/SQL del monitoreo';
+comment on column T_MONITOREOS.prioridad
+  is 'Prioridad del monitoreo (1-Muy alta, 2-Alta, 3-Media, 4-Baja, 5-Muy baja)';
 comment on column T_MONITOREOS.cantidad_ejecuciones
   is 'Cantidad de ejecuciones del monitoreo';
 comment on column T_MONITOREOS.fecha_ultima_ejecucion
@@ -36,24 +48,58 @@ comment on column T_MONITOREOS.cantidad_ejecuciones_conflicto
   is 'Cantidad de ejecuciones del monitoreo con conflicto';
 comment on column T_MONITOREOS.fecha_ultima_ejecucion_conflicto
   is 'Fecha de la ultima ejecucion del monitoreo con conflicto';
-comment on column T_MONITOREOS.id_rol_responsable
-  is 'Identificador del rol responsable';
-comment on column T_MONITOREOS.id_usuario_responsable
-  is 'Identificador del usuario responsable';
-comment on column T_MONITOREOS.nivel_aviso
-  is 'Nivel de aviso del monitoreo (0-Off, 1-Resumido, 2-Detallado)';
+comment on column T_MONITOREOS.roles_responsables
+  is 'Nombre de roles responsables. En formato JSON Array. Soporta variables enlazadas. Soporta sentencia sql entre llaves "{}" que devuelva una fila y una columna en formato JSON Array. Ejemplo: {select ''["ADMINISTRADOR"]'' from dual}';
+comment on column T_MONITOREOS.usuarios_responsables
+  is 'Alias de usuarios responsables. En formato JSON Array. Soporta variables enlazadas. Variables comodín :usuario_ingreso. Ejemplo: [":usuario_ingreso"]. Soporta sentencia sql entre llaves "{}" que devuelva una fila y una columna en formato JSON Array. Ejemplo: {select ''["DEMOUSER"]'' from dual}';
+comment on column T_MONITOREOS.nivel_aviso_correo
+  is 'Nivel de aviso del monitoreo por correo (0-Off, 1-Resumido, 2-Detallado)';
+comment on column T_MONITOREOS.aviso_notificacion
+  is 'Aviso del monitoreo por notificación push (S-Sí, N-No)';
+comment on column T_MONITOREOS.aviso_mensaje
+  is 'Aviso del monitoreo por mensaje SMS (S-Sí, N-No)';
 comment on column T_MONITOREOS.frecuencia
   is 'Frecuencia de ejecución del monitoreo';
+comment on column T_MONITOREOS.opera_sistema_cerrado
+  is 'Opera con el módulo cerrado. (S-Sí, N-No)';
+comment on column T_MONITOREOS.opera_dia_no_habil
+  is 'Opera en día NO hábil. (S-Sí, N-No)';
+comment on column T_MONITOREOS.hora_minima
+  is 'Hora mínima de ejecución del monitoreo. Formato: HH24';
+comment on column T_MONITOREOS.hora_maxima
+  is 'Hora máxima de ejecución del monitoreo. Formato: HH24';
 comment on column T_MONITOREOS.comentarios
   is 'Comentarios del monitoreo';
 alter table T_MONITOREOS
   add constraint PK_MONITOREOS primary key (ID_MONITOREO);
 alter table T_MONITOREOS
+  add constraint CK_MONITOREOS_AVISO_MENSAJE
+  check (AVISO_MENSAJE IN ('S', 'N'));
+alter table T_MONITOREOS
+  add constraint CK_MONITOREOS_AVISO_NOTIFICACION
+  check (AVISO_NOTIFICACION IN ('S', 'N'));
+alter table T_MONITOREOS
+  add constraint CK_MONITOREOS_FRECUENCIA
+  check (FRECUENCIA IN ('15MI', '30MI', 'H', '2H', '6H', '12H', 'D', 'S', 'M'));
+alter table T_MONITOREOS
+  add constraint CK_MONITOREOS_HORA_MAXIMA
+  check (HORA_MAXIMA IN ('00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'));
+alter table T_MONITOREOS
+  add constraint CK_MONITOREOS_HORA_MINIMA
+  check (HORA_MINIMA IN ('00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'));
+alter table T_MONITOREOS
+  add constraint CK_MONITOREOS_HORA_MIN_MAX
+  check (TO_NUMBER(NVL(HORA_MINIMA, '00')) <= TO_NUMBER(NVL(HORA_MAXIMA, '24')) - 1);
+alter table T_MONITOREOS
+  add constraint CK_MONITOREOS_NIVEL_AVISO_CORREO
+  check (NIVEL_AVISO_CORREO IN (0, 1, 2));
+alter table T_MONITOREOS
   add constraint CK_MONITOREOS_PRIORIDAD
   check (PRIORIDAD IN (1, 2, 3, 4, 5));
 alter table T_MONITOREOS
-  add constraint CK_MONITOREOS_NIVEL_AVISO
-  check (NIVEL_AVISO IN (0, 1, 2));
+  add constraint CK_MONITOREOS_ROL_RESPONSABLES_JSON
+  check (ROLES_RESPONSABLES IS JSON STRICT WITH UNIQUE KEYS);
 alter table T_MONITOREOS
-  add constraint CK_MONITOREOS_FRECUENCIA
-  check (FRECUENCIA IN ('H', '2H', '6H', '12H', 'D', 'S', 'M'));
+  add constraint CK_MONITOREOS_USU_RESPONSABLES_JSON
+  check (USUARIOS_RESPONSABLES IS JSON STRICT WITH UNIQUE KEYS);
+

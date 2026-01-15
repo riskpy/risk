@@ -1,0 +1,32 @@
+create table T_CORREO_PLANTILLAS
+(
+  id_plantilla        VARCHAR2(50) not null,
+  nombre              VARCHAR2(100),
+  activo              CHAR(1) default 'N' not null,
+  id_categoria        NUMBER not null,
+  detalle             VARCHAR2(2000),
+  plantilla_asunto    VARCHAR2(2000) not null,
+  plantilla_contenido CLOB not null
+)
+;
+comment on table T_CORREO_PLANTILLAS
+  is 'Plantillas de correos electrónicos (E-mail)';
+comment on column T_CORREO_PLANTILLAS.id_plantilla
+  is 'Identificador de la plantilla';
+comment on column T_CORREO_PLANTILLAS.nombre
+  is 'Nombre de la plantilla';
+comment on column T_CORREO_PLANTILLAS.activo
+  is 'La plantilla esta activa? (S/N)';
+comment on column T_CORREO_PLANTILLAS.id_categoria
+  is 'Identificador de la categoría de la plantilla';
+comment on column T_CORREO_PLANTILLAS.detalle
+  is 'Detalles adicionales de la plantilla';
+comment on column T_CORREO_PLANTILLAS.plantilla_asunto
+  is 'Plantilla de asunto para los correos electrónicos';
+comment on column T_CORREO_PLANTILLAS.plantilla_contenido
+  is 'Plantilla de contenido para los correos electrónicos';
+alter table T_CORREO_PLANTILLAS
+  add constraint PK_CORREO_PLANTILLAS primary key (ID_PLANTILLA);
+alter table T_CORREO_PLANTILLAS
+  add constraint CK_CORREO_PLANTILLAS_ACTIVO
+  check (ACTIVO IN ('S', 'N'));

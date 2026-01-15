@@ -162,7 +162,7 @@ create or replace package body k_dispositivo is
   
     $if k_modulo.c_instalado_msj $then
     cursor cr_plantillas(i_id_aplicacion in varchar2) is
-      select n.nombre, n.plantilla
+      select n.nombre
         from t_notificacion_plantillas n
        where n.id_aplicacion = i_id_aplicacion;
     $end
@@ -231,7 +231,6 @@ create or replace package body k_dispositivo is
     $if k_modulo.c_instalado_msj $then
     for c in cr_plantillas(l_id_aplicacion) loop
       l_plantilla           := new y_plantilla();
-      l_plantilla.contenido := c.plantilla;
       l_plantilla.nombre    := c.nombre;
     
       l_plantillas.extend;
