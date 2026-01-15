@@ -11,14 +11,14 @@ begin
   -- start generation of records
   -----------------------------------
 
-  l_varchar2(1) :=q'!2006!';
+  l_varchar2(1) :=q'!2008!';
   l_clob(2) :=q'!T!';
-  l_clob(3) :=q'!MONITOREO_CONFLICTOS_HORA!';
+  l_clob(3) :=q'!MONITOREO_CONFLICTOS_15_MINUTOS!';
   l_clob(4) :=q'!GEN!';
   l_clob(5) :=q'!S!';
-  l_clob(6) :=q'!Trabajo de monitoreo de conflictos - Frecuencia Cada Hora!';
+  l_clob(6) :=q'!Trabajo de monitoreo de conflictos - Frecuencia Cada 15 Minutos!';
   l_clob(7) :=q'!0.1.0!';
-  l_varchar2(8) :=q'!2!';
+  l_varchar2(8) :=q'!0!';
   l_clob(9) :=q'!!';
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
@@ -71,7 +71,7 @@ begin
   -- start generation of records
   -----------------------------------
 
-  l_varchar2(1) :=q'!2006!';
+  l_varchar2(1) :=q'!2008!';
   l_clob(2) :=q'!FRECUENCIA!';
   l_clob(3) :=q'!0.1.0!';
   l_varchar2(4) :=q'!1!';
@@ -80,7 +80,7 @@ begin
   l_clob(7) :=q'!!';
   l_varchar2(8) :=q'!!';
   l_clob(9) :=q'!S!';
-  l_clob(10) :=q'!H!';
+  l_clob(10) :=q'!15MI!';
   l_clob(11) :=q'!!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
@@ -167,14 +167,14 @@ begin
   -- start generation of records
   -----------------------------------
 
-  l_varchar2(1) :=q'!2006!';
+  l_varchar2(1) :=q'!2008!';
   l_clob(2) :=q'!STORED_PROCEDURE!';
   l_clob(3) :=q'!K_MONITOREO.P_PROCESAR_MONITOREOS!';
   l_varchar2(4) :=q'!!';
   l_varchar2(5) :=q'!!';
-  l_clob(6) :=q'!FREQ=HOURLY;BYHOUR=1,3,5,7,9,11,13,15,17,19,21,23;BYMINUTE=10;BYSECOND=0;!';
+  l_clob(6) :=q'!FREQ=MINUTELY;BYMINUTE=25,55;BYSECOND=0;!';
   l_varchar2(7) :=q'!!';
-  l_clob(8) :=q'!Trabajo de monitoreo de conflictos - Cada Hora!';
+  l_clob(8) :=q'!Trabajo de monitoreo de conflictos - Cada 15 Minutos!';
 
 
   insert into t_trabajos

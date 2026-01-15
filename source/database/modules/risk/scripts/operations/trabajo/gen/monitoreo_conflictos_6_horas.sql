@@ -18,10 +18,13 @@ begin
   l_clob(5) :=q'!S!';
   l_clob(6) :=q'!Trabajo de monitoreo de conflictos - Frecuencia Cada 6 Horas!';
   l_clob(7) :=q'!0.1.0!';
-  l_varchar2(8) :=q'!0!';
+  l_varchar2(8) :=q'!2!';
   l_clob(9) :=q'!!';
   l_clob(10) :=q'!K!';
-
+  l_clob(11) :=q'!!';
+  l_clob(12) :=q'!!';
+
+
   insert into t_operaciones
   (
      "ID_OPERACION"
@@ -34,6 +37,8 @@ begin
     ,"NIVEL_LOG"
     ,"PARAMETROS_AUTOMATICOS"
     ,"TIPO_IMPLEMENTACION"
+    ,"APLICACIONES_PERMITIDAS"
+    ,"NOMBRE_PROGRAMA_IMPLEMENTACION"
   )
   values
   (
@@ -47,6 +52,8 @@ begin
     ,to_number(l_varchar2(8))
     ,to_char(l_clob(9))
     ,to_char(l_clob(10))
+    ,to_char(l_clob(11))
+    ,to_char(l_clob(12))
   );
 
 end;
@@ -73,12 +80,13 @@ begin
   l_clob(7) :=q'!!';
   l_varchar2(8) :=q'!!';
   l_clob(9) :=q'!S!';
-  l_clob(10) :=q'!!';
+  l_clob(10) :=q'!6H!';
   l_clob(11) :=q'!!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -167,7 +175,8 @@ begin
   l_clob(6) :=q'!FREQ=HOURLY;BYHOUR=6,18;BYMINUTE=10;BYSECOND=0;!';
   l_varchar2(7) :=q'!!';
   l_clob(8) :=q'!Trabajo de monitoreo de conflictos - Cada 6 Horas!';
-
+
+
   insert into t_trabajos
   (
      "ID_TRABAJO"
