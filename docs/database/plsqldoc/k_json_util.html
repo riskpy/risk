@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Package k_json_util</TITLE>
+ <META name="object" content="PACKAGE">
+ <META name="name" content="k_json_util">
+ <META name="description" content="Agrupa herramientas para facilitar el manejo de json y variables">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Package k_json_util</P>
+Agrupa herramientas para facilitar el manejo de json y variables<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+dmezac 04/05/2025
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_CONTIENE_VALOR">f_contiene_valor</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_OBTENER_VALOR">f_obtener_valor</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_EDITAR_VALOR">f_editar_valor</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_CONTIENE_VALORES">f_contiene_valores</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_REEMPLAZAR_EXPRESION">f_reemplazar_expresion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_REEMPLAZAR_EXPRESION_CLOB">f_reemplazar_expresion_clob</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_REPLACE_CLOB">f_replace_clob</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Constants"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Constants
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_JSON_OBJECT_VACIO">c_json_object_vacio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_JSON_ARRAY_VACIO">c_json_array_vacio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="C_JSON_OBJECT_VACIO"></A>
+<P CLASS="TYPE_TITLE">
+c_json_object_vacio
+</P>
+<PRE CLASS="DECL_TEXT">
+c_json_object_vacio constant varchar2(10) := '{}';
+</PRE>
+<HR>
+<A NAME="C_JSON_ARRAY_VACIO"></A>
+<P CLASS="TYPE_TITLE">
+c_json_array_vacio
+</P>
+<PRE CLASS="DECL_TEXT">
+c_json_array_vacio  constant varchar2(10) := '[]';
+</PRE>
+<HR>
+<A NAME="F_CONTIENE_VALOR"></A>
+<P CLASS="TYPE_TITLE">
+f_contiene_valor
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_contiene_valor(i_valor in varchar2,
+                          i_json  in clob) return boolean
+
+</PRE>
+<HR>
+<A NAME="F_OBTENER_VALOR"></A>
+<P CLASS="TYPE_TITLE">
+f_obtener_valor
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_obtener_valor(i_json  in clob,
+                         i_clave in varchar2) return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_EDITAR_VALOR"></A>
+<P CLASS="TYPE_TITLE">
+f_editar_valor
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_editar_valor(i_json  in clob,
+                        i_clave in varchar2,
+                        i_valor in varchar2) return clob
+
+</PRE>
+<HR>
+<A NAME="F_CONTIENE_VALORES"></A>
+<P CLASS="TYPE_TITLE">
+f_contiene_valores
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_contiene_valores(i_valores in varchar2,
+                            i_json    in clob) return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_REEMPLAZAR_EXPRESION"></A>
+<P CLASS="TYPE_TITLE">
+f_reemplazar_expresion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_reemplazar_expresion(i_expresion                  in varchar2,
+                                i_valores                    in clob,
+                                i_encapsulador_inicial       in varchar2 := ':',
+                                i_encapsulador_final         in varchar2 := '',
+                                i_delimitador_texto_agregado in varchar2 := '')
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_REEMPLAZAR_EXPRESION_CLOB"></A>
+<P CLASS="TYPE_TITLE">
+f_reemplazar_expresion_clob
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_reemplazar_expresion_clob(i_expresion                  in clob,
+                                     i_valores                    in clob,
+                                     i_encapsulador_inicial       in varchar2 := ':',
+                                     i_encapsulador_final         in varchar2 := '',
+                                     i_delimitador_texto_agregado in varchar2 := '')
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_REPLACE_CLOB"></A>
+<P CLASS="TYPE_TITLE">
+f_replace_clob
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_replace_clob(i_source  in clob,
+                        i_find    in varchar2,
+                        i_replace in clob) return clob
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

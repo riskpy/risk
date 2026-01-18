@@ -103,9 +103,9 @@ Program units
 f_recuperar_dato
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_recuperar_dato(i_tabla      IN VARCHAR2,
-                          i_campo      IN VARCHAR2,
-                          i_referencia IN VARCHAR2) RETURN anydata
+function f_recuperar_dato(i_tabla      in varchar2,
+                          i_campo      in varchar2,
+                          i_referencia in varchar2) return anydata
 
 </PRE>
 <HR>
@@ -114,9 +114,9 @@ FUNCTION f_recuperar_dato(i_tabla      IN VARCHAR2,
 f_recuperar_dato_string
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_recuperar_dato_string(i_tabla      IN VARCHAR2,
-                                 i_campo      IN VARCHAR2,
-                                 i_referencia IN VARCHAR2) RETURN VARCHAR2
+function f_recuperar_dato_string(i_tabla      in varchar2,
+                                 i_campo      in varchar2,
+                                 i_referencia in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -125,9 +125,9 @@ FUNCTION f_recuperar_dato_string(i_tabla      IN VARCHAR2,
 f_recuperar_dato_number
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_recuperar_dato_number(i_tabla      IN VARCHAR2,
-                                 i_campo      IN VARCHAR2,
-                                 i_referencia IN VARCHAR2) RETURN NUMBER
+function f_recuperar_dato_number(i_tabla      in varchar2,
+                                 i_campo      in varchar2,
+                                 i_referencia in varchar2) return number
 
 </PRE>
 <HR>
@@ -136,9 +136,9 @@ FUNCTION f_recuperar_dato_number(i_tabla      IN VARCHAR2,
 f_recuperar_dato_boolean
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_recuperar_dato_boolean(i_tabla      IN VARCHAR2,
-                                  i_campo      IN VARCHAR2,
-                                  i_referencia IN VARCHAR2) RETURN BOOLEAN
+function f_recuperar_dato_boolean(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2) return boolean
 
 </PRE>
 <HR>
@@ -147,9 +147,9 @@ FUNCTION f_recuperar_dato_boolean(i_tabla      IN VARCHAR2,
 f_recuperar_dato_date
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_recuperar_dato_date(i_tabla      IN VARCHAR2,
-                               i_campo      IN VARCHAR2,
-                               i_referencia IN VARCHAR2) RETURN DATE
+function f_recuperar_dato_date(i_tabla      in varchar2,
+                               i_campo      in varchar2,
+                               i_referencia in varchar2) return date
 
 </PRE>
 <HR>
@@ -158,9 +158,9 @@ FUNCTION f_recuperar_dato_date(i_tabla      IN VARCHAR2,
 f_recuperar_dato_object
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_recuperar_dato_object(i_tabla      IN VARCHAR2,
-                                 i_campo      IN VARCHAR2,
-                                 i_referencia IN VARCHAR2) RETURN y_objeto
+function f_recuperar_dato_object(i_tabla      in varchar2,
+                                 i_campo      in varchar2,
+                                 i_referencia in varchar2) return y_objeto
 
 </PRE>
 <HR>
@@ -169,10 +169,10 @@ FUNCTION f_recuperar_dato_object(i_tabla      IN VARCHAR2,
 p_guardar_dato
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_guardar_dato(i_tabla      IN VARCHAR2,
-                         i_campo      IN VARCHAR2,
-                         i_referencia IN VARCHAR2,
-                         i_dato       IN anydata)
+procedure p_guardar_dato(i_tabla      in varchar2,
+                         i_campo      in varchar2,
+                         i_referencia in varchar2,
+                         i_dato       in anydata)
 
 </PRE>
 <HR>
@@ -181,10 +181,10 @@ PROCEDURE p_guardar_dato(i_tabla      IN VARCHAR2,
 p_guardar_dato_string
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_guardar_dato_string(i_tabla      IN VARCHAR2,
-                                i_campo      IN VARCHAR2,
-                                i_referencia IN VARCHAR2,
-                                i_dato       IN VARCHAR2)
+procedure p_guardar_dato_string(i_tabla      in varchar2,
+                                i_campo      in varchar2,
+                                i_referencia in varchar2,
+                                i_dato       in varchar2)
 
 </PRE>
 <HR>
@@ -193,10 +193,10 @@ PROCEDURE p_guardar_dato_string(i_tabla      IN VARCHAR2,
 p_guardar_dato_number
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_guardar_dato_number(i_tabla      IN VARCHAR2,
-                                i_campo      IN VARCHAR2,
-                                i_referencia IN VARCHAR2,
-                                i_dato       IN NUMBER)
+procedure p_guardar_dato_number(i_tabla      in varchar2,
+                                i_campo      in varchar2,
+                                i_referencia in varchar2,
+                                i_dato       in number)
 
 </PRE>
 <HR>
@@ -205,10 +205,10 @@ PROCEDURE p_guardar_dato_number(i_tabla      IN VARCHAR2,
 p_guardar_dato_boolean
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_guardar_dato_boolean(i_tabla      IN VARCHAR2,
-                                 i_campo      IN VARCHAR2,
-                                 i_referencia IN VARCHAR2,
-                                 i_dato       IN BOOLEAN)
+procedure p_guardar_dato_boolean(i_tabla      in varchar2,
+                                 i_campo      in varchar2,
+                                 i_referencia in varchar2,
+                                 i_dato       in boolean)
 
 </PRE>
 <HR>
@@ -217,10 +217,10 @@ PROCEDURE p_guardar_dato_boolean(i_tabla      IN VARCHAR2,
 p_guardar_dato_date
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_guardar_dato_date(i_tabla      IN VARCHAR2,
-                              i_campo      IN VARCHAR2,
-                              i_referencia IN VARCHAR2,
-                              i_dato       IN DATE)
+procedure p_guardar_dato_date(i_tabla      in varchar2,
+                              i_campo      in varchar2,
+                              i_referencia in varchar2,
+                              i_dato       in date)
 
 </PRE>
 <HR>
@@ -229,10 +229,10 @@ PROCEDURE p_guardar_dato_date(i_tabla      IN VARCHAR2,
 p_guardar_dato_object
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_guardar_dato_object(i_tabla      IN VARCHAR2,
-                                i_campo      IN VARCHAR2,
-                                i_referencia IN VARCHAR2,
-                                i_dato       IN y_objeto)
+procedure p_guardar_dato_object(i_tabla      in varchar2,
+                                i_campo      in varchar2,
+                                i_referencia in varchar2,
+                                i_dato       in y_objeto)
 
 </PRE>
 <P>&nbsp;</P>

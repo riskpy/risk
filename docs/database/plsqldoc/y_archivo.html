@@ -100,7 +100,7 @@ Retorna el objeto serializado en formato JSON.
 contenido
 </P>
 <PRE CLASS="DECL_TEXT">
-contenido BLOB
+contenido blob
 </PRE>
 <P CLASS="DESC_TEXT">
 Contenido del archivo<br>
@@ -113,7 +113,7 @@ Contenido del archivo<br>
 url
 </P>
 <PRE CLASS="DECL_TEXT">
-url VARCHAR2(4000)
+url varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 URL del archivo<br>
@@ -126,7 +126,7 @@ URL del archivo<br>
 checksum
 </P>
 <PRE CLASS="DECL_TEXT">
-checksum VARCHAR2(100)
+checksum varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Hash del archivo calculado con el algoritmo SHA-1<br>
@@ -139,7 +139,7 @@ Hash del archivo calculado con el algoritmo SHA-1<br>
 tamano
 </P>
 <PRE CLASS="DECL_TEXT">
-tamano NUMBER
+tamano number
 </PRE>
 <P CLASS="DESC_TEXT">
 Tama&#241;o del archivo en bytes<br>
@@ -152,7 +152,7 @@ Tama&#241;o del archivo en bytes<br>
 nombre
 </P>
 <PRE CLASS="DECL_TEXT">
-nombre VARCHAR2(4000)
+nombre varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Nombre del archivo<br>
@@ -165,7 +165,7 @@ Nombre del archivo<br>
 extension
 </P>
 <PRE CLASS="DECL_TEXT">
-extension VARCHAR2(100)
+extension varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Extensi&#243;n del archivo<br>
@@ -178,7 +178,7 @@ Extensi&#243;n del archivo<br>
 tipo_mime
 </P>
 <PRE CLASS="DECL_TEXT">
-tipo_mime VARCHAR2(100)
+tipo_mime varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Tipo MIME del archivo<br>
@@ -191,7 +191,7 @@ Tipo MIME del archivo<br>
 y_archivo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_archivo RETURN SELF AS RESULT
+function y_archivo return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -229,7 +229,7 @@ Objeto del tipo y_archivo.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -238,7 +238,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

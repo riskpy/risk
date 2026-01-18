@@ -100,7 +100,7 @@ Retorna el objeto serializado en formato JSON.
 numero_actual
 </P>
 <PRE CLASS="DECL_TEXT">
-numero_actual INTEGER
+numero_actual integer
 </PRE>
 <P CLASS="DESC_TEXT">
 N&#250;mero de la p&#225;gina actual<br>
@@ -113,7 +113,7 @@ N&#250;mero de la p&#225;gina actual<br>
 numero_siguiente
 </P>
 <PRE CLASS="DECL_TEXT">
-numero_siguiente INTEGER
+numero_siguiente integer
 </PRE>
 <P CLASS="DESC_TEXT">
 N&#250;mero de la p&#225;gina siguiente<br>
@@ -126,7 +126,7 @@ N&#250;mero de la p&#225;gina siguiente<br>
 numero_ultima
 </P>
 <PRE CLASS="DECL_TEXT">
-numero_ultima INTEGER
+numero_ultima integer
 </PRE>
 <P CLASS="DESC_TEXT">
 N&#250;mero de la &#250;ltima p&#225;gina<br>
@@ -139,7 +139,7 @@ N&#250;mero de la &#250;ltima p&#225;gina<br>
 numero_primera
 </P>
 <PRE CLASS="DECL_TEXT">
-numero_primera INTEGER
+numero_primera integer
 </PRE>
 <P CLASS="DESC_TEXT">
 N&#250;mero de la primera p&#225;gina<br>
@@ -152,7 +152,7 @@ N&#250;mero de la primera p&#225;gina<br>
 numero_anterior
 </P>
 <PRE CLASS="DECL_TEXT">
-numero_anterior INTEGER
+numero_anterior integer
 </PRE>
 <P CLASS="DESC_TEXT">
 N&#250;mero de la p&#225;gina anterior<br>
@@ -165,7 +165,7 @@ N&#250;mero de la p&#225;gina anterior<br>
 cantidad_elementos
 </P>
 <PRE CLASS="DECL_TEXT">
-cantidad_elementos INTEGER
+cantidad_elementos integer
 </PRE>
 <P CLASS="DESC_TEXT">
 Cantidad de elementos en la p&#225;gina actual<br>
@@ -191,7 +191,7 @@ Elementos<br>
 y_pagina
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_pagina RETURN SELF AS RESULT
+function y_pagina return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -229,7 +229,7 @@ Objeto del tipo y_pagina.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -238,7 +238,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

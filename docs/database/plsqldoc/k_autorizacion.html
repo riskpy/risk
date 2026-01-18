@@ -36,6 +36,31 @@ Program units
 </TD></TR></TABLE>
 <TABLE CLASS="SUB_TABLE">
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_INICIALIZAR_PERMISOS">p_inicializar_permisos</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_LIMPIAR_PERMISOS">p_limpiar_permisos</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_ELIMINAR_PERMISOS">p_eliminar_permisos</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_IMPRIMIR_PERMISOS">p_imprimir_permisos</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PERMISOS_USUARIO">f_permisos_usuario</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_VALIDAR_PERMISO">f_validar_permiso</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -67,6 +92,21 @@ Constants
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ACCION_CARGAR">c_accion_cargar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ACCION_VERIFICAR">c_accion_verificar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ACCION_AUTORIZAR">c_accion_autorizar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
 </TABLE>
 <BR>
 <HR>
@@ -75,7 +115,7 @@ Constants
 c_accion_consultar
 </P>
 <PRE CLASS="DECL_TEXT">
-c_accion_consultar  CONSTANT CHAR(1) := 'C';
+c_accion_consultar  constant varchar2(1) := 'C';
 </PRE>
 <HR>
 <A NAME="C_ACCION_INSERTAR"></A>
@@ -83,7 +123,7 @@ c_accion_consultar  CONSTANT CHAR(1) := 'C';
 c_accion_insertar
 </P>
 <PRE CLASS="DECL_TEXT">
-c_accion_insertar   CONSTANT CHAR(1) := 'I';
+c_accion_insertar   constant varchar2(1) := 'I';
 </PRE>
 <HR>
 <A NAME="C_ACCION_ACTUALIZAR"></A>
@@ -91,7 +131,7 @@ c_accion_insertar   CONSTANT CHAR(1) := 'I';
 c_accion_actualizar
 </P>
 <PRE CLASS="DECL_TEXT">
-c_accion_actualizar CONSTANT CHAR(1) := 'A';
+c_accion_actualizar constant varchar2(1) := 'A';
 </PRE>
 <HR>
 <A NAME="C_ACCION_ELIMINAR"></A>
@@ -99,7 +139,79 @@ c_accion_actualizar CONSTANT CHAR(1) := 'A';
 c_accion_eliminar
 </P>
 <PRE CLASS="DECL_TEXT">
-c_accion_eliminar   CONSTANT CHAR(1) := 'E';
+c_accion_eliminar   constant varchar2(1) := 'E';
+</PRE>
+<HR>
+<A NAME="C_ACCION_CARGAR"></A>
+<P CLASS="TYPE_TITLE">
+c_accion_cargar
+</P>
+<PRE CLASS="DECL_TEXT">
+c_accion_cargar     constant varchar2(1) := 'I';
+</PRE>
+<HR>
+<A NAME="C_ACCION_VERIFICAR"></A>
+<P CLASS="TYPE_TITLE">
+c_accion_verificar
+</P>
+<PRE CLASS="DECL_TEXT">
+c_accion_verificar  constant varchar2(1) := 'V';
+</PRE>
+<HR>
+<A NAME="C_ACCION_AUTORIZAR"></A>
+<P CLASS="TYPE_TITLE">
+c_accion_autorizar
+</P>
+<PRE CLASS="DECL_TEXT">
+c_accion_autorizar  constant varchar2(1) := 'T';
+</PRE>
+<HR>
+<A NAME="P_INICIALIZAR_PERMISOS"></A>
+<P CLASS="TYPE_TITLE">
+p_inicializar_permisos
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_inicializar_permisos
+
+</PRE>
+<HR>
+<A NAME="P_LIMPIAR_PERMISOS"></A>
+<P CLASS="TYPE_TITLE">
+p_limpiar_permisos
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_limpiar_permisos
+
+</PRE>
+<HR>
+<A NAME="P_ELIMINAR_PERMISOS"></A>
+<P CLASS="TYPE_TITLE">
+p_eliminar_permisos
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_eliminar_permisos
+
+</PRE>
+<HR>
+<A NAME="P_IMPRIMIR_PERMISOS"></A>
+<P CLASS="TYPE_TITLE">
+p_imprimir_permisos
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_imprimir_permisos
+
+</PRE>
+<HR>
+<A NAME="F_PERMISOS_USUARIO"></A>
+<P CLASS="TYPE_TITLE">
+f_permisos_usuario
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_permisos_usuario(i_id_usuario in number,
+                            i_id_entidad in number default null,
+                            i_grupo      in varchar2 default null)
+  return y_permisos
+
 </PRE>
 <HR>
 <A NAME="F_VALIDAR_PERMISO"></A>
@@ -107,10 +219,12 @@ c_accion_eliminar   CONSTANT CHAR(1) := 'E';
 f_validar_permiso
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_validar_permiso(i_id_usuario IN NUMBER,
-                           i_id_permiso IN VARCHAR2,
-                           i_accion     IN VARCHAR2 DEFAULT NULL)
-  RETURN BOOLEAN
+function f_validar_permiso(i_id_usuario in number,
+                           i_id_permiso in varchar2,
+                           i_accion     in varchar2 default null,
+                           i_id_entidad in number default null,
+                           i_grupo      in varchar2 default null)
+  return boolean
 
 </PRE>
 <P>&nbsp;</P>

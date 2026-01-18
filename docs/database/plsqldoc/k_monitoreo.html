@@ -51,6 +51,16 @@ Program units
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_AVISO_MENSAJE">p_aviso_mensaje</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_AVISO_NOTIFICACION">p_aviso_notificacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_PAGINA_PARAMETROS">f_pagina_parametros</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -104,6 +114,48 @@ Exceptions
 </TD></TR>
 </TABLE>
 <BR>
+<A NAME="Variables"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Variables
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#G_EST_MODULO">g_est_modulo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#G_MOD_CERRADO">g_mod_cerrado</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#G_DIA_HABIL">g_dia_habil</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#G_FECHA_REAL">g_fecha_real</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#G_FECHA_ACTUAL">g_fecha_actual</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#G_FECHA_PROCESO">g_fecha_proceso</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#G_INI_TIMESTAMP">g_ini_timestamp</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
 <A NAME="Constants"></A>
 <TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
 Constants
@@ -111,6 +163,16 @@ Constants
 <TABLE CLASS="SUB_TABLE">
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#C_ID_EJECUCION">c_id_ejecucion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_PLANTILLA_MONITOREO">c_plantilla_monitoreo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ID_MODULO">c_id_modulo</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -122,7 +184,23 @@ Constants
 c_id_ejecucion
 </P>
 <PRE CLASS="DECL_TEXT">
-c_id_ejecucion CONSTANT VARCHAR2(50) := 'ID_EJECUCION';
+c_id_ejecucion        constant varchar2(50) := 'ID_EJECUCION';
+</PRE>
+<HR>
+<A NAME="C_PLANTILLA_MONITOREO"></A>
+<P CLASS="TYPE_TITLE">
+c_plantilla_monitoreo
+</P>
+<PRE CLASS="DECL_TEXT">
+c_plantilla_monitoreo constant t_correo_plantillas.id_plantilla%type := 'PLANTILLA_MONITOREO';
+</PRE>
+<HR>
+<A NAME="C_ID_MODULO"></A>
+<P CLASS="TYPE_TITLE">
+c_id_modulo
+</P>
+<PRE CLASS="DECL_TEXT">
+c_id_modulo constant t_modulos.id_modulo%type := 'RISK';
 </PRE>
 <HR>
 <A NAME="EX_FRECUENCIA_NO_EXISTE"></A>
@@ -130,7 +208,63 @@ c_id_ejecucion CONSTANT VARCHAR2(50) := 'ID_EJECUCION';
 ex_frecuencia_no_existe
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_frecuencia_no_existe EXCEPTION;
+ex_frecuencia_no_existe exception;
+</PRE>
+<HR>
+<A NAME="G_EST_MODULO"></A>
+<P CLASS="TYPE_TITLE">
+g_est_modulo
+</P>
+<PRE CLASS="DECL_TEXT">
+g_est_modulo    varchar2(1);
+</PRE>
+<HR>
+<A NAME="G_MOD_CERRADO"></A>
+<P CLASS="TYPE_TITLE">
+g_mod_cerrado
+</P>
+<PRE CLASS="DECL_TEXT">
+g_mod_cerrado   varchar2(1);
+</PRE>
+<HR>
+<A NAME="G_DIA_HABIL"></A>
+<P CLASS="TYPE_TITLE">
+g_dia_habil
+</P>
+<PRE CLASS="DECL_TEXT">
+g_dia_habil     varchar2(1);
+</PRE>
+<HR>
+<A NAME="G_FECHA_REAL"></A>
+<P CLASS="TYPE_TITLE">
+g_fecha_real
+</P>
+<PRE CLASS="DECL_TEXT">
+g_fecha_real    date;
+</PRE>
+<HR>
+<A NAME="G_FECHA_ACTUAL"></A>
+<P CLASS="TYPE_TITLE">
+g_fecha_actual
+</P>
+<PRE CLASS="DECL_TEXT">
+g_fecha_actual  date;
+</PRE>
+<HR>
+<A NAME="G_FECHA_PROCESO"></A>
+<P CLASS="TYPE_TITLE">
+g_fecha_proceso
+</P>
+<PRE CLASS="DECL_TEXT">
+g_fecha_proceso date;
+</PRE>
+<HR>
+<A NAME="G_INI_TIMESTAMP"></A>
+<P CLASS="TYPE_TITLE">
+g_ini_timestamp
+</P>
+<PRE CLASS="DECL_TEXT">
+g_ini_timestamp t_monitoreo_ejecuciones.fecha_inicio_ejecucion%type;
 </PRE>
 <HR>
 <A NAME="P_LIMPIAR_HISTORIAL"></A>
@@ -138,7 +272,7 @@ ex_frecuencia_no_existe EXCEPTION;
 p_limpiar_historial
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_limpiar_historial
+procedure p_limpiar_historial
 
 </PRE>
 <HR>
@@ -147,7 +281,7 @@ PROCEDURE p_limpiar_historial
 p_aviso_resumido
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_aviso_resumido(i_id_ejecucion IN NUMBER)
+procedure p_aviso_resumido(i_id_ejecucion in number)
 
 </PRE>
 <HR>
@@ -156,8 +290,28 @@ PROCEDURE p_aviso_resumido(i_id_ejecucion IN NUMBER)
 p_aviso_detallado
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_aviso_detallado(i_id_ejecucion IN NUMBER,
-                            i_id_monitoreo IN NUMBER)
+procedure p_aviso_detallado(i_id_ejecucion in number,
+                            i_id_monitoreo in number)
+
+</PRE>
+<HR>
+<A NAME="P_AVISO_MENSAJE"></A>
+<P CLASS="TYPE_TITLE">
+p_aviso_mensaje
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_aviso_mensaje(i_id_ejecucion in number,
+                          i_id_monitoreo in number)
+
+</PRE>
+<HR>
+<A NAME="P_AVISO_NOTIFICACION"></A>
+<P CLASS="TYPE_TITLE">
+p_aviso_notificacion
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_aviso_notificacion(i_id_ejecucion in number,
+                               i_id_monitoreo in number)
 
 </PRE>
 <HR>
@@ -166,8 +320,8 @@ PROCEDURE p_aviso_detallado(i_id_ejecucion IN NUMBER,
 f_pagina_parametros
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_pagina_parametros(i_parametros IN y_parametros)
-  RETURN y_pagina_parametros
+function f_pagina_parametros(i_parametros in y_parametros)
+  return y_pagina_parametros
 
 </PRE>
 <HR>
@@ -176,11 +330,11 @@ FUNCTION f_pagina_parametros(i_parametros IN y_parametros)
 f_paginar_elementos
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_paginar_elementos(i_elementos           IN y_objetos,
-                             i_numero_pagina       IN INTEGER DEFAULT NULL,
-                             i_cantidad_por_pagina IN INTEGER DEFAULT NULL,
-                             i_no_paginar          IN VARCHAR2 DEFAULT NULL)
-  RETURN y_pagina
+function f_paginar_elementos(i_elementos           in y_objetos,
+                             i_numero_pagina       in integer default null,
+                             i_cantidad_por_pagina in integer default null,
+                             i_no_paginar          in varchar2 default null)
+  return y_pagina
 
 </PRE>
 <HR>
@@ -189,9 +343,9 @@ FUNCTION f_paginar_elementos(i_elementos           IN y_objetos,
 f_paginar_elementos
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_paginar_elementos(i_elementos         IN y_objetos,
-                             i_pagina_parametros IN y_pagina_parametros)
-  RETURN y_pagina
+function f_paginar_elementos(i_elementos         in y_objetos,
+                             i_pagina_parametros in y_pagina_parametros)
+  return y_pagina
 
 </PRE>
 <HR>
@@ -200,9 +354,9 @@ FUNCTION f_paginar_elementos(i_elementos         IN y_objetos,
 f_monitoreo_sql
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_monitoreo_sql(i_id_monitoreo    IN NUMBER,
-                         i_version         IN VARCHAR2 DEFAULT NULL,
-                         o_tiene_conflicto OUT BOOLEAN) RETURN y_respuesta
+function f_monitoreo_sql(i_id_monitoreo    in number,
+                         i_version         in varchar2 default null,
+                         o_tiene_conflicto out boolean) return y_respuesta
 
 </PRE>
 <HR>
@@ -211,7 +365,7 @@ FUNCTION f_monitoreo_sql(i_id_monitoreo    IN NUMBER,
 f_monitoreo_columnas_sql
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_monitoreo_columnas_sql(i_id_monitoreo IN NUMBER) RETURN CLOB
+function f_monitoreo_columnas_sql(i_id_monitoreo in number) return clob
 
 </PRE>
 <HR>
@@ -220,9 +374,9 @@ FUNCTION f_monitoreo_columnas_sql(i_id_monitoreo IN NUMBER) RETURN CLOB
 f_procesar_monitoreo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_procesar_monitoreo(i_id_monitoreo IN NUMBER,
-                              i_version      IN VARCHAR2 DEFAULT NULL)
-  RETURN CLOB
+function f_procesar_monitoreo(i_id_monitoreo in number,
+                              i_version      in varchar2 default null)
+  return clob
 
 </PRE>
 <HR>
@@ -231,10 +385,10 @@ FUNCTION f_procesar_monitoreo(i_id_monitoreo IN NUMBER,
 f_procesar_monitoreo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_procesar_monitoreo(i_nombre  IN VARCHAR2,
-                              i_dominio IN VARCHAR2,
-                              i_version IN VARCHAR2 DEFAULT NULL)
-  RETURN CLOB
+function f_procesar_monitoreo(i_nombre  in varchar2,
+                              i_dominio in varchar2,
+                              i_version in varchar2 default null)
+  return clob
 
 </PRE>
 <HR>
@@ -243,7 +397,7 @@ FUNCTION f_procesar_monitoreo(i_nombre  IN VARCHAR2,
 p_procesar_monitoreos
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_procesar_monitoreos(i_frecuencia IN VARCHAR2 DEFAULT NULL)
+procedure p_procesar_monitoreos(i_frecuencia in varchar2 default null)
 
 </PRE>
 <P>&nbsp;</P>

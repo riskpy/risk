@@ -95,7 +95,7 @@ Retorna el objeto serializado en formato JSON.
 id_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-id_sesion NUMBER
+id_sesion number
 </PRE>
 <P CLASS="DESC_TEXT">
 Identificador de la sesion<br>
@@ -108,7 +108,7 @@ Identificador de la sesion<br>
 estado
 </P>
 <PRE CLASS="DECL_TEXT">
-estado CHAR(1)
+estado char(1)
 </PRE>
 <P CLASS="DESC_TEXT">
 Estado de la sesion<br>
@@ -121,7 +121,7 @@ Estado de la sesion<br>
 access_token
 </P>
 <PRE CLASS="DECL_TEXT">
-access_token VARCHAR2(4000)
+access_token varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Access Token de la sesion<br>
@@ -134,7 +134,7 @@ Access Token de la sesion<br>
 refresh_token
 </P>
 <PRE CLASS="DECL_TEXT">
-refresh_token VARCHAR2(4000)
+refresh_token varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Refresh Token de la sesion<br>
@@ -147,7 +147,7 @@ Refresh Token de la sesion<br>
 tiempo_expiracion_access_token
 </P>
 <PRE CLASS="DECL_TEXT">
-tiempo_expiracion_access_token NUMBER(6)
+tiempo_expiracion_access_token number(6)
 </PRE>
 <P CLASS="DESC_TEXT">
 Tiempo de expiraci&#243;n del Access Token en segundos<br>
@@ -160,7 +160,7 @@ Tiempo de expiraci&#243;n del Access Token en segundos<br>
 tiempo_expiracion_refresh_token
 </P>
 <PRE CLASS="DECL_TEXT">
-tiempo_expiracion_refresh_token NUMBER(6)
+tiempo_expiracion_refresh_token number(6)
 </PRE>
 <P CLASS="DESC_TEXT">
 Tiempo de expiraci&#243;n del Refresh Token en horas<br>
@@ -173,7 +173,7 @@ Tiempo de expiraci&#243;n del Refresh Token en horas<br>
 y_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_sesion RETURN SELF AS RESULT
+function y_sesion return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -211,7 +211,7 @@ Objeto del tipo y_sesion.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -220,7 +220,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

@@ -36,12 +36,22 @@ Program units
 </TD></TR></TABLE>
 <TABLE CLASS="SUB_TABLE">
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DOMINIO">f_dominio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_SIGNIFICADO_CODIGO">f_significado_codigo</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 Retorna el significado de un codigo dentro de un dominio de significados
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_REFERENCIA_CODIGO">f_referencia_codigo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_REFERENCIA_2_CODIGO">f_referencia_2_codigo</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -55,16 +65,33 @@ Retorna el significado de un codigo dentro de un dominio de significados
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_CODIGO_REFERENCIA">f_codigo_referencia</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
 </TABLE>
 <BR>
+<HR>
+<A NAME="F_DOMINIO"></A>
+<P CLASS="TYPE_TITLE">
+f_dominio
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_dominio(i_dominio in varchar2)
+  return t_significado_dominios%rowtype
+
+</PRE>
 <HR>
 <A NAME="F_SIGNIFICADO_CODIGO"></A>
 <P CLASS="TYPE_TITLE">
 f_significado_codigo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_significado_codigo(i_dominio IN VARCHAR2,
-                              i_codigo  IN VARCHAR2) RETURN VARCHAR2
+function f_significado_codigo(i_dominio in varchar2,
+                              i_codigo  in varchar2,
+                              i_activo  in varchar2 default null)
+  return varchar2
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -123,8 +150,22 @@ Significado<br>
 f_referencia_codigo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_referencia_codigo(i_dominio IN VARCHAR2,
-                             i_codigo  IN VARCHAR2) RETURN VARCHAR2
+function f_referencia_codigo(i_dominio in varchar2,
+                             i_codigo  in varchar2,
+                             i_activo  in varchar2 default null)
+  return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_REFERENCIA_2_CODIGO"></A>
+<P CLASS="TYPE_TITLE">
+f_referencia_2_codigo
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_referencia_2_codigo(i_dominio in varchar2,
+                               i_codigo  in varchar2,
+                               i_activo  in varchar2 default null)
+  return varchar2
 
 </PRE>
 <HR>
@@ -133,8 +174,9 @@ FUNCTION f_referencia_codigo(i_dominio IN VARCHAR2,
 f_existe_codigo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_existe_codigo(i_dominio IN VARCHAR2,
-                         i_codigo  IN VARCHAR2) RETURN BOOLEAN
+function f_existe_codigo(i_dominio in varchar2,
+                         i_codigo  in varchar2,
+                         i_activo  in varchar2 default null) return boolean
 
 </PRE>
 <HR>
@@ -143,7 +185,17 @@ FUNCTION f_existe_codigo(i_dominio IN VARCHAR2,
 f_id_modulo_dominio
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_id_modulo_dominio(i_dominio IN VARCHAR2) RETURN VARCHAR2
+function f_id_modulo_dominio(i_dominio in varchar2) return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_CODIGO_REFERENCIA"></A>
+<P CLASS="TYPE_TITLE">
+f_codigo_referencia
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_codigo_referencia(i_dominio    in varchar2,
+                             i_referencia in varchar2) return varchar2
 
 </PRE>
 <P>&nbsp;</P>

@@ -56,6 +56,11 @@ Program units
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_VALIDAR_CREDENCIALES_LDAP">f_validar_credenciales_ldap</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_VALIDAR_CREDENCIALES">f_validar_credenciales</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -77,6 +82,28 @@ Program units
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_GENERAR_URL_ACTIVACION">f_generar_url_activacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_IMPORTAR_USUARIOS_LDAP">p_importar_usuarios_ldap</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Exceptions"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Exceptions
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#EX_CREDENCIALES_INVALIDAS">ex_credenciales_invalidas</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#EX_TOKENS_INVALIDOS">ex_tokens_invalidos</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -103,12 +130,32 @@ Constants
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ORIGEN_LDAP">c_origen_ldap</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ORIGEN_ORACLE">c_origen_oracle</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#C_METODO_VALIDACION_RISK">c_metodo_validacion_risk</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#C_METODO_VALIDACION_ORACLE">c_metodo_validacion_oracle</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_METODO_VALIDACION_LDAP">c_metodo_validacion_ldap</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_METODO_VALIDACION_EXTERNO">c_metodo_validacion_externo</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -120,7 +167,7 @@ Constants
 c_origen_risk
 </P>
 <PRE CLASS="DECL_TEXT">
-c_origen_risk     CONSTANT CHAR(1) := 'R';
+c_origen_risk     constant varchar2(1) := 'R';
 </PRE>
 <HR>
 <A NAME="C_ORIGEN_GOOGLE"></A>
@@ -128,7 +175,7 @@ c_origen_risk     CONSTANT CHAR(1) := 'R';
 c_origen_google
 </P>
 <PRE CLASS="DECL_TEXT">
-c_origen_google   CONSTANT CHAR(1) := 'G';
+c_origen_google   constant varchar2(1) := 'G';
 </PRE>
 <HR>
 <A NAME="C_ORIGEN_FACEBOOK"></A>
@@ -136,7 +183,23 @@ c_origen_google   CONSTANT CHAR(1) := 'G';
 c_origen_facebook
 </P>
 <PRE CLASS="DECL_TEXT">
-c_origen_facebook CONSTANT CHAR(1) := 'F';
+c_origen_facebook constant varchar2(1) := 'F';
+</PRE>
+<HR>
+<A NAME="C_ORIGEN_LDAP"></A>
+<P CLASS="TYPE_TITLE">
+c_origen_ldap
+</P>
+<PRE CLASS="DECL_TEXT">
+c_origen_ldap   constant varchar2(1) := 'L';
+</PRE>
+<HR>
+<A NAME="C_ORIGEN_ORACLE"></A>
+<P CLASS="TYPE_TITLE">
+c_origen_oracle
+</P>
+<PRE CLASS="DECL_TEXT">
+c_origen_oracle constant varchar2(1) := 'O';
 </PRE>
 <HR>
 <A NAME="C_METODO_VALIDACION_RISK"></A>
@@ -144,7 +207,7 @@ c_origen_facebook CONSTANT CHAR(1) := 'F';
 c_metodo_validacion_risk
 </P>
 <PRE CLASS="DECL_TEXT">
-c_metodo_validacion_risk   CONSTANT VARCHAR2(10) := 'RISK';
+c_metodo_validacion_risk    constant varchar2(10) := 'RISK';
 </PRE>
 <HR>
 <A NAME="C_METODO_VALIDACION_ORACLE"></A>
@@ -152,7 +215,39 @@ c_metodo_validacion_risk   CONSTANT VARCHAR2(10) := 'RISK';
 c_metodo_validacion_oracle
 </P>
 <PRE CLASS="DECL_TEXT">
-c_metodo_validacion_oracle CONSTANT VARCHAR2(10) := 'ORACLE';
+c_metodo_validacion_oracle  constant varchar2(10) := 'ORACLE';
+</PRE>
+<HR>
+<A NAME="C_METODO_VALIDACION_LDAP"></A>
+<P CLASS="TYPE_TITLE">
+c_metodo_validacion_ldap
+</P>
+<PRE CLASS="DECL_TEXT">
+c_metodo_validacion_ldap    constant varchar2(10) := 'LDAP';
+</PRE>
+<HR>
+<A NAME="C_METODO_VALIDACION_EXTERNO"></A>
+<P CLASS="TYPE_TITLE">
+c_metodo_validacion_externo
+</P>
+<PRE CLASS="DECL_TEXT">
+c_metodo_validacion_externo constant varchar2(10) := 'EXTERNO';
+</PRE>
+<HR>
+<A NAME="EX_CREDENCIALES_INVALIDAS"></A>
+<P CLASS="TYPE_TITLE">
+ex_credenciales_invalidas
+</P>
+<PRE CLASS="DECL_TEXT">
+ex_credenciales_invalidas exception;
+</PRE>
+<HR>
+<A NAME="EX_TOKENS_INVALIDOS"></A>
+<P CLASS="TYPE_TITLE">
+ex_tokens_invalidos
+</P>
+<PRE CLASS="DECL_TEXT">
+ex_tokens_invalidos       exception;
 </PRE>
 <HR>
 <A NAME="F_REGISTRAR_USUARIO"></A>
@@ -160,15 +255,15 @@ c_metodo_validacion_oracle CONSTANT VARCHAR2(10) := 'ORACLE';
 f_registrar_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_registrar_usuario(i_alias            IN VARCHAR2,
-                             i_clave            IN VARCHAR2,
-                             i_nombre           IN VARCHAR2,
-                             i_apellido         IN VARCHAR2,
-                             i_direccion_correo IN VARCHAR2,
-                             i_numero_telefono  IN VARCHAR2 DEFAULT NULL,
-                             i_origen           IN VARCHAR2 DEFAULT NULL,
-                             i_id_externo       IN VARCHAR2 DEFAULT NULL)
-  RETURN VARCHAR2
+function f_registrar_usuario(i_alias            in varchar2,
+                             i_clave            in varchar2,
+                             i_nombre           in varchar2,
+                             i_apellido         in varchar2,
+                             i_direccion_correo in varchar2,
+                             i_numero_telefono  in varchar2 default null,
+                             i_origen           in varchar2 default null,
+                             i_id_externo       in varchar2 default null)
+  return varchar2
 
 </PRE>
 <HR>
@@ -177,12 +272,12 @@ FUNCTION f_registrar_usuario(i_alias            IN VARCHAR2,
 p_editar_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_editar_usuario(i_alias_antiguo    IN VARCHAR2,
-                           i_alias_nuevo      IN VARCHAR2,
-                           i_nombre           IN VARCHAR2,
-                           i_apellido         IN VARCHAR2,
-                           i_direccion_correo IN VARCHAR2,
-                           i_numero_telefono  IN VARCHAR2 DEFAULT NULL)
+procedure p_editar_usuario(i_alias_antiguo    in varchar2,
+                           i_alias_nuevo      in varchar2,
+                           i_nombre           in varchar2,
+                           i_apellido         in varchar2,
+                           i_direccion_correo in varchar2,
+                           i_numero_telefono  in varchar2 default null)
 
 </PRE>
 <HR>
@@ -191,10 +286,10 @@ PROCEDURE p_editar_usuario(i_alias_antiguo    IN VARCHAR2,
 f_validar_credenciales_risk
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_validar_credenciales_risk(i_id_usuario IN NUMBER,
-                                     i_clave      IN VARCHAR2,
-                                     i_tipo_clave IN CHAR DEFAULT 'A')
-  RETURN BOOLEAN
+function f_validar_credenciales_risk(i_id_usuario in number,
+                                     i_clave      in varchar2,
+                                     i_parametros in y_parametros)
+  return boolean
 
 </PRE>
 <HR>
@@ -203,9 +298,22 @@ FUNCTION f_validar_credenciales_risk(i_id_usuario IN NUMBER,
 f_validar_credenciales_oracle
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_validar_credenciales_oracle(i_usuario IN VARCHAR2,
-                                       i_clave   IN VARCHAR2)
-  RETURN BOOLEAN
+function f_validar_credenciales_oracle(i_usuario    in varchar2,
+                                       i_clave      in varchar2,
+                                       i_parametros in y_parametros)
+  return boolean
+
+</PRE>
+<HR>
+<A NAME="F_VALIDAR_CREDENCIALES_LDAP"></A>
+<P CLASS="TYPE_TITLE">
+f_validar_credenciales_ldap
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_validar_credenciales_ldap(i_usuario    in varchar2,
+                                     i_clave      in varchar2,
+                                     i_parametros in y_parametros)
+  return boolean
 
 </PRE>
 <HR>
@@ -214,11 +322,10 @@ FUNCTION f_validar_credenciales_oracle(i_usuario IN VARCHAR2,
 f_validar_credenciales
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_validar_credenciales(i_usuario    IN VARCHAR2,
-                                i_clave      IN VARCHAR2,
-                                i_tipo_clave IN CHAR DEFAULT 'A',
-                                i_metodo     IN VARCHAR2 DEFAULT NULL)
-  RETURN BOOLEAN
+function f_validar_credenciales(i_usuario in varchar2,
+                                i_clave   in varchar2,
+                                i_origen  in varchar2 default null)
+  return boolean
 
 </PRE>
 <HR>
@@ -227,10 +334,9 @@ FUNCTION f_validar_credenciales(i_usuario    IN VARCHAR2,
 p_validar_credenciales
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_validar_credenciales(i_usuario    IN VARCHAR2,
-                                 i_clave      IN VARCHAR2,
-                                 i_tipo_clave IN CHAR DEFAULT 'A',
-                                 i_metodo     IN VARCHAR2 DEFAULT NULL)
+procedure p_validar_credenciales(i_usuario in varchar2,
+                                 i_clave   in varchar2,
+                                 i_origen  in varchar2 default null)
 
 </PRE>
 <HR>
@@ -239,14 +345,14 @@ PROCEDURE p_validar_credenciales(i_usuario    IN VARCHAR2,
 f_iniciar_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_iniciar_sesion(i_id_aplicacion     IN VARCHAR2,
-                          i_usuario           IN VARCHAR2,
-                          i_access_token      IN VARCHAR2,
-                          i_refresh_token     IN VARCHAR2,
-                          i_token_dispositivo IN VARCHAR2 DEFAULT NULL,
-                          i_origen            IN VARCHAR2 DEFAULT NULL,
-                          i_dato_externo      IN VARCHAR2 DEFAULT NULL)
-  RETURN NUMBER
+function f_iniciar_sesion(i_id_aplicacion     in varchar2,
+                          i_usuario           in varchar2,
+                          i_access_token      in varchar2,
+                          i_refresh_token     in varchar2,
+                          i_token_dispositivo in varchar2 default null,
+                          i_origen            in varchar2 default null,
+                          i_dato_externo      in varchar2 default null)
+  return number
 
 </PRE>
 <HR>
@@ -255,14 +361,14 @@ FUNCTION f_iniciar_sesion(i_id_aplicacion     IN VARCHAR2,
 f_refrescar_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_refrescar_sesion(i_id_aplicacion         IN VARCHAR2,
-                            i_access_token_antiguo  IN VARCHAR2,
-                            i_refresh_token_antiguo IN VARCHAR2,
-                            i_access_token_nuevo    IN VARCHAR2,
-                            i_refresh_token_nuevo   IN VARCHAR2,
-                            i_origen                IN VARCHAR2 DEFAULT NULL,
-                            i_dato_externo          IN VARCHAR2 DEFAULT NULL)
-  RETURN NUMBER
+function f_refrescar_sesion(i_id_aplicacion         in varchar2,
+                            i_access_token_antiguo  in varchar2,
+                            i_refresh_token_antiguo in varchar2,
+                            i_access_token_nuevo    in varchar2,
+                            i_refresh_token_nuevo   in varchar2,
+                            i_origen                in varchar2 default null,
+                            i_dato_externo          in varchar2 default null)
+  return number
 
 </PRE>
 <HR>
@@ -271,7 +377,18 @@ FUNCTION f_refrescar_sesion(i_id_aplicacion         IN VARCHAR2,
 f_generar_url_activacion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_generar_url_activacion(i_alias IN VARCHAR2) RETURN VARCHAR2
+function f_generar_url_activacion(i_alias in varchar2) return varchar2
+
+</PRE>
+<HR>
+<A NAME="P_IMPORTAR_USUARIOS_LDAP"></A>
+<P CLASS="TYPE_TITLE">
+p_importar_usuarios_ldap
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_importar_usuarios_ldap(i_origen  in varchar2,
+                                   i_usuario in varchar2,
+                                   i_clave   in varchar2)
 
 </PRE>
 <P>&nbsp;</P>

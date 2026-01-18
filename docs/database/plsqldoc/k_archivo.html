@@ -100,7 +100,7 @@ Constants
 c_carpeta_fuentes
 </P>
 <PRE CLASS="DECL_TEXT">
-c_carpeta_fuentes  CONSTANT VARCHAR2(30) := 'FUENTES';
+c_carpeta_fuentes  constant varchar2(30) := 'FUENTES';
 </PRE>
 <HR>
 <A NAME="C_CARPETA_IMAGENES"></A>
@@ -108,7 +108,7 @@ c_carpeta_fuentes  CONSTANT VARCHAR2(30) := 'FUENTES';
 c_carpeta_imagenes
 </P>
 <PRE CLASS="DECL_TEXT">
-c_carpeta_imagenes CONSTANT VARCHAR2(30) := 'IMAGENES';
+c_carpeta_imagenes constant varchar2(30) := 'IMAGENES';
 </PRE>
 <HR>
 <A NAME="C_CARPETA_TEXTOS"></A>
@@ -116,7 +116,7 @@ c_carpeta_imagenes CONSTANT VARCHAR2(30) := 'IMAGENES';
 c_carpeta_textos
 </P>
 <PRE CLASS="DECL_TEXT">
-c_carpeta_textos   CONSTANT VARCHAR2(30) := 'TEXTOS';
+c_carpeta_textos   constant varchar2(30) := 'TEXTOS';
 </PRE>
 <HR>
 <A NAME="F_TIPO_MIME"></A>
@@ -124,8 +124,8 @@ c_carpeta_textos   CONSTANT VARCHAR2(30) := 'TEXTOS';
 f_tipo_mime
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_tipo_mime(i_dominio   IN VARCHAR2,
-                     i_extension IN VARCHAR2) RETURN VARCHAR2
+function f_tipo_mime(i_dominio   in varchar2,
+                     i_extension in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -134,11 +134,11 @@ FUNCTION f_tipo_mime(i_dominio   IN VARCHAR2,
 f_recuperar_archivo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_recuperar_archivo(i_tabla      IN VARCHAR2,
-                             i_campo      IN VARCHAR2,
-                             i_referencia IN VARCHAR2,
-                             i_version    IN VARCHAR2 DEFAULT NULL)
-  RETURN y_archivo
+function f_recuperar_archivo(i_tabla      in varchar2,
+                             i_campo      in varchar2,
+                             i_referencia in varchar2,
+                             i_version    in varchar2 default null)
+  return y_archivo
 
 </PRE>
 <HR>
@@ -147,10 +147,10 @@ FUNCTION f_recuperar_archivo(i_tabla      IN VARCHAR2,
 p_guardar_archivo
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_guardar_archivo(i_tabla      IN VARCHAR2,
-                            i_campo      IN VARCHAR2,
-                            i_referencia IN VARCHAR2,
-                            i_archivo    IN y_archivo)
+procedure p_guardar_archivo(i_tabla      in varchar2,
+                            i_campo      in varchar2,
+                            i_referencia in varchar2,
+                            i_archivo    in y_archivo)
 
 </PRE>
 <HR>
@@ -159,9 +159,9 @@ PROCEDURE p_guardar_archivo(i_tabla      IN VARCHAR2,
 p_calcular_propiedades
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_calcular_propiedades(i_contenido IN BLOB,
-                                 o_checksum  OUT VARCHAR2,
-                                 o_tamano    OUT NUMBER)
+procedure p_calcular_propiedades(i_contenido in blob,
+                                 o_checksum  out varchar2,
+                                 o_tamano    out number)
 
 </PRE>
 <HR>
@@ -170,9 +170,9 @@ PROCEDURE p_calcular_propiedades(i_contenido IN BLOB,
 f_version_archivo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_version_archivo(i_tabla      IN VARCHAR2,
-                           i_campo      IN VARCHAR2,
-                           i_referencia IN VARCHAR2) RETURN NUMBER
+function f_version_archivo(i_tabla      in varchar2,
+                           i_campo      in varchar2,
+                           i_referencia in varchar2) return number
 
 </PRE>
 <HR>
@@ -181,8 +181,8 @@ FUNCTION f_version_archivo(i_tabla      IN VARCHAR2,
 f_data_url
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_data_url(i_contenido IN BLOB,
-                    i_tipo_mime IN VARCHAR2) RETURN CLOB
+function f_data_url(i_contenido in blob,
+                    i_tipo_mime in varchar2) return clob
 
 </PRE>
 <HR>
@@ -191,10 +191,10 @@ FUNCTION f_data_url(i_contenido IN BLOB,
 f_data_url
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_data_url(i_tabla      IN VARCHAR2,
-                    i_campo      IN VARCHAR2,
-                    i_referencia IN VARCHAR2,
-                    i_version    IN VARCHAR2 DEFAULT NULL) RETURN CLOB
+function f_data_url(i_tabla      in varchar2,
+                    i_campo      in varchar2,
+                    i_referencia in varchar2,
+                    i_version    in varchar2 default null) return clob
 
 </PRE>
 <P>&nbsp;</P>

@@ -85,7 +85,7 @@ Retorna el objeto serializado en formato JSON.
 id_rol
 </P>
 <PRE CLASS="DECL_TEXT">
-id_rol NUMBER(15)
+id_rol number(15)
 </PRE>
 <P CLASS="DESC_TEXT">
 Identificador del rol<br>
@@ -98,7 +98,7 @@ Identificador del rol<br>
 nombre
 </P>
 <PRE CLASS="DECL_TEXT">
-nombre VARCHAR2(100)
+nombre varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Nombre del rol<br>
@@ -111,7 +111,7 @@ Nombre del rol<br>
 activo
 </P>
 <PRE CLASS="DECL_TEXT">
-activo CHAR(1)
+activo char(1)
 </PRE>
 <P CLASS="DESC_TEXT">
 El rol esta activo? (S/N)<br>
@@ -124,7 +124,7 @@ El rol esta activo? (S/N)<br>
 detalle
 </P>
 <PRE CLASS="DECL_TEXT">
-detalle VARCHAR2(2000)
+detalle varchar2(2000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Detalles adicionales del rol<br>
@@ -137,7 +137,7 @@ Detalles adicionales del rol<br>
 y_rol
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_rol RETURN SELF AS RESULT
+function y_rol return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -175,7 +175,7 @@ Objeto del tipo y_rol.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -184,7 +184,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

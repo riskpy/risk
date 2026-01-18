@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Package k_flujo_util</TITLE>
+ <META name="object" content="PACKAGE">
+ <META name="name" content="k_flujo_util">
+ <META name="description" content="Agrupa herramientas para facilitar el manejo del motor de flujos">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Package k_flujo_util</P>
+Agrupa herramientas para facilitar el manejo del motor de flujos<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+dmezac 04/05/2025
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_OBTENER_VARIABLE">f_obtener_variable</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_EDITAR_VARIABLE">f_editar_variable</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_REEMPLAZAR_VARIABLES">f_reemplazar_variables</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_EVALUAR_CONDICION">f_evaluar_condicion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_CONTIENE_VALOR">f_contiene_valor</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="F_OBTENER_VARIABLE"></A>
+<P CLASS="TYPE_TITLE">
+f_obtener_variable
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_obtener_variable(i_variables in clob,
+                            i_clave     in varchar2) return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_EDITAR_VARIABLE"></A>
+<P CLASS="TYPE_TITLE">
+f_editar_variable
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_editar_variable(i_variables in clob,
+                           i_clave     in varchar2,
+                           i_valor     in varchar2) return clob
+
+</PRE>
+<HR>
+<A NAME="F_REEMPLAZAR_VARIABLES"></A>
+<P CLASS="TYPE_TITLE">
+f_reemplazar_variables
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_reemplazar_variables(i_expresion         in varchar2,
+                                i_variables         in clob,
+                                i_delimitador_texto in varchar2 := '''')
+  return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_EVALUAR_CONDICION"></A>
+<P CLASS="TYPE_TITLE">
+f_evaluar_condicion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_evaluar_condicion(i_condicion in varchar2,
+                             i_variables in clob) return boolean
+
+</PRE>
+<HR>
+<A NAME="F_CONTIENE_VALOR"></A>
+<P CLASS="TYPE_TITLE">
+f_contiene_valor
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_contiene_valor(i_valor     in varchar2,
+                          i_variables in clob) return boolean
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

@@ -100,7 +100,7 @@ Variables
 g_nombre_campo_created_by
 </P>
 <PRE CLASS="DECL_TEXT">
-g_nombre_campo_created_by VARCHAR2(30) := 'USUARIO_INSERCION';
+g_nombre_campo_created_by varchar2(30) := 'USUARIO_INSERCION';
 </PRE>
 <HR>
 <A NAME="G_NOMBRE_CAMPO_CREATED"></A>
@@ -108,7 +108,7 @@ g_nombre_campo_created_by VARCHAR2(30) := 'USUARIO_INSERCION';
 g_nombre_campo_created
 </P>
 <PRE CLASS="DECL_TEXT">
-g_nombre_campo_created    VARCHAR2(30) := 'FECHA_INSERCION';
+g_nombre_campo_created    varchar2(30) := 'FECHA_INSERCION';
 </PRE>
 <HR>
 <A NAME="G_NOMBRE_CAMPO_UPDATED_BY"></A>
@@ -116,7 +116,7 @@ g_nombre_campo_created    VARCHAR2(30) := 'FECHA_INSERCION';
 g_nombre_campo_updated_by
 </P>
 <PRE CLASS="DECL_TEXT">
-g_nombre_campo_updated_by VARCHAR2(30) := 'USUARIO_MODIFICACION';
+g_nombre_campo_updated_by varchar2(30) := 'USUARIO_MODIFICACION';
 </PRE>
 <HR>
 <A NAME="G_NOMBRE_CAMPO_UPDATED"></A>
@@ -124,7 +124,7 @@ g_nombre_campo_updated_by VARCHAR2(30) := 'USUARIO_MODIFICACION';
 g_nombre_campo_updated
 </P>
 <PRE CLASS="DECL_TEXT">
-g_nombre_campo_updated    VARCHAR2(30) := 'FECHA_MODIFICACION';
+g_nombre_campo_updated    varchar2(30) := 'FECHA_MODIFICACION';
 </PRE>
 <HR>
 <A NAME="G_PREFIJO_TABLA"></A>
@@ -132,7 +132,7 @@ g_nombre_campo_updated    VARCHAR2(30) := 'FECHA_MODIFICACION';
 g_prefijo_tabla
 </P>
 <PRE CLASS="DECL_TEXT">
-g_prefijo_tabla             VARCHAR2(30) := 't_';
+g_prefijo_tabla             varchar2(30) := 't_';
 </PRE>
 <HR>
 <A NAME="G_PREFIJO_TRIGGER_AUDITORIA"></A>
@@ -140,7 +140,7 @@ g_prefijo_tabla             VARCHAR2(30) := 't_';
 g_prefijo_trigger_auditoria
 </P>
 <PRE CLASS="DECL_TEXT">
-g_prefijo_trigger_auditoria VARCHAR2(30) := 'ga_';
+g_prefijo_trigger_auditoria varchar2(30) := 'ga_';
 </PRE>
 <HR>
 <A NAME="P_GENERAR_CAMPOS_AUDITORIA"></A>
@@ -148,8 +148,8 @@ g_prefijo_trigger_auditoria VARCHAR2(30) := 'ga_';
 p_generar_campos_auditoria
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_generar_campos_auditoria(i_tabla    IN VARCHAR2,
-                                     i_ejecutar IN BOOLEAN DEFAULT TRUE)
+procedure p_generar_campos_auditoria(i_tabla    in varchar2,
+                                     i_ejecutar in boolean default true)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -184,9 +184,9 @@ Ejecutar la(s) sentencia(s)?<br>
 p_generar_trigger_auditoria
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_generar_trigger_auditoria(i_tabla    IN VARCHAR2,
-                                      i_trigger  IN VARCHAR2 DEFAULT NULL,
-                                      i_ejecutar IN BOOLEAN DEFAULT TRUE)
+procedure p_generar_trigger_auditoria(i_tabla    in varchar2,
+                                      i_trigger  in varchar2 default null,
+                                      i_ejecutar in boolean default true)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -228,8 +228,8 @@ Ejecutar la(s) sentencia(s)?<br>
 p_eliminar_campos_auditoria
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_eliminar_campos_auditoria(i_tabla    IN VARCHAR2,
-                                      i_ejecutar IN BOOLEAN DEFAULT TRUE)
+procedure p_eliminar_campos_auditoria(i_tabla    in varchar2,
+                                      i_ejecutar in boolean default true)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -264,9 +264,9 @@ Ejecutar la(s) sentencia(s)?<br>
 p_eliminar_trigger_auditoria
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_eliminar_trigger_auditoria(i_tabla    IN VARCHAR2,
-                                       i_trigger  IN VARCHAR2 DEFAULT NULL,
-                                       i_ejecutar IN BOOLEAN DEFAULT TRUE)
+procedure p_eliminar_trigger_auditoria(i_tabla    in varchar2,
+                                       i_trigger  in varchar2 default null,
+                                       i_ejecutar in boolean default true)
 
 </PRE>
 <P CLASS="DESC_TEXT">

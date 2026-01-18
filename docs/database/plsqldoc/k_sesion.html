@@ -41,6 +41,11 @@ Program units
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ORIGEN">f_origen</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_VALIDAR_SESION">f_validar_sesion</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -67,6 +72,11 @@ Program units
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_FECHA_EXPIRACION_REFRESH_TOKEN">f_fecha_expiracion_refresh_token</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_USUARIO_ACCESS_TOKEN">f_usuario_access_token</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -122,7 +132,7 @@ Constants
 c_access_token
 </P>
 <PRE CLASS="DECL_TEXT">
-c_access_token  CONSTANT CHAR(1) := 'A';
+c_access_token  constant char(1) := 'A';
 </PRE>
 <HR>
 <A NAME="C_REFRESH_TOKEN"></A>
@@ -130,7 +140,7 @@ c_access_token  CONSTANT CHAR(1) := 'A';
 c_refresh_token
 </P>
 <PRE CLASS="DECL_TEXT">
-c_refresh_token CONSTANT CHAR(1) := 'R';
+c_refresh_token constant char(1) := 'R';
 </PRE>
 <HR>
 <A NAME="EX_SESION_INEXISTENTE"></A>
@@ -138,7 +148,7 @@ c_refresh_token CONSTANT CHAR(1) := 'R';
 ex_sesion_inexistente
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_sesion_inexistente EXCEPTION;
+ex_sesion_inexistente exception;
 </PRE>
 <HR>
 <A NAME="F_ID_SESION"></A>
@@ -146,8 +156,17 @@ ex_sesion_inexistente EXCEPTION;
 f_id_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_id_sesion(i_access_token IN VARCHAR2,
-                     i_estado       IN VARCHAR2 DEFAULT NULL) RETURN NUMBER
+function f_id_sesion(i_access_token in varchar2,
+                     i_estado       in varchar2 default null) return number
+
+</PRE>
+<HR>
+<A NAME="F_ORIGEN"></A>
+<P CLASS="TYPE_TITLE">
+f_origen
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_origen(i_id_sesion in number) return varchar2
 
 </PRE>
 <HR>
@@ -156,7 +175,7 @@ FUNCTION f_id_sesion(i_access_token IN VARCHAR2,
 f_validar_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_validar_sesion(i_access_token IN VARCHAR2) RETURN BOOLEAN
+function f_validar_sesion(i_access_token in varchar2) return boolean
 
 </PRE>
 <HR>
@@ -165,7 +184,7 @@ FUNCTION f_validar_sesion(i_access_token IN VARCHAR2) RETURN BOOLEAN
 f_datos_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_datos_sesion(i_id_sesion IN NUMBER) RETURN y_sesion
+function f_datos_sesion(i_id_sesion in number) return y_sesion
 
 </PRE>
 <HR>
@@ -174,7 +193,7 @@ FUNCTION f_datos_sesion(i_id_sesion IN NUMBER) RETURN y_sesion
 f_dispositivo_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_dispositivo_sesion(i_id_sesion IN NUMBER) RETURN VARCHAR2
+function f_dispositivo_sesion(i_id_sesion in number) return varchar2
 
 </PRE>
 <HR>
@@ -183,9 +202,9 @@ FUNCTION f_dispositivo_sesion(i_id_sesion IN NUMBER) RETURN VARCHAR2
 f_tiempo_expiracion_token
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_tiempo_expiracion_token(i_id_aplicacion IN VARCHAR2,
-                                   i_tipo_token    IN VARCHAR2)
-  RETURN NUMBER
+function f_tiempo_expiracion_token(i_id_aplicacion in varchar2,
+                                   i_tipo_token    in varchar2)
+  return number
 
 </PRE>
 <HR>
@@ -194,8 +213,8 @@ FUNCTION f_tiempo_expiracion_token(i_id_aplicacion IN VARCHAR2,
 f_fecha_expiracion_access_token
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_fecha_expiracion_access_token(i_access_token IN VARCHAR2)
-  RETURN DATE
+function f_fecha_expiracion_access_token(i_access_token in varchar2)
+  return date
 
 </PRE>
 <HR>
@@ -204,8 +223,17 @@ FUNCTION f_fecha_expiracion_access_token(i_access_token IN VARCHAR2)
 f_fecha_expiracion_refresh_token
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_fecha_expiracion_refresh_token(i_id_aplicacion IN VARCHAR2)
-  RETURN DATE
+function f_fecha_expiracion_refresh_token(i_id_aplicacion in varchar2)
+  return date
+
+</PRE>
+<HR>
+<A NAME="F_USUARIO_ACCESS_TOKEN"></A>
+<P CLASS="TYPE_TITLE">
+f_usuario_access_token
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_usuario_access_token(i_access_token in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -214,7 +242,7 @@ FUNCTION f_fecha_expiracion_refresh_token(i_id_aplicacion IN VARCHAR2)
 p_validar_sesion
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_validar_sesion(i_access_token IN VARCHAR2)
+procedure p_validar_sesion(i_access_token in varchar2)
 
 </PRE>
 <HR>
@@ -223,8 +251,8 @@ PROCEDURE p_validar_sesion(i_access_token IN VARCHAR2)
 p_cambiar_estado
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_cambiar_estado(i_access_token IN VARCHAR2,
-                           i_estado       IN VARCHAR2)
+procedure p_cambiar_estado(i_access_token in varchar2,
+                           i_estado       in varchar2)
 
 </PRE>
 <HR>
@@ -233,7 +261,7 @@ PROCEDURE p_cambiar_estado(i_access_token IN VARCHAR2,
 p_expirar_sesiones
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_expirar_sesiones(i_id_usuario IN NUMBER)
+procedure p_expirar_sesiones(i_id_usuario in number)
 
 </PRE>
 <P>&nbsp;</P>

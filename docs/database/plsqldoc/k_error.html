@@ -85,7 +85,7 @@ Constants
 c_oracle_predefined_error
 </P>
 <PRE CLASS="DECL_TEXT">
-c_oracle_predefined_error CONSTANT VARCHAR2(3) := 'OPE';
+c_oracle_predefined_error constant varchar2(3) := 'OPE';
 </PRE>
 <HR>
 <A NAME="C_USER_DEFINED_ERROR"></A>
@@ -93,7 +93,7 @@ c_oracle_predefined_error CONSTANT VARCHAR2(3) := 'OPE';
 c_user_defined_error
 </P>
 <PRE CLASS="DECL_TEXT">
-c_user_defined_error      CONSTANT VARCHAR2(3) := 'UDE';
+c_user_defined_error      constant varchar2(3) := 'UDE';
 </PRE>
 <HR>
 <A NAME="C_WRAP_CHAR"></A>
@@ -101,7 +101,7 @@ c_user_defined_error      CONSTANT VARCHAR2(3) := 'UDE';
 c_wrap_char
 </P>
 <PRE CLASS="DECL_TEXT">
-c_wrap_char CONSTANT VARCHAR2(1) := '@';
+c_wrap_char constant varchar2(1) := '@';
 </PRE>
 <HR>
 <A NAME="F_TIPO_EXCEPCION"></A>
@@ -109,7 +109,7 @@ c_wrap_char CONSTANT VARCHAR2(1) := '@';
 f_tipo_excepcion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_tipo_excepcion(i_sqlcode IN NUMBER) RETURN VARCHAR2
+function f_tipo_excepcion(i_sqlcode in number) return varchar2
 
 </PRE>
 <HR>
@@ -118,7 +118,7 @@ FUNCTION f_tipo_excepcion(i_sqlcode IN NUMBER) RETURN VARCHAR2
 f_mensaje_excepcion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_mensaje_excepcion(i_sqlerrm IN VARCHAR2) RETURN VARCHAR2
+function f_mensaje_excepcion(i_sqlerrm in varchar2) return varchar2
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -170,10 +170,10 @@ Mensaje de error<br>
 f_mensaje_error
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_mensaje_error(i_clave     IN VARCHAR2,
-                         i_cadenas   IN y_cadenas,
-                         i_wrap_char IN VARCHAR2 DEFAULT c_wrap_char)
-  RETURN VARCHAR2
+function f_mensaje_error(i_clave     in varchar2,
+                         i_cadenas   in y_cadenas,
+                         i_wrap_char in varchar2 default c_wrap_char)
+  return varchar2
 
 </PRE>
 <HR>
@@ -182,14 +182,14 @@ FUNCTION f_mensaje_error(i_clave     IN VARCHAR2,
 f_mensaje_error
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_mensaje_error(i_clave     IN VARCHAR2,
-                         i_cadena1   IN VARCHAR2 DEFAULT NULL,
-                         i_cadena2   IN VARCHAR2 DEFAULT NULL,
-                         i_cadena3   IN VARCHAR2 DEFAULT NULL,
-                         i_cadena4   IN VARCHAR2 DEFAULT NULL,
-                         i_cadena5   IN VARCHAR2 DEFAULT NULL,
-                         i_wrap_char IN VARCHAR2 DEFAULT c_wrap_char)
-  RETURN VARCHAR2
+function f_mensaje_error(i_clave     in varchar2,
+                         i_cadena1   in varchar2 default null,
+                         i_cadena2   in varchar2 default null,
+                         i_cadena3   in varchar2 default null,
+                         i_cadena4   in varchar2 default null,
+                         i_cadena5   in varchar2 default null,
+                         i_wrap_char in varchar2 default c_wrap_char)
+  return varchar2
 
 </PRE>
 <P>&nbsp;</P>

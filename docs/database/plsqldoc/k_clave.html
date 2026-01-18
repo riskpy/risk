@@ -120,7 +120,7 @@ Constants
 c_clave_acceso
 </P>
 <PRE CLASS="DECL_TEXT">
-c_clave_acceso        CONSTANT CHAR(1) := 'A';
+c_clave_acceso        constant char(1) := 'A';
 </PRE>
 <HR>
 <A NAME="C_CLAVE_TRANSACCIONAL"></A>
@@ -128,7 +128,7 @@ c_clave_acceso        CONSTANT CHAR(1) := 'A';
 c_clave_transaccional
 </P>
 <PRE CLASS="DECL_TEXT">
-c_clave_transaccional CONSTANT CHAR(1) := 'T';
+c_clave_transaccional constant char(1) := 'T';
 </PRE>
 <HR>
 <A NAME="F_RANDOMBYTES_HEX"></A>
@@ -136,7 +136,7 @@ c_clave_transaccional CONSTANT CHAR(1) := 'T';
 f_randombytes_hex
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_randombytes_hex RETURN VARCHAR2
+function f_randombytes_hex return varchar2
 
 </PRE>
 <HR>
@@ -145,7 +145,7 @@ FUNCTION f_randombytes_hex RETURN VARCHAR2
 f_randombytes_base64
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_randombytes_base64 RETURN VARCHAR2
+function f_randombytes_base64 return varchar2
 
 </PRE>
 <HR>
@@ -154,7 +154,7 @@ FUNCTION f_randombytes_base64 RETURN VARCHAR2
 f_salt
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_salt RETURN VARCHAR2
+function f_salt return varchar2
 
 </PRE>
 <HR>
@@ -163,8 +163,8 @@ FUNCTION f_salt RETURN VARCHAR2
 f_hash
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_hash(i_clave IN VARCHAR2,
-                i_salt  IN VARCHAR2) RETURN VARCHAR2
+function f_hash(i_clave in varchar2,
+                i_salt  in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -173,9 +173,9 @@ FUNCTION f_hash(i_clave IN VARCHAR2,
 f_validar_clave
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_validar_clave(i_id_usuario IN NUMBER,
-                         i_clave      IN VARCHAR2,
-                         i_tipo_clave IN CHAR DEFAULT 'A') RETURN BOOLEAN
+function f_validar_clave(i_id_usuario in number,
+                         i_clave      in varchar2,
+                         i_tipo_clave in char default 'A') return boolean
 
 </PRE>
 <HR>
@@ -184,8 +184,8 @@ FUNCTION f_validar_clave(i_id_usuario IN NUMBER,
 p_registrar_intento_fallido
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_registrar_intento_fallido(i_id_usuario IN NUMBER,
-                                      i_tipo_clave IN CHAR DEFAULT 'A')
+procedure p_registrar_intento_fallido(i_id_usuario in number,
+                                      i_tipo_clave in char default 'A')
 
 </PRE>
 <HR>
@@ -194,8 +194,8 @@ PROCEDURE p_registrar_intento_fallido(i_id_usuario IN NUMBER,
 p_registrar_autenticacion
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_registrar_autenticacion(i_id_usuario IN NUMBER,
-                                    i_tipo_clave IN CHAR DEFAULT 'A')
+procedure p_registrar_autenticacion(i_id_usuario in number,
+                                    i_tipo_clave in char default 'A')
 
 </PRE>
 <HR>
@@ -204,9 +204,9 @@ PROCEDURE p_registrar_autenticacion(i_id_usuario IN NUMBER,
 p_validar_politicas
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_validar_politicas(i_alias      IN VARCHAR2,
-                              i_clave      IN VARCHAR2,
-                              i_tipo_clave IN CHAR DEFAULT 'A')
+procedure p_validar_politicas(i_alias      in varchar2,
+                              i_clave      in varchar2,
+                              i_tipo_clave in char default 'A')
 
 </PRE>
 <HR>
@@ -215,9 +215,9 @@ PROCEDURE p_validar_politicas(i_alias      IN VARCHAR2,
 p_registrar_clave
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_registrar_clave(i_alias      IN VARCHAR2,
-                            i_clave      IN VARCHAR2,
-                            i_tipo_clave IN CHAR DEFAULT 'A')
+procedure p_registrar_clave(i_alias      in varchar2,
+                            i_clave      in varchar2,
+                            i_tipo_clave in char default 'A')
 
 </PRE>
 <HR>
@@ -226,8 +226,8 @@ PROCEDURE p_registrar_clave(i_alias      IN VARCHAR2,
 p_desbloquear_clave
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_desbloquear_clave(i_alias      IN VARCHAR2,
-                              i_tipo_clave IN CHAR DEFAULT 'A')
+procedure p_desbloquear_clave(i_alias      in varchar2,
+                              i_tipo_clave in char default 'A')
 
 </PRE>
 <HR>
@@ -236,9 +236,9 @@ PROCEDURE p_desbloquear_clave(i_alias      IN VARCHAR2,
 p_restablecer_clave
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_restablecer_clave(i_alias      IN VARCHAR2,
-                              i_clave      IN VARCHAR2,
-                              i_tipo_clave IN CHAR DEFAULT 'A')
+procedure p_restablecer_clave(i_alias      in varchar2,
+                              i_clave      in varchar2,
+                              i_tipo_clave in char default 'A')
 
 </PRE>
 <HR>
@@ -247,10 +247,10 @@ PROCEDURE p_restablecer_clave(i_alias      IN VARCHAR2,
 p_cambiar_clave
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_cambiar_clave(i_alias         IN VARCHAR2,
-                          i_clave_antigua IN VARCHAR2,
-                          i_clave_nueva   IN VARCHAR2,
-                          i_tipo_clave    IN CHAR DEFAULT 'A')
+procedure p_cambiar_clave(i_alias         in varchar2,
+                          i_clave_antigua in varchar2,
+                          i_clave_nueva   in varchar2,
+                          i_tipo_clave    in char default 'A')
 
 </PRE>
 <P>&nbsp;</P>

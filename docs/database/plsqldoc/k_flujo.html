@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Package k_flujo</TITLE>
+ <META name="object" content="PACKAGE">
+ <META name="name" content="k_flujo">
+ <META name="description" content="Agrupa procesos relacionados con el motor de flujos del sistema">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Package k_flujo</P>
+Agrupa procesos relacionados con el motor de flujos del sistema<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+dmezac 04/05/2025
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#INICIAR_FLUJO">iniciar_flujo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#OBTENER_ESTADO_FLUJO">obtener_estado_flujo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#AVANZAR_FLUJO">avanzar_flujo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#APROBAR_PASO">aprobar_paso</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Constants"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Constants
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ESTADO_FINALIZADO">c_estado_finalizado</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ESTADO_EN_PROGRESO">c_estado_en_progreso</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ESTADO_CANCELADO">c_estado_cancelado</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_PASO_INICIO">c_tipo_paso_inicio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_PASO_MANUAL">c_tipo_paso_manual</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_PASO_AUTOMATICO">c_tipo_paso_automatico</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_PASO_APROBACION">c_tipo_paso_aprobacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ACCION_APROBAR">c_accion_aprobar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="C_ESTADO_FINALIZADO"></A>
+<P CLASS="TYPE_TITLE">
+c_estado_finalizado
+</P>
+<PRE CLASS="DECL_TEXT">
+c_estado_finalizado  constant varchar2(30) := 'FINALIZADO';
+</PRE>
+<HR>
+<A NAME="C_ESTADO_EN_PROGRESO"></A>
+<P CLASS="TYPE_TITLE">
+c_estado_en_progreso
+</P>
+<PRE CLASS="DECL_TEXT">
+c_estado_en_progreso constant varchar2(30) := 'EN_PROGRESO';
+</PRE>
+<HR>
+<A NAME="C_ESTADO_CANCELADO"></A>
+<P CLASS="TYPE_TITLE">
+c_estado_cancelado
+</P>
+<PRE CLASS="DECL_TEXT">
+c_estado_cancelado   constant varchar2(30) := 'CANCELADO';
+</PRE>
+<HR>
+<A NAME="C_TIPO_PASO_INICIO"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_paso_inicio
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_paso_inicio     constant varchar2(30) := 'INICIO';
+</PRE>
+<HR>
+<A NAME="C_TIPO_PASO_MANUAL"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_paso_manual
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_paso_manual     constant varchar2(30) := 'MANUAL';
+</PRE>
+<HR>
+<A NAME="C_TIPO_PASO_AUTOMATICO"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_paso_automatico
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_paso_automatico constant varchar2(30) := 'AUTOMATICO';
+</PRE>
+<HR>
+<A NAME="C_TIPO_PASO_APROBACION"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_paso_aprobacion
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_paso_aprobacion constant varchar2(30) := 'APROBACION';
+</PRE>
+<HR>
+<A NAME="C_ACCION_APROBAR"></A>
+<P CLASS="TYPE_TITLE">
+c_accion_aprobar
+</P>
+<PRE CLASS="DECL_TEXT">
+c_accion_aprobar constant varchar2(30) := 'APROBAR';
+</PRE>
+<HR>
+<A NAME="INICIAR_FLUJO"></A>
+<P CLASS="TYPE_TITLE">
+iniciar_flujo
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure iniciar_flujo(i_id_flujo     in number,
+                        i_usuario      in varchar2,
+                        i_variables    in clob,
+                        o_id_instancia out number)
+
+</PRE>
+<HR>
+<A NAME="OBTENER_ESTADO_FLUJO"></A>
+<P CLASS="TYPE_TITLE">
+obtener_estado_flujo
+</P>
+<PRE CLASS="DECL_TEXT">
+function obtener_estado_flujo(i_id_instancia in number) return clob
+
+</PRE>
+<HR>
+<A NAME="AVANZAR_FLUJO"></A>
+<P CLASS="TYPE_TITLE">
+avanzar_flujo
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure avanzar_flujo(i_id_instancia in number,
+                        i_accion       in varchar2,
+                        i_usuario      in varchar2,
+                        i_comentario   in varchar2)
+
+</PRE>
+<HR>
+<A NAME="APROBAR_PASO"></A>
+<P CLASS="TYPE_TITLE">
+aprobar_paso
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure aprobar_paso(i_id_instancia in number,
+                       i_accion       in varchar2, --APROBAR / RECHAZAR / CONDICIONAR, ETC
+                       i_usuario      in varchar2,
+                       i_comentario   in varchar2)
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

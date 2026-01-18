@@ -55,6 +55,11 @@ Program units
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_MANTENER_TRABAJOS">p_mantener_trabajos</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
 </TABLE>
 <BR>
 <A NAME="Exceptions"></A>
@@ -159,6 +164,16 @@ Constants
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_MONITOREO_CONFLICTOS_30_MINUTOS">c_monitoreo_conflictos_30_minutos</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_MONITOREO_CONFLICTOS_15_MINUTOS">c_monitoreo_conflictos_15_minutos</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
 </TABLE>
 <BR>
 <HR>
@@ -167,7 +182,7 @@ Constants
 c_ok
 </P>
 <PRE CLASS="DECL_TEXT">
-c_ok                      CONSTANT VARCHAR2(10) := '0';
+c_ok                      constant varchar2(10) := '0';
 </PRE>
 <HR>
 <A NAME="C_TRABAJO_NO_IMPLEMENTADO"></A>
@@ -175,7 +190,7 @@ c_ok                      CONSTANT VARCHAR2(10) := '0';
 c_trabajo_no_implementado
 </P>
 <PRE CLASS="DECL_TEXT">
-c_trabajo_no_implementado CONSTANT VARCHAR2(10) := 'tra0001';
+c_trabajo_no_implementado constant varchar2(10) := 'tra0001';
 </PRE>
 <HR>
 <A NAME="C_ERROR_PARAMETRO"></A>
@@ -183,7 +198,7 @@ c_trabajo_no_implementado CONSTANT VARCHAR2(10) := 'tra0001';
 c_error_parametro
 </P>
 <PRE CLASS="DECL_TEXT">
-c_error_parametro         CONSTANT VARCHAR2(10) := 'tra0002';
+c_error_parametro         constant varchar2(10) := 'tra0002';
 </PRE>
 <HR>
 <A NAME="C_ERROR_GENERAL"></A>
@@ -191,7 +206,7 @@ c_error_parametro         CONSTANT VARCHAR2(10) := 'tra0002';
 c_error_general
 </P>
 <PRE CLASS="DECL_TEXT">
-c_error_general           CONSTANT VARCHAR2(10) := 'tra0099';
+c_error_general           constant varchar2(10) := 'tra0099';
 </PRE>
 <HR>
 <A NAME="C_ERROR_INESPERADO"></A>
@@ -199,7 +214,7 @@ c_error_general           CONSTANT VARCHAR2(10) := 'tra0099';
 c_error_inesperado
 </P>
 <PRE CLASS="DECL_TEXT">
-c_error_inesperado        CONSTANT VARCHAR2(10) := 'tra9999';
+c_error_inesperado        constant varchar2(10) := 'tra9999';
 </PRE>
 <HR>
 <A NAME="EX_TRABAJO_NO_IMPLEMENTADO"></A>
@@ -207,7 +222,7 @@ c_error_inesperado        CONSTANT VARCHAR2(10) := 'tra9999';
 ex_trabajo_no_implementado
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_trabajo_no_implementado  EXCEPTION;
+ex_trabajo_no_implementado  exception;
 </PRE>
 <HR>
 <A NAME="EX_TRABAJO_YA_EXISTE"></A>
@@ -215,7 +230,7 @@ ex_trabajo_no_implementado  EXCEPTION;
 ex_trabajo_ya_existe
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_trabajo_ya_existe        EXCEPTION;
+ex_trabajo_ya_existe        exception;
 </PRE>
 <HR>
 <A NAME="EX_TRABAJO_NO_EXISTE"></A>
@@ -223,7 +238,7 @@ ex_trabajo_ya_existe        EXCEPTION;
 ex_trabajo_no_existe
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_trabajo_no_existe        EXCEPTION;
+ex_trabajo_no_existe        exception;
 </PRE>
 <HR>
 <A NAME="EX_ERROR_PARAMETRO"></A>
@@ -231,7 +246,7 @@ ex_trabajo_no_existe        EXCEPTION;
 ex_error_parametro
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_error_parametro          EXCEPTION;
+ex_error_parametro          exception;
 </PRE>
 <HR>
 <A NAME="EX_PROGRAMA_CON_DEPENDENCIA"></A>
@@ -239,7 +254,7 @@ ex_error_parametro          EXCEPTION;
 ex_programa_con_dependencia
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_programa_con_dependencia EXCEPTION;
+ex_programa_con_dependencia exception;
 </PRE>
 <HR>
 <A NAME="EX_ERROR_GENERAL"></A>
@@ -247,7 +262,7 @@ ex_programa_con_dependencia EXCEPTION;
 ex_error_general
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_error_general            EXCEPTION;
+ex_error_general            exception;
 </PRE>
 <HR>
 <A NAME="C_MONITOREO_CONFLICTOS_MENSUAL"></A>
@@ -255,7 +270,7 @@ ex_error_general            EXCEPTION;
 c_monitoreo_conflictos_mensual
 </P>
 <PRE CLASS="DECL_TEXT">
-c_monitoreo_conflictos_mensual  CONSTANT NUMBER(15) := 2000;
+c_monitoreo_conflictos_mensual    constant number(15) := 2000;
 </PRE>
 <HR>
 <A NAME="C_MONITOREO_CONFLICTOS_SEMANAL"></A>
@@ -263,7 +278,7 @@ c_monitoreo_conflictos_mensual  CONSTANT NUMBER(15) := 2000;
 c_monitoreo_conflictos_semanal
 </P>
 <PRE CLASS="DECL_TEXT">
-c_monitoreo_conflictos_semanal  CONSTANT NUMBER(15) := 2001;
+c_monitoreo_conflictos_semanal    constant number(15) := 2001;
 </PRE>
 <HR>
 <A NAME="C_MONITOREO_CONFLICTOS_DIARIO"></A>
@@ -271,7 +286,7 @@ c_monitoreo_conflictos_semanal  CONSTANT NUMBER(15) := 2001;
 c_monitoreo_conflictos_diario
 </P>
 <PRE CLASS="DECL_TEXT">
-c_monitoreo_conflictos_diario   CONSTANT NUMBER(15) := 2002;
+c_monitoreo_conflictos_diario     constant number(15) := 2002;
 </PRE>
 <HR>
 <A NAME="C_MONITOREO_CONFLICTOS_12_HORAS"></A>
@@ -279,7 +294,7 @@ c_monitoreo_conflictos_diario   CONSTANT NUMBER(15) := 2002;
 c_monitoreo_conflictos_12_horas
 </P>
 <PRE CLASS="DECL_TEXT">
-c_monitoreo_conflictos_12_horas CONSTANT NUMBER(15) := 2003;
+c_monitoreo_conflictos_12_horas   constant number(15) := 2003;
 </PRE>
 <HR>
 <A NAME="C_MONITOREO_CONFLICTOS_6_HORAS"></A>
@@ -287,7 +302,7 @@ c_monitoreo_conflictos_12_horas CONSTANT NUMBER(15) := 2003;
 c_monitoreo_conflictos_6_horas
 </P>
 <PRE CLASS="DECL_TEXT">
-c_monitoreo_conflictos_6_horas  CONSTANT NUMBER(15) := 2004;
+c_monitoreo_conflictos_6_horas    constant number(15) := 2004;
 </PRE>
 <HR>
 <A NAME="C_MONITOREO_CONFLICTOS_2_HORAS"></A>
@@ -295,7 +310,7 @@ c_monitoreo_conflictos_6_horas  CONSTANT NUMBER(15) := 2004;
 c_monitoreo_conflictos_2_horas
 </P>
 <PRE CLASS="DECL_TEXT">
-c_monitoreo_conflictos_2_horas  CONSTANT NUMBER(15) := 2005;
+c_monitoreo_conflictos_2_horas    constant number(15) := 2005;
 </PRE>
 <HR>
 <A NAME="C_MONITOREO_CONFLICTOS_HORA"></A>
@@ -303,7 +318,23 @@ c_monitoreo_conflictos_2_horas  CONSTANT NUMBER(15) := 2005;
 c_monitoreo_conflictos_hora
 </P>
 <PRE CLASS="DECL_TEXT">
-c_monitoreo_conflictos_hora     CONSTANT NUMBER(15) := 2006;
+c_monitoreo_conflictos_hora       constant number(15) := 2006;
+</PRE>
+<HR>
+<A NAME="C_MONITOREO_CONFLICTOS_30_MINUTOS"></A>
+<P CLASS="TYPE_TITLE">
+c_monitoreo_conflictos_30_minutos
+</P>
+<PRE CLASS="DECL_TEXT">
+c_monitoreo_conflictos_30_minutos constant number(15) := 2007;
+</PRE>
+<HR>
+<A NAME="C_MONITOREO_CONFLICTOS_15_MINUTOS"></A>
+<P CLASS="TYPE_TITLE">
+c_monitoreo_conflictos_15_minutos
+</P>
+<PRE CLASS="DECL_TEXT">
+c_monitoreo_conflictos_15_minutos constant number(15) := 2008;
 </PRE>
 <HR>
 <A NAME="P_CREAR_TRABAJO"></A>
@@ -311,11 +342,11 @@ c_monitoreo_conflictos_hora     CONSTANT NUMBER(15) := 2006;
 p_crear_trabajo
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_crear_trabajo(i_id_trabajo           IN NUMBER,
-                          i_parametros           IN CLOB DEFAULT NULL,
-                          i_fecha_inicio         IN TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-                          i_intervalo_repeticion IN VARCHAR2 DEFAULT NULL,
-                          i_fecha_fin            IN TIMESTAMP WITH TIME ZONE DEFAULT NULL)
+procedure p_crear_trabajo(i_id_trabajo           in number,
+                          i_parametros           in clob default null,
+                          i_fecha_inicio         in timestamp with time zone default null,
+                          i_intervalo_repeticion in varchar2 default null,
+                          i_fecha_fin            in timestamp with time zone default null)
 
 </PRE>
 <HR>
@@ -324,12 +355,12 @@ PROCEDURE p_crear_trabajo(i_id_trabajo           IN NUMBER,
 p_editar_trabajo
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_editar_trabajo(i_id_trabajo           IN NUMBER,
-                           i_parametros           IN CLOB DEFAULT NULL,
-                           i_fecha_inicio         IN TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-                           i_intervalo_repeticion IN VARCHAR2 DEFAULT NULL,
-                           i_fecha_fin            IN TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-                           i_editar_accion        IN BOOLEAN DEFAULT FALSE)
+procedure p_editar_trabajo(i_id_trabajo           in number,
+                           i_parametros           in clob default null,
+                           i_fecha_inicio         in timestamp with time zone default null,
+                           i_intervalo_repeticion in varchar2 default null,
+                           i_fecha_fin            in timestamp with time zone default null,
+                           i_editar_accion        in boolean default false)
 
 </PRE>
 <HR>
@@ -338,11 +369,11 @@ PROCEDURE p_editar_trabajo(i_id_trabajo           IN NUMBER,
 p_crear_o_editar_trabajo
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_crear_o_editar_trabajo(i_id_trabajo           IN NUMBER,
-                                   i_parametros           IN CLOB DEFAULT NULL,
-                                   i_fecha_inicio         IN TIMESTAMP WITH TIME ZONE DEFAULT NULL,
-                                   i_intervalo_repeticion IN VARCHAR2 DEFAULT NULL,
-                                   i_fecha_fin            IN TIMESTAMP WITH TIME ZONE DEFAULT NULL)
+procedure p_crear_o_editar_trabajo(i_id_trabajo           in number,
+                                   i_parametros           in clob default null,
+                                   i_fecha_inicio         in timestamp with time zone default null,
+                                   i_intervalo_repeticion in varchar2 default null,
+                                   i_fecha_fin            in timestamp with time zone default null)
 
 </PRE>
 <HR>
@@ -351,8 +382,17 @@ PROCEDURE p_crear_o_editar_trabajo(i_id_trabajo           IN NUMBER,
 p_eliminar_trabajo
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_eliminar_trabajo(i_id_trabajo IN NUMBER,
-                             i_parametros IN CLOB DEFAULT NULL)
+procedure p_eliminar_trabajo(i_id_trabajo in number,
+                             i_parametros in clob default null)
+
+</PRE>
+<HR>
+<A NAME="P_MANTENER_TRABAJOS"></A>
+<P CLASS="TYPE_TITLE">
+p_mantener_trabajos
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_mantener_trabajos(i_id_modulo in varchar2 default null)
 
 </PRE>
 <P>&nbsp;</P>

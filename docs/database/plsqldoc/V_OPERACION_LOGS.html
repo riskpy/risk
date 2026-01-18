@@ -6,7 +6,7 @@
  <META name="object" content="VIEW">
  <META name="name" content="V_OPERACION_LOGS">
  <META name="description" content="Logs de Operaciones">
- <META name="columns" content="ID_OPERACION_LOG ID_OPERACION NOMBRE_OPERACION VERSION FECHA_HORA_INICIO FECHA_HORA_FIN DURACION CONTEXTO CTX_DIRECCION_IP CTX_CLAVE_APLICACION CTX_ACCESS_TOKEN CTX_USUARIO CTX_TOKEN_DISPOSITIVO CTX_ID_EJECUCION PARAMETROS PRMS RESPUESTA RSP_CODIGO RSP_MENSAJE RSP_MENSAJE_BD RSP_LUGAR RSP_DATOS">
+ <META name="columns" content="ID_OPERACION_LOG ID_OPERACION NOMBRE_OPERACION DOMINIO_OPERACION NOMBRE_PROGRAMA_IMPLEMENTACION VERSION FECHA_HORA_INICIO FECHA_HORA_FIN DURACION SQL_EJECUCION ID_USUARIO ID_ENTIDAD ID_SESION ID_DISPOSITIVO PARAMETROS PRMS RESPUESTA RSP_CODIGO RSP_MENSAJE RSP_MENSAJE_BD RSP_TIPO_ERROR RSP_LUGAR RSP_DATOS CONTEXTO CTX_DIRECCION_IP CTX_CLAVE_APLICACION CTX_ACCESS_TOKEN CTX_USUARIO CTX_TOKEN_DISPOSITIVO CTX_ID_EJECUCION CTX_ID_TRACKING CTX_DISPOSITIVO_ORIGEN CTX_TIMESTAMP CTX_TIPO_PERSONA CTX_ID_USUARIO CTX_ID_ENTIDAD CTX_DATO_USUARIO CTX_ENTIDAD CTX_ID_APLICACION">
 </HEAD>
 <BODY>
 <TABLE WIDTH="100%"><TR>
@@ -87,13 +87,47 @@ NOMBRE_OPERACION
 VARCHAR2(1000)
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-&nbsp;
+Y
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 Nombre de la operaci&#243;n
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+DOMINIO_OPERACION
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(30)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Dominio de la operaci&#243;n
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+NOMBRE_PROGRAMA_IMPLEMENTACION
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(300)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Nombre del programa de implementaci&#243;n de la operaci&#243;n
 </TD>
 </TR>
 <TR>
@@ -162,6 +196,244 @@ Y
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 Duraci&#243;n de la ejecuci&#243;n de la operaci&#243;n
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+SQL_EJECUCION
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+CLOB
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+SQL de la ejecuci&#243;n de la operaci&#243;n
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+ID_USUARIO
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+NUMBER
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Identificador del usuario
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+ID_ENTIDAD
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+NUMBER
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Identificador de la entidad
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+ID_SESION
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+NUMBER
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Identificador de la sesi&#243;n
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+ID_DISPOSITIVO
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+NUMBER
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Identificador del dispositivo
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+PARAMETROS
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+CLOB
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Par&#225;metros recibidos
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+PRMS
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Par&#225;metros recibidos: *
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+RESPUESTA
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+CLOB
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Respuesta enviada
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+RSP_CODIGO
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Respuesta enviada: codigo
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+RSP_MENSAJE
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Respuesta enviada: mensaje
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+RSP_MENSAJE_BD
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Respuesta enviada: mensaje_bd
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+RSP_TIPO_ERROR
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Respuesta enviada: tipo_error
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+RSP_LUGAR
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Respuesta enviada: lugar
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+RSP_DATOS
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Respuesta enviada: datos
 </TD>
 </TR>
 <TR>
@@ -285,24 +557,7 @@ Contexto de la operaci&#243;n: id_ejecucion
 </TR>
 <TR>
 <TD VALIGN="TOP" CLASS="LIST_ITEM">
-PARAMETROS
-</TD>
-<TD VALIGN="TOP" CLASS="DESC_TEXT">
-CLOB
-</TD>
-<TD VALIGN="TOP" CLASS="DESC_TEXT">
-Y
-</TD>
-<TD VALIGN="TOP" CLASS="DESC_TEXT">
-&nbsp;
-</TD>
-<TD VALIGN="TOP" CLASS="DESC_TEXT">
-Par&#225;metros recibidos
-</TD>
-</TR>
-<TR>
-<TD VALIGN="TOP" CLASS="LIST_ITEM">
-PRMS
+CTX_ID_TRACKING
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 VARCHAR2(4000)
@@ -314,29 +569,12 @@ Y
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-Par&#225;metros recibidos: 
+Contexto de la operaci&#243;n: id_tracking
 </TD>
 </TR>
 <TR>
 <TD VALIGN="TOP" CLASS="LIST_ITEM">
-RESPUESTA
-</TD>
-<TD VALIGN="TOP" CLASS="DESC_TEXT">
-CLOB
-</TD>
-<TD VALIGN="TOP" CLASS="DESC_TEXT">
-Y
-</TD>
-<TD VALIGN="TOP" CLASS="DESC_TEXT">
-&nbsp;
-</TD>
-<TD VALIGN="TOP" CLASS="DESC_TEXT">
-Respuesta enviada
-</TD>
-</TR>
-<TR>
-<TD VALIGN="TOP" CLASS="LIST_ITEM">
-RSP_CODIGO
+CTX_DISPOSITIVO_ORIGEN
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 VARCHAR2(4000)
@@ -348,12 +586,12 @@ Y
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-Respuesta enviada: codigo
+Contexto de la operaci&#243;n: dispositivo_origen
 </TD>
 </TR>
 <TR>
 <TD VALIGN="TOP" CLASS="LIST_ITEM">
-RSP_MENSAJE
+CTX_TIMESTAMP
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 VARCHAR2(4000)
@@ -365,12 +603,12 @@ Y
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-Respuesta enviada: mensaje
+Contexto de la operaci&#243;n: timestamp
 </TD>
 </TR>
 <TR>
 <TD VALIGN="TOP" CLASS="LIST_ITEM">
-RSP_MENSAJE_BD
+CTX_TIPO_PERSONA
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 VARCHAR2(4000)
@@ -382,12 +620,12 @@ Y
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-Respuesta enviada: mensaje_bd
+Contexto de la operaci&#243;n: tipo_persona
 </TD>
 </TR>
 <TR>
 <TD VALIGN="TOP" CLASS="LIST_ITEM">
-RSP_LUGAR
+CTX_ID_USUARIO
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 VARCHAR2(4000)
@@ -399,12 +637,12 @@ Y
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-Respuesta enviada: lugar
+Contexto de la operaci&#243;n: id_usuario
 </TD>
 </TR>
 <TR>
 <TD VALIGN="TOP" CLASS="LIST_ITEM">
-RSP_DATOS
+CTX_ID_ENTIDAD
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 VARCHAR2(4000)
@@ -416,7 +654,58 @@ Y
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-Respuesta enviada: datos
+Contexto de la operaci&#243;n: id_entidad
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+CTX_DATO_USUARIO
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Contexto de la operaci&#243;n: dato_usuario
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+CTX_ENTIDAD
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Contexto de la operaci&#243;n: entidad
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+CTX_ID_APLICACION
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+VARCHAR2(4000)
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Y
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Contexto de la operaci&#243;n: id_aplicacion
 </TD>
 </TR>
 </TABLE>
@@ -425,14 +714,32 @@ Respuesta enviada: datos
 <TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
 SQL
 </TD></TR></TABLE><PRE CLASS="DECL_TEXT">
-CREATE OR REPLACE VIEW V_OPERACION_LOGS AS
-SELECT l.id_operacion_log,
+create or replace view v_operacion_logs as
+select l.id_operacion_log,
        l.id_operacion,
        s.nombre nombre_operacion,
+       s.dominio dominio_operacion,
+       s.nombre_programa_implementacion,
        l.version,
        l.fecha_hora_inicio,
        l.fecha_hora_fin,
        l.duracion,
+       l.sql_ejecucion,
+       l.id_usuario,
+       l.id_entidad,
+       l.id_sesion,
+       l.id_dispositivo,
+       -- parametros
+       l.parametros,
+       json_query(l.parametros, '$' returning varchar2(4000) truncate) prms,
+       -- respuesta
+       l.respuesta,
+       json_value(l.respuesta, '$.codigo') rsp_codigo,
+       json_value(l.respuesta, '$.mensaje') rsp_mensaje,
+       json_value(l.respuesta, '$.mensaje_bd') rsp_mensaje_bd,
+       json_value(l.respuesta, '$.tipo_error') rsp_tipo_error,
+       json_value(l.respuesta, '$.lugar') rsp_lugar,
+       json_query(l.respuesta, '$.datos' returning varchar2(4000) truncate) rsp_datos,
        -- contexto
        l.contexto,
        json_value(l.contexto, '$.direccion_ip') ctx_direccion_ip,
@@ -441,27 +748,43 @@ SELECT l.id_operacion_log,
        json_value(l.contexto, '$.usuario') ctx_usuario,
        json_value(l.contexto, '$.token_dispositivo') ctx_token_dispositivo,
        json_value(l.contexto, '$.id_ejecucion') ctx_id_ejecucion,
-       -- parametros
-       l.parametros,
-       json_query(l.parametros, '$') prms,
-       -- respuesta
-       l.respuesta,
-       json_value(l.respuesta, '$.codigo') rsp_codigo,
-       json_value(l.respuesta, '$.mensaje') rsp_mensaje,
-       json_value(l.respuesta, '$.mensaje_bd') rsp_mensaje_bd,
-       json_value(l.respuesta, '$.lugar') rsp_lugar,
-       json_query(l.respuesta, '$.datos') rsp_datos
-  FROM t_operacion_logs l, t_operaciones s
- WHERE s.id_operacion = l.id_operacion
+       --
+       json_value(l.contexto, '$.id_tracking') ctx_id_tracking,
+       json_value(l.contexto, '$.dispositivo_origen') ctx_dispositivo_origen,
+       json_value(l.contexto, '$.timestamp') ctx_timestamp,
+       json_value(l.contexto, '$.tipo_persona') ctx_tipo_persona,
+       json_value(l.contexto, '$.id_usuario') ctx_id_usuario,
+       json_value(l.contexto, '$.id_entidad') ctx_id_entidad,
+       json_value(l.contexto, '$.dato_usuario') ctx_dato_usuario,
+       json_value(l.contexto, '$.entidad') ctx_entidad,
+       json_value(l.contexto, '$.id_aplicacion') ctx_id_aplicacion
+  from t_operacion_logs l, t_operaciones s
+ where s.id_operacion(+) = l.id_operacion
 ;
 comment on table V_OPERACION_LOGS is 'Logs de Operaciones';
 comment on column V_OPERACION_LOGS.ID_OPERACION_LOG is 'Identificador del log';
 comment on column V_OPERACION_LOGS.ID_OPERACION is 'Identificador de la operaci&#243;n';
 comment on column V_OPERACION_LOGS.NOMBRE_OPERACION is 'Nombre de la operaci&#243;n';
+comment on column V_OPERACION_LOGS.DOMINIO_OPERACION is 'Dominio de la operaci&#243;n';
+comment on column V_OPERACION_LOGS.NOMBRE_PROGRAMA_IMPLEMENTACION is 'Nombre del programa de implementaci&#243;n de la operaci&#243;n';
 comment on column V_OPERACION_LOGS.VERSION is 'Versi&#243;n de la operaci&#243;n';
 comment on column V_OPERACION_LOGS.FECHA_HORA_INICIO is 'Fecha/hora de inicio de la ejecuci&#243;n de la operaci&#243;n';
 comment on column V_OPERACION_LOGS.FECHA_HORA_FIN is 'Fecha/hora de fin de la ejecuci&#243;n de la operaci&#243;n';
 comment on column V_OPERACION_LOGS.DURACION is 'Duraci&#243;n de la ejecuci&#243;n de la operaci&#243;n';
+comment on column V_OPERACION_LOGS.SQL_EJECUCION is 'SQL de la ejecuci&#243;n de la operaci&#243;n';
+comment on column V_OPERACION_LOGS.ID_USUARIO is 'Identificador del usuario';
+comment on column V_OPERACION_LOGS.ID_ENTIDAD is 'Identificador de la entidad';
+comment on column V_OPERACION_LOGS.ID_SESION is 'Identificador de la sesi&#243;n';
+comment on column V_OPERACION_LOGS.ID_DISPOSITIVO is 'Identificador del dispositivo';
+comment on column V_OPERACION_LOGS.PARAMETROS is 'Par&#225;metros recibidos';
+comment on column V_OPERACION_LOGS.PRMS is 'Par&#225;metros recibidos: *';
+comment on column V_OPERACION_LOGS.RESPUESTA is 'Respuesta enviada';
+comment on column V_OPERACION_LOGS.RSP_CODIGO is 'Respuesta enviada: codigo';
+comment on column V_OPERACION_LOGS.RSP_MENSAJE is 'Respuesta enviada: mensaje';
+comment on column V_OPERACION_LOGS.RSP_MENSAJE_BD is 'Respuesta enviada: mensaje_bd';
+comment on column V_OPERACION_LOGS.RSP_TIPO_ERROR is 'Respuesta enviada: tipo_error';
+comment on column V_OPERACION_LOGS.RSP_LUGAR is 'Respuesta enviada: lugar';
+comment on column V_OPERACION_LOGS.RSP_DATOS is 'Respuesta enviada: datos';
 comment on column V_OPERACION_LOGS.CONTEXTO is 'Contexto de la operaci&#243;n';
 comment on column V_OPERACION_LOGS.CTX_DIRECCION_IP is 'Contexto de la operaci&#243;n: direccion_ip';
 comment on column V_OPERACION_LOGS.CTX_CLAVE_APLICACION is 'Contexto de la operaci&#243;n: clave_aplicacion';
@@ -469,14 +792,15 @@ comment on column V_OPERACION_LOGS.CTX_ACCESS_TOKEN is 'Contexto de la operaci&#
 comment on column V_OPERACION_LOGS.CTX_USUARIO is 'Contexto de la operaci&#243;n: usuario';
 comment on column V_OPERACION_LOGS.CTX_TOKEN_DISPOSITIVO is 'Contexto de la operaci&#243;n: token_dispositivo';
 comment on column V_OPERACION_LOGS.CTX_ID_EJECUCION is 'Contexto de la operaci&#243;n: id_ejecucion';
-comment on column V_OPERACION_LOGS.PARAMETROS is 'Par&#225;metros recibidos';
-comment on column V_OPERACION_LOGS.PRMS is 'Par&#225;metros recibidos: ';
-comment on column V_OPERACION_LOGS.RESPUESTA is 'Respuesta enviada';
-comment on column V_OPERACION_LOGS.RSP_CODIGO is 'Respuesta enviada: codigo';
-comment on column V_OPERACION_LOGS.RSP_MENSAJE is 'Respuesta enviada: mensaje';
-comment on column V_OPERACION_LOGS.RSP_MENSAJE_BD is 'Respuesta enviada: mensaje_bd';
-comment on column V_OPERACION_LOGS.RSP_LUGAR is 'Respuesta enviada: lugar';
-comment on column V_OPERACION_LOGS.RSP_DATOS is 'Respuesta enviada: datos';
+comment on column V_OPERACION_LOGS.CTX_ID_TRACKING is 'Contexto de la operaci&#243;n: id_tracking';
+comment on column V_OPERACION_LOGS.CTX_DISPOSITIVO_ORIGEN is 'Contexto de la operaci&#243;n: dispositivo_origen';
+comment on column V_OPERACION_LOGS.CTX_TIMESTAMP is 'Contexto de la operaci&#243;n: timestamp';
+comment on column V_OPERACION_LOGS.CTX_TIPO_PERSONA is 'Contexto de la operaci&#243;n: tipo_persona';
+comment on column V_OPERACION_LOGS.CTX_ID_USUARIO is 'Contexto de la operaci&#243;n: id_usuario';
+comment on column V_OPERACION_LOGS.CTX_ID_ENTIDAD is 'Contexto de la operaci&#243;n: id_entidad';
+comment on column V_OPERACION_LOGS.CTX_DATO_USUARIO is 'Contexto de la operaci&#243;n: dato_usuario';
+comment on column V_OPERACION_LOGS.CTX_ENTIDAD is 'Contexto de la operaci&#243;n: entidad';
+comment on column V_OPERACION_LOGS.CTX_ID_APLICACION is 'Contexto de la operaci&#243;n: id_aplicacion';
 </PRE>
 <P>&nbsp;</P>
 <P>&nbsp;</P>

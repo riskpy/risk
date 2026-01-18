@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Package k_significado_util</TITLE>
+ <META name="object" content="PACKAGE">
+ <META name="name" content="k_significado_util">
+ <META name="description" content="Agrupa utilidades relacionadas con significados">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Package k_significado_util</P>
+Agrupa utilidades relacionadas con significados<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+jmeza 22/12/2025
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_INSERTS_DOMINIO">f_inserts_dominio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_INSERTS_DOMINIO2">f_inserts_dominio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DELETES_DOMINIO">f_deletes_dominio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DELETES_DOMINIO2">f_deletes_dominio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DELETES_MODULO">f_deletes_modulo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_SCRIPTS_DOMINIOS">f_scripts_dominios</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="F_INSERTS_DOMINIO"></A>
+<P CLASS="TYPE_TITLE">
+f_inserts_dominio
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_inserts_dominio(i_significado_dominio in t_significado_dominios%rowtype,
+                           i_motivo_modificacion in varchar2 default null)
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_INSERTS_DOMINIO2"></A>
+<P CLASS="TYPE_TITLE">
+f_inserts_dominio
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_inserts_dominio(i_dominio             in varchar2,
+                           i_motivo_modificacion in varchar2 default null)
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_DELETES_DOMINIO"></A>
+<P CLASS="TYPE_TITLE">
+f_deletes_dominio
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_deletes_dominio(i_significado_dominio in t_significado_dominios%rowtype)
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_DELETES_DOMINIO2"></A>
+<P CLASS="TYPE_TITLE">
+f_deletes_dominio
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_deletes_dominio(i_dominio in varchar2) return clob
+
+</PRE>
+<HR>
+<A NAME="F_DELETES_MODULO"></A>
+<P CLASS="TYPE_TITLE">
+f_deletes_modulo
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_deletes_modulo(i_id_modulo in varchar2) return clob
+
+</PRE>
+<HR>
+<A NAME="F_SCRIPTS_DOMINIOS"></A>
+<P CLASS="TYPE_TITLE">
+f_scripts_dominios
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_scripts_dominios(i_id_modulo           in varchar2 default null,
+                            i_motivo_modificacion in varchar2 default null)
+  return blob
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

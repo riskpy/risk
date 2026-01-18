@@ -90,7 +90,7 @@ Program units
 id_notificacion
 </P>
 <PRE CLASS="DECL_TEXT">
-id_notificacion NUMBER
+id_notificacion number
 </PRE>
 <P CLASS="DESC_TEXT">
 Identificador de la notificaci&#243;n push<br>
@@ -103,7 +103,7 @@ Identificador de la notificaci&#243;n push<br>
 suscripcion
 </P>
 <PRE CLASS="DECL_TEXT">
-suscripcion VARCHAR2(500)
+suscripcion varchar2(500)
 </PRE>
 <P CLASS="DESC_TEXT">
 Tag o expresi&#243;n destino de la notificaci&#243;n push<br>
@@ -116,7 +116,7 @@ Tag o expresi&#243;n destino de la notificaci&#243;n push<br>
 titulo
 </P>
 <PRE CLASS="DECL_TEXT">
-titulo VARCHAR2(160)
+titulo varchar2(160)
 </PRE>
 <P CLASS="DESC_TEXT">
 T&#237;tulo de la notificaci&#243;n push<br>
@@ -129,7 +129,7 @@ T&#237;tulo de la notificaci&#243;n push<br>
 contenido
 </P>
 <PRE CLASS="DECL_TEXT">
-contenido VARCHAR2(500)
+contenido varchar2(500)
 </PRE>
 <P CLASS="DESC_TEXT">
 Contenido de la notificaci&#243;n push<br>
@@ -142,7 +142,7 @@ Contenido de la notificaci&#243;n push<br>
 datos_extra
 </P>
 <PRE CLASS="DECL_TEXT">
-datos_extra CLOB
+datos_extra clob
 </PRE>
 <P CLASS="DESC_TEXT">
 Datos extra de la notificaci&#243;n push<br>
@@ -155,7 +155,7 @@ Datos extra de la notificaci&#243;n push<br>
 y_notificacion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_notificacion RETURN SELF AS RESULT
+function y_notificacion return self as result
 
 </PRE>
 <HR>
@@ -164,7 +164,7 @@ FUNCTION y_notificacion RETURN SELF AS RESULT
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -173,7 +173,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P>&nbsp;</P>

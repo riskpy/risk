@@ -73,8 +73,8 @@ Program units
 f_query2table
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_query2table(i_query    IN CLOB,
-                       i_template IN CLOB := NULL) RETURN CLOB
+function f_query2table(i_query    in clob,
+                       i_template in clob := null) return clob
 
 </PRE>
 <HR>
@@ -83,7 +83,7 @@ FUNCTION f_query2table(i_query    IN CLOB,
 f_escapar_texto
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_escapar_texto(i_texto IN CLOB) RETURN CLOB
+function f_escapar_texto(i_texto in clob) return clob
 
 </PRE>
 <HR>
@@ -92,7 +92,7 @@ FUNCTION f_escapar_texto(i_texto IN CLOB) RETURN CLOB
 f_html
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_html RETURN CLOB
+function f_html return clob
 
 </PRE>
 <HR>
@@ -101,7 +101,7 @@ FUNCTION f_html RETURN CLOB
 p_inicializar
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_inicializar(i_doctype IN BOOLEAN DEFAULT TRUE)
+procedure p_inicializar(i_doctype in boolean default true)
 
 </PRE>
 <HR>
@@ -110,7 +110,7 @@ PROCEDURE p_inicializar(i_doctype IN BOOLEAN DEFAULT TRUE)
 p_print
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_print(i_clob IN CLOB)
+procedure p_print(i_clob in clob)
 
 </PRE>
 <HR>
@@ -119,7 +119,7 @@ PROCEDURE p_print(i_clob IN CLOB)
 p_font_face
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_font_face(i_fuentes IN VARCHAR2)
+procedure p_font_face(i_fuentes in varchar2)
 
 </PRE>
 <P>&nbsp;</P>

@@ -110,7 +110,7 @@ Retorna el objeto serializado en formato JSON.
 id_correo
 </P>
 <PRE CLASS="DECL_TEXT">
-id_correo NUMBER
+id_correo number
 </PRE>
 <P CLASS="DESC_TEXT">
 Identificador del correo electr&#243;nico<br>
@@ -123,7 +123,7 @@ Identificador del correo electr&#243;nico<br>
 mensaje_to
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje_to VARCHAR2(4000)
+mensaje_to varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Campo To del mensaje<br>
@@ -136,7 +136,7 @@ Campo To del mensaje<br>
 mensaje_subject
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje_subject VARCHAR2(2000)
+mensaje_subject varchar2(2000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Campo Subject del mensaje<br>
@@ -149,7 +149,7 @@ Campo Subject del mensaje<br>
 mensaje_body
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje_body CLOB
+mensaje_body clob
 </PRE>
 <P CLASS="DESC_TEXT">
 Cuerpo del mensaje<br>
@@ -162,7 +162,7 @@ Cuerpo del mensaje<br>
 mensaje_from
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje_from VARCHAR2(2000)
+mensaje_from varchar2(2000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Campo From del mensaje<br>
@@ -175,7 +175,7 @@ Campo From del mensaje<br>
 mensaje_reply_to
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje_reply_to VARCHAR2(2000)
+mensaje_reply_to varchar2(2000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Campo Reply-To del mensaje<br>
@@ -188,7 +188,7 @@ Campo Reply-To del mensaje<br>
 mensaje_cc
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje_cc VARCHAR2(4000)
+mensaje_cc varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Campo Cc del mensaje<br>
@@ -201,7 +201,7 @@ Campo Cc del mensaje<br>
 mensaje_bcc
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje_bcc VARCHAR2(4000)
+mensaje_bcc varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Campo Bcc del mensaje<br>
@@ -227,7 +227,7 @@ Archivos adjuntos<br>
 y_correo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_correo RETURN SELF AS RESULT
+function y_correo return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -265,7 +265,7 @@ Objeto del tipo y_correo.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -274,7 +274,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Package k_parametro</TITLE>
+ <META name="object" content="PACKAGE">
+ <META name="name" content="k_parametro">
+ <META name="description" content="Agrupa operaciones relacionadas con los par&#225;metros">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Package k_parametro</P>
+Agrupa operaciones relacionadas con los par&#225;metros<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+jmeza 18/8/2025 16:16:59
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PROCESAR_PARAMETROS">f_procesar_parametros</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DATOS_VALOR_PARAMETRO">f_datos_valor_parametro</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_VALOR_PARAMETRO_STRING">f_valor_parametro_string</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_VALOR_PARAMETRO_NUMBER">f_valor_parametro_number</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_VALOR_PARAMETRO_BOOLEAN">f_valor_parametro_boolean</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_VALOR_PARAMETRO_DATE">f_valor_parametro_date</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_VALOR_PARAMETRO">f_valor_parametro</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_DEFINIR_PARAMETRO">p_definir_parametro</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Types"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Types
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#RY_DATOS_VALOR_PARAMETRO">ry_datos_valor_parametro</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Constants"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Constants
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TABLA_PARAMETROS">c_tabla_parametros</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TABLA_APLICACIONES">c_tabla_aplicaciones</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TABLA_SUSCRIPCION_ACEPTACIONES">c_tabla_suscripcion_aceptaciones</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="C_TABLA_PARAMETROS"></A>
+<P CLASS="TYPE_TITLE">
+c_tabla_parametros
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tabla_parametros               constant varchar2(50) := 'T_PARAMETROS';
+</PRE>
+<HR>
+<A NAME="C_TABLA_APLICACIONES"></A>
+<P CLASS="TYPE_TITLE">
+c_tabla_aplicaciones
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tabla_aplicaciones             constant varchar2(50) := 'T_APLICACION_PARAMETROS';
+</PRE>
+<HR>
+<A NAME="C_TABLA_SUSCRIPCION_ACEPTACIONES"></A>
+<P CLASS="TYPE_TITLE">
+c_tabla_suscripcion_aceptaciones
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tabla_suscripcion_aceptaciones constant varchar2(50) := 'T_SUSCRIPCION_ACEPTACION_PARAMETROS';
+</PRE>
+<HR>
+<A NAME="RY_DATOS_VALOR_PARAMETRO"></A>
+<P CLASS="TYPE_TITLE">
+ry_datos_valor_parametro
+</P>
+<PRE CLASS="DECL_TEXT">
+type ry_datos_valor_parametro is record(
+  valor         varchar2(4000),
+  tipo_dato     varchar2(1),
+  formato       varchar2(100),
+  valor_defecto varchar2(1000),
+  encriptado    varchar2(1));
+</PRE>
+<HR>
+<A NAME="F_PROCESAR_PARAMETROS"></A>
+<P CLASS="TYPE_TITLE">
+f_procesar_parametros
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_procesar_parametros(i_tabla       in varchar2,
+                               i_parametros  in clob,
+                               i_tipo_filtro in varchar2 default null)
+  return y_parametros
+
+</PRE>
+<HR>
+<A NAME="F_DATOS_VALOR_PARAMETRO"></A>
+<P CLASS="TYPE_TITLE">
+f_datos_valor_parametro
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_datos_valor_parametro(i_tabla        in varchar2,
+                                 i_id_parametro in varchar2,
+                                 i_referencia   in varchar2 default null)
+  return ry_datos_valor_parametro
+
+</PRE>
+<HR>
+<A NAME="F_VALOR_PARAMETRO_STRING"></A>
+<P CLASS="TYPE_TITLE">
+f_valor_parametro_string
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_valor_parametro_string(i_tabla        in varchar2,
+                                  i_id_parametro in varchar2,
+                                  i_referencia   in varchar2 default null)
+  return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_VALOR_PARAMETRO_NUMBER"></A>
+<P CLASS="TYPE_TITLE">
+f_valor_parametro_number
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_valor_parametro_number(i_tabla        in varchar2,
+                                  i_id_parametro in varchar2,
+                                  i_referencia   in varchar2 default null)
+  return number
+
+</PRE>
+<HR>
+<A NAME="F_VALOR_PARAMETRO_BOOLEAN"></A>
+<P CLASS="TYPE_TITLE">
+f_valor_parametro_boolean
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_valor_parametro_boolean(i_tabla        in varchar2,
+                                   i_id_parametro in varchar2,
+                                   i_referencia   in varchar2 default null)
+  return boolean
+
+</PRE>
+<HR>
+<A NAME="F_VALOR_PARAMETRO_DATE"></A>
+<P CLASS="TYPE_TITLE">
+f_valor_parametro_date
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_valor_parametro_date(i_tabla        in varchar2,
+                                i_id_parametro in varchar2,
+                                i_referencia   in varchar2 default null)
+  return date
+
+</PRE>
+<HR>
+<A NAME="F_VALOR_PARAMETRO"></A>
+<P CLASS="TYPE_TITLE">
+f_valor_parametro
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_valor_parametro(i_tabla        in varchar2,
+                           i_id_parametro in varchar2,
+                           i_referencia   in varchar2 default null)
+  return varchar2
+
+</PRE>
+<HR>
+<A NAME="P_DEFINIR_PARAMETRO"></A>
+<P CLASS="TYPE_TITLE">
+p_definir_parametro
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_definir_parametro(i_tabla        in varchar2,
+                              i_id_parametro in varchar2,
+                              i_valor        in varchar2,
+                              i_referencia   in varchar2 default null)
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

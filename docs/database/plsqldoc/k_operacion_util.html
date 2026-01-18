@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Package k_operacion_util</TITLE>
+ <META name="object" content="PACKAGE">
+ <META name="name" content="k_operacion_util">
+ <META name="description" content="Agrupa utilidades relacionadas con las Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos, Importaciones)">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Package k_operacion_util</P>
+Agrupa utilidades relacionadas con las Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos, Importaciones)<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+jmeza 11/12/2025
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_INSERTS_OPERACION">f_inserts_operacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_INSERTS_OPERACION2">f_inserts_operacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_INSERTS_OPERACION3">f_inserts_operacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DELETES_OPERACION">f_deletes_operacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DELETES_OPERACION2">f_deletes_operacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DELETES_OPERACION3">f_deletes_operacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_DELETES_MODULO">f_deletes_modulo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_SCRIPTS_OPERACIONES">f_scripts_operaciones</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="F_INSERTS_OPERACION"></A>
+<P CLASS="TYPE_TITLE">
+f_inserts_operacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_inserts_operacion(i_operacion           in t_operaciones%rowtype,
+                             i_motivo_modificacion in varchar2 default null)
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_INSERTS_OPERACION2"></A>
+<P CLASS="TYPE_TITLE">
+f_inserts_operacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_inserts_operacion(i_id_operacion        in number,
+                             i_motivo_modificacion in varchar2 default null)
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_INSERTS_OPERACION3"></A>
+<P CLASS="TYPE_TITLE">
+f_inserts_operacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_inserts_operacion(i_tipo                in varchar2,
+                             i_nombre              in varchar2,
+                             i_dominio             in varchar2,
+                             i_motivo_modificacion in varchar2 default null)
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_DELETES_OPERACION"></A>
+<P CLASS="TYPE_TITLE">
+f_deletes_operacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_deletes_operacion(i_operacion in t_operaciones%rowtype)
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_DELETES_OPERACION2"></A>
+<P CLASS="TYPE_TITLE">
+f_deletes_operacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_deletes_operacion(i_id_operacion in number) return clob
+
+</PRE>
+<HR>
+<A NAME="F_DELETES_OPERACION3"></A>
+<P CLASS="TYPE_TITLE">
+f_deletes_operacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_deletes_operacion(i_tipo    in varchar2,
+                             i_nombre  in varchar2,
+                             i_dominio in varchar2) return clob
+
+</PRE>
+<HR>
+<A NAME="F_DELETES_MODULO"></A>
+<P CLASS="TYPE_TITLE">
+f_deletes_modulo
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_deletes_modulo(i_id_modulo in varchar2) return clob
+
+</PRE>
+<HR>
+<A NAME="F_SCRIPTS_OPERACIONES"></A>
+<P CLASS="TYPE_TITLE">
+f_scripts_operaciones
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_scripts_operaciones(i_id_modulo           in varchar2 default null,
+                               i_motivo_modificacion in varchar2 default null)
+  return blob
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

@@ -50,6 +50,16 @@ Program units
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_NOMBRE_APLICACION">f_nombre_aplicacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PARAMETRO_APLICACION">f_parametro_aplicacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
 </TABLE>
 <BR>
 <HR>
@@ -58,9 +68,9 @@ Program units
 f_id_aplicacion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_id_aplicacion(i_clave_aplicacion IN VARCHAR2,
-                         i_activo           IN VARCHAR2 DEFAULT NULL)
-  RETURN VARCHAR2
+function f_id_aplicacion(i_clave_aplicacion in varchar2,
+                         i_activo           in varchar2 default null)
+  return varchar2
 
 </PRE>
 <HR>
@@ -69,7 +79,7 @@ FUNCTION f_id_aplicacion(i_clave_aplicacion IN VARCHAR2,
 f_validar_clave
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_validar_clave(i_clave_aplicacion IN VARCHAR2) RETURN BOOLEAN
+function f_validar_clave(i_clave_aplicacion in varchar2) return boolean
 
 </PRE>
 <HR>
@@ -78,7 +88,29 @@ FUNCTION f_validar_clave(i_clave_aplicacion IN VARCHAR2) RETURN BOOLEAN
 p_validar_clave
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_validar_clave(i_clave_aplicacion IN VARCHAR2)
+procedure p_validar_clave(i_clave_aplicacion in varchar2)
+
+</PRE>
+<HR>
+<A NAME="F_NOMBRE_APLICACION"></A>
+<P CLASS="TYPE_TITLE">
+f_nombre_aplicacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_nombre_aplicacion(i_id_aplicacion in varchar2,
+                             i_activo        in varchar2 default null)
+  return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_PARAMETRO_APLICACION"></A>
+<P CLASS="TYPE_TITLE">
+f_parametro_aplicacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_parametro_aplicacion(i_id_aplicacion in varchar2,
+                                i_parametro     in varchar2)
+  return varchar2
 
 </PRE>
 <P>&nbsp;</P>

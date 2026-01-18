@@ -80,7 +80,7 @@ Retorna el objeto serializado en formato JSON.
 id_mensaje
 </P>
 <PRE CLASS="DECL_TEXT">
-id_mensaje NUMBER
+id_mensaje number
 </PRE>
 <P CLASS="DESC_TEXT">
 Identificador del mensaje de texto<br>
@@ -93,7 +93,7 @@ Identificador del mensaje de texto<br>
 numero_telefono
 </P>
 <PRE CLASS="DECL_TEXT">
-numero_telefono VARCHAR2(160)
+numero_telefono varchar2(160)
 </PRE>
 <P CLASS="DESC_TEXT">
 N&#250;mero de tel&#233;fono destino del mensaje de texto<br>
@@ -106,7 +106,7 @@ N&#250;mero de tel&#233;fono destino del mensaje de texto<br>
 contenido
 </P>
 <PRE CLASS="DECL_TEXT">
-contenido VARCHAR2(160)
+contenido varchar2(160)
 </PRE>
 <P CLASS="DESC_TEXT">
 Contenido del mensaje de texto<br>
@@ -119,7 +119,7 @@ Contenido del mensaje de texto<br>
 y_mensaje
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_mensaje RETURN SELF AS RESULT
+function y_mensaje return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -157,7 +157,7 @@ Objeto del tipo y_mensaje.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -166,7 +166,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

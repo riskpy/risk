@@ -75,7 +75,7 @@ Retorna el objeto serializado en formato JSON.
 nombre
 </P>
 <PRE CLASS="DECL_TEXT">
-nombre VARCHAR2(100)
+nombre varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Nombre del parametro<br>
@@ -101,7 +101,7 @@ Valor del parametro<br>
 y_parametro
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_parametro RETURN SELF AS RESULT
+function y_parametro return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -139,7 +139,7 @@ Objeto del tipo y_parametro.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -148,7 +148,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

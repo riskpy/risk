@@ -41,7 +41,17 @@ Program units
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_CREAR_REPORTE">p_crear_reporte</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#P_LIMPIAR_HISTORIAL">p_limpiar_historial</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_TIPO_REPORTE">f_tipo_reporte</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -76,6 +86,11 @@ Agrega encabezado y pie de p&#225;gina al reporte PDF con formato:
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PROCESAR_REPORTE_PRINCIPAL">f_procesar_reporte_principal</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_PROCESAR_REPORTE">f_procesar_reporte</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -92,6 +107,16 @@ Agrega encabezado y pie de p&#225;gina al reporte PDF con formato:
 Constants
 </TD></TR></TABLE>
 <TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_AD_HOC">c_tipo_ad_hoc</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_CONSULTA">c_tipo_consulta</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#C_FORMATO_PDF">c_formato_pdf</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
@@ -145,12 +170,28 @@ Constants
 </TABLE>
 <BR>
 <HR>
+<A NAME="C_TIPO_AD_HOC"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_ad_hoc
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_ad_hoc   constant varchar2(1) := 'H';
+</PRE>
+<HR>
+<A NAME="C_TIPO_CONSULTA"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_consulta
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_consulta constant varchar2(1) := 'C';
+</PRE>
+<HR>
 <A NAME="C_FORMATO_PDF"></A>
 <P CLASS="TYPE_TITLE">
 c_formato_pdf
 </P>
 <PRE CLASS="DECL_TEXT">
-c_formato_pdf  CONSTANT VARCHAR2(10) := 'PDF';
+c_formato_pdf  constant varchar2(10) := 'PDF';
 </PRE>
 <HR>
 <A NAME="C_FORMATO_DOCX"></A>
@@ -158,7 +199,7 @@ c_formato_pdf  CONSTANT VARCHAR2(10) := 'PDF';
 c_formato_docx
 </P>
 <PRE CLASS="DECL_TEXT">
-c_formato_docx CONSTANT VARCHAR2(10) := 'DOCX';
+c_formato_docx constant varchar2(10) := 'DOCX';
 </PRE>
 <HR>
 <A NAME="C_FORMATO_XLSX"></A>
@@ -166,7 +207,7 @@ c_formato_docx CONSTANT VARCHAR2(10) := 'DOCX';
 c_formato_xlsx
 </P>
 <PRE CLASS="DECL_TEXT">
-c_formato_xlsx CONSTANT VARCHAR2(10) := 'XLSX';
+c_formato_xlsx constant varchar2(10) := 'XLSX';
 </PRE>
 <HR>
 <A NAME="C_FORMATO_CSV"></A>
@@ -174,7 +215,7 @@ c_formato_xlsx CONSTANT VARCHAR2(10) := 'XLSX';
 c_formato_csv
 </P>
 <PRE CLASS="DECL_TEXT">
-c_formato_csv  CONSTANT VARCHAR2(10) := 'CSV';
+c_formato_csv  constant varchar2(10) := 'CSV';
 </PRE>
 <HR>
 <A NAME="C_FORMATO_HTML"></A>
@@ -182,7 +223,7 @@ c_formato_csv  CONSTANT VARCHAR2(10) := 'CSV';
 c_formato_html
 </P>
 <PRE CLASS="DECL_TEXT">
-c_formato_html CONSTANT VARCHAR2(10) := 'HTML';
+c_formato_html constant varchar2(10) := 'HTML';
 </PRE>
 <HR>
 <A NAME="C_ORIENTACION_VERTICAL"></A>
@@ -190,7 +231,7 @@ c_formato_html CONSTANT VARCHAR2(10) := 'HTML';
 c_orientacion_vertical
 </P>
 <PRE CLASS="DECL_TEXT">
-c_orientacion_vertical   CONSTANT VARCHAR2(10) := 'PORTRAIT';
+c_orientacion_vertical   constant varchar2(10) := 'PORTRAIT';
 </PRE>
 <HR>
 <A NAME="C_ORIENTACION_HORIZONTAL"></A>
@@ -198,7 +239,7 @@ c_orientacion_vertical   CONSTANT VARCHAR2(10) := 'PORTRAIT';
 c_orientacion_horizontal
 </P>
 <PRE CLASS="DECL_TEXT">
-c_orientacion_horizontal CONSTANT VARCHAR2(10) := 'LANDSCAPE';
+c_orientacion_horizontal constant varchar2(10) := 'LANDSCAPE';
 </PRE>
 <HR>
 <A NAME="C_META_FORMAT"></A>
@@ -206,7 +247,7 @@ c_orientacion_horizontal CONSTANT VARCHAR2(10) := 'LANDSCAPE';
 c_meta_format
 </P>
 <PRE CLASS="DECL_TEXT">
-c_meta_format           CONSTANT VARCHAR2(30) := 'risk:format';
+c_meta_format           constant varchar2(30) := 'risk:format';
 </PRE>
 <HR>
 <A NAME="C_META_PAGE_SIZE"></A>
@@ -214,7 +255,7 @@ c_meta_format           CONSTANT VARCHAR2(30) := 'risk:format';
 c_meta_page_size
 </P>
 <PRE CLASS="DECL_TEXT">
-c_meta_page_size        CONSTANT VARCHAR2(30) := 'risk:page_size';
+c_meta_page_size        constant varchar2(30) := 'risk:page_size';
 </PRE>
 <HR>
 <A NAME="C_META_PAGE_ORIENTATION"></A>
@@ -222,7 +263,7 @@ c_meta_page_size        CONSTANT VARCHAR2(30) := 'risk:page_size';
 c_meta_page_orientation
 </P>
 <PRE CLASS="DECL_TEXT">
-c_meta_page_orientation CONSTANT VARCHAR2(30) := 'risk:page_orientation';
+c_meta_page_orientation constant varchar2(30) := 'risk:page_orientation';
 </PRE>
 <HR>
 <A NAME="P_REGISTRAR_SQL_EJECUCION"></A>
@@ -230,8 +271,26 @@ c_meta_page_orientation CONSTANT VARCHAR2(30) := 'risk:page_orientation';
 p_registrar_sql_ejecucion
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_registrar_sql_ejecucion(i_id_reporte IN NUMBER,
-                                    i_sql        IN CLOB)
+procedure p_registrar_sql_ejecucion(i_id_reporte in number,
+                                    i_sql        in clob)
+
+</PRE>
+<HR>
+<A NAME="P_CREAR_REPORTE"></A>
+<P CLASS="TYPE_TITLE">
+p_crear_reporte
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_crear_reporte(i_nombre                         in t_operaciones.nombre%type,
+                          i_dominio                        in t_operaciones.dominio%type,
+                          i_tipo                           in t_reportes.tipo%type default c_tipo_ad_hoc,
+                          i_version_actual                 in t_operaciones.version_actual%type default '0.1.0',
+                          i_tipo_implementacion            in t_operaciones.tipo_implementacion%type default k_operacion.c_tipo_implementacion_paquete,
+                          i_nombre_programa_implementacion in t_operaciones.nombre_programa_implementacion%type default null,
+                          i_detalle                        in t_operaciones.detalle%type default null,
+                          i_parametros_automaticos         in t_operaciones.parametros_automaticos%type default null,
+                          i_aplicaciones_permitidas        in t_operaciones.aplicaciones_permitidas%type default null,
+                          i_consulta_sql                   in t_reportes.consulta_sql%type default null)
 
 </PRE>
 <HR>
@@ -240,7 +299,16 @@ PROCEDURE p_registrar_sql_ejecucion(i_id_reporte IN NUMBER,
 p_limpiar_historial
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_limpiar_historial
+procedure p_limpiar_historial
+
+</PRE>
+<HR>
+<A NAME="F_TIPO_REPORTE"></A>
+<P CLASS="TYPE_TITLE">
+f_tipo_reporte
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_tipo_reporte(i_id_reporte in number) return varchar2
 
 </PRE>
 <HR>
@@ -249,10 +317,10 @@ PROCEDURE p_limpiar_historial
 f_archivo_ok
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_archivo_ok(i_contenido IN BLOB,
-                      i_formato   IN VARCHAR2 DEFAULT NULL,
-                      i_nombre    IN VARCHAR2 DEFAULT NULL)
-  RETURN y_archivo
+function f_archivo_ok(i_contenido in blob,
+                      i_formato   in varchar2 default null,
+                      i_nombre    in varchar2 default null)
+  return y_archivo
 
 </PRE>
 <HR>
@@ -261,10 +329,10 @@ FUNCTION f_archivo_ok(i_contenido IN BLOB,
 f_archivo_error
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_archivo_error(i_respuesta IN y_respuesta,
-                         i_formato   IN VARCHAR2 DEFAULT NULL,
-                         i_nombre    IN VARCHAR2 DEFAULT NULL)
-  RETURN y_archivo
+function f_archivo_error(i_respuesta in y_respuesta,
+                         i_formato   in varchar2 default null,
+                         i_nombre    in varchar2 default null)
+  return y_archivo
 
 </PRE>
 <HR>
@@ -273,7 +341,7 @@ FUNCTION f_archivo_error(i_respuesta IN y_respuesta,
 f_formato
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_formato(i_parametros IN y_parametros) RETURN VARCHAR2
+function f_formato(i_parametros in y_parametros) return varchar2
 
 </PRE>
 <HR>
@@ -282,14 +350,14 @@ FUNCTION f_formato(i_parametros IN y_parametros) RETURN VARCHAR2
 p_agregar_encabezado_pie_pdf
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_agregar_encabezado_pie_pdf(i_encabezado1 IN VARCHAR2 DEFAULT NULL,
-                                       i_encabezado2 IN VARCHAR2 DEFAULT NULL,
-                                       i_encabezado3 IN VARCHAR2 DEFAULT NULL,
-                                       i_encabezado4 IN VARCHAR2 DEFAULT NULL,
-                                       i_pie1        IN VARCHAR2 DEFAULT NULL,
-                                       i_pie2        IN VARCHAR2 DEFAULT NULL,
-                                       i_page_nr     IN NUMBER DEFAULT NULL,
-                                       i_page_count  IN NUMBER DEFAULT NULL)
+procedure p_agregar_encabezado_pie_pdf(i_encabezado1 in varchar2 default null,
+                                       i_encabezado2 in varchar2 default null,
+                                       i_encabezado3 in varchar2 default null,
+                                       i_encabezado4 in varchar2 default null,
+                                       i_pie1        in varchar2 default null,
+                                       i_pie2        in varchar2 default null,
+                                       i_page_nr     in number default null,
+                                       i_page_count  in number default null)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -388,9 +456,9 @@ N&#250;mero total de p&#225;ginas<br>
 f_reporte_sql
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_reporte_sql(i_consulta_sql IN CLOB,
-                       i_formato      IN VARCHAR2 DEFAULT NULL)
-  RETURN y_archivo
+function f_reporte_sql(i_consulta_sql in clob,
+                       i_formato      in varchar2 default null)
+  return y_archivo
 
 </PRE>
 <HR>
@@ -399,8 +467,22 @@ FUNCTION f_reporte_sql(i_consulta_sql IN CLOB,
 f_reporte_sql
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_reporte_sql(i_id_reporte IN NUMBER,
-                       i_parametros IN y_parametros) RETURN y_archivo
+function f_reporte_sql(i_id_reporte in number,
+                       i_parametros in y_parametros) return y_archivo
+
+</PRE>
+<HR>
+<A NAME="F_PROCESAR_REPORTE_PRINCIPAL"></A>
+<P CLASS="TYPE_TITLE">
+f_procesar_reporte_principal
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_procesar_reporte_principal(i_id_reporte        in number,
+                                      i_parametros        in clob,
+                                      i_contexto          in clob default null,
+                                      i_version           in varchar2 default null,
+                                      i_eliminar_contexto in boolean default false)
+  return y_respuesta
 
 </PRE>
 <HR>
@@ -409,11 +491,11 @@ FUNCTION f_reporte_sql(i_id_reporte IN NUMBER,
 f_procesar_reporte
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_procesar_reporte(i_id_reporte IN NUMBER,
-                            i_parametros IN CLOB,
-                            i_contexto   IN CLOB DEFAULT NULL,
-                            i_version    IN VARCHAR2 DEFAULT NULL)
-  RETURN CLOB
+function f_procesar_reporte(i_id_reporte in number,
+                            i_parametros in clob,
+                            i_contexto   in clob default null,
+                            i_version    in varchar2 default null)
+  return clob
 
 </PRE>
 <HR>
@@ -422,12 +504,12 @@ FUNCTION f_procesar_reporte(i_id_reporte IN NUMBER,
 f_procesar_reporte
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_procesar_reporte(i_nombre     IN VARCHAR2,
-                            i_dominio    IN VARCHAR2,
-                            i_parametros IN CLOB,
-                            i_contexto   IN CLOB DEFAULT NULL,
-                            i_version    IN VARCHAR2 DEFAULT NULL)
-  RETURN CLOB
+function f_procesar_reporte(i_nombre     in varchar2,
+                            i_dominio    in varchar2,
+                            i_parametros in clob,
+                            i_contexto   in clob default null,
+                            i_version    in varchar2 default null)
+  return clob
 
 </PRE>
 <P>&nbsp;</P>

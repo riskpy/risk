@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Package k_entidad</TITLE>
+ <META name="object" content="PACKAGE">
+ <META name="name" content="k_entidad">
+ <META name="description" content="Agrupa operaciones relacionadas con las entidades">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Package k_entidad</P>
+Agrupa operaciones relacionadas con las entidades<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+jtsoya539 27/3/2020 16:16:59
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_BUSCAR_ID">f_buscar_id</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ID_ENTIDAD">f_id_entidad</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ID_ENTIDAD2">f_id_entidad</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ID_PERSONA">f_id_persona</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ALIAS">f_alias</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ESTADO">f_estado</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ORIGEN">f_origen</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_VALIDAR_ALIAS">f_validar_alias</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_VALIDAR_ALIAS">p_validar_alias</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_GRUPO_USUARIO">f_grupo_usuario</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_SEPARAR_DOMINIO_ENTIDAD">p_separar_dominio_entidad</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="F_BUSCAR_ID"></A>
+<P CLASS="TYPE_TITLE">
+f_buscar_id
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_buscar_id(i_entidad in varchar2) return number
+
+</PRE>
+<HR>
+<A NAME="F_ID_ENTIDAD"></A>
+<P CLASS="TYPE_TITLE">
+f_id_entidad
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_id_entidad(i_alias in varchar2) return number
+
+</PRE>
+<HR>
+<A NAME="F_ID_ENTIDAD2"></A>
+<P CLASS="TYPE_TITLE">
+f_id_entidad
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_id_entidad(i_id_persona in number,
+                      i_origen     in varchar2 default null) return number
+
+</PRE>
+<HR>
+<A NAME="F_ID_PERSONA"></A>
+<P CLASS="TYPE_TITLE">
+f_id_persona
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_id_persona(i_id_entidad in number) return number
+
+</PRE>
+<HR>
+<A NAME="F_ALIAS"></A>
+<P CLASS="TYPE_TITLE">
+f_alias
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_alias(i_id_entidad in number) return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_ESTADO"></A>
+<P CLASS="TYPE_TITLE">
+f_estado
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_estado(i_id_entidad in number) return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_ORIGEN"></A>
+<P CLASS="TYPE_TITLE">
+f_origen
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_origen(i_id_entidad in number) return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_VALIDAR_ALIAS"></A>
+<P CLASS="TYPE_TITLE">
+f_validar_alias
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_validar_alias(i_alias  varchar2,
+                         i_origen in varchar2 default null) return boolean
+
+</PRE>
+<HR>
+<A NAME="P_VALIDAR_ALIAS"></A>
+<P CLASS="TYPE_TITLE">
+p_validar_alias
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_validar_alias(i_alias  varchar2,
+                          i_origen in varchar2 default null)
+
+</PRE>
+<HR>
+<A NAME="F_GRUPO_USUARIO"></A>
+<P CLASS="TYPE_TITLE">
+f_grupo_usuario
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_grupo_usuario(i_id_entidad in number,
+                         i_id_usuario in number) return varchar2
+
+</PRE>
+<HR>
+<A NAME="P_SEPARAR_DOMINIO_ENTIDAD"></A>
+<P CLASS="TYPE_TITLE">
+p_separar_dominio_entidad
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_separar_dominio_entidad(i_alias   in varchar2,
+                                    o_dominio out varchar2,
+                                    o_entidad out varchar2)
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

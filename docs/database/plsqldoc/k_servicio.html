@@ -36,7 +36,17 @@ Program units
 </TD></TR></TABLE>
 <TABLE CLASS="SUB_TABLE">
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_CREAR_SERVICIO">p_crear_servicio</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#P_LIMPIAR_HISTORIAL">p_limpiar_historial</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_TIPO_SERVICIO">f_tipo_servicio</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -61,6 +71,11 @@ Program units
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PROCESAR_SERVICIO_PRINCIPAL">f_procesar_servicio_principal</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_PROCESAR_SERVICIO">f_procesar_servicio</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -72,13 +87,112 @@ Program units
 </TD></TR>
 </TABLE>
 <BR>
+<A NAME="Constants"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Constants
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_SERVICIO_WEB">c_tipo_servicio_web</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_PROCESO">c_tipo_proceso</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_CONSULTA">c_tipo_consulta</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_CONSULTA_UNICA">c_tipo_consulta_unica</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_TIPO_TRANSACCION">c_tipo_transaccion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="C_TIPO_SERVICIO_WEB"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_servicio_web
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_servicio_web   constant varchar2(1) := 'T';
+</PRE>
+<HR>
+<A NAME="C_TIPO_PROCESO"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_proceso
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_proceso        constant varchar2(1) := 'P';
+</PRE>
+<HR>
+<A NAME="C_TIPO_CONSULTA"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_consulta
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_consulta       constant varchar2(1) := 'C';
+</PRE>
+<HR>
+<A NAME="C_TIPO_CONSULTA_UNICA"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_consulta_unica
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_consulta_unica constant varchar2(1) := 'U';
+</PRE>
+<HR>
+<A NAME="C_TIPO_TRANSACCION"></A>
+<P CLASS="TYPE_TITLE">
+c_tipo_transaccion
+</P>
+<PRE CLASS="DECL_TEXT">
+c_tipo_transaccion    constant varchar2(1) := 'X';
+</PRE>
+<HR>
+<A NAME="P_CREAR_SERVICIO"></A>
+<P CLASS="TYPE_TITLE">
+p_crear_servicio
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_crear_servicio(i_nombre                         in t_operaciones.nombre%type,
+                           i_dominio                        in t_operaciones.dominio%type,
+                           i_tipo                           in t_servicios.tipo%type default c_tipo_servicio_web,
+                           i_version_actual                 in t_operaciones.version_actual%type default '0.1.0',
+                           i_tipo_implementacion            in t_operaciones.tipo_implementacion%type default k_operacion.c_tipo_implementacion_paquete,
+                           i_nombre_programa_implementacion in t_operaciones.nombre_programa_implementacion%type default null,
+                           i_detalle                        in t_operaciones.detalle%type default null,
+                           i_parametros_automaticos         in t_operaciones.parametros_automaticos%type default null,
+                           i_aplicaciones_permitidas        in t_operaciones.aplicaciones_permitidas%type default null,
+                           i_consulta_sql                   in t_servicios.consulta_sql%type default null)
+
+</PRE>
 <HR>
 <A NAME="P_LIMPIAR_HISTORIAL"></A>
 <P CLASS="TYPE_TITLE">
 p_limpiar_historial
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_limpiar_historial
+procedure p_limpiar_historial
+
+</PRE>
+<HR>
+<A NAME="F_TIPO_SERVICIO"></A>
+<P CLASS="TYPE_TITLE">
+f_tipo_servicio
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_tipo_servicio(i_id_servicio in number) return varchar2
 
 </PRE>
 <HR>
@@ -87,8 +201,8 @@ PROCEDURE p_limpiar_historial
 f_pagina_parametros
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_pagina_parametros(i_parametros IN y_parametros)
-  RETURN y_pagina_parametros
+function f_pagina_parametros(i_parametros in y_parametros)
+  return y_pagina_parametros
 
 </PRE>
 <HR>
@@ -97,11 +211,11 @@ FUNCTION f_pagina_parametros(i_parametros IN y_parametros)
 f_paginar_elementos
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_paginar_elementos(i_elementos           IN y_objetos,
-                             i_numero_pagina       IN INTEGER DEFAULT NULL,
-                             i_cantidad_por_pagina IN INTEGER DEFAULT NULL,
-                             i_no_paginar          IN VARCHAR2 DEFAULT NULL)
-  RETURN y_pagina
+function f_paginar_elementos(i_elementos           in y_objetos,
+                             i_numero_pagina       in integer default null,
+                             i_cantidad_por_pagina in integer default null,
+                             i_no_paginar          in varchar2 default null)
+  return y_pagina
 
 </PRE>
 <HR>
@@ -110,9 +224,9 @@ FUNCTION f_paginar_elementos(i_elementos           IN y_objetos,
 f_paginar_elementos
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_paginar_elementos(i_elementos         IN y_objetos,
-                             i_pagina_parametros IN y_pagina_parametros)
-  RETURN y_pagina
+function f_paginar_elementos(i_elementos         in y_objetos,
+                             i_pagina_parametros in y_pagina_parametros)
+  return y_pagina
 
 </PRE>
 <HR>
@@ -121,8 +235,24 @@ FUNCTION f_paginar_elementos(i_elementos         IN y_objetos,
 f_servicio_sql
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_servicio_sql(i_id_servicio IN NUMBER,
-                        i_parametros  IN y_parametros) RETURN y_respuesta
+function f_servicio_sql(i_id_servicio    in number,
+                        i_parametros     in y_parametros,
+                        i_registro_unico in boolean default false)
+  return y_respuesta
+
+</PRE>
+<HR>
+<A NAME="F_PROCESAR_SERVICIO_PRINCIPAL"></A>
+<P CLASS="TYPE_TITLE">
+f_procesar_servicio_principal
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_procesar_servicio_principal(i_id_servicio       in number,
+                                       i_parametros        in clob,
+                                       i_contexto          in clob default null,
+                                       i_version           in varchar2 default null,
+                                       i_eliminar_contexto in boolean default false)
+  return y_respuesta
 
 </PRE>
 <HR>
@@ -131,11 +261,11 @@ FUNCTION f_servicio_sql(i_id_servicio IN NUMBER,
 f_procesar_servicio
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_procesar_servicio(i_id_servicio IN NUMBER,
-                             i_parametros  IN CLOB,
-                             i_contexto    IN CLOB DEFAULT NULL,
-                             i_version     IN VARCHAR2 DEFAULT NULL)
-  RETURN CLOB
+function f_procesar_servicio(i_id_servicio in number,
+                             i_parametros  in clob,
+                             i_contexto    in clob default null,
+                             i_version     in varchar2 default null)
+  return clob
 
 </PRE>
 <HR>
@@ -144,12 +274,12 @@ FUNCTION f_procesar_servicio(i_id_servicio IN NUMBER,
 f_procesar_servicio
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_procesar_servicio(i_nombre     IN VARCHAR2,
-                             i_dominio    IN VARCHAR2,
-                             i_parametros IN CLOB,
-                             i_contexto   IN CLOB DEFAULT NULL,
-                             i_version    IN VARCHAR2 DEFAULT NULL)
-  RETURN CLOB
+function f_procesar_servicio(i_nombre     in varchar2,
+                             i_dominio    in varchar2,
+                             i_parametros in clob,
+                             i_contexto   in clob default null,
+                             i_version    in varchar2 default null)
+  return clob
 
 </PRE>
 <P>&nbsp;</P>

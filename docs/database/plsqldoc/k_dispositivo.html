@@ -120,7 +120,7 @@ Constants
 c_suscripcion_defecto
 </P>
 <PRE CLASS="DECL_TEXT">
-c_suscripcion_defecto CONSTANT VARCHAR2(120) := 'default';
+c_suscripcion_defecto constant varchar2(120) := 'default';
 </PRE>
 <HR>
 <A NAME="C_SUSCRIPCION_USUARIO"></A>
@@ -128,7 +128,7 @@ c_suscripcion_defecto CONSTANT VARCHAR2(120) := 'default';
 c_suscripcion_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-c_suscripcion_usuario CONSTANT VARCHAR2(120) := 'user';
+c_suscripcion_usuario constant varchar2(120) := 'user';
 </PRE>
 <HR>
 <A NAME="F_SUSCRIPCION_DEFECTO"></A>
@@ -136,7 +136,7 @@ c_suscripcion_usuario CONSTANT VARCHAR2(120) := 'user';
 f_suscripcion_defecto
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_suscripcion_defecto RETURN VARCHAR2
+function f_suscripcion_defecto return varchar2
 
 </PRE>
 <HR>
@@ -145,7 +145,7 @@ FUNCTION f_suscripcion_defecto RETURN VARCHAR2
 f_suscripcion_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_suscripcion_usuario(i_id_usuario IN NUMBER) RETURN VARCHAR2
+function f_suscripcion_usuario(i_id_usuario in number) return varchar2
 
 </PRE>
 <HR>
@@ -154,7 +154,7 @@ FUNCTION f_suscripcion_usuario(i_id_usuario IN NUMBER) RETURN VARCHAR2
 f_id_dispositivo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_id_dispositivo(i_token_dispositivo IN VARCHAR2) RETURN NUMBER
+function f_id_dispositivo(i_token_dispositivo in varchar2) return number
 
 </PRE>
 <HR>
@@ -163,19 +163,19 @@ FUNCTION f_id_dispositivo(i_token_dispositivo IN VARCHAR2) RETURN NUMBER
 f_registrar_dispositivo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_registrar_dispositivo(i_id_aplicacion             IN VARCHAR2,
-                                 i_token_dispositivo         IN VARCHAR2,
-                                 i_token_notificacion        IN VARCHAR2 DEFAULT NULL,
-                                 i_nombre_sistema_operativo  IN VARCHAR2 DEFAULT NULL,
-                                 i_version_sistema_operativo IN VARCHAR2 DEFAULT NULL,
-                                 i_tipo                      IN VARCHAR2 DEFAULT NULL,
-                                 i_nombre_navegador          IN VARCHAR2 DEFAULT NULL,
-                                 i_version_navegador         IN VARCHAR2 DEFAULT NULL,
-                                 i_version_aplicacion        IN VARCHAR2 DEFAULT NULL,
-                                 i_pais_iso_alpha_2          IN VARCHAR2 DEFAULT NULL,
-                                 i_zona_horaria              IN VARCHAR2 DEFAULT NULL,
-                                 i_idioma_iso369_1           IN VARCHAR2 DEFAULT NULL)
-  RETURN NUMBER
+function f_registrar_dispositivo(i_id_aplicacion             in varchar2,
+                                 i_token_dispositivo         in varchar2,
+                                 i_token_notificacion        in varchar2 default null,
+                                 i_nombre_sistema_operativo  in varchar2 default null,
+                                 i_version_sistema_operativo in varchar2 default null,
+                                 i_tipo                      in varchar2 default null,
+                                 i_nombre_navegador          in varchar2 default null,
+                                 i_version_navegador         in varchar2 default null,
+                                 i_version_aplicacion        in varchar2 default null,
+                                 i_pais_iso_alpha_2          in varchar2 default null,
+                                 i_zona_horaria              in varchar2 default null,
+                                 i_idioma_iso369_1           in varchar2 default null)
+  return number
 
 </PRE>
 <HR>
@@ -184,8 +184,8 @@ FUNCTION f_registrar_dispositivo(i_id_aplicacion             IN VARCHAR2,
 f_datos_dispositivo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_datos_dispositivo(i_id_dispositivo IN NUMBER)
-  RETURN y_dispositivo
+function f_datos_dispositivo(i_id_dispositivo in number)
+  return y_dispositivo
 
 </PRE>
 <HR>
@@ -194,8 +194,8 @@ FUNCTION f_datos_dispositivo(i_id_dispositivo IN NUMBER)
 p_suscribir_notificacion
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_suscribir_notificacion(i_id_dispositivo   IN NUMBER,
-                                   i_suscripcion_alta IN VARCHAR2)
+procedure p_suscribir_notificacion(i_id_dispositivo   in number,
+                                   i_suscripcion_alta in varchar2)
 
 </PRE>
 <HR>
@@ -204,8 +204,8 @@ PROCEDURE p_suscribir_notificacion(i_id_dispositivo   IN NUMBER,
 p_suscribir_notificacion_s
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_suscribir_notificacion_s(i_suscripcion      IN VARCHAR2,
-                                     i_suscripcion_alta IN VARCHAR2)
+procedure p_suscribir_notificacion_s(i_suscripcion      in varchar2,
+                                     i_suscripcion_alta in varchar2)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -252,8 +252,8 @@ Suscripci&#243;n a dar de alta<br>
 p_suscribir_notificacion_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_suscribir_notificacion_usuario(i_id_dispositivo IN NUMBER,
-                                           i_id_usuario     IN NUMBER)
+procedure p_suscribir_notificacion_usuario(i_id_dispositivo in number,
+                                           i_id_usuario     in number)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -300,8 +300,8 @@ Identificador del usuario<br>
 p_desuscribir_notificacion
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_desuscribir_notificacion(i_id_dispositivo   IN NUMBER,
-                                     i_suscripcion_baja IN VARCHAR2)
+procedure p_desuscribir_notificacion(i_id_dispositivo   in number,
+                                     i_suscripcion_baja in varchar2)
 
 </PRE>
 <HR>
@@ -310,8 +310,8 @@ PROCEDURE p_desuscribir_notificacion(i_id_dispositivo   IN NUMBER,
 p_desuscribir_notificacion_s
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_desuscribir_notificacion_s(i_suscripcion      IN VARCHAR2,
-                                       i_suscripcion_baja IN VARCHAR2)
+procedure p_desuscribir_notificacion_s(i_suscripcion      in varchar2,
+                                       i_suscripcion_baja in varchar2)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -358,8 +358,8 @@ Suscripci&#243;n a dar de baja<br>
 p_desuscribir_notificacion_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_desuscribir_notificacion_usuario(i_id_dispositivo IN NUMBER,
-                                             i_id_usuario     IN NUMBER)
+procedure p_desuscribir_notificacion_usuario(i_id_dispositivo in number,
+                                             i_id_usuario     in number)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -406,9 +406,9 @@ Identificador del usuario<br>
 p_registrar_ubicacion
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_registrar_ubicacion(i_id_dispositivo IN NUMBER,
-                                i_latitud        IN NUMBER,
-                                i_longitud       IN NUMBER)
+procedure p_registrar_ubicacion(i_id_dispositivo in number,
+                                i_latitud        in number,
+                                i_longitud       in number)
 
 </PRE>
 <P>&nbsp;</P>

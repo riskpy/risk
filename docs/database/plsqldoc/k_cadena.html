@@ -51,6 +51,11 @@ Retorna una tabla de cadenas delimitadas por un separador
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_EXTRAER_CADENAS">f_extraer_cadenas</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Retorna una tabla de cadenas contenidas en delimitadores dentro de un texto dado
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_VALOR_POSICION">f_valor_posicion</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 Retorna el valor que se encuenta en la posicion indicada dentro de una cadena Si la posicion se encuentra fuera de rango retorna el valor mas cercano (primer valor o ultimo valor)
@@ -67,6 +72,26 @@ Retorna el valor que se encuenta en la posicion indicada dentro de una cadena Si
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_PROCESAR_PLANTILLA">f_procesar_plantilla</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_BUSCAR_CADENA">f_buscar_cadena</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_FORMATEAR_CADENA">f_formatear_cadena</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_REEMPLAZAR_ETIQUETAS">f_reemplazar_etiquetas</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_COMENTAR">f_comentar</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -112,7 +137,7 @@ Variables
 t_template_variable_name
 </P>
 <PRE CLASS="DECL_TEXT">
-SUBTYPE t_template_variable_name IS VARCHAR2(255);
+subtype t_template_variable_name is varchar2(255);
 </PRE>
 <HR>
 <A NAME="T_TEMPLATE_VARIABLE_VALUE"></A>
@@ -120,7 +145,7 @@ SUBTYPE t_template_variable_name IS VARCHAR2(255);
 t_template_variable_value
 </P>
 <PRE CLASS="DECL_TEXT">
-SUBTYPE t_template_variable_value IS VARCHAR2(32767);
+subtype t_template_variable_value is varchar2(32767);
 </PRE>
 <HR>
 <A NAME="T_ASSOC_ARRAY"></A>
@@ -128,7 +153,7 @@ SUBTYPE t_template_variable_value IS VARCHAR2(32767);
 t_assoc_array
 </P>
 <PRE CLASS="DECL_TEXT">
-TYPE t_assoc_array IS TABLE OF t_template_variable_value INDEX BY t_template_variable_name;
+type t_assoc_array is table of t_template_variable_value index by t_template_variable_name;
 </PRE>
 <HR>
 <A NAME="NULL_ASSOC_ARRAY"></A>
@@ -144,9 +169,9 @@ null_assoc_array t_assoc_array;
 f_separar_cadenas
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_separar_cadenas(i_cadena    IN VARCHAR2,
-                           i_separador IN VARCHAR2 DEFAULT '~')
-  RETURN y_cadenas
+function f_separar_cadenas(i_cadena    in varchar2,
+                           i_separador in varchar2 default '~')
+  return y_cadenas
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -205,10 +230,10 @@ Tabla de cadenas<br>
 f_unir_cadenas
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_unir_cadenas(i_cadena    IN VARCHAR2,
-                        i_cadenas   IN y_cadenas,
-                        i_wrap_char IN VARCHAR2 DEFAULT '@')
-  RETURN VARCHAR2
+function f_unir_cadenas(i_cadena    in varchar2,
+                        i_cadenas   in y_cadenas,
+                        i_wrap_char in varchar2 default '@')
+  return varchar2
 
 </PRE>
 <HR>
@@ -217,26 +242,96 @@ FUNCTION f_unir_cadenas(i_cadena    IN VARCHAR2,
 f_unir_cadenas
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_unir_cadenas(i_cadena    IN VARCHAR2,
-                        i_cadena1   IN VARCHAR2 DEFAULT NULL,
-                        i_cadena2   IN VARCHAR2 DEFAULT NULL,
-                        i_cadena3   IN VARCHAR2 DEFAULT NULL,
-                        i_cadena4   IN VARCHAR2 DEFAULT NULL,
-                        i_cadena5   IN VARCHAR2 DEFAULT NULL,
-                        i_wrap_char IN VARCHAR2 DEFAULT '@')
-  RETURN VARCHAR2
+function f_unir_cadenas(i_cadena    in varchar2,
+                        i_cadena1   in varchar2 default null,
+                        i_cadena2   in varchar2 default null,
+                        i_cadena3   in varchar2 default null,
+                        i_cadena4   in varchar2 default null,
+                        i_cadena5   in varchar2 default null,
+                        i_wrap_char in varchar2 default '@')
+  return varchar2
 
 </PRE>
+<HR>
+<A NAME="F_EXTRAER_CADENAS"></A>
+<P CLASS="TYPE_TITLE">
+f_extraer_cadenas
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_extraer_cadenas(i_texto                in varchar2,
+                           i_encapsulador_inicial in varchar2 := ':',
+                           i_encapsulador_final   in varchar2 := ' ',
+                           i_limpio               in varchar2 := 'N')
+  return y_cadenas
+
+</PRE>
+<P CLASS="DESC_TEXT">
+Retorna una tabla de cadenas contenidas en delimitadores dentro de un texto dado<br>
+
+<BR>
+</P>
+<A NAME="Author"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+dmezac 22/6/2025 18:05:15<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Parameters"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Parameters
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+i_texto&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Texto a partir del cu&#225;l se har&#225; la b&#250;squeda de cadenas<br>
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+i_encapsulador_inicial&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Caracter delimitador inicial. Por defecto ':'<br>
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+i_encapsulador_final&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Caracter delimitador final. Por defecto ' '<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Returns"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Returns
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Tabla de cadenas<br>
+
+</TD></TR>
+</TABLE>
+<BR>
 <HR>
 <A NAME="F_VALOR_POSICION"></A>
 <P CLASS="TYPE_TITLE">
 f_valor_posicion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_valor_posicion(i_cadena    IN VARCHAR2,
-                          i_posicion  IN NUMBER,
-                          i_separador IN VARCHAR2 DEFAULT '~')
-  RETURN VARCHAR2
+function f_valor_posicion(i_cadena    in varchar2,
+                          i_posicion  in number,
+                          i_separador in varchar2 default '~')
+  return varchar2
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -302,7 +397,7 @@ Valor que se encuenta en la posicion indicada<br>
 f_reemplazar_acentos
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_reemplazar_acentos(i_cadena IN VARCHAR2) RETURN VARCHAR2
+function f_reemplazar_acentos(i_cadena in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -311,7 +406,7 @@ FUNCTION f_reemplazar_acentos(i_cadena IN VARCHAR2) RETURN VARCHAR2
 f_formatear_titulo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_formatear_titulo(i_titulo IN VARCHAR2) RETURN VARCHAR2
+function f_formatear_titulo(i_titulo in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -320,10 +415,56 @@ FUNCTION f_formatear_titulo(i_titulo IN VARCHAR2) RETURN VARCHAR2
 f_procesar_plantilla
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_procesar_plantilla(i_plantilla IN CLOB,
-                              i_variables IN t_assoc_array DEFAULT null_assoc_array,
-                              i_wrap_char IN VARCHAR2 DEFAULT '@')
-  RETURN CLOB
+function f_procesar_plantilla(i_plantilla in clob,
+                              i_variables in t_assoc_array default null_assoc_array,
+                              i_wrap_char in varchar2 default '@')
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_BUSCAR_CADENA"></A>
+<P CLASS="TYPE_TITLE">
+f_buscar_cadena
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_buscar_cadena(pin_buscar    varchar2,
+                         pin_cadena    varchar2,
+                         pin_separador varchar2 default ',')
+  return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_FORMATEAR_CADENA"></A>
+<P CLASS="TYPE_TITLE">
+f_formatear_cadena
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_formatear_cadena(p_lista_campos     in varchar2, -- lista separada por comas
+                            p_patron           in varchar2, -- texto plantilla, usar "#" como placeholder
+                            p_separador_salida in varchar2 default chr(10) -- salto de l&#237;nea o coma
+                            ) return clob
+
+</PRE>
+<HR>
+<A NAME="F_REEMPLAZAR_ETIQUETAS"></A>
+<P CLASS="TYPE_TITLE">
+f_reemplazar_etiquetas
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_reemplazar_etiquetas(i_cadena       in clob,
+                                i_etiquetas    in y_cadenas,
+                                i_valores      in y_cadenas,
+                                i_encapsulador in varchar2 default '#')
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_COMENTAR"></A>
+<P CLASS="TYPE_TITLE">
+f_comentar
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_comentar(i_comentario in varchar2) return varchar2
 
 </PRE>
 <P>&nbsp;</P>

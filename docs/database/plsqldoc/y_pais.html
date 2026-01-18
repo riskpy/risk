@@ -90,7 +90,7 @@ Program units
 id_pais
 </P>
 <PRE CLASS="DECL_TEXT">
-id_pais NUMBER(10)
+id_pais number(10)
 </PRE>
 <P CLASS="DESC_TEXT">
 Identificador del pais<br>
@@ -103,7 +103,7 @@ Identificador del pais<br>
 nombre
 </P>
 <PRE CLASS="DECL_TEXT">
-nombre VARCHAR2(100)
+nombre varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Nombre del pais<br>
@@ -116,7 +116,7 @@ Nombre del pais<br>
 iso_alpha_2
 </P>
 <PRE CLASS="DECL_TEXT">
-iso_alpha_2 VARCHAR2(2)
+iso_alpha_2 varchar2(2)
 </PRE>
 <P CLASS="DESC_TEXT">
 Codigo del pais segun estandar ISO 3166-1 alpha-2<br>
@@ -129,7 +129,7 @@ Codigo del pais segun estandar ISO 3166-1 alpha-2<br>
 iso_alpha_3
 </P>
 <PRE CLASS="DECL_TEXT">
-iso_alpha_3 VARCHAR2(3)
+iso_alpha_3 varchar2(3)
 </PRE>
 <P CLASS="DESC_TEXT">
 Codigo del pais segun estandar ISO 3166-1 alpha-3<br>
@@ -142,7 +142,7 @@ Codigo del pais segun estandar ISO 3166-1 alpha-3<br>
 iso_numeric
 </P>
 <PRE CLASS="DECL_TEXT">
-iso_numeric NUMBER(3)
+iso_numeric number(3)
 </PRE>
 <P CLASS="DESC_TEXT">
 Codigo del pais segun estandar ISO 3166-1 numeric<br>
@@ -155,7 +155,7 @@ Codigo del pais segun estandar ISO 3166-1 numeric<br>
 y_pais
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_pais RETURN SELF AS RESULT
+function y_pais return self as result
 
 </PRE>
 <HR>
@@ -164,7 +164,7 @@ FUNCTION y_pais RETURN SELF AS RESULT
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -173,7 +173,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P>&nbsp;</P>

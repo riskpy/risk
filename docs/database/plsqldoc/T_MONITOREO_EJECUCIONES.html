@@ -6,7 +6,7 @@
  <META name="object" content="TABLE">
  <META name="name" content="T_MONITOREO_EJECUCIONES">
  <META name="description" content="Ejecuciones de monitoreos de conflictos">
- <META name="columns" content="ID_MONITOREO_EJECUCION ID_MONITOREO FECHA_EJECUCION DATOS">
+ <META name="columns" content="ID_MONITOREO_EJECUCION ID_MONITOREO FECHA_INICIO_EJECUCION FECHA_FIN_EJECUCION DURACION DATOS">
 </HEAD>
 <BODY>
 <TABLE WIDTH="100%"><TR>
@@ -56,7 +56,7 @@ NUMBER
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-&nbsp;
+"RISK"."ISEQ$$_72112".nextval
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 Identificador de la ejecuci&#243;n
@@ -81,10 +81,44 @@ Identificador del monitoreo
 </TR>
 <TR>
 <TD VALIGN="TOP" CLASS="LIST_ITEM">
-FECHA_EJECUCION
+FECHA_INICIO_EJECUCION
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 TIMESTAMP(2) WITH TIME ZONE
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Fecha de inicio de la ejecuci&#243;n del monitoreo
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+FECHA_FIN_EJECUCION
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+TIMESTAMP(2) WITH TIME ZONE
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+&nbsp;
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+Fecha de fin de la ejecuci&#243;n del monitoreo
+</TD>
+</TR>
+<TR>
+<TD VALIGN="TOP" CLASS="LIST_ITEM">
+DURACION
+</TD>
+<TD VALIGN="TOP" CLASS="DESC_TEXT">
+INTERVAL DAY(2) TO SECOND(2)
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
 Y
@@ -93,7 +127,7 @@ Y
 &nbsp;
 </TD>
 <TD VALIGN="TOP" CLASS="DESC_TEXT">
-Fecha de la ejecuci&#243;n del monitoreo
+Duraci&#243;n de la ejecucion del monitoreo
 </TD>
 </TR>
 <TR>

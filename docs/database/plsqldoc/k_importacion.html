@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Package k_importacion</TITLE>
+ <META name="object" content="PACKAGE">
+ <META name="name" content="k_importacion">
+ <META name="description" content="Agrupa operaciones relacionadas con la Importaci&#243;n de Archivos del sistema">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Package k_importacion</P>
+Agrupa operaciones relacionadas con la Importaci&#243;n de Archivos del sistema<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+dmezac 09/11/2025 11:32:15
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PROCESAR_IMPORTACION_LOCAL">f_procesar_importacion_local</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PROCESAR_IMPORTACION_AUTONOMA">f_procesar_importacion_autonoma</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PROCESAR_IMPORTACION">f_procesar_importacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_PROCESAR_IMPORTACION2">f_procesar_importacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Constants"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Constants
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ERROR_GENERAL_IMPORTACION">c_error_general_importacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="C_ERROR_GENERAL_IMPORTACION"></A>
+<P CLASS="TYPE_TITLE">
+c_error_general_importacion
+</P>
+<PRE CLASS="DECL_TEXT">
+c_error_general_importacion constant varchar2(10) := 'import0001';
+</PRE>
+<HR>
+<A NAME="F_PROCESAR_IMPORTACION_LOCAL"></A>
+<P CLASS="TYPE_TITLE">
+f_procesar_importacion_local
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_procesar_importacion_local(i_id_importacion         in number,
+                                      i_archivo                in blob,
+                                      i_parametros_adicionales in varchar2 default null,
+                                      i_version                in varchar2 default null)
+  return y_respuesta
+
+</PRE>
+<HR>
+<A NAME="F_PROCESAR_IMPORTACION_AUTONOMA"></A>
+<P CLASS="TYPE_TITLE">
+f_procesar_importacion_autonoma
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_procesar_importacion_autonoma(i_id_importacion         in number,
+                                         i_archivo                in blob,
+                                         i_parametros_adicionales in varchar2 default null,
+                                         i_version                in varchar2 default null)
+  return y_respuesta
+
+</PRE>
+<HR>
+<A NAME="F_PROCESAR_IMPORTACION"></A>
+<P CLASS="TYPE_TITLE">
+f_procesar_importacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_procesar_importacion(i_id_importacion         in number,
+                                i_archivo                in blob,
+                                i_parametros_adicionales in varchar2 default null,
+                                i_transaccion_autonoma   in boolean default false,
+                                i_version                in varchar2 default null)
+  return clob
+
+</PRE>
+<HR>
+<A NAME="F_PROCESAR_IMPORTACION2"></A>
+<P CLASS="TYPE_TITLE">
+f_procesar_importacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_procesar_importacion(i_nombre                 in varchar2,
+                                i_dominio                in varchar2,
+                                i_archivo                in blob,
+                                i_parametros_adicionales in varchar2 default null,
+                                i_transaccion_autonoma   in boolean default false,
+                                i_version                in varchar2 default null)
+  return clob
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

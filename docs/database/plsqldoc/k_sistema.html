@@ -56,6 +56,21 @@ Retorna el valor del par&#225;metro ID_USUARIO en la sesi&#243;n
 Retorna el valor del par&#225;metro USUARIO en la sesi&#243;n
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ID_ENTIDAD">f_id_entidad</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Retorna el valor del par&#225;metro ID_ENTIDAD en la sesi&#243;n
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ENTIDAD">f_entidad</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Retorna el valor del par&#225;metro ENTIDAD en la sesi&#243;n
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ID_APLICACION">f_id_aplicacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Retorna el valor del par&#225;metro ID_APLICACION en la sesi&#243;n
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_PAIS">f_pais</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 Retorna el valor del par&#225;metro ID_PAIS en la sesi&#243;n
@@ -160,6 +175,21 @@ Imprime todos los par&#225;metros definidos en la sesi&#243;n
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_CONFIGURAR_MODIFICACION">p_configurar_modificacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_APLICACION_MODIFICACION">f_aplicacion_modificacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_MOTIVO_MODIFICACION">f_motivo_modificacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
 </TABLE>
 <BR>
 <A NAME="Constants"></A>
@@ -183,16 +213,6 @@ Constants
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
-<A HREF="#C_USUARIO">c_usuario</A>&nbsp;&nbsp;
-</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
-
-</TD></TR>
-<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
-<A HREF="#C_DIRECCION_IP">c_direccion_ip</A>&nbsp;&nbsp;
-</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
-
-</TD></TR>
-<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#C_ID_OPERACION">c_id_operacion</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -208,7 +228,37 @@ Constants
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_USUARIO">c_usuario</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ID_USUARIO">c_id_usuario</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ENTIDAD">c_entidad</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ID_ENTIDAD">c_id_entidad</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_CLAVE_APLICACION">c_clave_aplicacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#C_ID_APLICACION">c_id_aplicacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#C_ACCESS_TOKEN">c_access_token</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -218,7 +268,7 @@ Constants
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
-<A HREF="#C_ID_USUARIO">c_id_usuario</A>&nbsp;&nbsp;
+<A HREF="#C_DIRECCION_IP">c_direccion_ip</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -242,6 +292,51 @@ Constants
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_ID_EJECUCION">cg_id_ejecucion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_ID_TRACKING">cg_id_tracking</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_DISPOSITIVO_ORIGEN">cg_dispositivo_origen</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_TIMESTAMP">cg_timestamp</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_TIPO_PERSONA">cg_tipo_persona</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_DATO_USUARIO">cg_dato_usuario</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_CONTEXTO">cg_contexto</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_APLICACION_MODIFICACION">cg_aplicacion_modificacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CG_MOTIVO_MODIFICACION">cg_motivo_modificacion</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
 </TABLE>
 <BR>
 <HR>
@@ -250,7 +345,7 @@ Constants
 c_sistema
 </P>
 <PRE CLASS="DECL_TEXT">
-c_sistema CONSTANT VARCHAR2(50) := 'SISTEMA';
+c_sistema constant varchar2(50) := 'SISTEMA';
 </PRE>
 <HR>
 <A NAME="C_VERSION"></A>
@@ -258,7 +353,7 @@ c_sistema CONSTANT VARCHAR2(50) := 'SISTEMA';
 c_version
 </P>
 <PRE CLASS="DECL_TEXT">
-c_version CONSTANT VARCHAR2(50) := 'VERSION';
+c_version constant varchar2(50) := 'VERSION';
 </PRE>
 <HR>
 <A NAME="C_FECHA"></A>
@@ -266,23 +361,7 @@ c_version CONSTANT VARCHAR2(50) := 'VERSION';
 c_fecha
 </P>
 <PRE CLASS="DECL_TEXT">
-c_fecha   CONSTANT VARCHAR2(50) := 'FECHA';
-</PRE>
-<HR>
-<A NAME="C_USUARIO"></A>
-<P CLASS="TYPE_TITLE">
-c_usuario
-</P>
-<PRE CLASS="DECL_TEXT">
-c_usuario CONSTANT VARCHAR2(50) := 'USUARIO';
-</PRE>
-<HR>
-<A NAME="C_DIRECCION_IP"></A>
-<P CLASS="TYPE_TITLE">
-c_direccion_ip
-</P>
-<PRE CLASS="DECL_TEXT">
-c_direccion_ip      CONSTANT VARCHAR2(50) := 'DIRECCION_IP';
+c_fecha   constant varchar2(50) := 'FECHA';
 </PRE>
 <HR>
 <A NAME="C_ID_OPERACION"></A>
@@ -290,7 +369,7 @@ c_direccion_ip      CONSTANT VARCHAR2(50) := 'DIRECCION_IP';
 c_id_operacion
 </P>
 <PRE CLASS="DECL_TEXT">
-c_id_operacion      CONSTANT VARCHAR2(50) := 'ID_OPERACION';
+c_id_operacion      constant varchar2(50) := 'ID_OPERACION';
 </PRE>
 <HR>
 <A NAME="C_NOMBRE_OPERACION"></A>
@@ -298,7 +377,7 @@ c_id_operacion      CONSTANT VARCHAR2(50) := 'ID_OPERACION';
 c_nombre_operacion
 </P>
 <PRE CLASS="DECL_TEXT">
-c_nombre_operacion  CONSTANT VARCHAR2(50) := 'NOMBRE_OPERACION';
+c_nombre_operacion  constant varchar2(50) := 'NOMBRE_OPERACION';
 </PRE>
 <HR>
 <A NAME="C_DOMINIO_OPERACION"></A>
@@ -306,23 +385,15 @@ c_nombre_operacion  CONSTANT VARCHAR2(50) := 'NOMBRE_OPERACION';
 c_dominio_operacion
 </P>
 <PRE CLASS="DECL_TEXT">
-c_dominio_operacion CONSTANT VARCHAR2(50) := 'DOMINIO_OPERACION';
+c_dominio_operacion constant varchar2(50) := 'DOMINIO_OPERACION';
 </PRE>
 <HR>
-<A NAME="C_ID_APLICACION"></A>
+<A NAME="C_USUARIO"></A>
 <P CLASS="TYPE_TITLE">
-c_id_aplicacion
+c_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-c_id_aplicacion     CONSTANT VARCHAR2(50) := 'ID_APLICACION';
-</PRE>
-<HR>
-<A NAME="C_ID_SESION"></A>
-<P CLASS="TYPE_TITLE">
-c_id_sesion
-</P>
-<PRE CLASS="DECL_TEXT">
-c_id_sesion         CONSTANT VARCHAR2(50) := 'ID_SESION';
+c_usuario    constant varchar2(50) := 'USUARIO';
 </PRE>
 <HR>
 <A NAME="C_ID_USUARIO"></A>
@@ -330,7 +401,63 @@ c_id_sesion         CONSTANT VARCHAR2(50) := 'ID_SESION';
 c_id_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-c_id_usuario        CONSTANT VARCHAR2(50) := 'ID_USUARIO';
+c_id_usuario constant varchar2(50) := 'ID_USUARIO';
+</PRE>
+<HR>
+<A NAME="C_ENTIDAD"></A>
+<P CLASS="TYPE_TITLE">
+c_entidad
+</P>
+<PRE CLASS="DECL_TEXT">
+c_entidad    constant varchar2(50) := 'ENTIDAD';
+</PRE>
+<HR>
+<A NAME="C_ID_ENTIDAD"></A>
+<P CLASS="TYPE_TITLE">
+c_id_entidad
+</P>
+<PRE CLASS="DECL_TEXT">
+c_id_entidad constant varchar2(50) := 'ID_ENTIDAD';
+</PRE>
+<HR>
+<A NAME="C_CLAVE_APLICACION"></A>
+<P CLASS="TYPE_TITLE">
+c_clave_aplicacion
+</P>
+<PRE CLASS="DECL_TEXT">
+c_clave_aplicacion constant varchar2(50) := 'CLAVE_APLICACION';
+</PRE>
+<HR>
+<A NAME="C_ID_APLICACION"></A>
+<P CLASS="TYPE_TITLE">
+c_id_aplicacion
+</P>
+<PRE CLASS="DECL_TEXT">
+c_id_aplicacion    constant varchar2(50) := 'ID_APLICACION';
+</PRE>
+<HR>
+<A NAME="C_ACCESS_TOKEN"></A>
+<P CLASS="TYPE_TITLE">
+c_access_token
+</P>
+<PRE CLASS="DECL_TEXT">
+c_access_token     constant varchar2(50) := 'ACCESS_TOKEN';
+</PRE>
+<HR>
+<A NAME="C_ID_SESION"></A>
+<P CLASS="TYPE_TITLE">
+c_id_sesion
+</P>
+<PRE CLASS="DECL_TEXT">
+c_id_sesion        constant varchar2(50) := 'ID_SESION';
+</PRE>
+<HR>
+<A NAME="C_DIRECCION_IP"></A>
+<P CLASS="TYPE_TITLE">
+c_direccion_ip
+</P>
+<PRE CLASS="DECL_TEXT">
+c_direccion_ip   constant varchar2(50) := 'DIRECCION_IP';
 </PRE>
 <HR>
 <A NAME="C_ID_PAIS"></A>
@@ -338,7 +465,7 @@ c_id_usuario        CONSTANT VARCHAR2(50) := 'ID_USUARIO';
 c_id_pais
 </P>
 <PRE CLASS="DECL_TEXT">
-c_id_pais           CONSTANT VARCHAR2(50) := 'ID_PAIS';
+c_id_pais        constant varchar2(50) := 'ID_PAIS';
 </PRE>
 <HR>
 <A NAME="C_ZONA_HORARIA"></A>
@@ -346,7 +473,7 @@ c_id_pais           CONSTANT VARCHAR2(50) := 'ID_PAIS';
 c_zona_horaria
 </P>
 <PRE CLASS="DECL_TEXT">
-c_zona_horaria      CONSTANT VARCHAR2(50) := 'ZONA_HORARIA';
+c_zona_horaria   constant varchar2(50) := 'ZONA_HORARIA';
 </PRE>
 <HR>
 <A NAME="C_ID_IDIOMA"></A>
@@ -354,7 +481,7 @@ c_zona_horaria      CONSTANT VARCHAR2(50) := 'ZONA_HORARIA';
 c_id_idioma
 </P>
 <PRE CLASS="DECL_TEXT">
-c_id_idioma         CONSTANT VARCHAR2(50) := 'ID_IDIOMA';
+c_id_idioma      constant varchar2(50) := 'ID_IDIOMA';
 </PRE>
 <HR>
 <A NAME="C_ID_DISPOSITIVO"></A>
@@ -362,7 +489,79 @@ c_id_idioma         CONSTANT VARCHAR2(50) := 'ID_IDIOMA';
 c_id_dispositivo
 </P>
 <PRE CLASS="DECL_TEXT">
-c_id_dispositivo    CONSTANT VARCHAR2(50) := 'ID_DISPOSITIVO';
+c_id_dispositivo constant varchar2(50) := 'ID_DISPOSITIVO';
+</PRE>
+<HR>
+<A NAME="CG_ID_EJECUCION"></A>
+<P CLASS="TYPE_TITLE">
+cg_id_ejecucion
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_id_ejecucion       constant varchar2(50) := 'ID_EJECUCION';
+</PRE>
+<HR>
+<A NAME="CG_ID_TRACKING"></A>
+<P CLASS="TYPE_TITLE">
+cg_id_tracking
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_id_tracking        constant varchar2(50) := 'ID_TRACKING';
+</PRE>
+<HR>
+<A NAME="CG_DISPOSITIVO_ORIGEN"></A>
+<P CLASS="TYPE_TITLE">
+cg_dispositivo_origen
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_dispositivo_origen constant varchar2(50) := 'DISPOSITIVO_ORIGEN';
+</PRE>
+<HR>
+<A NAME="CG_TIMESTAMP"></A>
+<P CLASS="TYPE_TITLE">
+cg_timestamp
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_timestamp          constant varchar2(50) := 'TIMESTAMP';
+</PRE>
+<HR>
+<A NAME="CG_TIPO_PERSONA"></A>
+<P CLASS="TYPE_TITLE">
+cg_tipo_persona
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_tipo_persona       constant varchar2(50) := 'TIPO_PERSONA';
+</PRE>
+<HR>
+<A NAME="CG_DATO_USUARIO"></A>
+<P CLASS="TYPE_TITLE">
+cg_dato_usuario
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_dato_usuario       constant varchar2(50) := 'DATO_USUARIO';
+</PRE>
+<HR>
+<A NAME="CG_CONTEXTO"></A>
+<P CLASS="TYPE_TITLE">
+cg_contexto
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_contexto constant varchar2(50) := 'CONTEXTO';
+</PRE>
+<HR>
+<A NAME="CG_APLICACION_MODIFICACION"></A>
+<P CLASS="TYPE_TITLE">
+cg_aplicacion_modificacion
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_aplicacion_modificacion constant varchar2(50) := 'APLICACION_MODIFICACION';
+</PRE>
+<HR>
+<A NAME="CG_MOTIVO_MODIFICACION"></A>
+<P CLASS="TYPE_TITLE">
+cg_motivo_modificacion
+</P>
+<PRE CLASS="DECL_TEXT">
+cg_motivo_modificacion     constant varchar2(50) := 'MOTIVO_MODIFICACION';
 </PRE>
 <HR>
 <A NAME="F_ES_PRODUCCION"></A>
@@ -370,7 +569,7 @@ c_id_dispositivo    CONSTANT VARCHAR2(50) := 'ID_DISPOSITIVO';
 f_es_produccion
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_es_produccion RETURN BOOLEAN
+function f_es_produccion return boolean
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -408,7 +607,7 @@ Indicador de si el ambiente de Base de Datos es de producci&#243;n<br>
 f_fecha
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_fecha RETURN DATE
+function f_fecha return date
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -446,7 +645,7 @@ Valor del par&#225;metro FECHA<br>
 f_id_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_id_usuario RETURN NUMBER
+function f_id_usuario return number
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -484,7 +683,7 @@ Valor del par&#225;metro ID_USUARIO<br>
 f_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_usuario RETURN VARCHAR2
+function f_usuario return varchar2
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -517,12 +716,126 @@ Valor del par&#225;metro USUARIO<br>
 </TABLE>
 <BR>
 <HR>
+<A NAME="F_ID_ENTIDAD"></A>
+<P CLASS="TYPE_TITLE">
+f_id_entidad
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_id_entidad return number
+
+</PRE>
+<P CLASS="DESC_TEXT">
+Retorna el valor del par&#225;metro ID_ENTIDAD en la sesi&#243;n<br>
+
+<BR>
+</P>
+<A NAME="Author"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+jtsoya539 29/1/2022 10:22:38<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Returns"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Returns
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Valor del par&#225;metro ID_ENTIDAD<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="F_ENTIDAD"></A>
+<P CLASS="TYPE_TITLE">
+f_entidad
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_entidad return varchar2
+
+</PRE>
+<P CLASS="DESC_TEXT">
+Retorna el valor del par&#225;metro ENTIDAD en la sesi&#243;n<br>
+
+<BR>
+</P>
+<A NAME="Author"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+jtsoya539 4/2/2021 08:54:38<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Returns"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Returns
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Valor del par&#225;metro ENTIDAD<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="F_ID_APLICACION"></A>
+<P CLASS="TYPE_TITLE">
+f_id_aplicacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_id_aplicacion return varchar2
+
+</PRE>
+<P CLASS="DESC_TEXT">
+Retorna el valor del par&#225;metro ID_APLICACION en la sesi&#243;n<br>
+
+<BR>
+</P>
+<A NAME="Author"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+dmezac 20/6/2025 15:30:38<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Returns"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Returns
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Valor del par&#225;metro ID_APLICACION<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
 <A NAME="F_PAIS"></A>
 <P CLASS="TYPE_TITLE">
 f_pais
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_pais RETURN NUMBER
+function f_pais return number
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -560,7 +873,7 @@ Valor del par&#225;metro ID_PAIS<br>
 f_zona_horaria
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_zona_horaria RETURN VARCHAR2
+function f_zona_horaria return varchar2
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -598,7 +911,7 @@ Valor del par&#225;metro ZONA_HORARIA<br>
 f_idioma
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_idioma RETURN NUMBER
+function f_idioma return number
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -636,7 +949,7 @@ Valor del par&#225;metro ID_IDIOMA<br>
 f_valor_parametro
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_valor_parametro(i_parametro IN VARCHAR2) RETURN anydata
+function f_valor_parametro(i_parametro in varchar2) return anydata
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -688,7 +1001,7 @@ Valor del par&#225;metro, si no existe retorna null<br>
 f_valor_parametro_string
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_valor_parametro_string(i_parametro IN VARCHAR2) RETURN VARCHAR2
+function f_valor_parametro_string(i_parametro in varchar2) return varchar2
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -740,7 +1053,7 @@ Valor del par&#225;metro de tipo string, si no existe retorna null<br>
 f_valor_parametro_number
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_valor_parametro_number(i_parametro IN VARCHAR2) RETURN NUMBER
+function f_valor_parametro_number(i_parametro in varchar2) return number
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -792,7 +1105,7 @@ Valor del par&#225;metro de tipo number, si no existe retorna null<br>
 f_valor_parametro_boolean
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_valor_parametro_boolean(i_parametro IN VARCHAR2) RETURN BOOLEAN
+function f_valor_parametro_boolean(i_parametro in varchar2) return boolean
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -844,7 +1157,7 @@ Valor del par&#225;metro de tipo boolean, si no existe retorna null<br>
 f_valor_parametro_date
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_valor_parametro_date(i_parametro IN VARCHAR2) RETURN DATE
+function f_valor_parametro_date(i_parametro in varchar2) return date
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -896,8 +1209,8 @@ Valor del par&#225;metro de tipo date, si no existe retorna null<br>
 p_definir_parametro
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_definir_parametro(i_parametro IN VARCHAR2,
-                              i_valor     IN anydata)
+procedure p_definir_parametro(i_parametro in varchar2,
+                              i_valor     in anydata)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -944,8 +1257,8 @@ Valor del par&#225;metro<br>
 p_definir_parametro_string
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_definir_parametro_string(i_parametro IN VARCHAR2,
-                                     i_valor     IN VARCHAR2)
+procedure p_definir_parametro_string(i_parametro in varchar2,
+                                     i_valor     in varchar2)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -992,8 +1305,8 @@ Valor del par&#225;metro de tipo string<br>
 p_definir_parametro_number
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_definir_parametro_number(i_parametro IN VARCHAR2,
-                                     i_valor     IN NUMBER)
+procedure p_definir_parametro_number(i_parametro in varchar2,
+                                     i_valor     in number)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -1040,8 +1353,8 @@ Valor del par&#225;metro de tipo number<br>
 p_definir_parametro_boolean
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_definir_parametro_boolean(i_parametro IN VARCHAR2,
-                                      i_valor     IN BOOLEAN)
+procedure p_definir_parametro_boolean(i_parametro in varchar2,
+                                      i_valor     in boolean)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -1088,8 +1401,8 @@ Valor del par&#225;metro de tipo boolean<br>
 p_definir_parametro_date
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_definir_parametro_date(i_parametro IN VARCHAR2,
-                                   i_valor     IN DATE)
+procedure p_definir_parametro_date(i_parametro in varchar2,
+                                   i_valor     in date)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -1136,7 +1449,7 @@ Valor del par&#225;metro de tipo date<br>
 p_inicializar_parametros
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_inicializar_parametros
+procedure p_inicializar_parametros
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -1162,7 +1475,7 @@ jtsoya539 4/2/2021 08:48:40<br>
 p_limpiar_parametros
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_limpiar_parametros
+procedure p_limpiar_parametros
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -1188,7 +1501,7 @@ jtsoya539 27/3/2020 17:01:24<br>
 p_eliminar_parametros
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_eliminar_parametros
+procedure p_eliminar_parametros
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -1214,7 +1527,7 @@ jtsoya539 27/3/2020 17:02:14<br>
 p_imprimir_parametros
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_imprimir_parametros
+procedure p_imprimir_parametros
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -1240,7 +1553,7 @@ jtsoya539 27/3/2020 17:02:58<br>
 p_inicializar_cola
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_inicializar_cola
+procedure p_inicializar_cola
 
 </PRE>
 <HR>
@@ -1249,7 +1562,7 @@ PROCEDURE p_inicializar_cola
 p_encolar
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_encolar(i_valor IN VARCHAR2)
+procedure p_encolar(i_valor in varchar2)
 
 </PRE>
 <HR>
@@ -1258,7 +1571,7 @@ PROCEDURE p_encolar(i_valor IN VARCHAR2)
 f_desencolar
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_desencolar RETURN VARCHAR2
+function f_desencolar return varchar2
 
 </PRE>
 <HR>
@@ -1267,7 +1580,35 @@ FUNCTION f_desencolar RETURN VARCHAR2
 p_imprimir_cola
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_imprimir_cola
+procedure p_imprimir_cola
+
+</PRE>
+<HR>
+<A NAME="P_CONFIGURAR_MODIFICACION"></A>
+<P CLASS="TYPE_TITLE">
+p_configurar_modificacion
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_configurar_modificacion(pin_aplicacion in varchar2,
+                                    pin_motivo     in varchar2 default null)
+
+</PRE>
+<HR>
+<A NAME="F_APLICACION_MODIFICACION"></A>
+<P CLASS="TYPE_TITLE">
+f_aplicacion_modificacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_aplicacion_modificacion return varchar2
+
+</PRE>
+<HR>
+<A NAME="F_MOTIVO_MODIFICACION"></A>
+<P CLASS="TYPE_TITLE">
+f_motivo_modificacion
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_motivo_modificacion return varchar2
 
 </PRE>
 <P>&nbsp;</P>

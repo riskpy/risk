@@ -90,7 +90,7 @@ Program units
 dominio
 </P>
 <PRE CLASS="DECL_TEXT">
-dominio VARCHAR2(50)
+dominio varchar2(50)
 </PRE>
 <P CLASS="DESC_TEXT">
 Dominio<br>
@@ -103,7 +103,7 @@ Dominio<br>
 codigo
 </P>
 <PRE CLASS="DECL_TEXT">
-codigo VARCHAR2(50)
+codigo varchar2(50)
 </PRE>
 <P CLASS="DESC_TEXT">
 Codigo<br>
@@ -116,7 +116,7 @@ Codigo<br>
 significado
 </P>
 <PRE CLASS="DECL_TEXT">
-significado VARCHAR2(500)
+significado varchar2(500)
 </PRE>
 <P CLASS="DESC_TEXT">
 Significado<br>
@@ -129,7 +129,7 @@ Significado<br>
 referencia
 </P>
 <PRE CLASS="DECL_TEXT">
-referencia VARCHAR2(500)
+referencia varchar2(500)
 </PRE>
 <P CLASS="DESC_TEXT">
 Referencia adicional<br>
@@ -142,7 +142,7 @@ Referencia adicional<br>
 activo
 </P>
 <PRE CLASS="DECL_TEXT">
-activo VARCHAR2(1)
+activo varchar2(1)
 </PRE>
 <P CLASS="DESC_TEXT">
 El significado esta activo? (S/N)<br>
@@ -155,7 +155,7 @@ El significado esta activo? (S/N)<br>
 y_significado
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_significado RETURN SELF AS RESULT
+function y_significado return self as result
 
 </PRE>
 <HR>
@@ -164,7 +164,7 @@ FUNCTION y_significado RETURN SELF AS RESULT
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -173,7 +173,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P>&nbsp;</P>

@@ -51,6 +51,11 @@ Mensaje de la respuesta.
 Mensaje de Base de Datos.
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#TIPO_ERROR">tipo_error</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Tipo de la excepci&#243;n en caso de error (OPE/UDE).
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#LUGAR">lugar</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 Lugar en el proceso.
@@ -90,7 +95,7 @@ Retorna el objeto serializado en formato JSON.
 codigo
 </P>
 <PRE CLASS="DECL_TEXT">
-codigo VARCHAR2(10)
+codigo varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 C&#243;digo de la respuesta.<br>
@@ -103,7 +108,7 @@ C&#243;digo de la respuesta.<br>
 mensaje
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje VARCHAR2(4000)
+mensaje varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Mensaje de la respuesta.<br>
@@ -116,10 +121,23 @@ Mensaje de la respuesta.<br>
 mensaje_bd
 </P>
 <PRE CLASS="DECL_TEXT">
-mensaje_bd VARCHAR2(4000)
+mensaje_bd varchar2(4000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Mensaje de Base de Datos.<br>
+
+<BR>
+</P>
+<HR>
+<A NAME="TIPO_ERROR"></A>
+<P CLASS="TYPE_TITLE">
+tipo_error
+</P>
+<PRE CLASS="DECL_TEXT">
+tipo_error varchar2(3)
+</PRE>
+<P CLASS="DESC_TEXT">
+Tipo de la excepci&#243;n en caso de error (OPE/UDE).<br>
 
 <BR>
 </P>
@@ -129,7 +147,7 @@ Mensaje de Base de Datos.<br>
 lugar
 </P>
 <PRE CLASS="DECL_TEXT">
-lugar VARCHAR2(1000)
+lugar varchar2(1000)
 </PRE>
 <P CLASS="DESC_TEXT">
 Lugar en el proceso.<br>
@@ -155,7 +173,7 @@ Datos adicionales.<br>
 y_respuesta
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_respuesta RETURN SELF AS RESULT
+function y_respuesta return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -193,7 +211,7 @@ Objeto del tipo y_respuesta.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -202,7 +220,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

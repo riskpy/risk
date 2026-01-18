@@ -41,7 +41,7 @@ Program units
 Genera trigger de secuencia para un campo de una tabla
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
-<A HREF="#P_GENERAR_TYPE_OBJETO">p_generar_type_objeto</A>&nbsp;&nbsp;
+<A HREF="#F_VALOR_SECUENCIA_ID">f_valor_secuencia_id</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -59,6 +59,26 @@ Genera trigger de secuencia para un campo de una tabla
 <A HREF="#F_HASH">f_hash</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#GET_DOTNET_TICKS">get_dotnet_ticks</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#GUID">guid</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#RANDOMUUID">randomuuid</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#RSAKEYPAIRGENERATOR">rsakeypairgenerator</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Genera par de claves RSA separadas por punto (.) Formato: public_key.private_key
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#BOOL_TO_STRING">bool_to_string</A>&nbsp;&nbsp;
@@ -97,16 +117,6 @@ Genera trigger de secuencia para un campo de una tabla
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#DECRYPT">decrypt</A>&nbsp;&nbsp;
-</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
-
-</TD></TR>
-<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
-<A HREF="#JSON_TO_OBJETO">json_to_objeto</A>&nbsp;&nbsp;
-</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
-
-</TD></TR>
-<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
-<A HREF="#OBJETO_TO_JSON">objeto_to_json</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -151,42 +161,27 @@ Genera trigger de secuencia para un campo de una tabla
 Retorna si el valor recibido es de tipo num&#233;rico
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ES_VALOR_NUMERICO_SN">f_es_valor_numerico_sn</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Retorna si el valor recibido es de tipo num&#233;rico
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_ZONA_HORARIA">f_zona_horaria</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 Retorna una zona horaria en formato '(+|-)HH:MM'
 </TD></TR>
 </TABLE>
 <BR>
-<A NAME="Exceptions"></A>
-<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
-Exceptions
-</TD></TR></TABLE>
-<TABLE CLASS="SUB_TABLE">
-<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
-<A HREF="#EX_TIPO_INEXISTENTE">ex_tipo_inexistente</A>&nbsp;&nbsp;
-</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
-
-</TD></TR>
-</TABLE>
-<BR>
-<HR>
-<A NAME="EX_TIPO_INEXISTENTE"></A>
-<P CLASS="TYPE_TITLE">
-ex_tipo_inexistente
-</P>
-<PRE CLASS="DECL_TEXT">
-ex_tipo_inexistente EXCEPTION;
-</PRE>
 <HR>
 <A NAME="P_GENERAR_TRIGGER_SECUENCIA"></A>
 <P CLASS="TYPE_TITLE">
 p_generar_trigger_secuencia
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_generar_trigger_secuencia(i_tabla    IN VARCHAR2,
-                                      i_campo    IN VARCHAR2,
-                                      i_trigger  IN VARCHAR2 DEFAULT NULL,
-                                      i_ejecutar IN BOOLEAN DEFAULT TRUE)
+procedure p_generar_trigger_secuencia(i_tabla    in varchar2,
+                                      i_campo    in varchar2,
+                                      i_trigger  in varchar2 default null,
+                                      i_ejecutar in boolean default true)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -242,14 +237,12 @@ Ejecutar la(s) sentencia(s)?<br>
 </TABLE>
 <BR>
 <HR>
-<A NAME="P_GENERAR_TYPE_OBJETO"></A>
+<A NAME="F_VALOR_SECUENCIA_ID"></A>
 <P CLASS="TYPE_TITLE">
-p_generar_type_objeto
+f_valor_secuencia_id
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_generar_type_objeto(i_tabla    IN VARCHAR2,
-                                i_type     IN VARCHAR2 DEFAULT NULL,
-                                i_ejecutar IN BOOLEAN DEFAULT TRUE)
+function f_valor_secuencia_id(i_tabla in varchar2) return number
 
 </PRE>
 <HR>
@@ -258,7 +251,7 @@ PROCEDURE p_generar_type_objeto(i_tabla    IN VARCHAR2,
 f_valor_parametro
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_valor_parametro(i_id_parametro IN VARCHAR2) RETURN VARCHAR2
+function f_valor_parametro(i_id_parametro in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -267,8 +260,8 @@ FUNCTION f_valor_parametro(i_id_parametro IN VARCHAR2) RETURN VARCHAR2
 p_actualizar_valor_parametro
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_actualizar_valor_parametro(i_id_parametro IN VARCHAR2,
-                                       i_valor        IN VARCHAR2)
+procedure p_actualizar_valor_parametro(i_id_parametro in varchar2,
+                                       i_valor        in varchar2)
 
 </PRE>
 <HR>
@@ -277,17 +270,82 @@ PROCEDURE p_actualizar_valor_parametro(i_id_parametro IN VARCHAR2,
 f_hash
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_hash(i_data      IN VARCHAR2,
-                i_hash_type IN PLS_INTEGER) RETURN VARCHAR2
+function f_hash(i_data      in varchar2,
+                i_hash_type in pls_integer) return varchar2
 
 </PRE>
+<HR>
+<A NAME="GET_DOTNET_TICKS"></A>
+<P CLASS="TYPE_TITLE">
+get_dotnet_ticks
+</P>
+<PRE CLASS="DECL_TEXT">
+function get_dotnet_ticks(intimestamp in timestamp) return number
+
+</PRE>
+<HR>
+<A NAME="GUID"></A>
+<P CLASS="TYPE_TITLE">
+guid
+</P>
+<PRE CLASS="DECL_TEXT">
+function guid return varchar2
+
+</PRE>
+<HR>
+<A NAME="RANDOMUUID"></A>
+<P CLASS="TYPE_TITLE">
+randomuuid
+</P>
+<PRE CLASS="DECL_TEXT">
+function randomuuid return varchar2
+
+</PRE>
+<HR>
+<A NAME="RSAKEYPAIRGENERATOR"></A>
+<P CLASS="TYPE_TITLE">
+rsakeypairgenerator
+</P>
+<PRE CLASS="DECL_TEXT">
+function rsakeypairgenerator return varchar2
+
+</PRE>
+<P CLASS="DESC_TEXT">
+Genera par de claves RSA separadas por punto (.) Formato: public_key.private_key<br>
+
+<BR>
+</P>
+<A NAME="Author"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+dmezac 01/04/2025<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Returns"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Returns
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Par de claves RSA separadas por punto (.) en formato public_key.private_key<br>
+
+</TD></TR>
+</TABLE>
+<BR>
 <HR>
 <A NAME="BOOL_TO_STRING"></A>
 <P CLASS="TYPE_TITLE">
 bool_to_string
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION bool_to_string(i_bool IN BOOLEAN) RETURN VARCHAR2
+function bool_to_string(i_bool in boolean) return varchar2
 
 </PRE>
 <HR>
@@ -296,7 +354,7 @@ FUNCTION bool_to_string(i_bool IN BOOLEAN) RETURN VARCHAR2
 string_to_bool
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION string_to_bool(i_string IN VARCHAR2) RETURN BOOLEAN
+function string_to_bool(i_string in varchar2) return boolean
 
 </PRE>
 <HR>
@@ -305,7 +363,7 @@ FUNCTION string_to_bool(i_string IN VARCHAR2) RETURN BOOLEAN
 blob_to_clob
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION blob_to_clob(p_data IN BLOB) RETURN CLOB
+function blob_to_clob(p_data in blob) return clob
 
 </PRE>
 <HR>
@@ -314,7 +372,8 @@ FUNCTION blob_to_clob(p_data IN BLOB) RETURN CLOB
 clob_to_blob
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION clob_to_blob(p_data IN CLOB) RETURN BLOB
+function clob_to_blob(p_data    in clob,
+                      p_charset in varchar2 default null) return blob
 
 </PRE>
 <HR>
@@ -323,7 +382,7 @@ FUNCTION clob_to_blob(p_data IN CLOB) RETURN BLOB
 base64encode
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION base64encode(i_blob IN BLOB) RETURN CLOB
+function base64encode(i_blob in blob) return clob
 
 </PRE>
 <HR>
@@ -332,7 +391,7 @@ FUNCTION base64encode(i_blob IN BLOB) RETURN CLOB
 base64decode
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION base64decode(i_clob IN CLOB) RETURN BLOB
+function base64decode(i_clob in clob) return blob
 
 </PRE>
 <HR>
@@ -341,7 +400,7 @@ FUNCTION base64decode(i_clob IN CLOB) RETURN BLOB
 encrypt
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION encrypt(i_src IN VARCHAR2) RETURN VARCHAR2
+function encrypt(i_src in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -350,26 +409,7 @@ FUNCTION encrypt(i_src IN VARCHAR2) RETURN VARCHAR2
 decrypt
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION decrypt(i_src IN VARCHAR2) RETURN VARCHAR2
-
-</PRE>
-<HR>
-<A NAME="JSON_TO_OBJETO"></A>
-<P CLASS="TYPE_TITLE">
-json_to_objeto
-</P>
-<PRE CLASS="DECL_TEXT">
-FUNCTION json_to_objeto(i_json        IN CLOB,
-                        i_nombre_tipo IN VARCHAR2) RETURN anydata
-
-</PRE>
-<HR>
-<A NAME="OBJETO_TO_JSON"></A>
-<P CLASS="TYPE_TITLE">
-objeto_to_json
-</P>
-<PRE CLASS="DECL_TEXT">
-FUNCTION objeto_to_json(i_objeto IN anydata) RETURN CLOB
+function decrypt(i_src in varchar2) return varchar2
 
 </PRE>
 <HR>
@@ -378,7 +418,7 @@ FUNCTION objeto_to_json(i_objeto IN anydata) RETURN CLOB
 read_http_body
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION read_http_body(resp IN OUT utl_http.resp) RETURN CLOB
+function read_http_body(resp in out utl_http.resp) return clob
 
 </PRE>
 <HR>
@@ -387,7 +427,7 @@ FUNCTION read_http_body(resp IN OUT utl_http.resp) RETURN CLOB
 f_base_datos
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_base_datos RETURN VARCHAR2
+function f_base_datos return varchar2
 
 </PRE>
 <HR>
@@ -396,7 +436,7 @@ FUNCTION f_base_datos RETURN VARCHAR2
 f_terminal
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_terminal RETURN VARCHAR2
+function f_terminal return varchar2
 
 </PRE>
 <HR>
@@ -405,7 +445,7 @@ FUNCTION f_terminal RETURN VARCHAR2
 f_host
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_host RETURN VARCHAR2
+function f_host return varchar2
 
 </PRE>
 <HR>
@@ -414,7 +454,7 @@ FUNCTION f_host RETURN VARCHAR2
 f_direccion_ip
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_direccion_ip RETURN VARCHAR2
+function f_direccion_ip return varchar2
 
 </PRE>
 <HR>
@@ -423,7 +463,7 @@ FUNCTION f_direccion_ip RETURN VARCHAR2
 f_esquema_actual
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_esquema_actual RETURN VARCHAR2
+function f_esquema_actual return varchar2
 
 </PRE>
 <HR>
@@ -432,7 +472,7 @@ FUNCTION f_esquema_actual RETURN VARCHAR2
 f_charset
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_charset RETURN VARCHAR2
+function f_charset return varchar2
 
 </PRE>
 <HR>
@@ -441,7 +481,7 @@ FUNCTION f_charset RETURN VARCHAR2
 f_es_valor_numerico
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_es_valor_numerico(i_valor IN VARCHAR2) RETURN BOOLEAN
+function f_es_valor_numerico(i_valor in varchar2) return boolean
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -470,7 +510,59 @@ Parameters
 </TD><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
 i_valor&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
-Zona horaria en formato decimal<br>
+valor a determinar si es num&#233;rico o no<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Returns"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Returns
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Si el valor recibido es de tipo num&#233;rico<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="F_ES_VALOR_NUMERICO_SN"></A>
+<P CLASS="TYPE_TITLE">
+f_es_valor_numerico_sn
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_es_valor_numerico_sn(i_valor in varchar2) return varchar2
+
+</PRE>
+<P CLASS="DESC_TEXT">
+Retorna si el valor recibido es de tipo num&#233;rico<br>
+
+<BR>
+</P>
+<A NAME="Author"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+dmezac 26/1/2022 19:48:15<br>
+
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Parameters"></A>
+<TABLE CLASS="LIST_TABLE"><TR><TD CLASS="LIST_TITLE">
+Parameters
+</TD></TR></TABLE>
+<TABLE CLASS="LIST_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+i_valor&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+valor a determinar si es num&#233;rico o no<br>
 
 </TD></TR>
 </TABLE>
@@ -493,7 +585,7 @@ Si el valor recibido es de tipo num&#233;rico<br>
 f_zona_horaria
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_zona_horaria(i_zona_horaria IN VARCHAR2) RETURN VARCHAR2
+function f_zona_horaria(i_zona_horaria in varchar2) return varchar2
 
 </PRE>
 <P CLASS="DESC_TEXT">

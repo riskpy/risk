@@ -2,9 +2,9 @@
 <HTML>
  <HEAD>
  <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
- <TITLE>Trigger gs_ciudades</TITLE>
- <META name="object" content="TRIGGER">
- <META name="name" content="gs_ciudades">
+ <TITLE>Procedure p_configurar_modificacion</TITLE>
+ <META name="object" content="PROCEDURE">
+ <META name="name" content="p_configurar_modificacion">
  <META name="description" content="">
 </HEAD>
 <BODY>
@@ -13,9 +13,10 @@
 <TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
 </TR></TABLE>
 <TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
-<P CLASS="MAIN_TITLE">Trigger gs_ciudades</P>
+<P CLASS="MAIN_TITLE">Procedure p_configurar_modificacion</P>
 <PRE CLASS="DECL_TEXT">
-TRIGGER gs_ciudades BEFORE INSERT ON t_ciudades FOR EACH ROW
+procedure p_configurar_modificacion(pin_aplicacion in varchar2,
+                                    pin_motivo     in varchar2 default null)
 
 </PRE><BR>
 

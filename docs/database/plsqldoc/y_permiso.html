@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+ <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
+ <TITLE>Type y_permiso</TITLE>
+ <META name="object" content="TYPE">
+ <META name="name" content="y_permiso">
+ <META name="description" content="Agrupa datos de un permiso.">
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%"><TR>
+<TD><P ALIGN="LEFT"><STRONG><SMALL></SMALL></STRONG></TD>
+<TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
+</TR></TABLE>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
+<P CLASS="MAIN_TITLE">Type y_permiso</P>
+Agrupa datos de un permiso.<br>
+
+<BR>
+<A NAME="Author"></A>
+<TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="LIST_TITLE">
+Author
+</TD></TR></TABLE>
+<TABLE CLASS="MAIN_TABLE">
+<TR><TD VALIGN="TOP" CLASS="LIST_ITEM" WIDTH="1%">
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+jmeza 08/08/2025 08:32:01
+</TD></TR>
+</TABLE>
+<BR>
+</TD></TR></TABLE>
+<HR>
+<A NAME="Attributes"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Attributes
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#ID_PERMISO">id_permiso</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Identificador del permiso o recurso
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#CONSULTAR">consultar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Puede consultar? (S/N)
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#INSERTAR">insertar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Puede insertar/cargar? (S/N)
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#ACTUALIZAR">actualizar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Puede actualizar? (S/N)
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#ELIMINAR">eliminar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Puede eliminar? (S/N)
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#VERIFICAR">verificar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Puede verificar? (S/N)
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#AUTORIZAR">autorizar</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+Puede autorizar? (S/N)
+</TD></TR>
+</TABLE>
+<BR>
+<A NAME="Program units"></A>
+<TABLE CLASS="SUB_TABLE"><TR><TD CLASS="SUB_TITLE">
+Program units
+</TD></TR></TABLE>
+<TABLE CLASS="SUB_TABLE">
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#Y_PERMISO">y_permiso</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#PARSE_JSON">parse_json</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#TO_JSON">to_json</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+</TABLE>
+<BR>
+<HR>
+<A NAME="ID_PERMISO"></A>
+<P CLASS="TYPE_TITLE">
+id_permiso
+</P>
+<PRE CLASS="DECL_TEXT">
+id_permiso varchar2(300)
+</PRE>
+<P CLASS="DESC_TEXT">
+Identificador del permiso o recurso<br>
+
+<BR>
+</P>
+<HR>
+<A NAME="CONSULTAR"></A>
+<P CLASS="TYPE_TITLE">
+consultar
+</P>
+<PRE CLASS="DECL_TEXT">
+consultar varchar2(1)
+</PRE>
+<P CLASS="DESC_TEXT">
+Puede consultar? (S/N)<br>
+
+<BR>
+</P>
+<HR>
+<A NAME="INSERTAR"></A>
+<P CLASS="TYPE_TITLE">
+insertar
+</P>
+<PRE CLASS="DECL_TEXT">
+insertar varchar2(1)
+</PRE>
+<P CLASS="DESC_TEXT">
+Puede insertar/cargar? (S/N)<br>
+
+<BR>
+</P>
+<HR>
+<A NAME="ACTUALIZAR"></A>
+<P CLASS="TYPE_TITLE">
+actualizar
+</P>
+<PRE CLASS="DECL_TEXT">
+actualizar varchar2(1)
+</PRE>
+<P CLASS="DESC_TEXT">
+Puede actualizar? (S/N)<br>
+
+<BR>
+</P>
+<HR>
+<A NAME="ELIMINAR"></A>
+<P CLASS="TYPE_TITLE">
+eliminar
+</P>
+<PRE CLASS="DECL_TEXT">
+eliminar varchar2(1)
+</PRE>
+<P CLASS="DESC_TEXT">
+Puede eliminar? (S/N)<br>
+
+<BR>
+</P>
+<HR>
+<A NAME="VERIFICAR"></A>
+<P CLASS="TYPE_TITLE">
+verificar
+</P>
+<PRE CLASS="DECL_TEXT">
+verificar varchar2(1)
+</PRE>
+<P CLASS="DESC_TEXT">
+Puede verificar? (S/N)<br>
+
+<BR>
+</P>
+<HR>
+<A NAME="AUTORIZAR"></A>
+<P CLASS="TYPE_TITLE">
+autorizar
+</P>
+<PRE CLASS="DECL_TEXT">
+autorizar varchar2(1)
+</PRE>
+<P CLASS="DESC_TEXT">
+Puede autorizar? (S/N)<br>
+
+<BR>
+</P>
+<HR>
+<A NAME="Y_PERMISO"></A>
+<P CLASS="TYPE_TITLE">
+y_permiso
+</P>
+<PRE CLASS="DECL_TEXT">
+function y_permiso return self as result
+
+</PRE>
+<HR>
+<A NAME="PARSE_JSON"></A>
+<P CLASS="TYPE_TITLE">
+parse_json
+</P>
+<PRE CLASS="DECL_TEXT">
+function parse_json(i_json in clob) return y_objeto
+
+</PRE>
+<HR>
+<A NAME="TO_JSON"></A>
+<P CLASS="TYPE_TITLE">
+to_json
+</P>
+<PRE CLASS="DECL_TEXT">
+function to_json return clob
+
+</PRE>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+</BODY>
+</HTML>

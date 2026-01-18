@@ -2,9 +2,9 @@
 <HTML>
  <HEAD>
  <LINK REL="STYLESHEET" TYPE="text/css" HREF="plsqldoc.css">
- <TITLE>Trigger gs_usuarios</TITLE>
+ <TITLE>Trigger gb_errores_actualizar_clave</TITLE>
  <META name="object" content="TRIGGER">
- <META name="name" content="gs_usuarios">
+ <META name="name" content="gb_errores_actualizar_clave">
  <META name="description" content="">
 </HEAD>
 <BODY>
@@ -13,9 +13,9 @@
 <TD><P ALIGN="RIGHT"><STRONG><SMALL><A HREF="index.html">index</A></SMALL></STRONG></TD>
 </TR></TABLE>
 <TABLE CLASS="MAIN_TABLE"><TR><TD CLASS="DESC_TEXT">
-<P CLASS="MAIN_TITLE">Trigger gs_usuarios</P>
+<P CLASS="MAIN_TITLE">Trigger gb_errores_actualizar_clave</P>
 <PRE CLASS="DECL_TEXT">
-TRIGGER gs_usuarios BEFORE INSERT ON t_usuarios FOR EACH ROW
+trigger gb_errores_actualizar_clave before insert or update on t_errores for each row
 
 </PRE><BR>
 

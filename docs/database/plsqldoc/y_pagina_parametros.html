@@ -80,7 +80,7 @@ Retorna el objeto serializado en formato JSON.
 pagina
 </P>
 <PRE CLASS="DECL_TEXT">
-pagina INTEGER
+pagina integer
 </PRE>
 <P CLASS="DESC_TEXT">
 N&#250;mero de la p&#225;gina<br>
@@ -93,7 +93,7 @@ N&#250;mero de la p&#225;gina<br>
 por_pagina
 </P>
 <PRE CLASS="DECL_TEXT">
-por_pagina INTEGER
+por_pagina integer
 </PRE>
 <P CLASS="DESC_TEXT">
 Cantidad de elementos por p&#225;gina<br>
@@ -106,7 +106,7 @@ Cantidad de elementos por p&#225;gina<br>
 no_paginar
 </P>
 <PRE CLASS="DECL_TEXT">
-no_paginar VARCHAR2(1)
+no_paginar varchar2(1)
 </PRE>
 <P CLASS="DESC_TEXT">
 No paginar? (S/N)<br>
@@ -119,7 +119,7 @@ No paginar? (S/N)<br>
 y_pagina_parametros
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_pagina_parametros RETURN SELF AS RESULT
+function y_pagina_parametros return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -157,7 +157,7 @@ Objeto del tipo y_pagina_parametros.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -166,7 +166,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

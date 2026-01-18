@@ -140,7 +140,7 @@ Retorna el objeto serializado en formato JSON.
 id_dispositivo
 </P>
 <PRE CLASS="DECL_TEXT">
-id_dispositivo NUMBER(15)
+id_dispositivo number(15)
 </PRE>
 <P CLASS="DESC_TEXT">
 Identificador del dispositivo<br>
@@ -153,7 +153,7 @@ Identificador del dispositivo<br>
 token_dispositivo
 </P>
 <PRE CLASS="DECL_TEXT">
-token_dispositivo VARCHAR2(500)
+token_dispositivo varchar2(500)
 </PRE>
 <P CLASS="DESC_TEXT">
 Token del dispositivo<br>
@@ -166,7 +166,7 @@ Token del dispositivo<br>
 nombre_sistema_operativo
 </P>
 <PRE CLASS="DECL_TEXT">
-nombre_sistema_operativo VARCHAR2(100)
+nombre_sistema_operativo varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Nombre del sistema operativo<br>
@@ -179,7 +179,7 @@ Nombre del sistema operativo<br>
 version_sistema_operativo
 </P>
 <PRE CLASS="DECL_TEXT">
-version_sistema_operativo VARCHAR2(100)
+version_sistema_operativo varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Version del sistema operativo<br>
@@ -192,7 +192,7 @@ Version del sistema operativo<br>
 tipo
 </P>
 <PRE CLASS="DECL_TEXT">
-tipo VARCHAR2(1)
+tipo varchar2(1)
 </PRE>
 <P CLASS="DESC_TEXT">
 Tipo del dispositivo<br>
@@ -205,7 +205,7 @@ Tipo del dispositivo<br>
 nombre_navegador
 </P>
 <PRE CLASS="DECL_TEXT">
-nombre_navegador VARCHAR2(100)
+nombre_navegador varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Nombre del navegador<br>
@@ -218,7 +218,7 @@ Nombre del navegador<br>
 version_navegador
 </P>
 <PRE CLASS="DECL_TEXT">
-version_navegador VARCHAR2(100)
+version_navegador varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Version del navegador<br>
@@ -231,7 +231,7 @@ Version del navegador<br>
 token_notificacion
 </P>
 <PRE CLASS="DECL_TEXT">
-token_notificacion VARCHAR2(500)
+token_notificacion varchar2(500)
 </PRE>
 <P CLASS="DESC_TEXT">
 Token de notificacion del dispositivo<br>
@@ -244,7 +244,7 @@ Token de notificacion del dispositivo<br>
 plataforma_notificacion
 </P>
 <PRE CLASS="DECL_TEXT">
-plataforma_notificacion VARCHAR2(10)
+plataforma_notificacion varchar2(10)
 </PRE>
 <P CLASS="DESC_TEXT">
 Plataforma para las notificaciones push de la aplicaci&#243;n<br>
@@ -257,7 +257,7 @@ Plataforma para las notificaciones push de la aplicaci&#243;n<br>
 version_aplicacion
 </P>
 <PRE CLASS="DECL_TEXT">
-version_aplicacion VARCHAR2(100)
+version_aplicacion varchar2(100)
 </PRE>
 <P CLASS="DESC_TEXT">
 Version de la aplicacion<br>
@@ -270,7 +270,7 @@ Version de la aplicacion<br>
 id_pais_iso2
 </P>
 <PRE CLASS="DECL_TEXT">
-id_pais_iso2 VARCHAR2(2)
+id_pais_iso2 varchar2(2)
 </PRE>
 <P CLASS="DESC_TEXT">
 Pais del dispositivo<br>
@@ -283,7 +283,7 @@ Pais del dispositivo<br>
 zona_horaria
 </P>
 <PRE CLASS="DECL_TEXT">
-zona_horaria VARCHAR2(8)
+zona_horaria varchar2(8)
 </PRE>
 <P CLASS="DESC_TEXT">
 Zona horaria del dispositivo<br>
@@ -296,7 +296,7 @@ Zona horaria del dispositivo<br>
 id_idioma_iso369_1
 </P>
 <PRE CLASS="DECL_TEXT">
-id_idioma_iso369_1 VARCHAR2(2)
+id_idioma_iso369_1 varchar2(2)
 </PRE>
 <P CLASS="DESC_TEXT">
 Idioma del dispositivo<br>
@@ -335,7 +335,7 @@ Suscripciones para notificaciones push del dispositivo<br>
 y_dispositivo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION y_dispositivo RETURN SELF AS RESULT
+function y_dispositivo return self as result
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -373,7 +373,7 @@ Objeto del tipo y_dispositivo.<br>
 parse_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
+function parse_json(i_json in clob) return y_objeto
 
 </PRE>
 <HR>
@@ -382,7 +382,7 @@ FUNCTION parse_json(i_json IN CLOB) RETURN y_objeto
 to_json
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION to_json RETURN CLOB
+function to_json return clob
 
 </PRE>
 <P CLASS="DESC_TEXT">

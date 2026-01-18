@@ -46,6 +46,11 @@ Program units
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#F_ID_USUARIO2">f_id_usuario</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_ID_PERSONA">f_id_persona</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -71,6 +76,11 @@ Program units
 
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_VALIDAR_ALIAS">p_validar_alias</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_VERSION_AVATAR">f_version_avatar</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
@@ -82,6 +92,11 @@ Program units
 </TD></TR>
 <TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
 <A HREF="#F_EXISTE_USUARIO_EXTERNO">f_existe_usuario_externo</A>&nbsp;&nbsp;
+</TD><TD CLASS="DESC_TEXT" WIDTH="95%">
+
+</TD></TR>
+<TR><TD VALIGN="TOP" CLASS="TYPE_ITEM">
+<A HREF="#P_SEPARAR_DOMINIO_USUARIO">p_separar_dominio_usuario</A>&nbsp;&nbsp;
 </TD><TD CLASS="DESC_TEXT" WIDTH="95%">
 
 </TD></TR>
@@ -130,7 +145,7 @@ Exceptions
 ex_usuario_inexistente
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_usuario_inexistente EXCEPTION;
+ex_usuario_inexistente exception;
 </PRE>
 <HR>
 <A NAME="EX_USUARIO_EXISTENTE"></A>
@@ -138,7 +153,7 @@ ex_usuario_inexistente EXCEPTION;
 ex_usuario_existente
 </P>
 <PRE CLASS="DECL_TEXT">
-ex_usuario_existente   EXCEPTION;
+ex_usuario_existente   exception;
 </PRE>
 <HR>
 <A NAME="F_BUSCAR_ID"></A>
@@ -146,7 +161,7 @@ ex_usuario_existente   EXCEPTION;
 f_buscar_id
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_buscar_id(i_usuario IN VARCHAR2) RETURN NUMBER
+function f_buscar_id(i_usuario in varchar2) return number
 
 </PRE>
 <HR>
@@ -155,7 +170,17 @@ FUNCTION f_buscar_id(i_usuario IN VARCHAR2) RETURN NUMBER
 f_id_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_id_usuario(i_alias IN VARCHAR2) RETURN NUMBER
+function f_id_usuario(i_alias in varchar2) return number
+
+</PRE>
+<HR>
+<A NAME="F_ID_USUARIO2"></A>
+<P CLASS="TYPE_TITLE">
+f_id_usuario
+</P>
+<PRE CLASS="DECL_TEXT">
+function f_id_usuario(i_id_persona in number,
+                      i_origen     in varchar2 default null) return number
 
 </PRE>
 <HR>
@@ -164,7 +189,7 @@ FUNCTION f_id_usuario(i_alias IN VARCHAR2) RETURN NUMBER
 f_id_persona
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_id_persona(i_id_usuario IN NUMBER) RETURN NUMBER
+function f_id_persona(i_id_usuario in number) return number
 
 </PRE>
 <HR>
@@ -173,7 +198,7 @@ FUNCTION f_id_persona(i_id_usuario IN NUMBER) RETURN NUMBER
 f_alias
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_alias(i_id_usuario IN NUMBER) RETURN VARCHAR2
+function f_alias(i_id_usuario in number) return varchar2
 
 </PRE>
 <HR>
@@ -182,7 +207,7 @@ FUNCTION f_alias(i_id_usuario IN NUMBER) RETURN VARCHAR2
 f_estado
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_estado(i_id_usuario IN NUMBER) RETURN VARCHAR2
+function f_estado(i_id_usuario in number) return varchar2
 
 </PRE>
 <HR>
@@ -191,7 +216,7 @@ FUNCTION f_estado(i_id_usuario IN NUMBER) RETURN VARCHAR2
 f_origen
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_origen(i_id_usuario IN NUMBER) RETURN VARCHAR2
+function f_origen(i_id_usuario in number) return varchar2
 
 </PRE>
 <HR>
@@ -200,7 +225,18 @@ FUNCTION f_origen(i_id_usuario IN NUMBER) RETURN VARCHAR2
 f_validar_alias
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_validar_alias(i_alias VARCHAR2) RETURN BOOLEAN
+function f_validar_alias(i_alias  varchar2,
+                         i_origen in varchar2 default null) return boolean
+
+</PRE>
+<HR>
+<A NAME="P_VALIDAR_ALIAS"></A>
+<P CLASS="TYPE_TITLE">
+p_validar_alias
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_validar_alias(i_alias  varchar2,
+                          i_origen in varchar2 default null)
 
 </PRE>
 <HR>
@@ -209,7 +245,7 @@ FUNCTION f_validar_alias(i_alias VARCHAR2) RETURN BOOLEAN
 f_version_avatar
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_version_avatar(i_alias IN VARCHAR2) RETURN NUMBER
+function f_version_avatar(i_alias in varchar2) return number
 
 </PRE>
 <HR>
@@ -218,7 +254,7 @@ FUNCTION f_version_avatar(i_alias IN VARCHAR2) RETURN NUMBER
 f_datos_usuario
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_datos_usuario(i_id_usuario IN NUMBER) RETURN y_usuario
+function f_datos_usuario(i_id_usuario in number) return y_usuario
 
 </PRE>
 <HR>
@@ -227,8 +263,19 @@ FUNCTION f_datos_usuario(i_id_usuario IN NUMBER) RETURN y_usuario
 f_existe_usuario_externo
 </P>
 <PRE CLASS="DECL_TEXT">
-FUNCTION f_existe_usuario_externo(i_origen     IN VARCHAR2,
-                                  i_id_externo IN VARCHAR2) RETURN BOOLEAN
+function f_existe_usuario_externo(i_origen     in varchar2,
+                                  i_id_externo in varchar2) return boolean
+
+</PRE>
+<HR>
+<A NAME="P_SEPARAR_DOMINIO_USUARIO"></A>
+<P CLASS="TYPE_TITLE">
+p_separar_dominio_usuario
+</P>
+<PRE CLASS="DECL_TEXT">
+procedure p_separar_dominio_usuario(i_alias   in varchar2,
+                                    o_dominio out varchar2,
+                                    o_usuario out varchar2)
 
 </PRE>
 <HR>
@@ -237,8 +284,8 @@ FUNCTION f_existe_usuario_externo(i_origen     IN VARCHAR2,
 p_cambiar_estado
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_cambiar_estado(i_id_usuario IN NUMBER,
-                           i_estado     IN VARCHAR2)
+procedure p_cambiar_estado(i_id_usuario in number,
+                           i_estado     in varchar2)
 
 </PRE>
 <HR>
@@ -247,8 +294,8 @@ PROCEDURE p_cambiar_estado(i_id_usuario IN NUMBER,
 p_suscribir_notificacion
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_suscribir_notificacion(i_id_usuario       IN NUMBER,
-                                   i_suscripcion_alta IN VARCHAR2)
+procedure p_suscribir_notificacion(i_id_usuario       in number,
+                                   i_suscripcion_alta in varchar2)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -295,8 +342,8 @@ Suscripci&#243;n a dar de alta<br>
 p_desuscribir_notificacion
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_desuscribir_notificacion(i_id_usuario       IN NUMBER,
-                                     i_suscripcion_baja IN VARCHAR2)
+procedure p_desuscribir_notificacion(i_id_usuario       in number,
+                                     i_suscripcion_baja in varchar2)
 
 </PRE>
 <P CLASS="DESC_TEXT">
@@ -343,9 +390,9 @@ Suscripci&#243;n a dar de baja<br>
 p_guardar_dato_string
 </P>
 <PRE CLASS="DECL_TEXT">
-PROCEDURE p_guardar_dato_string(i_alias IN VARCHAR2,
-                                i_campo IN VARCHAR2,
-                                i_dato  IN VARCHAR2)
+procedure p_guardar_dato_string(i_alias in varchar2,
+                                i_campo in varchar2,
+                                i_dato  in varchar2)
 
 </PRE>
 <P CLASS="DESC_TEXT">
