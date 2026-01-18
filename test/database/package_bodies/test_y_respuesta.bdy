@@ -12,8 +12,8 @@ create or replace package body test_y_respuesta is
     l_error.mensaje   := 'Este es un mensaje';
     l_respuesta.datos := l_error;
     --
-    k_sistema.p_inicializar_cola;
-    k_sistema.p_encolar('Y_ERROR');
+    k_objeto_util.p_inicializar_cola;
+    k_objeto_util.p_encolar('RISK', 'Y_ERROR');
     -- Act
     l_resultado := y_respuesta.parse_json(l_respuesta.to_json);
     -- Assert
