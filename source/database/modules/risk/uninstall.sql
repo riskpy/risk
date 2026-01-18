@@ -108,6 +108,7 @@ prompt
 prompt Dropping procedures...
 prompt -----------------------------------
 prompt
+drop procedure p_configurar_modificacion;
 
 prompt
 prompt Dropping functions...

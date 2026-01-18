@@ -225,6 +225,7 @@ prompt
 prompt Creating procedures...
 prompt -----------------------------------
 prompt
+@@procedures/p_configurar_modificacion.prc
 
 prompt
 prompt Creating package specs...
