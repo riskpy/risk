@@ -44,7 +44,7 @@
                 "build"
             ],
             "dockerBuild": {
-                "tag": "backend:dev",
+                "tag": "api:dev",
                 "target": "base",
                 "dockerfile": "${workspaceFolder}/Risk.API/Dockerfile",
                 "context": "${workspaceFolder}",
@@ -61,7 +61,7 @@
                 "build"
             ],
             "dockerBuild": {
-                "tag": "backend:latest",
+                "tag": "api:latest",
                 "dockerfile": "${workspaceFolder}/Risk.API/Dockerfile",
                 "context": "${workspaceFolder}",
                 "platform": {

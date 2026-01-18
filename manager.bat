@@ -48,7 +48,7 @@ echo Seleccionar una opcion:
 echo.
 echo ============================================================
 echo.
-echo backend
+echo api
 echo.
 echo ============================================================
 echo.
@@ -396,7 +396,7 @@ goto :Menu
 :DescargarGenerador
 cls
 echo Descargando generador !generator[%1]!...
-cd %RISK_HOME%\source\backend\Risk.API.Client
+cd %RISK_HOME%\source\api\Risk.API.Client
 del /q !generator[%1]!
 set client_cmd=powershell -command "Invoke-WebRequest -OutFile !generator[%1]! !generator[%1].url!"
 call %client_cmd%
@@ -406,7 +406,7 @@ goto :eof
 :GenerarCliente
 cls
 echo Generando cliente !client[%1]!...
-cd %RISK_HOME%\source\backend\Risk.API.Client
+cd %RISK_HOME%\source\api\Risk.API.Client
 rd /s /q !client[%1].dir!
 if %generator%==1 (
   set client_cmd=java -Dio.swagger.parser.util.RemoteUrl.trustAll=true -Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true -jar !generator[%generator%]! generate -i %SWAGGER_SPEC_URL% -o !client[%1].dir! -g !client[%1]! -c config-!client[%1]!.json
@@ -420,9 +420,9 @@ goto :eof
 :ActualizarDocumentacion
 cls
 echo Actualizando documentacion de cliente !client[%1]!...
-rd /s /q %RISK_HOME%\docs\backend\clients\!client[%1]!
-echo D | xcopy /Y %RISK_HOME%\source\backend\Risk.API.Client\!client[%1].dir!\docs %RISK_HOME%\docs\backend\clients\!client[%1]!\docs
-echo F | xcopy /Y %RISK_HOME%\source\backend\Risk.API.Client\!client[%1].dir!\README.md %RISK_HOME%\docs\backend\clients\!client[%1]!\README.md
+rd /s /q %RISK_HOME%\docs\api\clients\!client[%1]!
+echo D | xcopy /Y %RISK_HOME%\source\api\Risk.API.Client\!client[%1].dir!\docs %RISK_HOME%\docs\api\clients\!client[%1]!\docs
+echo F | xcopy /Y %RISK_HOME%\source\api\Risk.API.Client\!client[%1].dir!\README.md %RISK_HOME%\docs\api\clients\!client[%1]!\README.md
 if %2==1 Pause
 goto :eof
 
@@ -431,9 +431,9 @@ cls
 echo Publicando cliente !client[%1]!...
 if %1==1 (
   echo Abriendo archivo .csproj...
-  notepad %RISK_HOME%\source\backend\Risk.API.Client\!client[%1].dir!\src\Risk.API.Client\Risk.API.Client.csproj
-  dotnet pack %RISK_HOME%\source\backend\Risk.API.Client\!client[%1].dir!\src\Risk.API.Client\Risk.API.Client.csproj
-  dotnet nuget push %RISK_HOME%\source\backend\Risk.API.Client\!client[%1].dir!\src\Risk.API.Client\bin\Debug\Risk.API.Client.%CLIENT_VERSION%.nupkg -k %API_KEY% -s https://api.nuget.org/v3/index.json
+  notepad %RISK_HOME%\source\api\Risk.API.Client\!client[%1].dir!\src\Risk.API.Client\Risk.API.Client.csproj
+  dotnet pack %RISK_HOME%\source\api\Risk.API.Client\!client[%1].dir!\src\Risk.API.Client\Risk.API.Client.csproj
+  dotnet nuget push %RISK_HOME%\source\api\Risk.API.Client\!client[%1].dir!\src\Risk.API.Client\bin\Debug\Risk.API.Client.%CLIENT_VERSION%.nupkg -k %API_KEY% -s https://api.nuget.org/v3/index.json
 ) else (
   echo No es posible publicar este cliente
 )

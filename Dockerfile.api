@@ -14,11 +14,11 @@ WORKDIR /src
 # Instalar certificados raíz
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && update-ca-certificates
 
-COPY ["source/backend/Risk.API/Risk.API.csproj", "Risk.API/"]
-COPY ["source/backend/Risk.Common/Risk.Common.csproj", "Risk.Common/"]
+COPY ["source/api/Risk.API/Risk.API.csproj", "Risk.API/"]
+COPY ["source/api/Risk.Common/Risk.Common.csproj", "Risk.Common/"]
 RUN dotnet restore "Risk.API/Risk.API.csproj"
 
-COPY ./source/backend .
+COPY ./source/api .
 WORKDIR "/src/Risk.API"
 RUN dotnet build "Risk.API.csproj" -c $configuration -o /app/build
 

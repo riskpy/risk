@@ -26,7 +26,7 @@ La documentación está disponible en la carpeta [docs](/docs/) del repositorio,
 
 # Estructura del Repositorio
 * **[/docs/](/docs/)** Archivos de documentación
-* **[/source/](/source/)** Archivos de código fuente separados en Base de Datos y Back-End
+* **[/source/](/source/)** Archivos de código fuente separados en Base de Datos y API
 * **[/test/](/test/)** Archivos de pruebas unitarias y extras
 
 # Colaboradores

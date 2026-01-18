@@ -24,7 +24,7 @@ install_audit.sql|Genera campos y triggers de auditoría para tablas del esquema
 install_dependencies.sql|Instala en el esquema actual las dependencias de terceros (Ver [Dependencias](#dependencias)).
 install_headless.sql|Crea usuarios, otorga permisos necesarios e instala los objetos de Base de Datos del Proyecto RISK.
 install_tapi.sql|Genera API's para tablas del esquema actual.
-grant_objects_access_role.sql|Otorga permisos necesarios al rol de acceso a la Base de Datos desde el Backend.
+grant_objects_access_role.sql|Otorga permisos necesarios al rol de acceso a la Base de Datos desde el API.
 set_compiler_flags.sql|TO-DO
 uninstall_audit.sql|Elimina campos y triggers de auditoría para tablas del esquema actual.
 uninstall_dependencies.sql|Desinstala del esquema actual las dependencias de terceros.
@@ -74,8 +74,8 @@ Existen 5 tipos de operaciones:
 Tipo|Descripción
 ----|-----------
 Parámetros|Es un tipo de operación que sirve para agrupar ciertos parámetros especiales y no tiene una implementación
-Servicio|Es un proceso que recibe datos de entrada y retorna datos de salida. Sirve de comunicación entre el Back-End y la Base de Datos
-Reporte|Es un proceso que recibe datos de entrada y retorna como salida un archivo de reporte, que puede ser en formatos PDF, DOCX, XLSX, CSV, HTML. Sirve de comunicación entre el Back-End y la Base de Datos
+Servicio|Es un proceso que recibe datos de entrada y retorna datos de salida. Sirve de comunicación entre el API y la Base de Datos
+Reporte|Es un proceso que recibe datos de entrada y retorna como salida un archivo de reporte, que puede ser en formatos PDF, DOCX, XLSX, CSV, HTML. Sirve de comunicación entre el API y la Base de Datos
 Trabajo|Es un proceso que se ejecuta automáticamente en un intérvalo de repetición configurado
 Monitoreo|TO-DO
 

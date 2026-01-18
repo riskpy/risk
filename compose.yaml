@@ -18,17 +18,17 @@ services:
     ports:
       - 6379:6379
 
-  backend:
-    image: riskpy/risk-backend:latest
+  api:
+    image: riskpy/risk-api:latest
     build:
       context: .
-      dockerfile: ./Dockerfile.backend
+      dockerfile: ./Dockerfile.api
     pull_policy: build
     ports:
       - 5000:5000
     env_file:
       - ./docker/common.env
-      - ./docker/backend/.env
+      - ./docker/api/.env
     depends_on:
       database:
         condition: service_healthy

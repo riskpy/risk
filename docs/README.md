@@ -33,17 +33,17 @@ Es una instancia de Base de Datos Oracle con un esquema central en el que se enc
 
 Más información: [Base de Datos](database/README.md)
 
-#### Back-End
+#### API
 Es una API web ASP.NET Core que se encarga de recibir peticiones HTTP de clientes (aplicaciones u otros sistemas) y se conecta a la Base de Datos para procesarlas.
 
-Más información: [Back-End](backend/README.md)
+Más información: [API](api/README.md)
 
 ![Arquitectura General](architecture/Risk.png)
 
 Adicionalmente RISK incluye dos componentes opcionales:
 
 #### Redis
-Es un almacen de datos en memoria que guarda valores más frecuentes de la comunicación entre los componentes de Base de Datos y Back-End y permite una mejora de velocidad en las respuestas.
+Es un almacen de datos en memoria que guarda valores más frecuentes de la comunicación entre los componentes de Base de Datos y API y permite una mejora de velocidad en las respuestas.
 
 #### RISK Admin
 Es una aplicación web de referencia implementada en Oracle APEX para administración y configuración del sistema.
@@ -62,7 +62,7 @@ Módulo para envío de mensajes a los usuarios a través de Correo electrónico 
 ### Base de Datos
 * [Oracle Database 12c o superior](https://www.oracle.com/database/technologies/oracle-database-software-downloads.html)
 
-### Back-End
+### API
 * [.NET 9.0 o superior](https://dotnet.microsoft.com/en-us/download/dotnet)
 
 Los servicios de mensajería tienen requerimientos especiales de terceros:

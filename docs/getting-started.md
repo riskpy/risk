@@ -13,4 +13,4 @@ Si tenés Docker instalado, sólo tenés que seguir estos pasos:
 Si no tenés Docker instalado, tenés que instalar los [requerimientos](README.md#requerimientos) siguiendo las instrucciones según la plataforma preferida y luego seguir los pasos de instalación para:
 
 * [Base de Datos](database/README.md#instalación)
-* [Back-End](backend/README.md#instalación)
+* [API](api/README.md#instalación)
