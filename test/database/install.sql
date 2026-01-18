@@ -64,6 +64,7 @@ prompt
 @@package_specs/test_k_importacion.spc
 @@package_specs/test_k_mensajeria.spc
 @@package_specs/test_k_modulo.spc
+@@package_specs/test_k_objeto_util.spc
 @@package_specs/test_k_operacion.spc
 @@package_specs/test_k_reporte.spc
 @@package_specs/test_k_servicio.spc
@@ -96,6 +97,7 @@ prompt
 @@package_bodies/test_k_importacion.bdy
 @@package_bodies/test_k_mensajeria.bdy
 @@package_bodies/test_k_modulo.bdy
+@@package_bodies/test_k_objeto_util.bdy
 @@package_bodies/test_k_operacion.bdy
 @@package_bodies/test_k_reporte.bdy
 @@package_bodies/test_k_servicio.bdy

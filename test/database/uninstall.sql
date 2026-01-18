@@ -64,6 +64,7 @@ drop package test_k_html;
 drop package test_k_importacion;
 drop package test_k_mensajeria;
 drop package test_k_modulo;
+drop package test_k_objeto_util;
 drop package test_k_operacion;
 drop package test_k_reporte;
 drop package test_k_servicio;
