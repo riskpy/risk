@@ -25,10 +25,13 @@ SOFTWARE.
 set serveroutput on size unlimited
 
 declare
+  l_sentencia clob;
+
   cursor cr_tablas is
-    select lower(table_name) as tabla
-      from user_tables
-     where lower(table_name) like 't\_%' escape '\';
+    select owner, lower(table_name) as tabla
+      from all_tables
+     where owner in ('RISK')
+       and lower(table_name) like 't\_%' escape '\';
 begin
   for t in cr_tablas loop
     dbms_output.put_line('Dropping audit triggers for table ' ||

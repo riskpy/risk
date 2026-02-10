@@ -1,4 +1,4 @@
-FROM gvenzl/oracle-free:23.9-full
+FROM gvenzl/oracle-free:23.26.1-full
 ENV TZ="America/Asuncion"
 
 ENV ORACLE_PASSWORD=$ORACLE_PASSWORD
@@ -21,4 +21,4 @@ COPY ./source/database /usr/src/risk/source/
 COPY ./test/database /usr/src/risk/test/
 COPY ./docker/database/[0-9]*.sh /container-entrypoint-initdb.d/
 
-HEALTHCHECK --start-period=6m --start-interval=3m --retries=10 CMD healthcheck.sh >/dev/null || exit 1
+HEALTHCHECK --interval=1m --start-period=6m --start-interval=2m --retries=10 CMD healthcheck.sh >/dev/null || exit 1

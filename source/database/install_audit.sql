@@ -22,19 +22,19 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-set define on
 set serveroutput on size unlimited
 
-accept v_generate_audit char default 'N' prompt 'Generate audit columns and triggers? (Y/N)'
-
 declare
+  l_sentencia clob;
+
   cursor cr_tablas is
-    select lower(table_name) as tabla
-      from user_tables
-     where lower(table_name) like 't\_%' escape '\';
+    select a.owner, lower(table_name) as tabla
+      from all_tables a
+     where a.owner in ('RISK')
+       and lower(table_name) like 't\_%' escape '\';
 begin
-  if upper('&v_generate_audit') = 'Y' then
-    for t in cr_tablas loop
+  for t in cr_tablas loop
+    begin
       dbms_output.put_line('Generating audit columns for table ' ||
                            upper(t.tabla) || '...');
       dbms_output.put_line('-----------------------------------');
@@ -43,12 +43,16 @@ begin
                            upper(t.tabla) || '...');
       dbms_output.put_line('-----------------------------------');
       k_auditoria.p_generar_trigger_auditoria(i_tabla => t.tabla);
-    end loop;
-  end if;
+    exception
+      when others then
+        dbms_output.put_line('Error generating audit for table ' ||
+                             upper(t.tabla) || ': ' || sqlerrm);
+        dbms_output.put_line('-----------------------------------');
+    end;
+  end loop;
 end;
 /
 
 set serveroutput off
-set define off
 
 @@compile_schema.sql
