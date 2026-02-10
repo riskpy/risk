@@ -1,0 +1,29 @@
+/* MODO OSCURO POR DEFECTO (sin data-theme o con dark) */
+:root {
+  --color-brand-primary: #60A5FA;
+  --color-brand-secondary: #1E293B;
+
+  --color-background: #020617;
+  --color-surface: #0B1120;
+  --color-surface-elevated: #111827;
+
+  --color-text-primary: #F9FAFB;
+  --color-text-secondary: #94A3B8;
+
+  --color-border-subtle: rgba(148, 163, 184, 0.4);
+}
+
+/* MODO CLARO – se activará cuando el ThemeProvider ponga data-theme="light" en <html> */
+:root[data-theme='light'] {
+  --color-brand-primary: #2563EB;
+  --color-brand-secondary: #0F172A;
+
+  --color-background: #F3F4F6;
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #E5E7EB;
+
+  --color-text-primary: #030712;
+  --color-text-secondary: #4B5563;
+
+  --color-border-subtle: rgba(15, 23, 42, 0.12);
+}
