@@ -83,7 +83,7 @@ UTPLSQL_CLI_PID=$!
 export SQLPATH="/usr/src/risk/source/:$SQLPATH"
 
 # Create schemas
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @install_headless.sql $RISK_DB_USER $RISK_DB_PASSWORD
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @install_headless.sql $RISK_APP_NAME $RISK_DB_PASSWORD
 echo "BUILDER: Schemas creation completed"
 display_elapsed_time
 
@@ -129,7 +129,7 @@ display_elapsed_time
 # Compile all schemas
 echo "BUILDER: Compiling schemas"
 sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @compile_schema.sql
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects_access_role.sql $RISK_DB_USER
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects_access_role.sql $RISK_APP_NAME
 
 # Install migrations
 echo "BUILDER: Migrations installation started"

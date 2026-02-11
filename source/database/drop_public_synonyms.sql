@@ -44,11 +44,8 @@ declare
         on s.table_owner = o.owner
        and s.table_name = o.object_name
      where o.owner is null
-       and s.table_owner in (v_app_name || '_DATA',
-                             v_app_name || '_UTIL',
-                             v_app_name,
-                             'MSJ',
-                             'FLJ');
+       and s.table_owner in
+           (v_app_name || '_UTIL', v_app_name, 'MSJ', 'FLJ');
 begin
   dbms_output.put_line('Dropping public synonyms...');
   dbms_output.put_line('-----------------------------------');

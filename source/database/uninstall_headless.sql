@@ -34,13 +34,11 @@ prompt Dropping users...
 prompt -----------------------------------
 prompt
 -- Drop users
-DEFINE v_data_user = '&v_app_name._data'
 DEFINE v_util_user = '&v_app_name._util'
 DEFINE v_code_user = '&v_app_name.'
 DEFINE v_dev_user = '&v_app_name._dev'
 DEFINE v_access_user = '&v_app_name._access'
 
-DROP USER &v_data_user CASCADE;
 DROP USER &v_util_user CASCADE;
 DROP USER &v_code_user CASCADE;
 DROP USER msj CASCADE;

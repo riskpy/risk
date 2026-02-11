@@ -31,11 +31,7 @@ declare
     select 'create or replace public synonym ' || object_name || ' for ' ||
            owner || '.' || object_name as sentencia
       from all_objects o
-     where owner in (v_app_name || '_DATA',
-                     v_app_name || '_UTIL',
-                     v_app_name,
-                     'MSJ',
-                     'FLJ')
+     where owner in (v_app_name || '_UTIL', v_app_name, 'MSJ', 'FLJ')
        and object_type in ('FUNCTION',
                            'PACKAGE',
                            'PROCEDURE',

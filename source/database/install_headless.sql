@@ -53,13 +53,11 @@ prompt Creating users...
 prompt -----------------------------------
 prompt
 -- Create users
-DEFINE v_data_user = '&v_app_name._data'
 DEFINE v_util_user = '&v_app_name._util'
 DEFINE v_code_user = '&v_app_name.'
 DEFINE v_dev_user = '&v_app_name._dev'
 DEFINE v_access_user = '&v_app_name._access'
 
-CREATE USER &v_data_user NO AUTHENTICATION;
 CREATE USER &v_util_user NO AUTHENTICATION;
 CREATE USER &v_code_user NO AUTHENTICATION;
 CREATE USER msj NO AUTHENTICATION;
@@ -67,7 +65,6 @@ CREATE USER flj NO AUTHENTICATION;
 CREATE USER &v_dev_user IDENTIFIED BY &v_password;
 CREATE USER &v_access_user IDENTIFIED BY &v_password;
 
-ALTER USER &v_data_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER &v_util_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER &v_code_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER msj GRANT CONNECT THROUGH &v_dev_user;
@@ -93,16 +90,12 @@ prompt Granting privileges to users...
 prompt -----------------------------------
 prompt
 -- Grant roles
-GRANT &v_data_role TO &v_data_user;
 GRANT &v_util_role TO &v_util_user;
 GRANT &v_code_role TO &v_code_user, msj, flj;
 GRANT &v_dev_role TO &v_dev_user;
 GRANT &v_access_role TO &v_access_user;
 
 -- Grant system privileges
-GRANT UNLIMITED TABLESPACE TO &v_data_user;
-GRANT CREATE JOB TO &v_data_user;
---
 GRANT UNLIMITED TABLESPACE TO &v_util_user;
 GRANT CREATE JOB TO &v_util_user;
 --
