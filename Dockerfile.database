@@ -1,4 +1,4 @@
-FROM gvenzl/oracle-free:23.26.1-full
+FROM gvenzl/oracle-free:23.9-full
 ENV TZ="America/Asuncion"
 
 ENV ORACLE_PASSWORD=$ORACLE_PASSWORD
