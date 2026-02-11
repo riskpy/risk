@@ -62,12 +62,16 @@ DEFINE v_access_user = '&v_app_name._access'
 CREATE USER &v_data_user NO AUTHENTICATION;
 CREATE USER &v_util_user NO AUTHENTICATION;
 CREATE USER &v_code_user NO AUTHENTICATION;
+CREATE USER msj NO AUTHENTICATION;
+CREATE USER flj NO AUTHENTICATION;
 CREATE USER &v_dev_user IDENTIFIED BY &v_password;
 CREATE USER &v_access_user IDENTIFIED BY &v_password;
 
 ALTER USER &v_data_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER &v_util_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER &v_code_user GRANT CONNECT THROUGH &v_dev_user;
+ALTER USER msj GRANT CONNECT THROUGH &v_dev_user;
+ALTER USER flj GRANT CONNECT THROUGH &v_dev_user;
 
 prompt
 prompt Granting privileges to roles...
@@ -91,7 +95,7 @@ prompt
 -- Grant roles
 GRANT &v_data_role TO &v_data_user;
 GRANT &v_util_role TO &v_util_user;
-GRANT &v_code_role TO &v_code_user;
+GRANT &v_code_role TO &v_code_user, msj, flj;
 GRANT &v_dev_role TO &v_dev_user;
 GRANT &v_access_role TO &v_access_user;
 
@@ -102,12 +106,12 @@ GRANT CREATE JOB TO &v_data_user;
 GRANT UNLIMITED TABLESPACE TO &v_util_user;
 GRANT CREATE JOB TO &v_util_user;
 --
-GRANT UNLIMITED TABLESPACE TO &v_code_user;
-GRANT CREATE JOB TO &v_code_user;
+GRANT UNLIMITED TABLESPACE TO &v_code_user, msj, flj;
+GRANT CREATE JOB TO &v_code_user, msj, flj;
 -- Grant object privileges
 GRANT EXECUTE ON sys.dbms_crypto TO &v_util_user;
 --
-GRANT EXECUTE ON sys.dbms_crypto TO &v_code_user;
+GRANT EXECUTE ON sys.dbms_crypto TO &v_code_user, msj, flj;
 --
 GRANT SELECT  ON sys.v_$session  TO &v_dev_user;
 GRANT SELECT  ON sys.v_$sesstat  TO &v_dev_user;

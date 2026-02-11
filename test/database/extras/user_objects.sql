@@ -1,3 +1,10 @@
+select o.owner, count(*) count
+  from all_objects o, all_users u
+ where u.username = o.owner
+   and u.oracle_maintained = 'N'
+ group by o.owner
+ order by 2 desc;
+--
 SELECT 'plugin plsqldoc generate ' || lower(o.object_name) || ';' plsqldoc,
        o.*
   FROM user_objects o
@@ -10,3 +17,4 @@ SELECT 'plugin plsqldoc generate ' || lower(o.object_name) || ';' plsqldoc,
         ESCAPE '\'))
    AND o.object_type = 'TABLE'
  ORDER BY o.object_name;
+

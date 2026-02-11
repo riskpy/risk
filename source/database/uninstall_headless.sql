@@ -43,6 +43,8 @@ DEFINE v_access_user = '&v_app_name._access'
 DROP USER &v_data_user CASCADE;
 DROP USER &v_util_user CASCADE;
 DROP USER &v_code_user CASCADE;
+DROP USER msj CASCADE;
+DROP USER flj CASCADE;
 DROP USER &v_dev_user CASCADE;
 DROP USER &v_access_user CASCADE;
 

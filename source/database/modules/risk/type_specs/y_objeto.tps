@@ -1,4 +1,4 @@
-create or replace type y_objeto as object
+create or replace type y_objeto force authid current_user as object
 (
 /**
 Tipo base para un objeto que puede ser serializado/deserializado con formato JSON.
@@ -37,7 +37,7 @@ SOFTWARE.
 Retorna el objeto deserializado a partir de un JSON.
 Cada sub-tipo del tipo base y_objeto debe implementar esta función con los
 atributos correspondientes.
-  
+
 %author jtsoya539 30/3/2020 09:42:09
 %param i_json JSON del objeto a deserializar.
 %return Objeto deserializado a partir de un JSON.
@@ -48,7 +48,7 @@ atributos correspondientes.
 Retorna el objeto serializado en formato JSON.
 Cada sub-tipo del tipo base y_objeto debe implementar esta función con los
 atributos correspondientes.
-  
+
 %author jtsoya539 30/3/2020 09:42:09
 %return Objeto serializado en formato JSON.
 */
@@ -56,3 +56,4 @@ atributos correspondientes.
 )
 not final not instantiable
 /
+

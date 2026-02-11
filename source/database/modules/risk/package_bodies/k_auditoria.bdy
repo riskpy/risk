@@ -1,74 +1,75 @@
 create or replace package body k_auditoria is
 
-  procedure p_generar_campos_auditoria(i_tabla    in varchar2,
-                                       i_ejecutar in boolean default true) is
-    l_sentencia varchar2(4000);
+  procedure lp_ejecutar_sentencias_ddl(i_sentencias in clob) is
+  begin
+    for c in (select trim(column_value) sentencia
+                from k_cadena.f_separar_cadenas(replace(replace(i_sentencias,
+                                                                unistr('\000D')),
+                                                        unistr('\000A')),
+                                                ';')
+               where trim(column_value) is not null) loop
+      execute immediate c.sentencia;
+    end loop;
+  end;
+
+  procedure p_generar_campos_auditoria(o_sentencia out clob,
+                                       i_esquema   in varchar2,
+                                       i_tabla     in varchar2,
+                                       i_ejecutar  in boolean default true) is
+    l_sentencia clob;
   begin
     -- Genera campos
-    l_sentencia := 'alter table ' || i_tabla || ' add
+    l_sentencia := l_sentencia || 'alter table ' || i_esquema || '.' ||
+                   i_tabla || ' add
 (
-  ' || g_nombre_campo_created_by || ' VARCHAR2(300) DEFAULT SUBSTR(USER, 1, 300),
-  ' || g_nombre_campo_created || ' TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  ' || g_nombre_campo_updated_by || ' VARCHAR2(300) DEFAULT SUBSTR(USER, 1, 300),
-  ' || g_nombre_campo_updated || ' TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)';
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
+  ' || g_nombre_campo_created_by || ' VARCHAR2(300) DEFAULT SUBSTR(USER, 1, 300) not null,
+  ' || g_nombre_campo_created || ' TIMESTAMP(2) DEFAULT SYSTIMESTAMP not null,
+  ' || g_nombre_campo_updated_by || ' VARCHAR2(300),
+  ' || g_nombre_campo_updated || ' TIMESTAMP(2)
+);' || utl_tcp.crlf;
   
     -- Genera comentarios
-    l_sentencia := 'comment on column ' || i_tabla || '.' ||
-                   g_nombre_campo_created_by ||
-                   ' is ''Usuario que creó el registro''';
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
+    l_sentencia := l_sentencia || 'comment on column ' || i_esquema || '.' ||
+                   i_tabla || '.' || g_nombre_campo_created_by ||
+                   ' is ''Usuario que realizó la creación del registro'';' ||
+                   utl_tcp.crlf;
+    l_sentencia := l_sentencia || 'comment on column ' || i_esquema || '.' ||
+                   i_tabla || '.' || g_nombre_campo_created ||
+                   ' is ''Fecha en que se realizó la creación del registro'';' ||
+                   utl_tcp.crlf;
+    l_sentencia := l_sentencia || 'comment on column ' || i_esquema || '.' ||
+                   i_tabla || '.' || g_nombre_campo_updated_by ||
+                   ' is ''Usuario que realizó la última edición del registro'';' ||
+                   utl_tcp.crlf;
+    l_sentencia := l_sentencia || 'comment on column ' || i_esquema || '.' ||
+                   i_tabla || '.' || g_nombre_campo_updated ||
+                   ' is ''Fecha en que se realizó la última edición del registro'';' ||
+                   utl_tcp.crlf;
   
-    l_sentencia := 'comment on column ' || i_tabla || '.' ||
-                   g_nombre_campo_created ||
-                   ' is ''Fecha de creación del registro''';
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
+    o_sentencia := l_sentencia;
   
-    l_sentencia := 'comment on column ' || i_tabla || '.' ||
-                   g_nombre_campo_updated_by ||
-                   ' is ''Usuario que realizó la última actualización del registro''';
     if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
-  
-    l_sentencia := 'comment on column ' || i_tabla || '.' ||
-                   g_nombre_campo_updated ||
-                   ' is ''Fecha de la última actualización del registro''';
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
+      lp_ejecutar_sentencias_ddl(o_sentencia);
     end if;
   end;
 
-  procedure p_generar_trigger_auditoria(i_tabla    in varchar2,
-                                        i_trigger  in varchar2 default null,
-                                        i_ejecutar in boolean default true) is
-    l_sentencia varchar2(4000);
-    l_trigger   varchar2(30);
+  procedure p_generar_trigger_auditoria(o_sentencia out clob,
+                                        i_esquema   in varchar2,
+                                        i_tabla     in varchar2,
+                                        i_trigger   in varchar2 default null,
+                                        i_ejecutar  in boolean default true) is
+    l_sentencia clob;
+    l_trigger   varchar2(300);
   begin
-    l_trigger := lower(nvl(i_trigger,
+    l_trigger := lower(nvl(g_esquema_auditoria, i_esquema) || '.' ||
+                       nvl(i_trigger,
                            g_prefijo_trigger_auditoria ||
                            substr(i_tabla, length(g_prefijo_tabla) + 1)));
   
     -- Genera trigger
-    l_sentencia := 'CREATE OR REPLACE TRIGGER ' || l_trigger || '
-  BEFORE INSERT OR UPDATE ON ' || lower(i_tabla) || '
+    l_sentencia := l_sentencia || 'CREATE OR REPLACE TRIGGER ' || l_trigger || '
+  BEFORE INSERT OR UPDATE ON ' ||
+                   lower(i_esquema || '.' || i_tabla) || '
   FOR EACH ROW
 BEGIN
   /*
@@ -96,79 +97,72 @@ BEGIN
   */
 
   IF inserting THEN
-    -- Auditoría de creación
+    -- Auditoría para inserción de registros
     :new.' || lower(g_nombre_campo_created_by) ||
                    ' := substr(coalesce(k_sistema.f_usuario, USER), 1, 300);
-    :new.' || lower(g_nombre_campo_created) || ' := CURRENT_TIMESTAMP;
+    :new.' || lower(g_nombre_campo_created) || ' := SYSTIMESTAMP;
   END IF;
 
-  -- Auditoría de actualización
+  -- Auditoría para modificación de registros
   :new.' || lower(g_nombre_campo_updated_by) || ' := substr(coalesce(k_sistema.f_usuario, USER), 1, 300);
-  :new.' || lower(g_nombre_campo_updated) || ' := CURRENT_TIMESTAMP;
+  :new.' || lower(g_nombre_campo_updated) || ' := SYSTIMESTAMP;
 END;';
   
+    o_sentencia := l_sentencia;
+  
     if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
+      execute immediate o_sentencia;
     end if;
   end;
 
-  procedure p_eliminar_campos_auditoria(i_tabla    in varchar2,
-                                        i_ejecutar in boolean default true) is
-    l_sentencia varchar2(4000);
+  procedure p_eliminar_campos_auditoria(o_sentencia out clob,
+                                        i_esquema   in varchar2,
+                                        i_tabla     in varchar2,
+                                        i_ejecutar  in boolean default true) is
+    l_sentencia clob;
   begin
     -- Elimina campos
-    l_sentencia := 'alter table ' || i_tabla || ' drop column ' ||
-                   g_nombre_campo_created_by;
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
+    l_sentencia := l_sentencia || 'alter table ' || i_esquema || '.' ||
+                   i_tabla || ' drop column ' || g_nombre_campo_created_by || ';' ||
+                   utl_tcp.crlf;
+    l_sentencia := l_sentencia || 'alter table ' || i_esquema || '.' ||
+                   i_tabla || ' drop column ' || g_nombre_campo_created || ';' ||
+                   utl_tcp.crlf;
+    l_sentencia := l_sentencia || 'alter table ' || i_esquema || '.' ||
+                   i_tabla || ' drop column ' || g_nombre_campo_updated_by || ';' ||
+                   utl_tcp.crlf;
+    l_sentencia := l_sentencia || 'alter table ' || i_esquema || '.' ||
+                   i_tabla || ' drop column ' || g_nombre_campo_updated || ';' ||
+                   utl_tcp.crlf;
   
-    l_sentencia := 'alter table ' || i_tabla || ' drop column ' ||
-                   g_nombre_campo_created;
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
+    o_sentencia := l_sentencia;
   
-    l_sentencia := 'alter table ' || i_tabla || ' drop column ' ||
-                   g_nombre_campo_updated_by;
     if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
-    end if;
-  
-    l_sentencia := 'alter table ' || i_tabla || ' drop column ' ||
-                   g_nombre_campo_updated;
-    if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
+      lp_ejecutar_sentencias_ddl(o_sentencia);
     end if;
   end;
 
-  procedure p_eliminar_trigger_auditoria(i_tabla    in varchar2,
-                                         i_trigger  in varchar2 default null,
-                                         i_ejecutar in boolean default true) is
-    l_sentencia varchar2(4000);
-    l_trigger   varchar2(30);
+  procedure p_eliminar_trigger_auditoria(o_sentencia out clob,
+                                         i_esquema   in varchar2,
+                                         i_tabla     in varchar2,
+                                         i_trigger   in varchar2 default null,
+                                         i_ejecutar  in boolean default true) is
+    l_sentencia clob;
+    l_trigger   varchar2(300);
   begin
-    l_trigger := lower(nvl(i_trigger,
+    l_trigger := lower(nvl(g_esquema_auditoria, i_esquema) || '.' ||
+                       nvl(i_trigger,
                            g_prefijo_trigger_auditoria ||
                            substr(i_tabla, length(g_prefijo_tabla) + 1)));
   
-    -- Genera trigger
-    l_sentencia := 'drop trigger ' || l_trigger;
+    -- Elimina trigger
+    l_sentencia := l_sentencia || 'drop trigger ' || l_trigger || ';' ||
+                   utl_tcp.crlf;
+  
+    o_sentencia := l_sentencia;
   
     if i_ejecutar then
-      execute immediate l_sentencia;
-    else
-      dbms_output.put_line(l_sentencia);
+      lp_ejecutar_sentencias_ddl(o_sentencia);
     end if;
   end;
 

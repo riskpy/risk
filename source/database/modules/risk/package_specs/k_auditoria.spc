@@ -1,4 +1,4 @@
-create or replace package k_auditoria is
+create or replace package k_auditoria authid current_user is
 
   /**
   Agrupa operaciones relacionadas con la auditoria de tablas
@@ -36,6 +36,9 @@ create or replace package k_auditoria is
   g_nombre_campo_updated_by varchar2(30) := 'USUARIO_MODIFICACION';
   g_nombre_campo_updated    varchar2(30) := 'FECHA_MODIFICACION';
 
+  -- Esquema para triggers de auditoria
+  g_esquema_auditoria varchar2(30) := '';
+
   -- Prefijos
   g_prefijo_tabla             varchar2(30) := 't_';
   g_prefijo_trigger_auditoria varchar2(30) := 'ga_';
@@ -43,42 +46,59 @@ create or replace package k_auditoria is
   /**
   Genera campos de auditoria para una tabla
   
+  %param o_sentencia Sentencia generada para ejecutar
+  %param i_esquema Esquema
   %param i_tabla Tabla
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  procedure p_generar_campos_auditoria(i_tabla    in varchar2,
-                                       i_ejecutar in boolean default true);
+  procedure p_generar_campos_auditoria(o_sentencia out clob,
+                                       i_esquema   in varchar2,
+                                       i_tabla     in varchar2,
+                                       i_ejecutar  in boolean default true);
 
   /**
   Genera trigger de auditoria para una tabla
   
+  %param o_sentencia Sentencia generada para ejecutar
+  %param i_esquema Esquema
   %param i_tabla Tabla
   %param i_trigger Trigger
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  procedure p_generar_trigger_auditoria(i_tabla    in varchar2,
-                                        i_trigger  in varchar2 default null,
-                                        i_ejecutar in boolean default true);
+  procedure p_generar_trigger_auditoria(o_sentencia out clob,
+                                        i_esquema   in varchar2,
+                                        i_tabla     in varchar2,
+                                        i_trigger   in varchar2 default null,
+                                        i_ejecutar  in boolean default true);
 
   /**
   Elimina campos de auditoria para una tabla
   
+  %param o_sentencia Sentencia generada para ejecutar
+  %param i_esquema Esquema
   %param i_tabla Tabla
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  procedure p_eliminar_campos_auditoria(i_tabla    in varchar2,
-                                        i_ejecutar in boolean default true);
+  procedure p_eliminar_campos_auditoria(o_sentencia out clob,
+                                        i_esquema   in varchar2,
+                                        i_tabla     in varchar2,
+                                        i_ejecutar  in boolean default true);
 
   /**
   Elimina trigger de auditoria para una tabla
   
+  %param o_sentencia Sentencia generada para ejecutar
+  %param i_esquema Esquema
   %param i_tabla Tabla
   %param i_trigger Trigger
   %param i_ejecutar Ejecutar la(s) sentencia(s)?
   */
-  procedure p_eliminar_trigger_auditoria(i_tabla    in varchar2,
-                                         i_trigger  in varchar2 default null,
-                                         i_ejecutar in boolean default true);
+  procedure p_eliminar_trigger_auditoria(o_sentencia out clob,
+                                         i_esquema   in varchar2,
+                                         i_tabla     in varchar2,
+                                         i_trigger   in varchar2 default null,
+                                         i_ejecutar  in boolean default true);
 
 end;
 /
+

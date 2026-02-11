@@ -99,9 +99,9 @@ display_elapsed_time
 # Install modules sequentially
 modules=(
     # Module,Schema,Run Syn/Grant
-    "risk,$RISK_CODE_USER,false"
-    "msj,$RISK_CODE_USER,false"
-    "flj,$RISK_CODE_USER,true"
+    "risk,$RISK_CODE_USER,true"
+    "msj,msj,true"
+    "flj,flj,true"
 )
 
 for module in "${modules[@]}"; do

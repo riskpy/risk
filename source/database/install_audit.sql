@@ -38,11 +38,18 @@ begin
       dbms_output.put_line('Generating audit columns for table ' ||
                            upper(t.tabla) || '...');
       dbms_output.put_line('-----------------------------------');
-      k_auditoria.p_generar_campos_auditoria(i_tabla => t.tabla);
+      k_auditoria.p_generar_campos_auditoria(o_sentencia => l_sentencia,
+                                             i_esquema   => t.owner,
+                                             i_tabla     => t.tabla,
+                                             i_ejecutar  => true);
       dbms_output.put_line('Generating audit triggers for table ' ||
                            upper(t.tabla) || '...');
       dbms_output.put_line('-----------------------------------');
-      k_auditoria.p_generar_trigger_auditoria(i_tabla => t.tabla);
+      k_auditoria.p_generar_trigger_auditoria(o_sentencia => l_sentencia,
+                                              i_esquema   => t.owner,
+                                              i_tabla     => t.tabla,
+                                              i_trigger   => null,
+                                              i_ejecutar  => true);
     exception
       when others then
         dbms_output.put_line('Error generating audit for table ' ||

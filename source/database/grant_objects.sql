@@ -59,8 +59,11 @@ begin
                 o.owner || '.' || o.object_name) || ' to ' ||
          (select listagg(u.username, ',') within group(order by u.username)
             from all_users u
-           where u.username in
-                 (v_app_name || '_DATA', v_app_name || '_UTIL', v_app_name)
+           where u.username in (v_app_name || '_DATA',
+                                v_app_name || '_UTIL',
+                                v_app_name,
+                                'MSJ',
+                                'FLJ')
              and u.username not in
                  (o.owner, sys_context('USERENV', 'CURRENT_SCHEMA'))) ||
          ' with grant option' as sentencia,
@@ -70,8 +73,11 @@ begin
     from all_objects o, all_types t
    where t.owner(+) = o.owner
      and t.type_name(+) = o.object_name
-     and o.owner in
-         (v_app_name || '_DATA', v_app_name || '_UTIL', v_app_name)
+     and o.owner in (v_app_name || '_DATA',
+                     v_app_name || '_UTIL',
+                     v_app_name,
+                     'MSJ',
+                     'FLJ')
      and o.object_type in ('FUNCTION',
                            'PACKAGE',
                            'PROCEDURE',
@@ -92,7 +98,9 @@ begin
                 from all_users u
                where u.username in (v_app_name || '_DATA',
                                     v_app_name || '_UTIL',
-                                    v_app_name)
+                                    v_app_name,
+                                    'MSJ',
+                                    'FLJ')
                  and u.username not in
                      (o.owner, sys_context('USERENV', 'CURRENT_SCHEMA')))) is not null
    order by decode(o.owner, v_app_name, 1, 99),
