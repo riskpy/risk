@@ -23,6 +23,11 @@ SOFTWARE.
 */
 
 set serveroutput on size unlimited
+set define on
+
+DEFINE 1 = ''
+COLUMN c1 NEW_VALUE v_app_name NOPRINT
+select nvl(nullif('&1', ''), 'RISK') c1 from dual;
 
 declare
   l_audit_column_mappings varchar2(4000);
@@ -31,7 +36,8 @@ declare
   cursor cr_tablas is
     select a.owner, lower(table_name) as tabla
       from all_tables a
-     where a.owner in ('RISK')
+     where a.owner like '&v_app_name.\_%' escape
+     '\'
        and lower(table_name) like 't\_%' escape '\';
 begin
   l_audit_column_mappings := 'created=' ||
@@ -44,8 +50,8 @@ begin
                              k_auditoria.g_nombre_campo_updated_by;
   l_audit_user_expression := 'substr(coalesce(k_sistema.f_usuario, user), 1, 300)';
   for t in cr_tablas loop
-    dbms_output.put_line('Generating TAPI for table ' || upper(t.tabla) ||
-                         '...');
+    dbms_output.put_line('Generating TAPI for table ' || upper(t.owner) || '.' ||
+                         upper(t.tabla) || '...');
     dbms_output.put_line('-----------------------------------');
     begin
       om_tapigen.compile_api(p_table_name               => upper(t.tabla),
@@ -66,6 +72,7 @@ begin
 end;
 /
 
+set define off
 set serveroutput off
 
 @@compile_schema.sql

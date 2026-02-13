@@ -23,6 +23,11 @@ SOFTWARE.
 */
 
 set serveroutput on size unlimited
+set define on
+
+DEFINE 1 = ''
+COLUMN c1 NEW_VALUE v_app_name NOPRINT
+select nvl(nullif('&1', ''), 'RISK') c1 from dual;
 
 declare
   l_sentencia clob;
@@ -30,20 +35,23 @@ declare
   cursor cr_tablas is
     select a.owner, lower(table_name) as tabla
       from all_tables a
-     where a.owner in ('RISK')
+     where a.owner like '&v_app_name.\_%' escape
+     '\'
        and lower(table_name) like 't\_%' escape '\';
 begin
   for t in cr_tablas loop
     begin
       dbms_output.put_line('Generating audit columns for table ' ||
-                           upper(t.tabla) || '...');
+                           upper(t.owner) || '.' || upper(t.tabla) ||
+                           '...');
       dbms_output.put_line('-----------------------------------');
       k_auditoria.p_generar_campos_auditoria(o_sentencia => l_sentencia,
                                              i_esquema   => t.owner,
                                              i_tabla     => t.tabla,
                                              i_ejecutar  => true);
       dbms_output.put_line('Generating audit triggers for table ' ||
-                           upper(t.tabla) || '...');
+                           upper(t.owner) || '.' || upper(t.tabla) ||
+                           '...');
       dbms_output.put_line('-----------------------------------');
       k_auditoria.p_generar_trigger_auditoria(o_sentencia => l_sentencia,
                                               i_esquema   => t.owner,
@@ -60,6 +68,7 @@ begin
 end;
 /
 
+set define off
 set serveroutput off
 
 @@compile_schema.sql

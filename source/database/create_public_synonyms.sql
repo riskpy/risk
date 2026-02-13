@@ -25,7 +25,9 @@ SOFTWARE.
 set serveroutput on size unlimited
 set define on
 
-DEFINE v_app_name = 'RISK'
+DEFINE 1 = ''
+COLUMN c1 NEW_VALUE v_app_name NOPRINT
+select nvl(nullif('&1', ''), 'RISK') c1 from dual;
 
 declare
   cursor cr_objetos is

@@ -25,16 +25,19 @@ SOFTWARE.
 spool generate_docs.sql
 
 set feedback off
-set define off
+set define on
 set serveroutput on size unlimited
 
-declare
-  v_app_name varchar2(100) := 'RISK';
+DEFINE 1 = ''
+COLUMN c1 NEW_VALUE v_app_name NOPRINT
+select nvl(nullif('&1', ''), 'RISK') c1 from dual;
 
+declare
   cursor cr_objetos is
     select 'plugin plsqldoc generate ' || lower(o.object_name) || ';' plsqldoc
       from all_objects o
-     where o.owner in (v_app_name)
+     where o.owner like '&v_app_name.\_%' escape
+     '\'
        and ((o.object_type = 'TABLE' and lower(o.object_name) like 't\_%'
             escape '\') or (o.object_type = 'VIEW' and
            lower(o.object_name) like 'v\_%' escape '\') or

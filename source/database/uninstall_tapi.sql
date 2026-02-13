@@ -23,25 +23,39 @@ SOFTWARE.
 */
 
 set serveroutput on size unlimited
+set define on
+
+DEFINE 1 = ''
+COLUMN c1 NEW_VALUE v_app_name NOPRINT
+select nvl(nullif('&1', ''), 'RISK') c1 from dual;
 
 declare
-  cursor cr_statements is
-    select 'drop ' || lower(x.object_type) || ' ' || lower(x.object_name) ||
+  cursor cr_usuarios is
+    select u.username
+      from all_users u
+     where u.username like '&v_app_name.\_%' escape '\';
+
+  cursor cr_statements(i_owner in varchar2) is
+    select 'drop ' || lower(x.object_type) || ' ' || lower(i_owner) || '.' ||
+           lower(x.object_name) ||
            decode(x.object_type, 'VIEW', ' cascade constraints') as drop_statement
-      from table(om_tapigen.view_naming_conflicts) x
+      from table(om_tapigen.view_naming_conflicts(p_owner => i_owner)) x
      where x.object_type in ('PACKAGE', 'VIEW');
 begin
-  for s in cr_statements loop
-    begin
-      execute immediate s.drop_statement;
-    exception
-      when others then
-        dbms_output.put_line(sqlerrm);
-    end;
+  for u in cr_usuarios loop
+    for s in cr_statements(u.username) loop
+      begin
+        execute immediate s.drop_statement;
+      exception
+        when others then
+          dbms_output.put_line(sqlerrm);
+      end;
+    end loop;
   end loop;
 end;
 /
 
+set define off
 set serveroutput off
 
 @@compile_schema.sql

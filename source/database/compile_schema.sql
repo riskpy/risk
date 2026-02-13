@@ -23,14 +23,27 @@ SOFTWARE.
 */
 
 set serveroutput on size unlimited
+set define on
+
+DEFINE 1 = ''
+COLUMN c1 NEW_VALUE v_app_name NOPRINT
+select nvl(nullif('&1', ''), 'RISK') c1 from dual;
 
 declare
   cursor cr_usuarios is
     select distinct o.owner as username
       from all_objects o
-     where o.owner in ('RISK', sys_context('USERENV', 'CURRENT_SCHEMA'))
-       and o.status = 'INVALID'
+     where o.status = 'INVALID'
+       and (o.owner in (sys_context('USERENV', 'CURRENT_SCHEMA')) or
+           o.owner like '&v_app_name.\_%' escape '\')
        and o.owner not in ('SYS');
+
+  cursor cr_sinonimos is
+    select 'alter public synonym ' || o.object_name || ' compile' as sentencia
+      from all_objects o
+     where o.object_type = 'SYNONYM'
+       and o.owner = 'PUBLIC'
+       and o.status = 'INVALID';
 begin
   for u in cr_usuarios loop
     dbms_output.put_line('Compiling invalid objects for schema ' ||
@@ -38,7 +51,15 @@ begin
     dbms_output.put_line('-----------------------------------');
     dbms_utility.compile_schema(schema => u.username, compile_all => false);
   end loop;
+
+  dbms_output.put_line('Compiling invalid public synonyms...');
+  dbms_output.put_line('-----------------------------------');
+  for t in cr_sinonimos loop
+    --dbms_output.put_line(t.sentencia);
+    execute immediate t.sentencia;
+  end loop;
 end;
 /
 
+set define off
 set serveroutput off

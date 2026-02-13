@@ -23,6 +23,11 @@ SOFTWARE.
 */
 
 set serveroutput on size unlimited
+set define on
+
+DEFINE 1 = ''
+COLUMN c1 NEW_VALUE v_app_name NOPRINT
+select nvl(nullif('&1', ''), 'RISK') c1 from dual;
 
 declare
   l_sentencia clob;
@@ -30,12 +35,13 @@ declare
   cursor cr_tablas is
     select owner, lower(table_name) as tabla
       from all_tables
-     where owner in ('RISK')
+     where owner like '&v_app_name.\_%' escape
+     '\'
        and lower(table_name) like 't\_%' escape '\';
 begin
   for t in cr_tablas loop
     dbms_output.put_line('Dropping audit triggers for table ' ||
-                         upper(t.tabla) || '...');
+                         upper(t.owner) || '.' || upper(t.tabla) || '...');
     dbms_output.put_line('-----------------------------------');
     begin
       k_auditoria.p_eliminar_trigger_auditoria(o_sentencia => l_sentencia,
@@ -49,7 +55,7 @@ begin
     end;
   
     dbms_output.put_line('Dropping audit columns for table ' ||
-                         upper(t.tabla) || '...');
+                         upper(t.owner) || '.' || upper(t.tabla) || '...');
     dbms_output.put_line('-----------------------------------');
     begin
       k_auditoria.p_eliminar_campos_auditoria(o_sentencia => l_sentencia,
@@ -64,6 +70,7 @@ begin
 end;
 /
 
+set define off
 set serveroutput off
 
 @@compile_schema.sql
