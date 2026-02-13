@@ -22,36 +22,12 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-@@define_variables.sql
+set define on
 
-set serveroutput on size unlimited
-
-declare
-  cursor cr_usuarios is
-    select u.username
-      from all_users u
-     where u.username like '&v_app_name.\_%' escape '\';
-
-  cursor cr_statements(i_owner in varchar2) is
-    select 'drop ' || lower(x.object_type) || ' ' || lower(i_owner) || '.' ||
-           lower(x.object_name) ||
-           decode(x.object_type, 'VIEW', ' cascade constraints') as drop_statement
-      from table(om_tapigen.view_naming_conflicts(p_owner => i_owner)) x
-     where x.object_type in ('PACKAGE', 'VIEW');
-begin
-  for u in cr_usuarios loop
-    for s in cr_statements(u.username) loop
-      begin
-        execute immediate s.drop_statement;
-      exception
-        when others then
-          dbms_output.put_line(sqlerrm);
-      end;
-    end loop;
-  end loop;
-end;
-/
-
-set serveroutput off
-
-@@compile_schema.sql
+--accept v_app_name char default 'RISK' prompt 'Enter app name (default ''RISK''):'
+--accept v_password char default 'risk' prompt 'Enter password (default ''risk''):' hide
+DEFINE 1 = ''
+DEFINE 2 = ''
+COLUMN c1 NEW_VALUE v_app_name NOPRINT
+COLUMN c2 NEW_VALUE v_password NOPRINT
+select nvl(nullif('&1', ''), 'RISK') c1, nvl(nullif('&2', ''), 'risk') c2 from dual;

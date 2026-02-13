@@ -28,9 +28,7 @@ set feedback off
 set define on
 set serveroutput on size unlimited
 
-DEFINE 1 = ''
-COLUMN c1 NEW_VALUE v_app_name NOPRINT
-select nvl(nullif('&1', ''), 'RISK') c1 from dual;
+@@define_variables.sql
 
 declare
   cursor cr_objetos is

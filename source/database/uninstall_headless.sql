@@ -26,8 +26,7 @@ spool uninstall_headless.log
 
 set define on
 
---accept v_app_name char default 'risk' prompt 'Enter app name (default ''risk''):'
-DEFINE v_app_name = '&1'
+@@define_variables.sql
 
 prompt
 prompt Dropping users...

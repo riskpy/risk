@@ -26,10 +26,7 @@ spool install_headless.log
 
 set define on
 
---accept v_app_name char default 'risk' prompt 'Enter app name (default ''risk''):'
---accept v_password char default 'risk' prompt 'Enter password (default ''risk''):' hide
-DEFINE v_app_name = '&1'
-DEFINE v_password = '&2'
+@@define_variables.sql
 
 prompt
 prompt Creating roles...

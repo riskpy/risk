@@ -22,12 +22,9 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-set serveroutput on size unlimited
-set define on
+@@define_variables.sql
 
-DEFINE 1 = ''
-COLUMN c1 NEW_VALUE v_app_name NOPRINT
-select nvl(nullif('&1', ''), 'RISK') c1 from dual;
+set serveroutput on size unlimited
 
 declare
   l_audit_column_mappings varchar2(4000);
@@ -72,7 +69,6 @@ begin
 end;
 /
 
-set define off
 set serveroutput off
 
 @@compile_schema.sql

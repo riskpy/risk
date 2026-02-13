@@ -26,10 +26,7 @@ spool grant_objects_access_role.log
 
 set define on
 
---accept v_app_name char default 'risk' prompt 'Enter app name (default ''risk''):'
-DEFINE 1 = ''
-COLUMN c1 NEW_VALUE v_app_name NOPRINT
-select nvl(nullif('&1', ''), 'RISK') c1 from dual;
+@@define_variables.sql
 
 prompt
 prompt Defining roles...
