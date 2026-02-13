@@ -29,15 +29,26 @@ DEFINE v_module = '&1'
 
 prompt - Set compiler flags
 declare
-  l_module        varchar2(30) := '&v_module';
-  l_plsql_ccflags varchar2(4000);
+  l_module           varchar2(30) := '&v_module';
+  l_risk_module_user varchar2(30);
+  l_plsql_ccflags    varchar2(4000);
 begin
+  begin
+    select owner
+      into l_risk_module_user
+      from all_objects
+     where object_type = 'PACKAGE'
+       and object_name = 'K_MODULO';
+  exception
+    when no_data_found then
+      l_risk_module_user := null;
+  end;
+
   begin
     select plsql_ccflags
       into l_plsql_ccflags
       from all_plsql_object_settings
      where type = 'PACKAGE'
-       and owner = 'RISK'
        and name = 'K_MODULO';
   exception
     when no_data_found then
@@ -53,6 +64,10 @@ begin
   
     execute immediate 'alter session set plsql_ccflags = ''' ||
                       l_plsql_ccflags || '''';
+    if l_risk_module_user is not null then
+      execute immediate 'alter package ' || lower(l_risk_module_user) ||
+                        '.k_modulo compile package';
+    end if;
   end if;
 end;
 /

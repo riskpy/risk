@@ -36,15 +36,13 @@ prompt Creating roles...
 prompt -----------------------------------
 prompt
 -- Create roles
-DEFINE v_data_role = '&v_app_name._data_role'
 DEFINE v_util_role = '&v_app_name._util_role'
-DEFINE v_code_role = '&v_app_name._code_role'
+DEFINE v_module_role = '&v_app_name._module_role'
 DEFINE v_dev_role = '&v_app_name._dev_role'
 DEFINE v_access_role = '&v_app_name._access_role'
 
-CREATE ROLE &v_data_role;
 CREATE ROLE &v_util_role;
-CREATE ROLE &v_code_role;
+CREATE ROLE &v_module_role;
 CREATE ROLE &v_dev_role;
 CREATE ROLE &v_access_role;
 
@@ -54,29 +52,31 @@ prompt -----------------------------------
 prompt
 -- Create users
 DEFINE v_util_user = '&v_app_name._util'
-DEFINE v_code_user = '&v_app_name.'
+DEFINE v_risk_module_user = '&v_app_name._risk'
+DEFINE v_msj_module_user = '&v_app_name._msj'
+DEFINE v_flj_module_user = '&v_app_name._flj'
 DEFINE v_dev_user = '&v_app_name._dev'
 DEFINE v_access_user = '&v_app_name._access'
 
 CREATE USER &v_util_user NO AUTHENTICATION;
-CREATE USER &v_code_user NO AUTHENTICATION;
-CREATE USER msj NO AUTHENTICATION;
-CREATE USER flj NO AUTHENTICATION;
+CREATE USER &v_risk_module_user NO AUTHENTICATION;
+CREATE USER &v_msj_module_user NO AUTHENTICATION;
+CREATE USER &v_flj_module_user NO AUTHENTICATION;
 CREATE USER &v_dev_user IDENTIFIED BY &v_password;
 CREATE USER &v_access_user IDENTIFIED BY &v_password;
 
 ALTER USER &v_util_user GRANT CONNECT THROUGH &v_dev_user;
-ALTER USER &v_code_user GRANT CONNECT THROUGH &v_dev_user;
-ALTER USER msj GRANT CONNECT THROUGH &v_dev_user;
-ALTER USER flj GRANT CONNECT THROUGH &v_dev_user;
+ALTER USER &v_risk_module_user GRANT CONNECT THROUGH &v_dev_user;
+ALTER USER &v_msj_module_user GRANT CONNECT THROUGH &v_dev_user;
+ALTER USER &v_flj_module_user GRANT CONNECT THROUGH &v_dev_user;
 
 prompt
 prompt Granting privileges to roles...
 prompt -----------------------------------
 prompt
 -- Grant system privileges
-GRANT CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW, CREATE ANY PROCEDURE, ALTER ANY PROCEDURE, CREATE PUBLIC SYNONYM, DROP PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE, CREATE ANY TRIGGER, CREATE TYPE, CREATE VIEW TO &v_data_role, &v_util_role, &v_code_role;
-GRANT DEBUG CONNECT SESSION TO &v_data_role, &v_util_role, &v_code_role;
+GRANT CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW, CREATE ANY PROCEDURE, ALTER ANY PROCEDURE, CREATE PUBLIC SYNONYM, DROP PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE, CREATE ANY TRIGGER, CREATE TYPE, CREATE VIEW TO &v_util_role, &v_module_role;
+GRANT DEBUG CONNECT SESSION TO &v_util_role, &v_module_role;
 --
 GRANT CREATE SESSION, ALTER SESSION, CREATE DATABASE LINK, CREATE MATERIALIZED VIEW, CREATE ANY PROCEDURE, ALTER ANY PROCEDURE, CREATE PUBLIC SYNONYM, DROP PUBLIC SYNONYM, CREATE ROLE, CREATE SEQUENCE, CREATE SYNONYM, CREATE TABLE, CREATE ANY TRIGGER, CREATE TYPE, CREATE VIEW TO &v_dev_role;
 GRANT DEBUG CONNECT SESSION TO &v_dev_role;
@@ -91,7 +91,7 @@ prompt -----------------------------------
 prompt
 -- Grant roles
 GRANT &v_util_role TO &v_util_user;
-GRANT &v_code_role TO &v_code_user, msj, flj;
+GRANT &v_module_role TO &v_risk_module_user, &v_msj_module_user, &v_flj_module_user;
 GRANT &v_dev_role TO &v_dev_user;
 GRANT &v_access_role TO &v_access_user;
 
@@ -99,12 +99,12 @@ GRANT &v_access_role TO &v_access_user;
 GRANT UNLIMITED TABLESPACE TO &v_util_user;
 GRANT CREATE JOB TO &v_util_user;
 --
-GRANT UNLIMITED TABLESPACE TO &v_code_user, msj, flj;
-GRANT CREATE JOB TO &v_code_user, msj, flj;
+GRANT UNLIMITED TABLESPACE TO &v_risk_module_user, &v_msj_module_user, &v_flj_module_user;
+GRANT CREATE JOB TO &v_risk_module_user, &v_msj_module_user, &v_flj_module_user;
 -- Grant object privileges
 GRANT EXECUTE ON sys.dbms_crypto TO &v_util_user;
 --
-GRANT EXECUTE ON sys.dbms_crypto TO &v_code_user, msj, flj;
+GRANT EXECUTE ON sys.dbms_crypto TO &v_risk_module_user, &v_msj_module_user, &v_flj_module_user;
 --
 GRANT SELECT  ON sys.v_$session  TO &v_dev_user;
 GRANT SELECT  ON sys.v_$sesstat  TO &v_dev_user;

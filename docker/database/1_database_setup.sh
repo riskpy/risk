@@ -99,9 +99,9 @@ display_elapsed_time
 # Install modules sequentially
 modules=(
     # Module,Schema,Run Syn/Grant
-    "risk,$RISK_CODE_USER,true"
-    "msj,msj,true"
-    "flj,flj,true"
+    "risk,$RISK_MODULE_USER,true"
+    "msj,$MSJ_MODULE_USER,true"
+    "flj,$FLJ_MODULE_USER,true"
 )
 
 for module in "${modules[@]}"; do
@@ -137,7 +137,7 @@ for dir in /usr/src/risk/source/migrations/mig_*/
 do
     echo $dir;
     export SQLPATH="$dir:$SQLPATH"
-    sqlplus $RISK_DEV_USER[$RISK_CODE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
+    sqlplus $RISK_DEV_USER[$RISK_MODULE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
 done
 
 export SQLPATH="/usr/src/risk/source/:$SQLPATH"
@@ -156,7 +156,7 @@ if [ "${SKIP_TESTS_INSTALL}" != "true" ]; then
     # Install tests
     echo "BUILDER: Tests installation started"
     export SQLPATH="/usr/src/risk/test/:$SQLPATH"
-    sqlplus $RISK_DEV_USER[$RISK_CODE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
+    sqlplus $RISK_DEV_USER[$RISK_MODULE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
     echo "BUILDER: Tests installation completed"
     display_elapsed_time
 fi
@@ -168,7 +168,7 @@ if [ "${SKIP_TESTS}" != "true" ]; then
     
     # Run tests
     echo "BUILDER: Tests execution started"
-    utPLSQL-cli/bin/utplsql run $RISK_DEV_USER[$RISK_CODE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME -f=ut_documentation_reporter -f=ut_junit_reporter -o=report.xml || true
+    utPLSQL-cli/bin/utplsql run $RISK_DEV_USER[$RISK_MODULE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME -f=ut_documentation_reporter -f=ut_junit_reporter -o=report.xml || true
     echo "BUILDER: Tests execution completed"
     display_elapsed_time
 fi

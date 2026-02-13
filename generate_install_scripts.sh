@@ -77,10 +77,6 @@ INSTALL_EOF
 
         # Add module-specific content
         echo "@@../../set_compiler_flags.sql $module_name" >> "$module_dir/install.sql"
-        
-        if [ "$module_name" != "risk" ]; then
-            echo "alter package risk.k_modulo compile package;" >> "$module_dir/install.sql"
-        fi
 
         # Sequences
         echo "" >> "$module_dir/install.sql"

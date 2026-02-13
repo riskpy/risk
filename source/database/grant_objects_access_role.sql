@@ -30,24 +30,22 @@ set define on
 DEFINE v_app_name = '&1'
 
 prompt
-prompt Defining code user...
+prompt Defining roles...
 prompt -----------------------------------
 prompt
--- Define code user
-DEFINE v_code_user = '&v_app_name.'
+DEFINE v_access_role = '&v_app_name._access_role'
 
 prompt
-prompt Defining access role...
+prompt Defining users...
 prompt -----------------------------------
 prompt
--- Define access role
-DEFINE v_access_role = '&v_app_name._access_role'
+DEFINE v_risk_module_user = '&v_app_name._risk'
 
 prompt
 prompt Granting privileges to role...
 prompt -----------------------------------
 prompt
-GRANT EXECUTE ON &v_code_user..f_procesar_servicio TO &v_access_role;
-GRANT EXECUTE ON &v_code_user..f_procesar_reporte TO &v_access_role;
+GRANT EXECUTE ON &v_risk_module_user..f_procesar_servicio TO &v_access_role;
+GRANT EXECUTE ON &v_risk_module_user..f_procesar_reporte TO &v_access_role;
 
 spool off
