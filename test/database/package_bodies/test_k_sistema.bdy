@@ -6,7 +6,7 @@ create or replace package body test_k_sistema is
     select fecha_actual
       into l_fecha_actual
       from t_modulos
-     where id_modulo = 'RISK';
+     where id_modulo = k_modulo.c_id_risk;
     k_sistema.p_inicializar_parametros;
     ut.expect(k_sistema.f_fecha).to_equal(l_fecha_actual);
   end;
@@ -19,3 +19,4 @@ create or replace package body test_k_sistema is
 
 end;
 /
+

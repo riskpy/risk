@@ -17,7 +17,7 @@ create or replace package body k_reporte_gen is
       select version_actual
         into l_version_actual
         from t_modulos
-       where id_modulo = 'RISK';
+       where id_modulo = k_modulo.c_id_risk;
     exception
       when others then
         k_operacion.p_respuesta_error(l_rsp,
@@ -110,3 +110,4 @@ create or replace package body k_reporte_gen is
 
 end;
 /
+
