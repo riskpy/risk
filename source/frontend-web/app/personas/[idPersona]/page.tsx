@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { X, PlusCircle } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { ArrowLeft, Mail, Phone, CreditCard, Flag, Users, UserCircle2 } from "lucide-react";
 
@@ -10,10 +11,15 @@ import { Topbar } from "@/components/layout/topbar";
 import { useAuth } from "@/lib/auth-context";
 import { getPersonaById } from "@/lib/mock-personas";
 
+import { LoanRequestCard } from "@/components/LoanRequestCard";
+
 export default function PersonaDetailPage() {
   const { session, loadingSession } = useAuth();
   const router = useRouter();
   const params = useParams<{ idPersona: string }>();
+
+  // Modal state de ejemplo de préstamos
+  const [loanOpen, setLoanOpen] = useState(false);
 
   // Guard
   useEffect(() => {
@@ -101,10 +107,21 @@ export default function PersonaDetailPage() {
 
             {/* Detalles */}
             <div className="xl:col-span-2 rounded-2xl bg-elevated/60 backdrop-blur-xl border border-borderSubtle shadow-lg p-6">
-              <div className="flex items-center gap-2 text-text-primary font-semibold">
-                <UserCircle2 className="h-5 w-5 text-text-secondary" />
-                Detalle
-              </div>
+                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-text-primary font-semibold">
+                    <UserCircle2 className="h-5 w-5 text-text-secondary" />
+                    Detalle
+                </div>
+
+                <button
+                    type="button"
+                    onClick={() => setLoanOpen(true)}
+                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm bg-brand-primary text-white hover:bg-brand-primary/90 transition-colors"
+                >
+                    <PlusCircle className="h-4 w-4" />
+                    Solicitud de crédito
+                </button>
+                </div>
 
               <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <MiniCard title="Estado civil" value={persona.estadoCivil} icon={<Users className="h-4 w-4" />} />
@@ -120,6 +137,40 @@ export default function PersonaDetailPage() {
               </div>
             </div>
           </div>
+
+            {/* Modal: Solicitud de crédito */}
+            {loanOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="w-full max-w-3xl mx-4 rounded-2xl bg-elevated border border-borderSubtle shadow-2xl overflow-hidden max-h-[85vh] flex flex-col">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-borderSubtle">
+                    <div className="min-w-0">
+                    <div className="text-lg font-semibold text-text-primary truncate">
+                        Solicitud de crédito · {persona.nombre} {persona.apellido}
+                    </div>
+                    <div className="text-xs text-text-secondary">
+                        Persona #{persona.idPersona} · Mock
+                    </div>
+                    </div>
+
+                    <button
+                    type="button"
+                    onClick={() => setLoanOpen(false)}
+                    className="h-9 w-9 inline-flex items-center justify-center rounded-lg border border-borderSubtle hover:bg-surface transition-colors"
+                    aria-label="Cerrar"
+                    title="Cerrar"
+                    >
+                    <X className="h-4 w-4 text-text-secondary" />
+                    </button>
+                </div>
+
+                <div className="p-6 overflow-auto">
+                    <LoanRequestCard idPersona={persona.idPersona} variant="modal" />
+                </div>
+                </div>
+            </div>
+            )}
+
+
         </main>
       </div>
     </div>
