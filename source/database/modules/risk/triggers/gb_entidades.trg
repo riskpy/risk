@@ -1,4 +1,4 @@
-create or replace trigger risk.gb_entidades
+create or replace trigger gb_entidades
   before insert or update or delete on t_entidades
   for each row
 begin
