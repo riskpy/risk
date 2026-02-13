@@ -22,18 +22,15 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-@@define_variables.sql
-
 set serveroutput on size unlimited
 
 declare
   cursor cr_usuarios is
     select distinct o.owner as username
-      from all_objects o
-     where o.status = 'INVALID'
-       and (o.owner in (sys_context('USERENV', 'CURRENT_SCHEMA')) or
-           o.owner like '&v_app_name.\_%' escape '\')
-       and o.owner not in ('SYS');
+      from all_objects o, all_users u
+     where u.username = o.owner
+       and u.oracle_maintained = 'N'
+       and o.status = 'INVALID';
 
   cursor cr_sinonimos is
     select 'alter public synonym ' || o.object_name || ' compile' as sentencia

@@ -90,8 +90,8 @@ display_elapsed_time
 # Install dependencies
 sqlplus $RISK_DEV_USER[$RISK_UTIL_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install_dependencies.sql
 
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_public_synonyms.sql
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_public_synonyms.sql $RISK_APP_NAME
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql $RISK_APP_NAME
 
 echo "BUILDER: Dependencies installation completed"
 display_elapsed_time
@@ -119,8 +119,8 @@ for module in "${modules[@]}"; do
     sqlplus $RISK_DEV_USER[$moduleschema]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
 
     if [ "$runsyngrant" == "true" ]; then
-        sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_public_synonyms.sql
-        sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql
+        sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_public_synonyms.sql $RISK_APP_NAME
+        sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql $RISK_APP_NAME
     fi
 done
 echo "BUILDER: Modules installation completed"
@@ -141,8 +141,8 @@ do
 done
 
 export SQLPATH="/usr/src/risk/source/:$SQLPATH"
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_public_synonyms.sql
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_public_synonyms.sql $RISK_APP_NAME
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql $RISK_APP_NAME
 
 sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @compile_schema.sql
 echo "BUILDER: Migrations installation completed"
