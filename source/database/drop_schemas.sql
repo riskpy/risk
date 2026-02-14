@@ -22,4 +22,32 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-@@drop_schemas.sql
+spool drop_schemas.log
+
+set define on
+
+@@define_variables.sql
+
+prompt
+prompt Dropping users...
+prompt -----------------------------------
+prompt
+-- Drop users
+DROP USER &v_util_user CASCADE;
+DROP USER &v_risk_module_user CASCADE;
+DROP USER &v_msj_module_user CASCADE;
+DROP USER &v_flj_module_user CASCADE;
+DROP USER &v_dev_user CASCADE;
+DROP USER &v_access_user CASCADE;
+
+prompt
+prompt Dropping roles...
+prompt -----------------------------------
+prompt
+-- Drop roles
+DROP ROLE &v_util_role;
+DROP ROLE &v_module_role;
+DROP ROLE &v_dev_role;
+DROP ROLE &v_access_role;
+
+spool off

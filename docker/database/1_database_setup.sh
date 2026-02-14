@@ -83,7 +83,7 @@ UTPLSQL_CLI_PID=$!
 export SQLPATH="/usr/src/risk/source/:$SQLPATH"
 
 # Create schemas
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @install_headless.sql $RISK_APP_NAME $RISK_DB_PASSWORD
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_schemas.sql $RISK_APP_NAME $RISK_DB_PASSWORD
 echo "BUILDER: Schemas creation completed"
 display_elapsed_time
 
