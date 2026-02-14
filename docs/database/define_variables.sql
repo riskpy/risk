@@ -23,11 +23,20 @@ SOFTWARE.
 */
 
 set define on
+set verify off
 
 --accept v_app_name char default 'RISK' prompt 'Enter app name (default ''RISK''):'
---accept v_password char default 'risk' prompt 'Enter password (default ''risk''):' hide
-DEFINE 1 = ''
-DEFINE 2 = ''
-COLUMN c1 NEW_VALUE v_app_name NOPRINT
-COLUMN c2 NEW_VALUE v_password NOPRINT
-select nvl(nullif('&1', ''), 'RISK') c1, nvl(nullif('&2', ''), 'risk') c2 from dual;
+
+-- https://paulstuartoracle.wordpress.com/2015/05/24/running-sql-scripts-with-default-parameters/
+col p1 new_value 1
+
+select null p1 from dual where 1 = 2;
+select nvl(upper('&1'), 'RISK') p1 from dual;
+
+define v_app_name=&1
+
+undefine 1
+
+prompt ===================================
+prompt App Name: &v_app_name
+prompt ===================================

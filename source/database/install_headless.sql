@@ -28,6 +28,18 @@ set define on
 
 @@define_variables.sql
 
+--accept v_password char default 'risk' prompt 'Enter password (default ''risk''):' hide
+
+-- https://paulstuartoracle.wordpress.com/2015/05/24/running-sql-scripts-with-default-parameters/
+col p2 new_value 2
+
+select null p2 from dual where 1 = 2;
+select nvl('&2', 'risk') p2 from dual;
+
+define v_password=&2
+
+undefine 2
+
 prompt
 prompt Creating roles...
 prompt -----------------------------------
