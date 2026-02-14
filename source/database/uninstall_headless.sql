@@ -33,13 +33,6 @@ prompt Dropping users...
 prompt -----------------------------------
 prompt
 -- Drop users
-DEFINE v_util_user = '&v_app_name._util'
-DEFINE v_risk_module_user = '&v_app_name._risk'
-DEFINE v_msj_module_user = '&v_app_name._msj'
-DEFINE v_flj_module_user = '&v_app_name._flj'
-DEFINE v_dev_user = '&v_app_name._dev'
-DEFINE v_access_user = '&v_app_name._access'
-
 DROP USER &v_util_user CASCADE;
 DROP USER &v_risk_module_user CASCADE;
 DROP USER &v_msj_module_user CASCADE;
@@ -52,11 +45,6 @@ prompt Dropping roles...
 prompt -----------------------------------
 prompt
 -- Drop roles
-DEFINE v_util_role = '&v_app_name._util_role'
-DEFINE v_module_role = '&v_app_name._module_role'
-DEFINE v_dev_role = '&v_app_name._dev_role'
-DEFINE v_access_role = '&v_app_name._access_role'
-
 DROP ROLE &v_util_role;
 DROP ROLE &v_module_role;
 DROP ROLE &v_dev_role;

@@ -29,18 +29,6 @@ set define on
 @@define_variables.sql
 
 prompt
-prompt Defining roles...
-prompt -----------------------------------
-prompt
-DEFINE v_access_role = '&v_app_name._access_role'
-
-prompt
-prompt Defining users...
-prompt -----------------------------------
-prompt
-DEFINE v_risk_module_user = '&v_app_name._risk'
-
-prompt
 prompt Granting privileges to role...
 prompt -----------------------------------
 prompt

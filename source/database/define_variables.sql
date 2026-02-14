@@ -40,3 +40,17 @@ undefine 1
 prompt ===================================
 prompt App Name: &v_app_name
 prompt ===================================
+
+-- Define roles
+DEFINE v_util_role = '&v_app_name._UTIL_ROLE'
+DEFINE v_module_role = '&v_app_name._MODULE_ROLE'
+DEFINE v_dev_role = '&v_app_name._DEV_ROLE'
+DEFINE v_access_role = '&v_app_name._ACCESS_ROLE'
+
+-- Define users
+DEFINE v_util_user = '&v_app_name._UTIL'
+DEFINE v_risk_module_user = '&v_app_name._RISK'
+DEFINE v_msj_module_user = '&v_app_name._MSJ'
+DEFINE v_flj_module_user = '&v_app_name._FLJ'
+DEFINE v_dev_user = '&v_app_name._DEV'
+DEFINE v_access_user = '&v_app_name._ACCESS'
