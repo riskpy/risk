@@ -59,7 +59,9 @@ begin
                 o.owner || '.' || o.object_name) || ' to ' ||
          (select listagg(u.username, ',') within group(order by u.username)
             from all_users u
-           where u.username like '&v_app_name.\_%' escape
+           where u.username like '&v_app_name\_%' escape
+           '\'
+             and u.username not like '&v_app_name\_ACCESS%' escape
            '\'
              and u.username not in
                  (o.owner, sys_context('USERENV', 'CURRENT_SCHEMA'))) ||
@@ -70,7 +72,7 @@ begin
     from all_objects o, all_types t
    where t.owner(+) = o.owner
      and t.type_name(+) = o.object_name
-     and o.owner like '&v_app_name.\_%' escape
+     and o.owner like '&v_app_name\_%' escape
    '\'
      and o.object_type in ('FUNCTION',
                            'PACKAGE',
@@ -90,7 +92,10 @@ begin
           and s.table_name = o.object_name)*/
      and trim((select listagg(u.username, ',') within group(order by u.username)
                 from all_users u
-               where u.username like '&v_app_name.\_%' escape
+               where u.username like '&v_app_name\_%' escape
+               '\'
+                 and u.username not like '&v_app_name\_ACCESS%'
+               escape
                '\'
                  and u.username not in
                      (o.owner, sys_context('USERENV', 'CURRENT_SCHEMA')))) is not null

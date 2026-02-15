@@ -31,7 +31,7 @@ declare
     select 'create or replace public synonym ' || object_name || ' for ' ||
            owner || '.' || object_name as sentencia
       from all_objects o
-     where owner like '&v_app_name.\_%' escape
+     where owner like '&v_app_name\_%' escape
      '\'
        and object_type in ('FUNCTION',
                            'PACKAGE',

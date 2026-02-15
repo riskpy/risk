@@ -34,7 +34,7 @@ declare
   cursor cr_objetos is
     select 'plugin plsqldoc generate ' || lower(o.object_name) || ';' plsqldoc
       from all_objects o
-     where o.owner like '&v_app_name.\_%' escape
+     where o.owner like '&v_app_name\_%' escape
      '\'
        and ((o.object_type = 'TABLE' and lower(o.object_name) like 't\_%'
             escape '\') or (o.object_type = 'VIEW' and

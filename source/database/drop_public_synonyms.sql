@@ -44,7 +44,7 @@ declare
         on s.table_owner = o.owner
        and s.table_name = o.object_name
      where o.owner is null
-       and s.table_owner like '&v_app_name.\_%' escape '\';
+       and s.table_owner like '&v_app_name\_%' escape '\';
 begin
   dbms_output.put_line('Dropping public synonyms...');
   dbms_output.put_line('-----------------------------------');

@@ -32,7 +32,7 @@ declare
   cursor cr_tablas is
     select owner, lower(table_name) as tabla
       from all_tables
-     where owner like '&v_app_name.\_%' escape
+     where owner like '&v_app_name\_%' escape
      '\'
        and lower(table_name) like 't\_%' escape '\';
 begin

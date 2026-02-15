@@ -30,7 +30,7 @@ declare
   cursor cr_usuarios is
     select u.username
       from all_users u
-     where u.username like '&v_app_name.\_%' escape '\';
+     where u.username like '&v_app_name\_%' escape '\';
 
   cursor cr_statements(i_owner in varchar2) is
     select 'drop ' || lower(x.object_type) || ' ' || lower(i_owner) || '.' ||
