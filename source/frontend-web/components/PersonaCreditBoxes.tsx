@@ -5,6 +5,7 @@ import {
   getCreditosByPersona,
 } from "@/lib/mock-creditos";
 import { DisclosureBox } from "@/components/DisclosureBox";
+import Link from "next/link";
 
 interface Props {
   idPersona: string | number;
@@ -50,10 +51,8 @@ export function PersonaCreditBoxes({ idPersona }: Props) {
       >
         <div className="space-y-3">
           {solicitudes.map((s) => (
-            <div
-              key={s.id}
-              className="rounded-lg border border-white/10 p-4 bg-white/70 dark:bg-slate-900/40"
-            >
+            <Link key={s.id} href={`?solicitud=${encodeURIComponent(s.id)}`} scroll={false} className="block">
+            <div className="rounded-lg border border-white/10 p-4 bg-white/70 dark:bg-slate-900/40 hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer">
               <div className="flex justify-between items-start gap-3">
                 <div>
                   <p className="font-medium">{s.tipo}</p>
@@ -70,6 +69,7 @@ export function PersonaCreditBoxes({ idPersona }: Props) {
                 </p>
               )}
             </div>
+            </Link>
           ))}
         </div>
       </DisclosureBox>
@@ -88,10 +88,8 @@ export function PersonaCreditBoxes({ idPersona }: Props) {
       >
         <div className="space-y-3">
           {creditos.map((c) => (
-            <div
-              key={c.id}
-              className="rounded-lg border border-white/10 p-4 bg-white/70 dark:bg-slate-900/40"
-            >
+            <Link key={c.id} href={`?credito=${encodeURIComponent(c.id)}&tab=general`} scroll={false} className="block">
+            <div className="rounded-lg border border-white/10 p-4 bg-white/70 dark:bg-slate-900/40 hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer">
               <div className="flex justify-between items-start gap-3">
                 <div>
                   <p className="font-medium">{c.tipo}</p>
@@ -103,6 +101,7 @@ export function PersonaCreditBoxes({ idPersona }: Props) {
                 <StatusPill label={c.estado} />
               </div>
             </div>
+            </Link>
           ))}
         </div>
       </DisclosureBox>

@@ -13,6 +13,7 @@ import { getPersonaById } from "@/lib/mock-personas";
 
 import { LoanRequestCard } from "@/components/LoanRequestCard";
 import { PersonaCreditBoxes } from "@/components/PersonaCreditBoxes";
+import { PersonaDrawerHost } from "@/components/PersonaDrawerHost";
 
 export default function PersonaDetailPage() {
   const { session, loadingSession } = useAuth();
@@ -172,6 +173,7 @@ export default function PersonaDetailPage() {
             </div>
             )}
 
+            <PersonaDrawerHost idPersona={persona.idPersona} />
 
         </main>
       </div>
