@@ -12,6 +12,7 @@ import { useAuth } from "@/lib/auth-context";
 import { getPersonaById } from "@/lib/mock-personas";
 
 import { LoanRequestCard } from "@/components/LoanRequestCard";
+import { PersonaCreditBoxes } from "@/components/PersonaCreditBoxes";
 
 export default function PersonaDetailPage() {
   const { session, loadingSession } = useAuth();
@@ -135,6 +136,7 @@ export default function PersonaDetailPage() {
                   Próximo paso: reemplazar mock por backend real + paginación + filtros avanzados.
                 </div>
               </div>
+              <PersonaCreditBoxes idPersona={persona.idPersona} />
             </div>
           </div>
 
