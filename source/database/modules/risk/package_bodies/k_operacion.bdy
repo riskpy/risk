@@ -430,7 +430,7 @@ create or replace package body k_operacion is
       select m.id_modulo
         into l_id_modulo
         from t_operaciones a, t_dominios d, t_modulos m
-       where d.id_dominio = nvl(a.dominio, 'API')
+       where d.id_dominio = nvl(a.dominio, k_dominio.c_id_dominio_defecto)
          and m.id_modulo = d.id_modulo
          and a.id_operacion = i_id_operacion;
     exception
@@ -893,3 +893,4 @@ create or replace package body k_operacion is
 
 end;
 /
+
