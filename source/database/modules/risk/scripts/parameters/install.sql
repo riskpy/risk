@@ -1,0 +1,33 @@
+prompt
+prompt Instalando parametros...
+prompt -----------------------------------
+prompt
+@@scripts/parameters/t_aplicacion_parametros/api/clave.sql
+@@scripts/parameters/t_aplicacion_parametros/api/plataforma_notificacion.sql
+@@scripts/parameters/t_aplicacion_parametros/api/tiempo_expiracion_access_token.sql
+@@scripts/parameters/t_aplicacion_parametros/api/tiempo_expiracion_refresh_token.sql
+@@scripts/parameters/t_aplicacion_parametros/api/version_actual.sql
+@@scripts/parameters/t_aplicacion_parametros/api/version_minima.sql
+@@scripts/parameters/t_parametros/api/paginacion_cantidad_defecto_por_pagina.sql
+@@scripts/parameters/t_parametros/api/paginacion_cantidad_maxima_por_pagina.sql
+@@scripts/parameters/t_parametros/api/reporte_formato_salida_defecto.sql
+@@scripts/parameters/t_parametros/api/url_servicios_produccion.sql
+@@scripts/parameters/t_parametros/aut/autenticacion_cantidad_intentos_permitidos.sql
+@@scripts/parameters/t_parametros/aut/cantidad_maxima_sesiones_usuario.sql
+@@scripts/parameters/t_parametros/aut/clave_validacion_access_token.sql
+@@scripts/parameters/t_parametros/aut/confirmacion_direccion_correo.sql
+@@scripts/parameters/t_parametros/aut/estados_activos_usuario.sql
+@@scripts/parameters/t_parametros/aut/google_emisor_token.sql
+@@scripts/parameters/t_parametros/aut/google_identificador_cliente.sql
+@@scripts/parameters/t_parametros/aut/metodo_validacion_credenciales.sql
+@@scripts/parameters/t_parametros/aut/nombre_rol_defecto.sql
+@@scripts/parameters/t_parametros/aut/regexp_validar_alias_usuario.sql
+@@scripts/parameters/t_parametros/aut/tiempo_expiracion_access_token.sql
+@@scripts/parameters/t_parametros/aut/tiempo_expiracion_refresh_token.sql
+@@scripts/parameters/t_parametros/aut/tiempo_tolerancia_validar_otp.sql
+@@scripts/parameters/t_parametros/gen/base_datos_produccion.sql
+@@scripts/parameters/t_parametros/gen/charset_exportacion_scripts.sql
+@@scripts/parameters/t_parametros/gen/clave_encriptacion_desencriptacion.sql
+@@scripts/parameters/t_parametros/glo/id_idioma_iso.sql
+@@scripts/parameters/t_parametros/glo/id_pais_iso.sql
+@@scripts/parameters/t_parametros/glo/zona_horaria.sql
