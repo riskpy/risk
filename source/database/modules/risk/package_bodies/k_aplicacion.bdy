@@ -1,5 +1,23 @@
 create or replace package body k_aplicacion is
 
+  function f_aplicacion(i_id_aplicacion in varchar2)
+    return t_aplicaciones%rowtype is
+    rw_aplicacion t_aplicaciones%rowtype;
+  begin
+    begin
+      select a.*
+        into rw_aplicacion
+        from t_aplicaciones a
+       where a.id_aplicacion = i_id_aplicacion;
+    exception
+      when no_data_found then
+        rw_aplicacion := null;
+      when others then
+        rw_aplicacion := null;
+    end;
+    return rw_aplicacion;
+  end;
+
   function f_id_aplicacion(i_clave_aplicacion in varchar2,
                            i_activo           in varchar2 default null)
     return varchar2 is

@@ -3,7 +3,7 @@ create or replace package k_significado_util is
   /**
   Agrupa utilidades relacionadas con significados
   
-  %author jmeza 22/12/2025
+  %author jtsoya539 22/12/2025
   */
 
   /*

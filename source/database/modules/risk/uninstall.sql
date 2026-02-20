@@ -68,6 +68,7 @@ prompt Dropping packages...
 prompt -----------------------------------
 prompt
 drop package k_aplicacion;
+drop package k_aplicacion_util;
 drop package k_archivo;
 drop package k_auditoria;
 drop package k_autenticacion;
@@ -79,17 +80,20 @@ drop package k_dispositivo;
 drop package k_dominio;
 drop package k_entidad;
 drop package k_error;
+drop package k_error_util;
 drop package k_html;
 drop package k_importacion;
 drop package k_json_util;
 drop package k_lob_util;
 drop package k_modulo;
+drop package k_modulo_util;
 drop package k_monitoreo;
 drop package k_monitoreo_aut;
 drop package k_objeto_util;
 drop package k_operacion;
 drop package k_operacion_util;
 drop package k_parametro;
+drop package k_parametro_util;
 drop package k_reporte;
 drop package k_reporte_gen;
 drop package k_servicio;
@@ -244,7 +248,6 @@ prompt Running scripts...
 prompt -----------------------------------
 prompt
 @@scripts/operations/uninstall.sql
-@@scripts/meanings/uninstall.sql
 commit;
 /
 

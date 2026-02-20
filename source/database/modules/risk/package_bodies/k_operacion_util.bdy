@@ -14,68 +14,65 @@ create or replace package body k_operacion_util is
     end if;
     l_inserts := l_inserts || k_cadena.f_comentar('T_OPERACIONES') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT id_operacion, tipo, nombre, dominio, activo, detalle, version_actual, nivel_log, parametros_automaticos, tipo_implementacion, aplicaciones_permitidas, nombre_programa_implementacion FROM t_operaciones WHERE id_operacion = ' ||
-                                to_char(i_operacion.id_operacion),
+    l_insert  := fn_gen_inserts(console.format('SELECT id_operacion, tipo, nombre, dominio, activo, detalle, version_actual, nivel_log, parametros_automaticos, tipo_implementacion, aplicaciones_permitidas, nombre_programa_implementacion FROM t_operaciones WHERE id_operacion = %s',
+                                               to_char(i_operacion.id_operacion)),
                                 't_operaciones');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_OPERACION_PARAMETROS') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT id_operacion, nombre, version, orden, activo, tipo_dato, formato, longitud_maxima, obligatorio, valor_defecto, etiqueta, detalle, valores_posibles, encriptado FROM t_operacion_parametros WHERE id_operacion = ' ||
-                                to_char(i_operacion.id_operacion) ||
-                                ' ORDER BY version, orden',
+    l_insert  := fn_gen_inserts(console.format('SELECT id_operacion, nombre, version, orden, activo, tipo_dato, formato, longitud_maxima, obligatorio, valor_defecto, etiqueta, detalle, valores_posibles, encriptado FROM t_operacion_parametros WHERE id_operacion = %s ORDER BY version, orden',
+                                               to_char(i_operacion.id_operacion)),
                                 't_operacion_parametros');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_SERVICIOS') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT id_servicio, tipo, consulta_sql FROM t_servicios WHERE id_servicio = ' ||
-                                to_char(i_operacion.id_operacion),
+    l_insert  := fn_gen_inserts(console.format('SELECT id_servicio, tipo, consulta_sql FROM t_servicios WHERE id_servicio = %s',
+                                               to_char(i_operacion.id_operacion)),
                                 't_servicios');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_REPORTES') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT id_reporte, tipo, consulta_sql FROM t_reportes WHERE id_reporte = ' ||
-                                to_char(i_operacion.id_operacion),
+    l_insert  := fn_gen_inserts(console.format('SELECT id_reporte, tipo, consulta_sql FROM t_reportes WHERE id_reporte = %s',
+                                               to_char(i_operacion.id_operacion)),
                                 't_reportes');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_TRABAJOS') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT id_trabajo, tipo, accion, fecha_inicio, tiempo_inicio, intervalo_repeticion, fecha_fin, comentarios FROM t_trabajos WHERE id_trabajo = ' ||
-                                to_char(i_operacion.id_operacion),
+    l_insert  := fn_gen_inserts(console.format('SELECT id_trabajo, tipo, accion, fecha_inicio, tiempo_inicio, intervalo_repeticion, fecha_fin, comentarios FROM t_trabajos WHERE id_trabajo = %s',
+                                               to_char(i_operacion.id_operacion)),
                                 't_trabajos');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_MONITOREOS') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT id_monitoreo, causa, plan_accion, activo, consulta_sql, bloque_plsql, prioridad, roles_responsables, usuarios_responsables, nivel_aviso_correo, aviso_notificacion, aviso_mensaje, frecuencia, opera_sistema_cerrado, opera_dia_no_habil, hora_minima, hora_maxima, comentarios FROM t_monitoreos WHERE id_monitoreo = ' ||
-                                to_char(i_operacion.id_operacion),
+    l_insert  := fn_gen_inserts(console.format('SELECT id_monitoreo, causa, plan_accion, activo, consulta_sql, bloque_plsql, prioridad, roles_responsables, usuarios_responsables, nivel_aviso_correo, aviso_notificacion, aviso_mensaje, frecuencia, opera_sistema_cerrado, opera_dia_no_habil, hora_minima, hora_maxima, comentarios FROM t_monitoreos WHERE id_monitoreo = %s',
+                                               to_char(i_operacion.id_operacion)),
                                 't_monitoreos');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_IMPORTACIONES') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT id_importacion, separador_campos, delimitador_campo, linea_inicial, nombre_tabla, truncar_tabla, proceso_previo, proceso_posterior FROM t_importaciones WHERE id_importacion = ' ||
-                                to_char(i_operacion.id_operacion),
+    l_insert  := fn_gen_inserts(console.format('SELECT id_importacion, separador_campos, delimitador_campo, linea_inicial, nombre_tabla, truncar_tabla, proceso_previo, proceso_posterior FROM t_importaciones WHERE id_importacion = %s',
+                                               to_char(i_operacion.id_operacion)),
                                 't_importaciones');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts ||
                  k_cadena.f_comentar('T_IMPORTACION_PARAMETROS') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT a.id_importacion, a.nombre, a.version, a.posicion_inicial, a.longitud, a.posicion_decimal, a.mapeador FROM t_importacion_parametros a, t_operacion_parametros b WHERE a.id_importacion = ' ||
-                                to_char(i_operacion.id_operacion) ||
-                                ' AND b.id_operacion=a.id_importacion AND b.nombre=a.nombre AND b.version=a.version ORDER BY b.version, b.orden',
+    l_insert  := fn_gen_inserts(console.format('SELECT a.id_importacion, a.nombre, a.version, a.posicion_inicial, a.longitud, a.posicion_decimal, a.mapeador FROM t_importacion_parametros a, t_operacion_parametros b WHERE a.id_importacion = %s AND b.id_operacion = a.id_importacion AND b.nombre=a.nombre AND b.version = a.version ORDER BY b.version, b.orden',
+                                               to_char(i_operacion.id_operacion)),
                                 't_importacion_parametros');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_ROL_PERMISOS') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT id_rol, id_permiso, consultar, insertar, actualizar, eliminar, verificar, autorizar FROM t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(' ||
-                                to_char(i_operacion.id_operacion) ||
-                                ') ORDER BY id_rol',
+    l_insert  := fn_gen_inserts(console.format('SELECT id_rol, id_permiso, consultar, insertar, actualizar, eliminar, verificar, autorizar FROM t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(%s) ORDER BY id_rol',
+                                               to_char(i_operacion.id_operacion)),
                                 't_rol_permisos');
     l_inserts := l_inserts || l_insert;
     --
@@ -125,27 +122,41 @@ create or replace package body k_operacion_util is
                  utl_tcp.crlf;
     --
     l_deletes := l_deletes ||
-                 'DELETE t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(' ||
-                 to_char(i_operacion.id_operacion) || ');' || utl_tcp.crlf;
+                 console.format('DELETE t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(%s);',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
     l_deletes := l_deletes ||
-                 'DELETE t_importacion_parametros WHERE id_operacion = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
+                 console.format('DELETE t_importacion_parametros WHERE id_importacion = %s;',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
     l_deletes := l_deletes ||
-                 'DELETE t_importaciones WHERE id_importacion = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_monitoreos WHERE id_monitoreo = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_trabajos WHERE id_trabajo = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_reportes WHERE id_reporte = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_servicios WHERE id_servicio = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
+                 console.format('DELETE t_importaciones WHERE id_importacion = %s;',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
     l_deletes := l_deletes ||
-                 'DELETE t_operacion_parametros WHERE id_operacion = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
-    l_deletes := l_deletes || 'DELETE t_operaciones WHERE id_operacion = ' ||
-                 to_char(i_operacion.id_operacion) || ';' || utl_tcp.crlf;
+                 console.format('DELETE t_monitoreos WHERE id_monitoreo = %s;',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
+    l_deletes := l_deletes ||
+                 console.format('DELETE t_trabajos WHERE id_trabajo = %s;',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
+    l_deletes := l_deletes ||
+                 console.format('DELETE t_reportes WHERE id_reporte = %s;',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
+    l_deletes := l_deletes ||
+                 console.format('DELETE t_servicios WHERE id_servicio = %s;',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
+    l_deletes := l_deletes ||
+                 console.format('DELETE t_operacion_parametros WHERE id_operacion = %s;',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
+    l_deletes := l_deletes ||
+                 console.format('DELETE t_operaciones WHERE id_operacion = %s;',
+                                to_char(i_operacion.id_operacion)) ||
+                 utl_tcp.crlf;
     --
     if i_operacion.tipo_implementacion =
        k_operacion.c_tipo_implementacion_funcion and
@@ -179,33 +190,24 @@ create or replace package body k_operacion_util is
                  k_cadena.f_comentar('ID_MODULO = ' || i_id_modulo) ||
                  utl_tcp.crlf;
     --
-    l_deletes := l_deletes ||
-                 'DELETE t_rol_permisos WHERE id_permiso IN (SELECT k_operacion.f_id_permiso(o.id_operacion) FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_importacion_parametros WHERE id_operacion IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_importaciones WHERE id_importacion IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_monitoreos WHERE id_monitoreo IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_trabajos WHERE id_trabajo IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_reportes WHERE id_reporte IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_servicios WHERE id_servicio IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_operacion_parametros WHERE id_operacion IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_operaciones WHERE id_operacion IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''' ||
-                 i_id_modulo || ''');' || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_rol_permisos WHERE id_permiso IN (SELECT k_operacion.f_id_permiso(o.id_operacion) FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_importacion_parametros WHERE id_importacion IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_importaciones WHERE id_importacion IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_monitoreos WHERE id_monitoreo IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_trabajos WHERE id_trabajo IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_reportes WHERE id_reporte IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_servicios WHERE id_servicio IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_operacion_parametros WHERE id_operacion IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_operaciones WHERE id_operacion IN (SELECT o.id_operacion FROM t_operaciones o WHERE k_dominio.f_id_modulo(o.dominio) = ''%s'');',
+                                             i_id_modulo) || utl_tcp.crlf;
     --
   
     return l_deletes;
@@ -219,7 +221,8 @@ create or replace package body k_operacion_util is
     l_deletes   clob;
     l_install   clob;
     l_uninstall clob;
-    c_charset constant varchar2(100) := 'WE8MSWIN1252';
+    c_dirname constant varchar2(100) := 'operations';
+    c_charset constant varchar2(100) := k_util.f_valor_parametro('CHARSET_EXPORTACION_SCRIPTS');
   
     cursor c_modulos is
       select m.id_modulo
@@ -267,12 +270,13 @@ create or replace package body k_operacion_util is
                                          i_motivo_modificacion);
         --l_deletes := f_deletes_operacion(ope.id_operacion);
         --
-        l_install := l_install || '@@scripts/operations/' ||
+        l_install := l_install || '@@scripts/' || c_dirname || '/' ||
                      ope.nombre_archivo || utl_tcp.crlf;
         --l_uninstall := l_uninstall || l_deletes || utl_tcp.crlf;
         --
         as_zip.add1file(l_zip,
-                        ope.id_modulo || '/' || ope.nombre_archivo,
+                        ope.id_modulo || '/scripts/' || c_dirname || '/' ||
+                        ope.nombre_archivo,
                         k_util.clob_to_blob(l_inserts, c_charset));
       end loop;
     
@@ -280,10 +284,12 @@ create or replace package body k_operacion_util is
       l_uninstall := l_uninstall || l_deletes || utl_tcp.crlf;
     
       as_zip.add1file(l_zip,
-                      lower(m.id_modulo) || '/' || 'install.sql',
+                      lower(m.id_modulo) || '/scripts/' || c_dirname || '/' ||
+                      'install.sql',
                       k_util.clob_to_blob(l_install, c_charset));
       as_zip.add1file(l_zip,
-                      lower(m.id_modulo) || '/' || 'uninstall.sql',
+                      lower(m.id_modulo) || '/scripts/' || c_dirname || '/' ||
+                      'uninstall.sql',
                       k_util.clob_to_blob(l_uninstall, c_charset));
     end loop;
   
@@ -296,3 +302,4 @@ create or replace package body k_operacion_util is
 
 end;
 /
+

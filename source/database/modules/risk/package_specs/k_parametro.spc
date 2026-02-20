@@ -3,7 +3,7 @@ create or replace package k_parametro authid current_user is
   /**
   Agrupa operaciones relacionadas con los parámetros
   
-  %author jmeza 18/8/2025 16:16:59
+  %author jtsoya539 18/8/2025 16:16:59
   */
 
   -- Tablas de parámetros soportadas
@@ -18,6 +18,10 @@ create or replace package k_parametro authid current_user is
     formato       varchar2(100),
     valor_defecto varchar2(1000),
     encriptado    varchar2(1));
+
+  function f_parametro_definicion(i_tabla        in varchar2,
+                                  i_id_parametro in varchar2)
+    return t_parametro_definiciones%rowtype;
 
   function f_procesar_parametros(i_tabla       in varchar2,
                                  i_parametros  in clob,

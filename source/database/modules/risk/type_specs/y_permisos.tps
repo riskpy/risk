@@ -2,7 +2,7 @@ create or replace type y_permisos force is table of y_permiso
 /**
 Lista de permisos.
 
-%author jmeza 08/08/2025 08:32:01
+%author jtsoya539 08/08/2025 08:32:01
 */
 
 /*

@@ -30,6 +30,9 @@ create or replace package k_aplicacion is
   -------------------------------------------------------------------------------
   */
 
+  function f_aplicacion(i_id_aplicacion in varchar2)
+    return t_aplicaciones%rowtype;
+
   function f_id_aplicacion(i_clave_aplicacion in varchar2,
                            i_activo           in varchar2 default null)
     return varchar2;

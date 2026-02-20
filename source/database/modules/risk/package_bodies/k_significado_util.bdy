@@ -15,16 +15,15 @@ create or replace package body k_significado_util is
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_SIGNIFICADO_DOMINIOS') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT dominio, descripcion, detalle, activo, id_dominio FROM t_significado_dominios WHERE dominio = ''' ||
-                                i_significado_dominio.dominio || '''',
+    l_insert  := fn_gen_inserts(console.format('SELECT dominio, descripcion, detalle, activo, id_dominio FROM t_significado_dominios WHERE dominio = ''%s''',
+                                               i_significado_dominio.dominio),
                                 't_significado_dominios');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_SIGNIFICADOS') ||
                  utl_tcp.crlf;
-    l_insert  := fn_gen_inserts('SELECT dominio, codigo, significado, referencia, activo, referencia_2 FROM t_significados WHERE dominio = ''' ||
-                                i_significado_dominio.dominio ||
-                                ''' ORDER BY codigo',
+    l_insert  := fn_gen_inserts(console.format('SELECT dominio, codigo, significado, referencia, activo, referencia_2 FROM t_significados WHERE dominio = ''%s'' ORDER BY codigo',
+                                               i_significado_dominio.dominio),
                                 't_significados');
     l_inserts := l_inserts || l_insert;
     --
@@ -49,11 +48,14 @@ create or replace package body k_significado_util is
                                      i_significado_dominio.dominio) ||
                  utl_tcp.crlf;
     --
-    l_deletes := l_deletes || 'DELETE t_significados WHERE dominio = ''' ||
-                 i_significado_dominio.dominio || ''';' || utl_tcp.crlf;
     l_deletes := l_deletes ||
-                 'DELETE t_significado_dominios WHERE dominio = ''' ||
-                 i_significado_dominio.dominio || ''';' || utl_tcp.crlf;
+                 console.format('DELETE t_significados WHERE dominio = ''%s'';',
+                                i_significado_dominio.dominio) ||
+                 utl_tcp.crlf;
+    l_deletes := l_deletes ||
+                 console.format('DELETE t_significado_dominios WHERE dominio = ''%s'';',
+                                i_significado_dominio.dominio) ||
+                 utl_tcp.crlf;
     --
   
     return l_deletes;
@@ -71,12 +73,10 @@ create or replace package body k_significado_util is
                  k_cadena.f_comentar('ID_MODULO = ' || i_id_modulo) ||
                  utl_tcp.crlf;
     --
-    l_deletes := l_deletes ||
-                 'DELETE t_significados WHERE k_significado.f_id_modulo_dominio(dominio) = ''' ||
-                 i_id_modulo || ''';' || utl_tcp.crlf;
-    l_deletes := l_deletes ||
-                 'DELETE t_significado_dominios WHERE k_dominio.f_id_modulo(id_dominio) = ''' ||
-                 i_id_modulo || ''';' || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_significados WHERE k_significado.f_id_modulo_dominio(dominio) = ''%s'';',
+                                             i_id_modulo) || utl_tcp.crlf;
+    l_deletes := l_deletes || console.format('DELETE t_significado_dominios WHERE k_significado.f_id_modulo_dominio(dominio) = ''%s'';',
+                                             i_id_modulo) || utl_tcp.crlf;
     --
   
     return l_deletes;
@@ -90,7 +90,8 @@ create or replace package body k_significado_util is
     l_deletes   clob;
     l_install   clob;
     l_uninstall clob;
-    c_charset constant varchar2(100) := 'WE8MSWIN1252';
+    c_dirname constant varchar2(100) := 'meanings';
+    c_charset constant varchar2(100) := k_util.f_valor_parametro('CHARSET_EXPORTACION_SCRIPTS');
   
     cursor c_modulos is
       select m.id_modulo
@@ -99,11 +100,11 @@ create or replace package body k_significado_util is
   
     cursor c_significado_dominios(i_id_modulo in varchar2) is
       select a.dominio,
-             lower(k_dominio.f_id_modulo(a.id_dominio)) id_modulo,
+             lower(k_significado.f_id_modulo_dominio(a.dominio)) id_modulo,
              lower(k_cadena.f_reemplazar_acentos(nvl(a.id_dominio, '_') || '/' ||
                                                  a.dominio)) || '.sql' nombre_archivo
         from t_significado_dominios a
-       where k_dominio.f_id_modulo(a.id_dominio) = i_id_modulo
+       where k_significado.f_id_modulo_dominio(a.dominio) = i_id_modulo
        order by 3;
   begin
     for m in c_modulos loop
@@ -135,12 +136,13 @@ create or replace package body k_significado_util is
         l_inserts := f_inserts_dominio(dom.dominio, i_motivo_modificacion);
         --l_deletes := f_deletes_dominio(dom.dominio);
         --
-        l_install := l_install || '@@scripts/meanings/' ||
+        l_install := l_install || '@@scripts/' || c_dirname || '/' ||
                      dom.nombre_archivo || utl_tcp.crlf;
         --l_uninstall := l_uninstall || l_deletes || utl_tcp.crlf;
         --
         as_zip.add1file(l_zip,
-                        dom.id_modulo || '/' || dom.nombre_archivo,
+                        dom.id_modulo || '/scripts/' || c_dirname || '/' ||
+                        dom.nombre_archivo,
                         k_util.clob_to_blob(l_inserts, c_charset));
       end loop;
     
@@ -148,10 +150,12 @@ create or replace package body k_significado_util is
       l_uninstall := l_uninstall || l_deletes || utl_tcp.crlf;
     
       as_zip.add1file(l_zip,
-                      lower(m.id_modulo) || '/' || 'install.sql',
+                      lower(m.id_modulo) || '/scripts/' || c_dirname || '/' ||
+                      'install.sql',
                       k_util.clob_to_blob(l_install, c_charset));
       as_zip.add1file(l_zip,
-                      lower(m.id_modulo) || '/' || 'uninstall.sql',
+                      lower(m.id_modulo) || '/scripts/' || c_dirname || '/' ||
+                      'uninstall.sql',
                       k_util.clob_to_blob(l_uninstall, c_charset));
     end loop;
   
@@ -164,3 +168,4 @@ create or replace package body k_significado_util is
 
 end;
 /
+

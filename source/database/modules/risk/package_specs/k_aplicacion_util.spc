@@ -1,9 +1,9 @@
-create or replace package k_modulo is
+create or replace package k_aplicacion_util is
 
   /**
-  Agrupa operaciones relacionadas con los módulos
+  Agrupa utilidades relacionadas con aplicaciones
   
-  %author jtsoya539 27/3/2020 16:58:36
+  %author jtsoya539 19/02/2026
   */
 
   /*
@@ -30,31 +30,24 @@ create or replace package k_modulo is
   -------------------------------------------------------------------------------
   */
 
-  -- Constantes
+  function f_inserts_aplicacion(i_aplicacion          in t_aplicaciones%rowtype,
+                                i_motivo_modificacion in varchar2 default null)
+    return clob;
 
-  -- Identificadores de módulos
-  c_id_risk constant varchar2(30) := 'RISK';
-  c_id_msj  constant varchar2(30) := 'MSJ';
-  c_id_flj  constant varchar2(30) := 'FLJ';
+  function f_inserts_aplicacion(i_id_aplicacion       in varchar2,
+                                i_motivo_modificacion in varchar2 default null)
+    return clob;
 
-  function f_modulo(i_id_modulo in varchar2) return t_modulos%rowtype;
+  function f_deletes_aplicacion(i_aplicacion in t_aplicaciones%rowtype)
+    return clob;
 
-  -- Indicadores de instalación
-  $if $$mi_risk $then
-  c_instalado_risk constant boolean := true;
-  $else
-  c_instalado_risk constant boolean := false;
-  $end
-  $if $$mi_msj $then
-  c_instalado_msj constant boolean := true;
-  $else
-  c_instalado_msj constant boolean := false;
-  $end
-  $if $$mi_flj $then
-  c_instalado_flj constant boolean := true;
-  $else
-  c_instalado_flj constant boolean := false;
-  $end
+  function f_deletes_aplicacion(i_id_aplicacion in varchar2) return clob;
+
+  function f_deletes_modulo(i_id_modulo in varchar2) return clob;
+
+  function f_scripts_aplicaciones(i_id_modulo           in varchar2 default null,
+                                  i_motivo_modificacion in varchar2 default null)
+    return blob;
 
 end;
 /

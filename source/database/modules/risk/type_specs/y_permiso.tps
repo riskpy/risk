@@ -3,7 +3,7 @@ create or replace type y_permiso force under y_objeto
 /**
 Agrupa datos de un permiso.
 
-%author jmeza 08/08/2025 08:32:01
+%author jtsoya539 08/08/2025 08:32:01
 */
 
 /*

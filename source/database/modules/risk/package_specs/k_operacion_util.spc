@@ -3,7 +3,7 @@ create or replace package k_operacion_util is
   /**
   Agrupa utilidades relacionadas con las Operaciones (Servicios Web, Reportes, Trabajos, Monitoreos, Importaciones)
   
-  %author jmeza 11/12/2025
+  %author jtsoya539 11/12/2025
   */
 
   /*

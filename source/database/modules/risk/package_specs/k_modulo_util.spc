@@ -1,9 +1,9 @@
-create or replace package k_modulo is
+create or replace package k_modulo_util is
 
   /**
-  Agrupa operaciones relacionadas con los módulos
+  Agrupa utilidades relacionadas con módulos
   
-  %author jtsoya539 27/3/2020 16:58:36
+  %author jtsoya539 22/12/2025
   */
 
   /*
@@ -30,31 +30,26 @@ create or replace package k_modulo is
   -------------------------------------------------------------------------------
   */
 
-  -- Constantes
+  function f_inserts_modulo(i_modulo              in t_modulos%rowtype,
+                            i_motivo_modificacion in varchar2 default null)
+    return clob;
 
-  -- Identificadores de módulos
-  c_id_risk constant varchar2(30) := 'RISK';
-  c_id_msj  constant varchar2(30) := 'MSJ';
-  c_id_flj  constant varchar2(30) := 'FLJ';
+  function f_inserts_modulo(i_id_modulo           in varchar2,
+                            i_motivo_modificacion in varchar2 default null)
+    return clob;
 
-  function f_modulo(i_id_modulo in varchar2) return t_modulos%rowtype;
+  function f_deletes_modulo(i_modulo in t_modulos%rowtype) return clob;
 
-  -- Indicadores de instalación
-  $if $$mi_risk $then
-  c_instalado_risk constant boolean := true;
-  $else
-  c_instalado_risk constant boolean := false;
-  $end
-  $if $$mi_msj $then
-  c_instalado_msj constant boolean := true;
-  $else
-  c_instalado_msj constant boolean := false;
-  $end
-  $if $$mi_flj $then
-  c_instalado_flj constant boolean := true;
-  $else
-  c_instalado_flj constant boolean := false;
-  $end
+  function f_deletes_modulo(i_id_modulo in varchar2) return clob;
+
+  function f_scripts(i_id_modulo            in varchar2 default null,
+                     i_motivo_modificacion  in varchar2 default null,
+                     i_incluir_parametros   in boolean default true,
+                     i_incluir_significados in boolean default true,
+                     i_incluir_errores      in boolean default true,
+                     i_incluir_aplicaciones in boolean default true,
+                     i_incluir_operaciones  in boolean default true)
+    return blob;
 
 end;
 /

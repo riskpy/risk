@@ -232,6 +232,7 @@ prompt Creating package specs...
 prompt -----------------------------------
 prompt
 @@package_specs/k_aplicacion.spc
+@@package_specs/k_aplicacion_util.spc
 @@package_specs/k_archivo.spc
 @@package_specs/k_auditoria.spc
 @@package_specs/k_autenticacion.spc
@@ -243,17 +244,20 @@ prompt
 @@package_specs/k_dominio.spc
 @@package_specs/k_entidad.spc
 @@package_specs/k_error.spc
+@@package_specs/k_error_util.spc
 @@package_specs/k_html.spc
 @@package_specs/k_importacion.spc
 @@package_specs/k_json_util.spc
 @@package_specs/k_lob_util.spc
 @@package_specs/k_modulo.spc
+@@package_specs/k_modulo_util.spc
 @@package_specs/k_monitoreo.spc
 @@package_specs/k_monitoreo_aut.spc
 @@package_specs/k_objeto_util.spc
 @@package_specs/k_operacion.spc
 @@package_specs/k_operacion_util.spc
 @@package_specs/k_parametro.spc
+@@package_specs/k_parametro_util.spc
 @@package_specs/k_reporte.spc
 @@package_specs/k_reporte_gen.spc
 @@package_specs/k_servicio.spc
@@ -273,6 +277,7 @@ prompt Creating package bodies...
 prompt -----------------------------------
 prompt
 @@package_bodies/k_aplicacion.bdy
+@@package_bodies/k_aplicacion_util.bdy
 @@package_bodies/k_archivo.bdy
 @@package_bodies/k_auditoria.bdy
 @@package_bodies/k_autenticacion.bdy
@@ -284,17 +289,20 @@ prompt
 @@package_bodies/k_dominio.bdy
 @@package_bodies/k_entidad.bdy
 @@package_bodies/k_error.bdy
+@@package_bodies/k_error_util.bdy
 @@package_bodies/k_html.bdy
 @@package_bodies/k_importacion.bdy
 @@package_bodies/k_json_util.bdy
 @@package_bodies/k_lob_util.bdy
 @@package_bodies/k_modulo.bdy
+@@package_bodies/k_modulo_util.bdy
 @@package_bodies/k_monitoreo.bdy
 @@package_bodies/k_monitoreo_aut.bdy
 @@package_bodies/k_objeto_util.bdy
 @@package_bodies/k_operacion.bdy
 @@package_bodies/k_operacion_util.bdy
 @@package_bodies/k_parametro.bdy
+@@package_bodies/k_parametro_util.bdy
 @@package_bodies/k_reporte.bdy
 @@package_bodies/k_reporte_gen.bdy
 @@package_bodies/k_servicio.bdy
@@ -334,16 +342,13 @@ prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
-@@scripts/ins_t_modulos.sql
-@@scripts/ins_t_dominios.sql
-@@scripts/ins_t_parametro_definiciones.sql
-@@scripts/ins_t_parametros.sql
-@@scripts/ins_t_aplicaciones.sql
-@@scripts/ins_t_aplicacion_parametros.sql
-@@scripts/ins_t_errores.sql
+@@scripts/module/install.sql
+@@scripts/parameters/install.sql
+@@scripts/meanings/install.sql
+@@scripts/errors/install.sql
+@@scripts/applications/install.sql
 @@scripts/ins_t_autenticacion_origenes.sql
 @@scripts/ins_t_roles.sql
-@@scripts/meanings/install.sql
 @@scripts/operations/install.sql
 commit;
 /

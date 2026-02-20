@@ -1,5 +1,25 @@
 create or replace package body k_parametro is
 
+  function f_parametro_definicion(i_tabla        in varchar2,
+                                  i_id_parametro in varchar2)
+    return t_parametro_definiciones%rowtype is
+    rw_parametro_definicion t_parametro_definiciones%rowtype;
+  begin
+    begin
+      select a.*
+        into rw_parametro_definicion
+        from t_parametro_definiciones a
+       where a.tabla = i_tabla
+         and a.id_parametro = i_id_parametro;
+    exception
+      when no_data_found then
+        rw_parametro_definicion := null;
+      when others then
+        rw_parametro_definicion := null;
+    end;
+    return rw_parametro_definicion;
+  end;
+
   function f_procesar_parametros(i_tabla       in varchar2,
                                  i_parametros  in clob,
                                  i_tipo_filtro in varchar2 default null)

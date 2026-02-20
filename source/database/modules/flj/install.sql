@@ -139,14 +139,11 @@ prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
-@@scripts/ins_t_modulos.sql
-@@scripts/ins_t_dominios.sql
-@@scripts/ins_t_parametro_definiciones.sql
-@@scripts/ins_t_parametros.sql
-@@scripts/ins_t_aplicaciones.sql
-@@scripts/ins_t_aplicacion_parametros.sql
-@@scripts/ins_t_errores.sql
+@@scripts/module/install.sql
+@@scripts/parameters/install.sql
 @@scripts/meanings/install.sql
+@@scripts/errors/install.sql
+@@scripts/applications/install.sql
 commit;
 /
 

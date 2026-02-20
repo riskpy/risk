@@ -30,7 +30,12 @@ create or replace package k_dominio is
   -------------------------------------------------------------------------------
   */
 
+  -- Constantes
+  -- Identificador del dominio por defecto
+  c_id_dominio_defecto constant varchar2(30) := 'API';
+
   function f_id_modulo(i_id_dominio in varchar2) return varchar2;
 
 end;
 /
+

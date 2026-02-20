@@ -4,7 +4,8 @@ create table T_APLICACIONES
   nombre        VARCHAR2(100),
   tipo          VARCHAR2(1),
   activo        VARCHAR2(1) default 'N' not null,
-  detalle       VARCHAR2(2000)
+  detalle       VARCHAR2(2000),
+  id_dominio    VARCHAR2(30)
 )
 ;
 comment on table T_APLICACIONES
@@ -19,8 +20,13 @@ comment on column T_APLICACIONES.activo
   is 'La aplicacion esta activa? (S/N)';
 comment on column T_APLICACIONES.detalle
   is 'Detalles adicionales de la aplicacion';
+comment on column T_APLICACIONES.id_dominio
+  is 'Dominio de la aplicación';
 alter table T_APLICACIONES
   add constraint PK_APLICACIONES primary key (ID_APLICACION);
+alter table T_APLICACIONES
+  add constraint FK_APLICACIONES_DOMINIOS foreign key (ID_DOMINIO)
+  references T_DOMINIOS (ID_DOMINIO);
 alter table T_APLICACIONES
   add constraint CK_APLICACIONES_ACTIVO
   check (ACTIVO IN ('S', 'N'));
