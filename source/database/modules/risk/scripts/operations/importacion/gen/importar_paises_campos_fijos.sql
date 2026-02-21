@@ -22,7 +22,8 @@ begin
   l_clob(9) :=q'!!';
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
-
+
+
   insert into t_operaciones
   (
      "ID_OPERACION"
@@ -77,11 +78,12 @@ begin
   l_varchar2(8) :=q'!!';
   l_clob(9) :=q'!S!';
   l_clob(10) :=q'!!';
-  l_clob(11) :=q'!Identificador del paÃ­s!';
+  l_clob(11) :=q'!Identificador del país!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -127,11 +129,12 @@ begin
   l_varchar2(8) :=q'!!';
   l_clob(9) :=q'!S!';
   l_clob(10) :=q'!!';
-  l_clob(11) :=q'!Nombre del paÃ­s!';
+  l_clob(11) :=q'!Nombre del país!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -181,7 +184,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -227,11 +231,12 @@ begin
   l_varchar2(8) :=q'!!';
   l_clob(9) :=q'!S!';
   l_clob(10) :=q'!!';
-  l_clob(11) :=q'!CÃ³digo ISO Alpha 2!';
+  l_clob(11) :=q'!Código ISO Alpha 2!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -277,11 +282,12 @@ begin
   l_varchar2(8) :=q'!!';
   l_clob(9) :=q'!S!';
   l_clob(10) :=q'!!';
-  l_clob(11) :=q'!CÃ³digo ISO Alpha 3!';
+  l_clob(11) :=q'!Código ISO Alpha 3!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -327,11 +333,12 @@ begin
   l_varchar2(8) :=q'!!';
   l_clob(9) :=q'!S!';
   l_clob(10) :=q'!!';
-  l_clob(11) :=q'!CÃ³digo ISO NumÃ©rico!';
+  l_clob(11) :=q'!Código ISO Numérico!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -450,7 +457,8 @@ begin
   l_clob(6) :=q'!N!';
   l_clob(7) :=q'!!';
   l_clob(8) :=q'!!';
-
+
+
   insert into t_importaciones
   (
      "ID_IMPORTACION"
@@ -496,7 +504,8 @@ begin
   l_varchar2(5) :=q'!9!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
+
+
   insert into t_importacion_parametros
   (
      "ID_IMPORTACION"
@@ -525,7 +534,8 @@ begin
   l_varchar2(5) :=q'!20!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!upper(trim(:variable))!';
-
+
+
   insert into t_importacion_parametros
   (
      "ID_IMPORTACION"
@@ -554,7 +564,8 @@ begin
   l_varchar2(5) :=q'!20!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
+
+
   insert into t_importacion_parametros
   (
      "ID_IMPORTACION"
@@ -583,7 +594,8 @@ begin
   l_varchar2(5) :=q'!3!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
+
+
   insert into t_importacion_parametros
   (
      "ID_IMPORTACION"
@@ -612,7 +624,8 @@ begin
   l_varchar2(5) :=q'!3!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
+
+
   insert into t_importacion_parametros
   (
      "ID_IMPORTACION"
@@ -641,7 +654,8 @@ begin
   l_varchar2(5) :=q'!3!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
+
+
   insert into t_importacion_parametros
   (
      "ID_IMPORTACION"

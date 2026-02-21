@@ -20,7 +20,8 @@ begin
   l_clob(7) :=q'!0.1.0!';
   l_varchar2(8) :=q'!0!';
   l_clob(9) :=q'!PAGINA_PARAMETROS!';
-
+
+
   insert into t_operaciones
   (
      "ID_OPERACION"
@@ -71,11 +72,12 @@ begin
   l_varchar2(8) :=q'!5!';
   l_clob(9) :=q'!N!';
   l_clob(10) :=q'!!';
-  l_clob(11) :=q'!Identificador de la aplicaciÃ³n!';
+  l_clob(11) :=q'!Identificador de la aplicación!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -121,11 +123,12 @@ begin
   l_varchar2(8) :=q'!50!';
   l_clob(9) :=q'!N!';
   l_clob(10) :=q'!!';
-  l_clob(11) :=q'!Clave de la aplicaciÃ³n!';
+  l_clob(11) :=q'!Clave de la aplicación!';
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -190,7 +193,8 @@ begin
        k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'VERSION_ACTUAL', id_aplicacion) version_actual,
        k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'VERSION_MINIMA', id_aplicacion) version_minima
   from t_aplicaciones!';
-
+
+
   insert into t_servicios
   (
      "ID_SERVICIO"
@@ -255,7 +259,8 @@ begin
   l_clob(4) :=q'!N!';
   l_clob(5) :=q'!N!';
   l_clob(6) :=q'!N!';
-
+
+
   insert into t_rol_permisos
   (
      "ID_ROL"
@@ -281,7 +286,8 @@ begin
   l_clob(4) :=q'!N!';
   l_clob(5) :=q'!N!';
   l_clob(6) :=q'!N!';
-
+
+
   insert into t_rol_permisos
   (
      "ID_ROL"

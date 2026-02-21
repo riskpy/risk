@@ -16,13 +16,14 @@ begin
   l_clob(3) :=q'!IMPORTAR_CIUDADES_SEPARADOS_POR_COMA!';
   l_clob(4) :=q'!GEN!';
   l_clob(5) :=q'!S!';
-  l_clob(6) :=q'!Importa archivo de ciudades de un paÃ­s con campos separados por coma!';
+  l_clob(6) :=q'!Importa archivo de ciudades de un país con campos separados por coma!';
   l_clob(7) :=q'!0.1.0!';
   l_varchar2(8) :=q'!1!';
   l_clob(9) :=q'!ID_PAIS!';
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
-
+
+
   insert into t_operaciones
   (
      "ID_OPERACION"
@@ -81,7 +82,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -131,7 +133,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros
   (
      "ID_OPERACION"
@@ -250,7 +253,8 @@ begin
   l_clob(6) :=q'!N!';
   l_clob(7) :=q'!!';
   l_clob(8) :=q'!!';
-
+
+
   insert into t_importaciones
   (
      "ID_IMPORTACION"
@@ -296,7 +300,8 @@ begin
   l_varchar2(5) :=q'!!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
+
+
   insert into t_importacion_parametros
   (
      "ID_IMPORTACION"
@@ -325,7 +330,8 @@ begin
   l_varchar2(5) :=q'!!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
+
+
   insert into t_importacion_parametros
   (
      "ID_IMPORTACION"
