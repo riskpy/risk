@@ -107,6 +107,7 @@ prompt Creating foreign keys...
 prompt -----------------------------------
 prompt
 @@foreign_keys/fk_aplicacion_parametros.sql
+@@foreign_keys/fk_aplicaciones.sql
 @@foreign_keys/fk_archivos.sql
 @@foreign_keys/fk_archivos_hist.sql
 @@foreign_keys/fk_barrios.sql
