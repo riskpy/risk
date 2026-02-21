@@ -104,6 +104,27 @@ modules=(
     "flj,$FLJ_MODULE_USER,true"
 )
 
+# Determine which modules to EXCLUDE from installation (comma-separated)
+# Default: exclude none. EXCLUDED_MODULES may be empty.
+IFS=',' read -ra TMP_EXCLUDED <<< "${EXCLUDED_MODULES:-}"
+# Trim whitespace and build a clean list
+EXCLUDED_LIST=""
+for i in "${TMP_EXCLUDED[@]}"; do
+    # trim spaces
+    v=$(echo "$i" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+    if [ -n "$v" ]; then
+        EXCLUDED_LIST+="$v\n"
+    fi
+done
+
+# Ensure 'risk' cannot be excluded
+if printf '%b' "$EXCLUDED_LIST" | grep -qx "risk"; then
+    echo "BUILDER: WARNING: 'risk' cannot be excluded. Ignoring 'risk' in EXCLUDED_MODULES."
+    EXCLUDED_LIST=$(printf '%b' "$EXCLUDED_LIST" | grep -vx "risk" || true)
+fi
+
+echo "BUILDER: EXCLUDED_MODULES=${EXCLUDED_MODULES:-}"
+
 for module in "${modules[@]}"; do
     modulename=$(echo "$module" | awk -F',' '{ print $1 }')
     moduleschema=$(echo "$module" | awk -F',' '{ print $2 }')
@@ -114,6 +135,12 @@ for module in "${modules[@]}"; do
     echo "============================================================"
     echo "Schema: $moduleschema"
     echo "Run Syn/Grant: $runsyngrant"
+
+    # Skip module if listed in EXCLUDED_MODULES
+    if printf '%b' "$EXCLUDED_LIST" | grep -qx "$modulename"; then
+        echo "BUILDER: Skipping module $modulename"
+        continue
+    fi
 
     export SQLPATH="/usr/src/risk/source/modules/$modulename/:$SQLPATH"
     sqlplus $RISK_DEV_USER[$moduleschema]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
