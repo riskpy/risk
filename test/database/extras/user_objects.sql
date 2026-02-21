@@ -5,6 +5,12 @@ select o.owner, count(*) count
  group by o.owner
  order by 2 desc;
 --
+select s.*
+  from all_source s, all_users u
+ where u.username = s.owner
+   and u.oracle_maintained = 'N'
+   and upper(text) like upper('%%');
+--
 SELECT 'plugin plsqldoc generate ' || lower(o.object_name) || ';' plsqldoc,
        o.*
   FROM user_objects o
