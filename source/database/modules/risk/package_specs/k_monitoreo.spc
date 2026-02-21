@@ -32,7 +32,7 @@ create or replace package k_monitoreo is
 
   -- Constantes
   c_id_ejecucion        constant varchar2(50) := 'ID_EJECUCION';
-  c_plantilla_monitoreo constant t_correo_plantillas.id_plantilla%type := 'PLANTILLA_MONITOREO';
+  c_plantilla_monitoreo constant varchar2(50) := 'PLANTILLA_MONITOREO';
   --
   c_id_modulo constant t_modulos.id_modulo%type := 'RISK';
 
