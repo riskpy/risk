@@ -31,9 +31,9 @@
     <PackageReference Include="NLog.Telegram.NetStandart" Version="1.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="6.1.1" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.100" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.6" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="9.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="10.1.4" />
     <PackageReference Include="Twilio" Version="7.14.3" />
   </ItemGroup>
 

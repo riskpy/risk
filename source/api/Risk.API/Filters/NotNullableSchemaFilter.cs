@@ -23,28 +23,56 @@ SOFTWARE.
 */
 
 using System.Linq;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Risk.API.Filters
 {
     public class NotNullableSchemaFilter : ISchemaFilter
     {
-        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+        public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
         {
-            if (schema.Properties == null)
+            if (schema is OpenApiSchema openApiSchema)
             {
-                return;
-            }
+                if (openApiSchema.Properties == null)
+                {
+                    return;
+                }
 
-            var nullableProperties = schema
-               .Properties
-               .Where(x => x.Value.Nullable)
-               .ToList();
+                var nullableProperties = openApiSchema
+                   .Properties
+                   .Where(x => x.Value is OpenApiSchema propSchema &&
+                               propSchema.AnyOf != null &&
+                               propSchema.AnyOf.Any(s => s.Type == JsonSchemaType.Null))
+                   .ToList();
 
-            foreach (var property in nullableProperties)
-            {
-                property.Value.Nullable = false;
+                foreach (var property in nullableProperties)
+                {
+                    if (property.Value is OpenApiSchema propSchema)
+                    {
+                        // Remove the null type from AnyOf
+                        var nonNullSchemas = propSchema.AnyOf.Where(s => s.Type != JsonSchemaType.Null).ToList();
+
+                        propSchema.AnyOf.Clear();
+
+                        if (nonNullSchemas.Count == 1 && nonNullSchemas[0] is OpenApiSchema remainingSchema)
+                        {
+                            // If only one schema remains, copy its properties
+                            foreach (var anyOfSchema in new[] { remainingSchema })
+                            {
+                                propSchema.AnyOf.Add(anyOfSchema);
+                            }
+                        }
+                        else
+                        {
+                            // Keep multiple schemas in AnyOf
+                            foreach (var nonNullSchema in nonNullSchemas)
+                            {
+                                propSchema.AnyOf.Add(nonNullSchema);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

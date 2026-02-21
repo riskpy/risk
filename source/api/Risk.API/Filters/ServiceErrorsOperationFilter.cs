@@ -25,7 +25,7 @@ SOFTWARE.
 using System.Collections.Generic;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Risk.API.Models;
 using Risk.Common.Helpers;
 using Swashbuckle.AspNetCore.SwaggerGen;

@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 using System.Collections.Generic;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Risk.API.Filters
@@ -45,7 +45,7 @@ namespace Risk.API.Filters
         {
             if (operation.Parameters == null)
             {
-                operation.Parameters = new List<OpenApiParameter>();
+                operation.Parameters = new List<IOpenApiParameter>();
             }
 
             operation.Parameters.Add(new OpenApiParameter
@@ -56,7 +56,7 @@ namespace Risk.API.Filters
                 Required = _required,
                 Schema = new OpenApiSchema()
                 {
-                    Type = "string"
+                    Type = JsonSchemaType.String
                 }
             });
         }

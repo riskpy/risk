@@ -27,7 +27,7 @@ using System.Linq;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Risk.API.Attributes;
 using Risk.Common.Helpers;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -46,7 +46,7 @@ namespace Risk.API.Filters
                 {
                     Schema = new OpenApiSchema()
                     {
-                        Type = "string"
+                        Type = JsonSchemaType.String
                     }
                 }
             };
@@ -56,11 +56,7 @@ namespace Risk.API.Filters
             if (!allowAnyClientAttributes.Any())
             {
                 // Add OpenApi Security Scheme
-                securityRequirement.Add(new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = RiskConstants.SECURITY_SCHEME_RISK_APP_KEY }
-                },
-                new List<string>());
+                securityRequirement.Add(new OpenApiSecuritySchemeReference(RiskConstants.SECURITY_SCHEME_RISK_APP_KEY, context.Document), new List<string>());
 
                 // Add Http Response
                 if (!operation.Responses.ContainsKey(StatusCodes.Status403Forbidden.ToString()))
@@ -79,11 +75,7 @@ namespace Risk.API.Filters
             if (authorizeAttributes.Any() && !allowAnonymousAttributes.Any())
             {
                 // Add OpenApi Security Scheme
-                securityRequirement.Add(new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = RiskConstants.SECURITY_SCHEME_ACCESS_TOKEN }
-                },
-                new List<string>());
+                securityRequirement.Add(new OpenApiSecuritySchemeReference(RiskConstants.SECURITY_SCHEME_ACCESS_TOKEN, context.Document), new List<string>());
 
                 // Add Http Response
                 if (!operation.Responses.ContainsKey(StatusCodes.Status401Unauthorized.ToString()))
