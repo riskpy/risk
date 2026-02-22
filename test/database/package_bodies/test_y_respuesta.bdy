@@ -13,7 +13,7 @@ create or replace package body test_y_respuesta is
     l_respuesta.datos := l_error;
     --
     k_objeto_util.p_inicializar_cola;
-    k_objeto_util.p_encolar('RISK', 'Y_ERROR');
+    k_objeto_util.p_encolar(null, 'Y_ERROR');
     -- Act
     l_resultado := y_respuesta.parse_json(l_respuesta.to_json);
     -- Assert
@@ -22,3 +22,4 @@ create or replace package body test_y_respuesta is
 
 end;
 /
+
