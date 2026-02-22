@@ -5,6 +5,12 @@ select o.owner, count(*) count
  group by o.owner
  order by 2 desc;
 --
+select o.*
+  from all_objects o, all_users u
+ where u.username = o.owner
+   and u.oracle_maintained = 'N'
+ order by 1, 2 desc;
+--
 select s.*
   from all_source s, all_users u
  where u.username = s.owner
