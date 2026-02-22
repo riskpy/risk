@@ -1,4 +1,4 @@
-create or replace type y_dato under y_objeto
+create or replace type y_dato force under y_objeto
 (
 /**
 Contiene un dato en formato de texto.
@@ -45,7 +45,7 @@ Constructor del objeto sin parámetros.
 
 /**
 Retorna el objeto serializado en formato JSON.
-  
+
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
@@ -53,3 +53,4 @@ Retorna el objeto serializado en formato JSON.
 )
 not final
 /
+

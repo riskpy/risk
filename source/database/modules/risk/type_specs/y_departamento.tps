@@ -31,11 +31,11 @@ SOFTWARE.
 */
 
 /** Identificador del departamento, estado o provincia */
-  id_departamento number(10),
+  id_departamento number,
 /** Nombre del departamento, estado o provincia */
   nombre varchar2(100),
 /** País del departamento, estado o provincia */
-  id_pais number(10),
+  id_pais number,
 
   constructor function y_departamento return self as result,
 
@@ -44,3 +44,4 @@ SOFTWARE.
   overriding member function to_json return clob
 )
 /
+

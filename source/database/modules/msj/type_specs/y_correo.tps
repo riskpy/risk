@@ -47,7 +47,7 @@ SOFTWARE.
 /** Campo Bcc del mensaje */
   mensaje_bcc varchar2(4000),
 /** Archivos adjuntos */
-  adjuntos y_archivos,
+  adjuntos y_objetos,
 
 /**
 Constructor del objeto sin parámetros.
@@ -61,10 +61,11 @@ Constructor del objeto sin parámetros.
 
 /**
 Retorna el objeto serializado en formato JSON.
-  
+
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
   overriding member function to_json return clob
 )
 /
+

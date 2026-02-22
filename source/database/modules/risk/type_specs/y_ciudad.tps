@@ -31,13 +31,13 @@ SOFTWARE.
 */
 
 /** Identificador de la ciudad */
-  id_ciudad number(10),
+  id_ciudad number,
 /** Nombre de la ciudad */
   nombre varchar2(100),
 /** País de la ciudad */
-  id_pais number(10),
+  id_pais number,
 /** Departamento, estado o provincia de la ciudad */
-  id_departamento number(10),
+  id_departamento number,
 
   constructor function y_ciudad return self as result,
 
@@ -46,3 +46,4 @@ SOFTWARE.
   overriding member function to_json return clob
 )
 /
+

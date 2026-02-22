@@ -86,7 +86,7 @@ create or replace package k_mensajeria is
                             i_reply_to        in varchar2 default null,
                             i_cc              in varchar2 default null,
                             i_bcc             in varchar2 default null,
-                            i_adjuntos        in y_archivos default null,
+                            i_adjuntos        in y_objetos default null,
                             i_prioridad_envio in number default null);
 
   procedure p_enviar_mensaje(i_contenido       in varchar2,
@@ -108,7 +108,7 @@ create or replace package k_mensajeria is
                            i_reply_to        in varchar2 default null,
                            i_cc              in varchar2 default null,
                            i_bcc             in varchar2 default null,
-                           i_adjuntos        in y_archivos default null,
+                           i_adjuntos        in y_objetos default null,
                            i_prioridad_envio in number default null)
     return pls_integer;
 
@@ -128,3 +128,4 @@ create or replace package k_mensajeria is
 
 end;
 /
+

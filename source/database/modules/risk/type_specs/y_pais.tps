@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /** Identificador del pais */
-  id_pais number(10),
+  id_pais number,
 /** Nombre del pais */
   nombre varchar2(100),
 /** Codigo del pais segun estandar ISO 3166-1 alpha-2 */
@@ -48,3 +48,4 @@ SOFTWARE.
   overriding member function to_json return clob
 )
 /
+

@@ -31,15 +31,15 @@ SOFTWARE.
 */
 
 /** Identificador del barrio */
-  id_barrio number(10),
+  id_barrio number,
 /** Nombre del barrio */
   nombre varchar2(100),
 /** País del barrio */
-  id_pais number(10),
+  id_pais number,
 /** Departamento, estado o provincia del barrio */
-  id_departamento number(10),
+  id_departamento number,
 /** Ciudad del barrio */
-  id_ciudad number(10),
+  id_ciudad number,
 
   constructor function y_barrio return self as result,
 
@@ -48,3 +48,4 @@ SOFTWARE.
   overriding member function to_json return clob
 )
 /
+

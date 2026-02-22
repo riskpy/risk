@@ -1,7 +1,7 @@
 create or replace package body k_servicio_msj is
 
-  function lf_adjuntos(i_id_correo in number) return y_archivos is
-    l_adjuntos y_archivos;
+  function lf_adjuntos(i_id_correo in number) return y_objetos is
+    l_adjuntos y_objetos;
     l_archivo  y_archivo;
   
     cursor cr_elementos is
@@ -11,10 +11,9 @@ create or replace package body k_servicio_msj is
        order by id_correo_adjunto;
   begin
     -- Inicializa respuesta
-    l_adjuntos := new y_archivos();
+    l_adjuntos := new y_objetos();
   
     for ele in cr_elementos loop
-      l_archivo := new y_archivo();
       l_archivo := k_archivo.f_recuperar_archivo('T_CORREO_ADJUNTOS',
                                                  'ARCHIVO',
                                                  to_char(ele.id_correo_adjunto));
@@ -428,3 +427,4 @@ create or replace package body k_servicio_msj is
 
 end;
 /
+

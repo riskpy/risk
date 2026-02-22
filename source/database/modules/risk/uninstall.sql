@@ -131,7 +131,6 @@ prompt Dropping types...
 prompt -----------------------------------
 prompt
 drop type y_archivo force;
-drop type y_archivos force;
 drop type y_barrio force;
 drop type y_cadenas force;
 drop type y_ciudad force;

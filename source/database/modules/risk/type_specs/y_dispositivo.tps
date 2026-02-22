@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /** Identificador del dispositivo */
-  id_dispositivo number(15),
+  id_dispositivo number,
 /** Token del dispositivo */
   token_dispositivo varchar2(500),
 /** Nombre del sistema operativo */
@@ -80,3 +80,4 @@ Retorna el objeto serializado en formato JSON.
   overriding member function to_json return clob
 )
 /
+

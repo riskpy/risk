@@ -168,7 +168,7 @@ create or replace package body k_mensajeria is
                             i_reply_to        in varchar2 default null,
                             i_cc              in varchar2 default null,
                             i_bcc             in varchar2 default null,
-                            i_adjuntos        in y_archivos default null,
+                            i_adjuntos        in y_objetos default null,
                             i_prioridad_envio in number default null) is
     l_mensaje_to        t_correos.mensaje_to%type;
     l_id_correo         t_correos.id_correo%type;
@@ -234,7 +234,7 @@ create or replace package body k_mensajeria is
         k_archivo.p_guardar_archivo('T_CORREO_ADJUNTOS',
                                     'ARCHIVO',
                                     to_char(l_id_correo_adjunto),
-                                    i_adjuntos(i));
+                                    treat(i_adjuntos(i) as y_archivo));
       
         i := i_adjuntos.next(i);
       end loop;
@@ -331,7 +331,7 @@ create or replace package body k_mensajeria is
                            i_reply_to        in varchar2 default null,
                            i_cc              in varchar2 default null,
                            i_bcc             in varchar2 default null,
-                           i_adjuntos        in y_archivos default null,
+                           i_adjuntos        in y_objetos default null,
                            i_prioridad_envio in number default null)
     return pls_integer is
     pragma autonomous_transaction;
@@ -415,3 +415,4 @@ create or replace package body k_mensajeria is
 
 end;
 /
+

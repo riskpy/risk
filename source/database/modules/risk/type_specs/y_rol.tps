@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /** Identificador del rol */
-  id_rol number(15),
+  id_rol number,
 /** Nombre del rol */
   nombre varchar2(100),
 /** El rol esta activo? (S/N) */
@@ -51,10 +51,11 @@ Constructor del objeto sin parámetros.
 
 /**
 Retorna el objeto serializado en formato JSON.
-  
+
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
   overriding member function to_json return clob
 )
 /
+

@@ -31,7 +31,7 @@ SOFTWARE.
 */
 
 /** Identificador del usuario */
-  id_usuario number(10),
+  id_usuario number,
 /** Alias del usuario (identificador para autenticacion) */
   alias varchar2(300),
 /** Nombre de la persona */
@@ -65,10 +65,11 @@ Constructor del objeto sin parámetros.
 
 /**
 Retorna el objeto serializado en formato JSON.
-  
+
 %author jtsoya539 30/3/2020 09:42:09
 %return JSON con los atributos del objeto.
 */
   overriding member function to_json return clob
 )
 /
+

@@ -155,7 +155,6 @@ prompt Creating type specs...
 prompt -----------------------------------
 prompt
 @@type_specs/y_archivo.tps
-@@type_specs/y_archivos.tps
 @@type_specs/y_barrio.tps
 @@type_specs/y_cadenas.tps
 @@type_specs/y_ciudad.tps
