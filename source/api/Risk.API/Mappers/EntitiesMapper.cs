@@ -24,6 +24,7 @@ SOFTWARE.
 
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using Risk.API.Entities;
 using Risk.API.Models;
 
@@ -67,6 +68,16 @@ namespace Risk.API.Mappers
             where TEntity : IEntity
         {
             return new Respuesta<TModel>
+            {
+                Codigo = entity.Codigo,
+                Mensaje = entity.Mensaje,
+                Datos = datos
+            };
+        }
+
+        public static Respuesta<JObject> GetRespuestaFromEntity(YRespuesta<JObject> entity, JObject datos)
+        {
+            return new Respuesta<JObject>
             {
                 Codigo = entity.Codigo,
                 Mensaje = entity.Mensaje,

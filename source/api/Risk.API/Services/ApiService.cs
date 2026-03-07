@@ -43,6 +43,20 @@ namespace Risk.API.Services
         {
         }
 
+        public Respuesta<JObject> ProcesarServicio(string nombre, string dominio, JObject parametros = null)
+        {
+            prms = new JObject();
+            if (parametros != null)
+            {
+                prms = parametros;
+            }
+
+            rsp = base.ProcesarOperacion(TipoOperacion.Servicio, nombre, dominio, prms);
+            var entityRsp = rsp.ToObject<YRespuesta<JObject>>();
+
+            return EntitiesMapper.GetRespuestaFromEntity(entityRsp, entityRsp.Datos);
+        }
+
         public Respuesta<Archivo> ProcesarReporte(string nombre, string dominio, FormatoReporte formato, JObject parametros = null)
         {
             prms = new JObject();

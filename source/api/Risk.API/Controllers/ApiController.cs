@@ -48,8 +48,22 @@ namespace Risk.API.Controllers
             _apiService = apiService;
         }
 
+        [HttpPost("ProcesarServicio")]
+        [SwaggerOperation(OperationId = "ProcesarServicio", Summary = "ProcesarServicio", Description = "Procesa un servicio")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(Respuesta<JObject>))]
+        public IActionResult ProcesarServicio([FromQuery, SwaggerParameter(Description = "Nombre", Required = true)] string nombre,
+            [FromQuery, SwaggerParameter(Description = "Dominio", Required = true)] string dominio,
+            [FromBody] JObject parametros = null)
+        {
+            var respuesta = _apiService.ProcesarServicio(nombre, dominio, parametros);
+            return ProcesarRespuesta(respuesta);
+        }
+
         [HttpPost("ProcesarReporte")]
         [SwaggerOperation(OperationId = "ProcesarReporte", Summary = "ProcesarReporte", Description = "Procesa un reporte")]
+        [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json, new[] { "application/octet-stream" })]
         [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(FileContentResult))]
         public IActionResult ProcesarReporte([FromQuery, SwaggerParameter(Description = "Formato del reporte", Required = true)] FormatoReporte formato,
