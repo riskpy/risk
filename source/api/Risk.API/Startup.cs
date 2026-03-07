@@ -108,6 +108,7 @@ namespace Risk.API
             //services.AddDbContext<RiskDbContext>(options => options.UseOracle(oracleConnection));
             services.AddSingleton<IDbConnectionFactory, RiskDbConnectionFactory>();
             services.AddSingleton<INotificationHubClientConnection, NotificationHubClientConnection>();
+            services.AddSingleton<IApiService, ApiService>();
             services.AddSingleton<IAutService, AutService>();
             services.AddSingleton<IGenService, GenService>();
             services.AddSingleton<IGloService, GloService>();
