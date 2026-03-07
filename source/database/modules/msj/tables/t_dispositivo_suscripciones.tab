@@ -1,6 +1,6 @@
 create table T_DISPOSITIVO_SUSCRIPCIONES
 (
-  id_dispositivo   NUMBER(15) not null,
+  id_dispositivo   NUMBER not null,
   suscripcion      VARCHAR2(120) not null,
   fecha_expiracion DATE
 )

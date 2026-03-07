@@ -1,6 +1,6 @@
 create table T_USUARIO_CLAVES
 (
-  id_usuario                 NUMBER(10) not null,
+  id_usuario                 NUMBER not null,
   tipo                       VARCHAR2(1) not null,
   orden                      NUMBER(3) not null,
   estado                     VARCHAR2(1),

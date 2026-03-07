@@ -11,9 +11,9 @@ create table T_DISPOSITIVOS
   version_navegador         VARCHAR2(100),
   token_notificacion        VARCHAR2(500),
   version_aplicacion        VARCHAR2(100),
-  id_pais                   NUMBER(3),
+  id_pais                   NUMBER,
   zona_horaria              VARCHAR2(8),
-  id_idioma                 NUMBER(3)
+  id_idioma                 NUMBER
 )
 ;
 comment on table T_DISPOSITIVOS
@@ -50,3 +50,4 @@ alter table T_DISPOSITIVOS
   add constraint PK_DISPOSITIVOS primary key (ID_DISPOSITIVO);
 alter table T_DISPOSITIVOS
   add constraint UK_DISPOSITIVOS_TOKEN unique (TOKEN_DISPOSITIVO);
+

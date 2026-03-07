@@ -1,6 +1,6 @@
 create table T_USUARIO_SUSCRIPCIONES
 (
-  id_usuario       NUMBER(10) not null,
+  id_usuario       NUMBER not null,
   suscripcion      VARCHAR2(120) not null,
   fecha_expiracion DATE
 )
@@ -15,3 +15,4 @@ comment on column T_USUARIO_SUSCRIPCIONES.fecha_expiracion
   is 'Fecha de expiración de la suscripción';
 alter table T_USUARIO_SUSCRIPCIONES
   add constraint PK_USUARIO_SUSCRIPCIONES primary key (ID_USUARIO, SUSCRIPCION);
+

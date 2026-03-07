@@ -5,7 +5,7 @@ create table T_MONEDAS
   activo      VARCHAR2(1) default 'N' not null,
   formato     VARCHAR2(30),
   simbolo     VARCHAR2(10),
-  id_pais     NUMBER(3),
+  id_pais     NUMBER,
   codigo_iso  VARCHAR2(3)
 )
 ;
