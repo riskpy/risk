@@ -205,7 +205,7 @@ namespace Risk.API.Controllers
         }
 
         [HttpGet("ReporteVersionSistema")]
-        [SwaggerOperation(OperationId = "ReporteVersionSistema", Summary = "ReporteVersionSistema", Description = "Obtiene un reporte con la versión actual del sistema", Tags = new[] { "Gen", "Rep" })]
+        [SwaggerOperation(OperationId = "ReporteVersionSistema", Summary = "ReporteVersionSistema", Description = "Obtiene un reporte con la versión actual del sistema")]
         [Produces(MediaTypeNames.Application.Json, new[] { "application/octet-stream" })]
         [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(FileContentResult))]
         public IActionResult ReporteVersionSistema([FromQuery, SwaggerParameter(Description = "Formato del reporte", Required = true)] FormatoReporte formato)
@@ -221,7 +221,7 @@ namespace Risk.API.Controllers
         }
 
         [HttpGet("ReporteListarSignificados")]
-        [SwaggerOperation(OperationId = "ReporteListarSignificados", Summary = "ReporteListarSignificados", Description = "Obtiene un reporte con los significados dentro de un dominio", Tags = new[] { "Gen", "Rep" })]
+        [SwaggerOperation(OperationId = "ReporteListarSignificados", Summary = "ReporteListarSignificados", Description = "Obtiene un reporte con los significados dentro de un dominio")]
         [Produces(MediaTypeNames.Application.Json, new[] { "application/octet-stream" })]
         [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(FileContentResult))]
         public IActionResult ReporteListarSignificados([FromQuery, SwaggerParameter(Description = "Formato del reporte", Required = true)] FormatoReporte formato,
