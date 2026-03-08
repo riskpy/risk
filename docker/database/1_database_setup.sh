@@ -39,6 +39,44 @@ download_and_install_audit_utility() {
     fi
 }
 
+# Function to install audit_utility
+install_audit_utility() {
+    if [ "${SKIP_AUDIT_INSTALL}" == "true" ]; then
+        echo "BUILDER: audit_utility installation ignored"
+    else
+        echo "BUILDER: Installing audit_utility"
+        export SQLPATH="/usr/src/risk/source/dependencies/audit_utility/v2/:$SQLPATH"
+        sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @audit_util_setup.sql
+        
+        echo "BUILDER: audit_utility installation completed"
+    fi
+}
+
+# Function to download, extract and install occ
+download_and_install_occ() {
+    echo "BUILDER: Downloading occ in parallel"
+    DOWNLOAD_URL=https://github.com/yerba1704/occ/archive/refs/heads/main.zip
+    curl -Lk "${DOWNLOAD_URL}" -o occ.zip
+    unzip occ.zip
+    echo "BUILDER: occ download and extraction completed"
+    
+    # Install occ immediately after download
+    echo "BUILDER: Installing occ"
+    export SQLPATH="$PWD/occ/occ-main:$SQLPATH"
+    sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @occ-main/admin_install.sql
+    
+    echo "BUILDER: occ installation completed"
+}
+
+# Function to install occ
+install_occ() {
+    echo "BUILDER: Installing occ"
+    export SQLPATH="/usr/src/risk/source/dependencies/occ/:$SQLPATH"
+    sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @admin_install.sql
+    
+    echo "BUILDER: occ installation completed"
+}
+
 # Function to download, extract and install utPLSQL
 download_and_install_utplsql() {
     if [ "${SKIP_TESTS_INSTALL}" == "true" ]; then
@@ -73,8 +111,10 @@ download_utplsql_cli() {
 }
 
 # Start downloads in background
-download_and_install_audit_utility &
+install_audit_utility &
 AUDIT_UTILITY_PID=$!
+install_occ &
+OCC_PID=$!
 download_and_install_utplsql &
 UTPLSQL_PID=$!
 download_utplsql_cli &

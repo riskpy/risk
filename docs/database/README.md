@@ -53,6 +53,8 @@ Dependencia|Descripción
 [console](https://github.com/ogobrecht/console)|Herramienta para logging
 [om_tapigen](https://github.com/OraMUC/table-api-generator)|Generador de API's para tablas
 [plex](https://github.com/ogobrecht/plex)|Herramienta para exportación de objetos
+[audit_utility](https://github.com/connormcd/audit_utility)|TO-DO
+[occ](https://github.com/yerba1704/occ)|TO-DO
 
 ### Configuración de PL/SQL Documentation (plsqldoc)
 
