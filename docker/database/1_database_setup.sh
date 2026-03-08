@@ -73,6 +73,10 @@ install_occ() {
     echo "BUILDER: Installing occ"
     export SQLPATH="/usr/src/risk/source/dependencies/occ/:$SQLPATH"
     sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @admin_install.sql
+
+    echo "BUILDER: Installing occ-utplsql"
+    export SQLPATH="/usr/src/risk/source/dependencies/occ-utplsql/:$SQLPATH"
+    sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @admin_install.sql
     
     echo "BUILDER: occ installation completed"
 }
