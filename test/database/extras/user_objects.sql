@@ -16,6 +16,17 @@ select s.*
  where u.username = s.owner
    and u.oracle_maintained = 'N'
    and upper(text) like upper('%%');
+-- Control de columnas de tablas o types
+select *
+  from all_tab_columns c
+ where c.column_name like 'ID_%'
+   and c.data_type = 'NUMBER'
+   and c.data_precision is not null;
+select *
+  from all_type_attrs a
+ where a.attr_name like '%ID_%'
+   and a.attr_type_name = 'NUMBER'
+   and a.precision is not null;
 --
 SELECT 'plugin plsqldoc generate ' || lower(o.object_name) || ';' plsqldoc,
        o.*
