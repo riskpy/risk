@@ -34,7 +34,7 @@ prompt -----------------------------------
 prompt
 GRANT EXECUTE ON &v_risk_module_user..f_procesar_servicio TO &v_access_role;
 GRANT EXECUTE ON &v_risk_module_user..f_procesar_reporte TO &v_access_role;
-CREATE OR REPLACE SYNONYM &v_access_user.f_procesar_servicio FOR &v_risk_module_user..f_procesar_servicio;
-CREATE OR REPLACE SYNONYM &v_access_user.f_procesar_reporte FOR &v_risk_module_user..f_procesar_reporte;
+CREATE OR REPLACE SYNONYM &v_access_user..f_procesar_servicio FOR &v_risk_module_user..f_procesar_servicio;
+CREATE OR REPLACE SYNONYM &v_access_user..f_procesar_reporte FOR &v_risk_module_user..f_procesar_reporte;
 
 spool off
