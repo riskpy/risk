@@ -61,6 +61,31 @@ namespace Risk.API.Controllers
             return ProcesarRespuesta(respuesta);
         }
 
+        [HttpPost("ProcesarServicioPagina")]
+        [SwaggerOperation(OperationId = "ProcesarServicioPagina", Summary = "ProcesarServicioPagina", Description = "Procesa un servicio con paginación")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(Respuesta<Pagina<JObject>>))]
+        public IActionResult ListarAplicaciones([FromQuery, SwaggerParameter(Description = "Nombre", Required = true)] string nombre,
+            [FromQuery, SwaggerParameter(Description = "Dominio", Required = true)] string dominio,
+            [FromQuery, SwaggerParameter(Description = "Número de la página", Required = false)] int pagina,
+            [FromQuery, SwaggerParameter(Description = "Cantidad de elementos por página", Required = false)] int porPagina,
+            [FromQuery, SwaggerParameter(Description = "No paginar?", Required = false)] bool noPaginar,
+            [FromBody] JObject parametros = null)
+        {
+            PaginaParametros paginaParametros = new PaginaParametros
+            {
+                Pagina = pagina,
+                PorPagina = porPagina,
+                NoPaginar = noPaginar
+            };
+            var respuesta = _apiService.ProcesarServicioPagina(nombre, dominio, paginaParametros, parametros);
+
+            respuesta.Datos = ProcesarPagina(respuesta.Datos);
+
+            return ProcesarRespuesta(respuesta);
+        }
+
         [HttpPost("ProcesarReporte")]
         [SwaggerOperation(OperationId = "ProcesarReporte", Summary = "ProcesarReporte", Description = "Procesa un reporte")]
         [Consumes(MediaTypeNames.Application.Json)]

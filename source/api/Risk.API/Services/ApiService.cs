@@ -57,6 +57,31 @@ namespace Risk.API.Services
             return EntitiesMapper.GetRespuestaFromEntity(entityRsp, entityRsp.Datos);
         }
 
+        public Respuesta<Pagina<JObject>> ProcesarServicioPagina(string nombre, string dominio, PaginaParametros paginaParametros = null, JObject parametros = null)
+        {
+            prms = new JObject();
+            if (parametros != null)
+            {
+                prms = parametros;
+            }
+
+            if (paginaParametros != null)
+            {
+                prms["pagina_parametros"] = JToken.FromObject(ModelsMapper.GetEntityFromModel<PaginaParametros, YPaginaParametros>(paginaParametros));
+            }
+
+            rsp = base.ProcesarOperacion(TipoOperacion.Servicio, nombre, dominio, prms);
+            var entityRsp = rsp.ToObject<YRespuesta<YPagina<JObject>>>();
+
+            Pagina<JObject> datos = null;
+            if (entityRsp.Datos != null)
+            {
+                datos = EntitiesMapper.GetPaginaFromEntity(entityRsp.Datos, entityRsp.Datos.Elementos);
+            }
+
+            return EntitiesMapper.GetRespuestaFromEntity(entityRsp, datos);
+        }
+
         public Respuesta<Archivo> ProcesarReporte(string nombre, string dominio, FormatoReporte formato, JObject parametros = null)
         {
             prms = new JObject();

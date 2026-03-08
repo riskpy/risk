@@ -101,6 +101,20 @@ namespace Risk.API.Mappers
             };
         }
 
+        public static Pagina<JObject> GetPaginaFromEntity(YPagina<JObject> entity, List<JObject> elementos)
+        {
+            return new Pagina<JObject>
+            {
+                PaginaActual = Convert.ToString(entity.NumeroActual),
+                PaginaSiguiente = Convert.ToString(entity.NumeroSiguiente),
+                PaginaUltima = Convert.ToString(entity.NumeroUltima),
+                PaginaPrimera = Convert.ToString(entity.NumeroPrimera),
+                PaginaAnterior = Convert.ToString(entity.NumeroAnterior),
+                CantidadElementos = entity.CantidadElementos,
+                Elementos = elementos
+            };
+        }
+
         public static bool GetBoolFromValue(string value)
         {
             switch (value.ToUpper())

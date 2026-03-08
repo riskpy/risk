@@ -30,6 +30,7 @@ namespace Risk.API.Services
     public interface IApiService : IServiceBase
     {
         Respuesta<JObject> ProcesarServicio(string nombre, string dominio, JObject parametros = null);
+        Respuesta<Pagina<JObject>> ProcesarServicioPagina(string nombre, string dominio, PaginaParametros paginaParametros = null, JObject parametros = null);
         Respuesta<Archivo> ProcesarReporte(string nombre, string dominio, FormatoReporte formato, JObject parametros = null);
     }
 }
