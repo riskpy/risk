@@ -22,19 +22,39 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-spool grant_objects_access_role.log
-
-set define on
-
 @@define_variables.sql
 
-prompt
-prompt Granting privileges to role...
-prompt -----------------------------------
-prompt
-GRANT EXECUTE ON &v_risk_module_user..f_procesar_servicio TO &v_access_role;
-GRANT EXECUTE ON &v_risk_module_user..f_procesar_reporte TO &v_access_role;
-CREATE OR REPLACE SYNONYM &v_access_role.f_procesar_servicio FOR &v_risk_module_user..f_procesar_servicio;
-CREATE OR REPLACE SYNONYM &v_access_role.f_procesar_reporte FOR &v_risk_module_user..f_procesar_reporte;
+set serveroutput on size unlimited
 
-spool off
+declare
+  cursor cr_objetos is
+    select s.owner as syn_owner,
+           s.synonym_name as syn_name,
+           s.table_owner as obj_owner,
+           s.table_name as obj_name,
+           case
+             when o.owner is null then
+              'MISSING'
+             else
+              o.status
+           end as obj_status,
+           'drop synonym ' || s.owner || '.' || s.synonym_name as sentencia
+      from all_synonyms s
+      left join all_objects o
+        on s.table_owner = o.owner
+       and s.table_name = o.object_name
+     where s.owner like '&v_app_name\_%' escape
+     '\'
+       and s.table_owner like '&v_app_name\_%' escape '\'
+       and o.owner is null;
+begin
+  dbms_output.put_line('Dropping private synonyms...');
+  dbms_output.put_line('-----------------------------------');
+  for t in cr_objetos loop
+    --dbms_output.put_line(t.sentencia);
+    execute immediate t.sentencia;
+  end loop;
+end;
+/
+
+set serveroutput off
