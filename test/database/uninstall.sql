@@ -74,6 +74,7 @@ drop package test_k_sistema;
 drop package test_k_trabajo;
 drop package test_k_usuario;
 drop package test_k_util;
+drop package test_ora_codecop;
 drop package test_y_dato;
 drop package test_y_respuesta;
 

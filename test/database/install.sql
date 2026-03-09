@@ -74,6 +74,7 @@ prompt
 @@package_specs/test_k_trabajo.spc
 @@package_specs/test_k_usuario.spc
 @@package_specs/test_k_util.spc
+@@package_specs/test_ora_codecop.spc
 @@package_specs/test_y_dato.spc
 @@package_specs/test_y_respuesta.spc
 
@@ -107,6 +108,7 @@ prompt
 @@package_bodies/test_k_trabajo.bdy
 @@package_bodies/test_k_usuario.bdy
 @@package_bodies/test_k_util.bdy
+@@package_bodies/test_ora_codecop.bdy
 @@package_bodies/test_y_dato.bdy
 @@package_bodies/test_y_respuesta.bdy
 
