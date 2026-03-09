@@ -397,18 +397,14 @@ create or replace package body k_servicio_msj is
                                     'Valor no válido para estado');
   
     l_rsp.lugar := 'Cambiando valor del parámetro';
-    update t_parametros
-       set valor = k_operacion.f_valor_parametro_string(i_parametros,
-                                                        'estado')
-     where id_parametro =
-           decode(k_operacion.f_valor_parametro_string(i_parametros,
-                                                       'tipo_mensajeria'),
-                  'M',
-                  'ENVIO_CORREOS_ACTIVO',
-                  'S',
-                  'ENVIO_MENSAJES_ACTIVO',
-                  'P',
-                  'ENVIO_NOTIFICACIONES_ACTIVO');
+    k_util.p_actualizar_valor_parametro(case
+                                        k_operacion.f_valor_parametro_string(i_parametros,
+                                                                             'tipo_mensajeria') when 'M' then
+                                        'ENVIO_CORREOS_ACTIVO' when 'S' then
+                                        'ENVIO_MENSAJES_ACTIVO' when 'P' then
+                                        'ENVIO_NOTIFICACIONES_ACTIVO' end,
+                                        k_operacion.f_valor_parametro_string(i_parametros,
+                                                                             'estado'));
   
     k_operacion.p_respuesta_ok(l_rsp);
     return l_rsp;

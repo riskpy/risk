@@ -274,6 +274,36 @@ create or replace package body k_usuario is
     end if;
   end;
 
+  function f_direccion_correo_usuario(i_id_usuario in number) return varchar2 is
+    l_direccion_correo t_usuarios.direccion_correo%type;
+  begin
+    begin
+      select direccion_correo
+        into l_direccion_correo
+        from t_usuarios
+       where id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
+        l_direccion_correo := null;
+    end;
+    return l_direccion_correo;
+  end;
+
+  function f_numero_telefono_usuario(i_id_usuario in number) return varchar2 is
+    l_numero_telefono t_usuarios.numero_telefono%type;
+  begin
+    begin
+      select numero_telefono
+        into l_numero_telefono
+        from t_usuarios
+       where id_usuario = i_id_usuario;
+    exception
+      when no_data_found then
+        l_numero_telefono := null;
+    end;
+    return l_numero_telefono;
+  end;
+
   procedure p_separar_dominio_usuario(i_alias   in varchar2,
                                       o_dominio out varchar2,
                                       o_usuario out varchar2) is
@@ -391,3 +421,4 @@ create or replace package body k_usuario is
 
 end;
 /
+

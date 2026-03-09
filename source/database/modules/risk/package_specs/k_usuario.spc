@@ -62,6 +62,10 @@ create or replace package k_usuario is
   function f_existe_usuario_externo(i_origen     in varchar2,
                                     i_id_externo in varchar2) return boolean;
 
+  function f_direccion_correo_usuario(i_id_usuario in number) return varchar2;
+
+  function f_numero_telefono_usuario(i_id_usuario in number) return varchar2;
+
   procedure p_separar_dominio_usuario(i_alias   in varchar2,
                                       o_dominio out varchar2,
                                       o_usuario out varchar2);
@@ -105,3 +109,4 @@ create or replace package k_usuario is
 
 end;
 /
+

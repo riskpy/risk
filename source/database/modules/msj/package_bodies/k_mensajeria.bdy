@@ -15,33 +15,13 @@ create or replace package body k_mensajeria is
   end;
 
   function f_direccion_correo_usuario(i_id_usuario in number) return varchar2 is
-    l_direccion_correo t_usuarios.direccion_correo%type;
   begin
-    begin
-      select direccion_correo
-        into l_direccion_correo
-        from t_usuarios
-       where id_usuario = i_id_usuario;
-    exception
-      when no_data_found then
-        l_direccion_correo := null;
-    end;
-    return l_direccion_correo;
+    return k_usuario.f_direccion_correo_usuario(i_id_usuario);
   end;
 
   function f_numero_telefono_usuario(i_id_usuario in number) return varchar2 is
-    l_numero_telefono t_usuarios.numero_telefono%type;
   begin
-    begin
-      select numero_telefono
-        into l_numero_telefono
-        from t_usuarios
-       where id_usuario = i_id_usuario;
-    exception
-      when no_data_found then
-        l_numero_telefono := null;
-    end;
-    return l_numero_telefono;
+    return k_usuario.f_numero_telefono_usuario(i_id_usuario);
   end;
 
   function f_correo_html(i_contenido      in varchar2,
