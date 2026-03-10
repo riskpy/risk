@@ -77,9 +77,11 @@ END;'
     if :new.contenido is null then
       null; -- ?
     else
+      null; -- ?
+      /*
       -- Valida tipo de dato
       l_typecode := :new.contenido.gettype(l_typeinfo);
-    
+      
       case l_tipo_dato
       
         when 'S' then
@@ -87,35 +89,36 @@ END;'
           if l_typecode <> dbms_types.typecode_varchar2 then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
           end if;
-        
+      
         when 'N' then
           -- Number
           if l_typecode <> dbms_types.typecode_number then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
           end if;
-        
+      
         when 'B' then
           -- Boolean
           if l_typecode <> dbms_types.typecode_number then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
           end if;
-        
+      
         when 'D' then
           -- Date
           if l_typecode <> dbms_types.typecode_date then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
           end if;
-        
+      
         when 'O' then
           -- Object
           if l_typecode <> dbms_types.typecode_object then
             raise_application_error(-20000, 'Tipo de dato incorrecto');
           end if;
-        
+      
         else
           raise_application_error(-20000, 'Tipo de dato no soportado');
-        
+      
       end case;
+      */
     end if;
   
   end if;

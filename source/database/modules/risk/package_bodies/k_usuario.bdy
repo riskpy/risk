@@ -415,7 +415,7 @@ create or replace package body k_usuario is
   
     -- Guarda dato del usuario
     if i_dato is not null then
-      k_dato.p_guardar_dato_string('T_USUARIOS', i_campo, l_alias, i_dato);
+      k_dato.p_guardar_dato('T_USUARIOS', i_campo, l_alias, i_dato);
     end if;
   end;
 

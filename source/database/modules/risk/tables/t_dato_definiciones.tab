@@ -1,10 +1,10 @@
 create table T_DATO_DEFINICIONES
 (
-  tabla             VARCHAR2(30) not null,
-  campo             VARCHAR2(30) not null,
+  tabla             VARCHAR2(50) not null,
+  campo             VARCHAR2(50) not null,
   descripcion       VARCHAR2(500),
   orden             NUMBER(3) not null,
-  nombre_referencia VARCHAR2(30),
+  nombre_referencia VARCHAR2(50),
   tipo_dato         VARCHAR2(1) not null
 )
 ;
@@ -24,4 +24,7 @@ comment on column T_DATO_DEFINICIONES.tipo_dato
   is 'Tipo de dato';
 alter table T_DATO_DEFINICIONES
   add constraint PK_DATO_DEFINICIONES primary key (TABLA, CAMPO);
+alter table T_DATO_DEFINICIONES
+  add constraint CK_DATO_DEFINICIONES_TIPO_DATO
+  check (TIPO_DATO IN ('S', 'N', 'B', 'D'));
 

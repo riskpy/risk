@@ -1,9 +1,9 @@
 create table T_DATOS
 (
-  tabla      VARCHAR2(30) not null,
-  campo      VARCHAR2(30) not null,
+  tabla      VARCHAR2(50) not null,
+  campo      VARCHAR2(50) not null,
   referencia VARCHAR2(500) not null,
-  contenido  ANYDATA
+  contenido  VARCHAR2(4000)
 )
 ;
 comment on table T_DATOS

@@ -32,62 +32,21 @@ create or replace package k_dato is
 
   function f_recuperar_dato(i_tabla      in varchar2,
                             i_campo      in varchar2,
-                            i_referencia in varchar2) return anydata;
+                            i_referencia in varchar2) return varchar2;
 
-  function f_recuperar_dato_string(i_tabla      in varchar2,
-                                   i_campo      in varchar2,
-                                   i_referencia in varchar2) return varchar2;
-
-  function f_recuperar_dato_number(i_tabla      in varchar2,
-                                   i_campo      in varchar2,
-                                   i_referencia in varchar2) return number;
-
-  function f_recuperar_dato_boolean(i_tabla      in varchar2,
-                                    i_campo      in varchar2,
-                                    i_referencia in varchar2) return boolean;
-
-  function f_recuperar_dato_date(i_tabla      in varchar2,
-                                 i_campo      in varchar2,
-                                 i_referencia in varchar2) return date;
-
-  function f_recuperar_dato_object(i_tabla      in varchar2,
-                                   i_campo      in varchar2,
-                                   i_referencia in varchar2) return y_objeto;
+  function f_recuperar_referencia(i_tabla     in varchar2,
+                                  i_campo     in varchar2,
+                                  i_contenido in varchar2) return varchar2;
 
   procedure p_guardar_dato(i_tabla      in varchar2,
                            i_campo      in varchar2,
                            i_referencia in varchar2,
-                           i_dato       in anydata);
+                           i_dato       in varchar2);
 
-  procedure p_guardar_dato_string(i_tabla      in varchar2,
-                                  i_campo      in varchar2,
-                                  i_referencia in varchar2,
-                                  i_dato       in varchar2);
-
-  procedure p_guardar_dato_number(i_tabla      in varchar2,
-                                  i_campo      in varchar2,
-                                  i_referencia in varchar2,
-                                  i_dato       in number);
-
-  procedure p_guardar_dato_boolean(i_tabla      in varchar2,
-                                   i_campo      in varchar2,
-                                   i_referencia in varchar2,
-                                   i_dato       in boolean);
-
-  procedure p_guardar_dato_date(i_tabla      in varchar2,
-                                i_campo      in varchar2,
-                                i_referencia in varchar2,
-                                i_dato       in date);
-
-  -- Para evitar el error ORA-22370, el tipo (heredado de y_objeto) del dato no
-  -- debe contener atributos LOBs (CLOB, BLOB) ya que actualmente no cuenta con
-  -- soporte para persistencia
-  procedure p_guardar_dato_object(i_tabla      in varchar2,
-                                  i_campo      in varchar2,
-                                  i_referencia in varchar2,
-                                  i_dato       in y_objeto);
-  pragma deprecate(p_guardar_dato_object,
-                   'No usar! Siempre da error ORA-22370 por el campo json de y_objeto');
+  procedure p_guardar_dato_autonomo(i_tabla      in varchar2,
+                                    i_campo      in varchar2,
+                                    i_referencia in varchar2,
+                                    i_dato       in varchar2);
 
 end;
 /
