@@ -45,8 +45,7 @@ declare
                              'TRIGGER',
                              'JAVA SOURCE')
        and u.username <> o.owner
-       and not (u.username like '%\_UTIL' escape
-             '\' or u.username like '%\_ACCESS' escape '\')
+       and u.username not like '%\_ACCESS' escape '\'
        and not exists (select 1
               from all_synonyms s
              where s.owner = u.username
