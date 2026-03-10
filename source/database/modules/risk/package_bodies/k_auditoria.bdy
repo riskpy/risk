@@ -95,17 +95,20 @@ BEGIN
   SOFTWARE.
   -------------------------------------------------------------------------------
   */
+  -- Control de auditoría
+  p_control_auditoria;
 
-  IF inserting THEN
+  IF updating THEN
+    -- Auditoría para modificación de registros
+    :new.' || lower(g_nombre_campo_updated_by) ||
+                   ' := substr(coalesce(k_sistema.f_usuario, USER), 1, 300);
+    :new.' || lower(g_nombre_campo_updated) || ' := SYSTIMESTAMP;
+  ELSIF inserting THEN
     -- Auditoría para inserción de registros
     :new.' || lower(g_nombre_campo_created_by) ||
                    ' := substr(coalesce(k_sistema.f_usuario, USER), 1, 300);
     :new.' || lower(g_nombre_campo_created) || ' := SYSTIMESTAMP;
   END IF;
-
-  -- Auditoría para modificación de registros
-  :new.' || lower(g_nombre_campo_updated_by) || ' := substr(coalesce(k_sistema.f_usuario, USER), 1, 300);
-  :new.' || lower(g_nombre_campo_updated) || ' := SYSTIMESTAMP;
 END;';
   
     o_sentencia := l_sentencia;

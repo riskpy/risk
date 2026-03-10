@@ -25,6 +25,9 @@ prompt
 @@scripts/parameters/t_parametros/aut/tiempo_expiracion_access_token.sql
 @@scripts/parameters/t_parametros/aut/tiempo_expiracion_refresh_token.sql
 @@scripts/parameters/t_parametros/aut/tiempo_tolerancia_validar_otp.sql
+@@scripts/parameters/t_parametros/gen/auditoria_aplicaciones_bloqueadas.sql
+@@scripts/parameters/t_parametros/gen/auditoria_aplicaciones_permitidas_sin_motivo.sql
+@@scripts/parameters/t_parametros/gen/auditoria_usuarios_permitidos.sql
 @@scripts/parameters/t_parametros/gen/base_datos_produccion.sql
 @@scripts/parameters/t_parametros/gen/charset_exportacion_scripts.sql
 @@scripts/parameters/t_parametros/gen/clave_encriptacion_desencriptacion.sql

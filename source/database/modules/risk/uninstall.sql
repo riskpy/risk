@@ -113,6 +113,7 @@ prompt Dropping procedures...
 prompt -----------------------------------
 prompt
 drop procedure p_configurar_modificacion;
+drop procedure p_control_auditoria;
 
 prompt
 prompt Dropping functions...
