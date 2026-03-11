@@ -9,6 +9,8 @@ create or replace procedure p_control_auditoria is
   cl_aplicaciones_bloqueadas constant varchar2(50) := 'AUDITORIA_APLICACIONES_BLOQUEADAS';
   cl_usuarios_permitidos     constant varchar2(50) := 'AUDITORIA_USUARIOS_PERMITIDOS';
 begin
+  return; -- Temporal!
+
   vl_usuario_permitido := k_cadena.f_buscar_cadena(pin_buscar => user,
                                                    pin_cadena => k_util.f_valor_parametro(cl_usuarios_permitidos));
 
