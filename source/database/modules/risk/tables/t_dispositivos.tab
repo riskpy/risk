@@ -13,7 +13,11 @@ create table T_DISPOSITIVOS
   version_aplicacion        VARCHAR2(100),
   id_pais                   NUMBER,
   zona_horaria              VARCHAR2(8),
-  id_idioma                 NUMBER
+  id_idioma                 NUMBER,
+  usuario_insercion         VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion           TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion      VARCHAR2(300),
+  fecha_modificacion        TIMESTAMP(2)
 )
 ;
 comment on table T_DISPOSITIVOS
@@ -46,6 +50,14 @@ comment on column T_DISPOSITIVOS.zona_horaria
   is 'Zona horaria del dispositivo (en horas)';
 comment on column T_DISPOSITIVOS.id_idioma
   is 'Idioma del dispositivo';
+comment on column T_DISPOSITIVOS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_DISPOSITIVOS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_DISPOSITIVOS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_DISPOSITIVOS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_DISPOSITIVOS
   add constraint PK_DISPOSITIVOS primary key (ID_DISPOSITIVO);
 alter table T_DISPOSITIVOS

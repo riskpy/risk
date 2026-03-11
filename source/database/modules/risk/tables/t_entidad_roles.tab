@@ -3,7 +3,11 @@ create table T_ENTIDAD_ROLES
   id_entidad                         NUMBER not null,
   id_rol                             NUMBER not null,
   estado                             VARCHAR2(1),
-  cantidad_autorizaciones_requeridas NUMBER(3) default 0 not null
+  cantidad_autorizaciones_requeridas NUMBER(3) default 0 not null,
+  usuario_insercion                  VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion                    TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion               VARCHAR2(300),
+  fecha_modificacion                 TIMESTAMP(2)
 )
 ;
 comment on table T_ENTIDAD_ROLES
@@ -16,5 +20,14 @@ comment on column T_ENTIDAD_ROLES.estado
   is 'Estado del rol en la entidad';
 comment on column T_ENTIDAD_ROLES.cantidad_autorizaciones_requeridas
   is 'Cantidad de autorizaciones requeridas para el rol en la entidad';
+comment on column T_ENTIDAD_ROLES.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_ENTIDAD_ROLES.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_ENTIDAD_ROLES.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_ENTIDAD_ROLES.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_ENTIDAD_ROLES
   add constraint PK_ENTIDAD_ROLES primary key (ID_ENTIDAD, ID_ROL);
+

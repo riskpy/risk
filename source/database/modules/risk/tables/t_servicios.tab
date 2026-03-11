@@ -5,7 +5,11 @@ create table T_SERVICIOS
   cantidad_ejecuciones   NUMBER,
   fecha_ultima_ejecucion DATE,
   consulta_sql           CLOB,
-  sql_ultima_ejecucion   CLOB
+  sql_ultima_ejecucion   CLOB,
+  usuario_insercion      VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion        TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion   VARCHAR2(300),
+  fecha_modificacion     TIMESTAMP(2)
 )
 ;
 comment on table T_SERVICIOS
@@ -22,6 +26,14 @@ comment on column T_SERVICIOS.consulta_sql
   is 'Consulta SQL del servicio';
 comment on column T_SERVICIOS.sql_ultima_ejecucion
   is 'SQL de la ultima ejecucion del servicio';
+comment on column T_SERVICIOS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_SERVICIOS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_SERVICIOS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_SERVICIOS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_SERVICIOS
   add constraint PK_SERVICIOS primary key (ID_SERVICIO);
 alter table T_SERVICIOS

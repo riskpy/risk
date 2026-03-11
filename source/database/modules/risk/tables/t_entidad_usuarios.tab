@@ -1,12 +1,16 @@
 create table T_ENTIDAD_USUARIOS
 (
-  id_entidad       NUMBER not null,
-  id_usuario       NUMBER not null,
-  grupo            VARCHAR2(10) not null,
-  estado           VARCHAR2(1),
-  fecha_expiracion DATE,
-  direccion_correo VARCHAR2(320),
-  numero_telefono  VARCHAR2(160)
+  id_entidad           NUMBER not null,
+  id_usuario           NUMBER not null,
+  grupo                VARCHAR2(10) not null,
+  estado               VARCHAR2(1),
+  fecha_expiracion     DATE,
+  direccion_correo     VARCHAR2(320),
+  numero_telefono      VARCHAR2(160),
+  usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion VARCHAR2(300),
+  fecha_modificacion   TIMESTAMP(2)
 )
 ;
 comment on table T_ENTIDAD_USUARIOS
@@ -25,5 +29,14 @@ comment on column T_ENTIDAD_USUARIOS.direccion_correo
   is 'Direccion de correo electronico del usuario en la entidad';
 comment on column T_ENTIDAD_USUARIOS.numero_telefono
   is 'Numero de telefono del usuario en la entidad';
+comment on column T_ENTIDAD_USUARIOS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_ENTIDAD_USUARIOS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_ENTIDAD_USUARIOS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_ENTIDAD_USUARIOS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_ENTIDAD_USUARIOS
   add constraint PK_ENTIDAD_USUARIOS primary key (ID_ENTIDAD, ID_USUARIO, GRUPO);
+

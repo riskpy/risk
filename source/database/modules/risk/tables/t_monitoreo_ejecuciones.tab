@@ -5,7 +5,11 @@ create table T_MONITOREO_EJECUCIONES
   fecha_inicio_ejecucion TIMESTAMP(2) WITH TIME ZONE not null,
   fecha_fin_ejecucion    TIMESTAMP(2) WITH TIME ZONE not null,
   duracion               INTERVAL DAY(2) TO SECOND(2),
-  datos                  CLOB
+  datos                  CLOB,
+  usuario_insercion      VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion        TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion   VARCHAR2(300),
+  fecha_modificacion     TIMESTAMP(2)
 )
 ;
 comment on table T_MONITOREO_EJECUCIONES
@@ -22,5 +26,14 @@ comment on column T_MONITOREO_EJECUCIONES.duracion
   is 'Duración de la ejecucion del monitoreo';
 comment on column T_MONITOREO_EJECUCIONES.datos
   is 'Datos del conflicto';
+comment on column T_MONITOREO_EJECUCIONES.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_MONITOREO_EJECUCIONES.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_MONITOREO_EJECUCIONES.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_MONITOREO_EJECUCIONES.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_MONITOREO_EJECUCIONES
   add constraint PK_MONITOREO_EJECUCIONES primary key (ID_MONITOREO_EJECUCION, ID_MONITOREO);
+

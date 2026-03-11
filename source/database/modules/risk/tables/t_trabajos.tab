@@ -10,7 +10,11 @@ create table T_TRABAJOS
   comentarios            VARCHAR2(1000),
   cantidad_ejecuciones   NUMBER,
   fecha_ultima_ejecucion DATE,
-  programa               VARCHAR2(128)
+  programa               VARCHAR2(128),
+  usuario_insercion      VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion        TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion   VARCHAR2(300),
+  fecha_modificacion     TIMESTAMP(2)
 )
 ;
 comment on table T_TRABAJOS
@@ -37,8 +41,17 @@ comment on column T_TRABAJOS.fecha_ultima_ejecucion
   is 'Fecha de la ultima ejecucion del trabajo';
 comment on column T_TRABAJOS.programa
   is 'Programa del trabajo';
+comment on column T_TRABAJOS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_TRABAJOS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_TRABAJOS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_TRABAJOS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_TRABAJOS
   add constraint PK_TRABAJOS primary key (ID_TRABAJO);
 alter table T_TRABAJOS
   add constraint CK_TRABAJOS_TIPO
   check (TIPO IN ('PLSQL_BLOCK', 'STORED_PROCEDURE', 'EXECUTABLE', 'CHAIN', 'EXTERNAL_SCRIPT', 'SQL_SCRIPT', 'BACKUP_SCRIPT'));
+

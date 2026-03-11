@@ -78,6 +78,28 @@ prompt
 prompt Creating views...
 prompt -----------------------------------
 prompt
+@@views/t_correo_adjuntos_dml_v.vw
+@@views/t_correo_adjuntos_v.vw
+@@views/t_correo_plantillas_dml_v.vw
+@@views/t_correo_plantillas_v.vw
+@@views/t_correos_dml_v.vw
+@@views/t_correos_v.vw
+@@views/t_dispositivo_suscripciones_dml_v.vw
+@@views/t_dispositivo_suscripciones_v.vw
+@@views/t_mensaje_plantillas_dml_v.vw
+@@views/t_mensaje_plantillas_v.vw
+@@views/t_mensajeria_categorias_dml_v.vw
+@@views/t_mensajeria_categorias_v.vw
+@@views/t_mensajes_dml_v.vw
+@@views/t_mensajes_recibidos_dml_v.vw
+@@views/t_mensajes_recibidos_v.vw
+@@views/t_mensajes_v.vw
+@@views/t_notificacion_plantillas_dml_v.vw
+@@views/t_notificacion_plantillas_v.vw
+@@views/t_notificaciones_dml_v.vw
+@@views/t_notificaciones_v.vw
+@@views/t_usuario_suscripciones_dml_v.vw
+@@views/t_usuario_suscripciones_v.vw
 
 prompt
 prompt Creating type specs...
@@ -116,6 +138,17 @@ prompt -----------------------------------
 prompt
 @@package_specs/k_mensajeria.spc
 @@package_specs/k_servicio_msj.spc
+@@package_specs/t_correo_adjuntos_api.spc
+@@package_specs/t_correo_plantillas_api.spc
+@@package_specs/t_correos_api.spc
+@@package_specs/t_dispositivo_suscripciones_api.spc
+@@package_specs/t_mensaje_plantillas_api.spc
+@@package_specs/t_mensajeria_categorias_api.spc
+@@package_specs/t_mensajes_api.spc
+@@package_specs/t_mensajes_recibidos_api.spc
+@@package_specs/t_notificacion_plantillas_api.spc
+@@package_specs/t_notificaciones_api.spc
+@@package_specs/t_usuario_suscripciones_api.spc
 
 prompt
 prompt Creating package bodies...
@@ -123,11 +156,33 @@ prompt -----------------------------------
 prompt
 @@package_bodies/k_mensajeria.bdy
 @@package_bodies/k_servicio_msj.bdy
+@@package_bodies/t_correo_adjuntos_api.bdy
+@@package_bodies/t_correo_plantillas_api.bdy
+@@package_bodies/t_correos_api.bdy
+@@package_bodies/t_dispositivo_suscripciones_api.bdy
+@@package_bodies/t_mensaje_plantillas_api.bdy
+@@package_bodies/t_mensajeria_categorias_api.bdy
+@@package_bodies/t_mensajes_api.bdy
+@@package_bodies/t_mensajes_recibidos_api.bdy
+@@package_bodies/t_notificacion_plantillas_api.bdy
+@@package_bodies/t_notificaciones_api.bdy
+@@package_bodies/t_usuario_suscripciones_api.bdy
 
 prompt
 prompt Creating triggers...
 prompt -----------------------------------
 prompt
+@@triggers/ga_correo_adjuntos.trg
+@@triggers/ga_correo_plantillas.trg
+@@triggers/ga_correos.trg
+@@triggers/ga_dispositivo_suscripciones.trg
+@@triggers/ga_mensaje_plantillas.trg
+@@triggers/ga_mensajeria_categorias.trg
+@@triggers/ga_mensajes.trg
+@@triggers/ga_mensajes_recibidos.trg
+@@triggers/ga_notificacion_plantillas.trg
+@@triggers/ga_notificaciones.trg
+@@triggers/ga_usuario_suscripciones.trg
 @@triggers/gb_mensajes.trg
 
 @@../../compile_schema.sql

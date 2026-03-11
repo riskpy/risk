@@ -13,7 +13,11 @@ create table T_CORREOS
   fecha_envio             DATE,
   respuesta_envio         VARCHAR2(1000),
   cantidad_intentos_envio NUMBER(3),
-  prioridad_envio         NUMBER(3)
+  prioridad_envio         NUMBER(3),
+  usuario_insercion       VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion         TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion    VARCHAR2(300),
+  fecha_modificacion      TIMESTAMP(2)
 )
 ;
 comment on table T_CORREOS
@@ -46,6 +50,14 @@ comment on column T_CORREOS.cantidad_intentos_envio
   is 'Cantidad de intentos de envío';
 comment on column T_CORREOS.prioridad_envio
   is 'Prioridad de envío';
+comment on column T_CORREOS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_CORREOS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_CORREOS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_CORREOS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_CORREOS
   add constraint PK_CORREOS primary key (ID_CORREO);
 

@@ -1,9 +1,13 @@
 create table T_MIGRACIONES
 (
-  id_migracion    VARCHAR2(50) not null,
-  descripcion     VARCHAR2(4000),
-  fecha_ejecucion DATE default SYSDATE,
-  referencia      VARCHAR2(500)
+  id_migracion         VARCHAR2(50) not null,
+  descripcion          VARCHAR2(4000),
+  fecha_ejecucion      DATE default SYSDATE,
+  referencia           VARCHAR2(500),
+  usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion VARCHAR2(300),
+  fecha_modificacion   TIMESTAMP(2)
 )
 ;
 comment on table T_MIGRACIONES
@@ -16,6 +20,14 @@ comment on column T_MIGRACIONES.fecha_ejecucion
   is 'Fecha de ejecución de la migración';
 comment on column T_MIGRACIONES.referencia
   is 'Referencia externa relacionada a la migración';
+comment on column T_MIGRACIONES.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_MIGRACIONES.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_MIGRACIONES.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_MIGRACIONES.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_MIGRACIONES
   add constraint PK_MIGRACIONES primary key (ID_MIGRACION);
 

@@ -77,6 +77,20 @@ prompt
 prompt Creating views...
 prompt -----------------------------------
 prompt
+@@views/t_flujo_instancia_aprobaciones_dml_v.vw
+@@views/t_flujo_instancia_aprobaciones_v.vw
+@@views/t_flujo_instancia_historial_dml_v.vw
+@@views/t_flujo_instancia_historial_v.vw
+@@views/t_flujo_instancia_pasos_dml_v.vw
+@@views/t_flujo_instancia_pasos_v.vw
+@@views/t_flujo_instancias_dml_v.vw
+@@views/t_flujo_instancias_v.vw
+@@views/t_flujo_pasos_dml_v.vw
+@@views/t_flujo_pasos_v.vw
+@@views/t_flujo_transiciones_dml_v.vw
+@@views/t_flujo_transiciones_v.vw
+@@views/t_flujos_dml_v.vw
+@@views/t_flujos_v.vw
 @@views/v_estado_flujo.vw
 @@views/v_flujo_aprobador.vw
 @@views/v_historial_aprobaciones.vw
@@ -118,6 +132,13 @@ prompt -----------------------------------
 prompt
 @@package_specs/k_flujo.spc
 @@package_specs/k_flujo_util.spc
+@@package_specs/t_flujo_instancia_aprobaciones_api.spc
+@@package_specs/t_flujo_instancia_historial_api.spc
+@@package_specs/t_flujo_instancia_pasos_api.spc
+@@package_specs/t_flujo_instancias_api.spc
+@@package_specs/t_flujo_pasos_api.spc
+@@package_specs/t_flujo_transiciones_api.spc
+@@package_specs/t_flujos_api.spc
 
 prompt
 prompt Creating package bodies...
@@ -125,11 +146,25 @@ prompt -----------------------------------
 prompt
 @@package_bodies/k_flujo.bdy
 @@package_bodies/k_flujo_util.bdy
+@@package_bodies/t_flujo_instancia_aprobaciones_api.bdy
+@@package_bodies/t_flujo_instancia_historial_api.bdy
+@@package_bodies/t_flujo_instancia_pasos_api.bdy
+@@package_bodies/t_flujo_instancias_api.bdy
+@@package_bodies/t_flujo_pasos_api.bdy
+@@package_bodies/t_flujo_transiciones_api.bdy
+@@package_bodies/t_flujos_api.bdy
 
 prompt
 prompt Creating triggers...
 prompt -----------------------------------
 prompt
+@@triggers/ga_flujo_instancia_aprobaciones.trg
+@@triggers/ga_flujo_instancia_historial.trg
+@@triggers/ga_flujo_instancia_pasos.trg
+@@triggers/ga_flujo_instancias.trg
+@@triggers/ga_flujo_pasos.trg
+@@triggers/ga_flujo_transiciones.trg
+@@triggers/ga_flujos.trg
 @@triggers/gb_flujo_instancia_pasos.trg
 @@triggers/gb_roles.trg
 

@@ -21,7 +21,11 @@ create table T_MONITOREOS
   opera_dia_no_habil               CHAR(1) default 'N' not null,
   hora_minima                      VARCHAR2(2),
   hora_maxima                      VARCHAR2(2),
-  comentarios                      VARCHAR2(1000)
+  comentarios                      VARCHAR2(1000),
+  usuario_insercion                VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion                  TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion             VARCHAR2(300),
+  fecha_modificacion               TIMESTAMP(2)
 )
 ;
 comment on table T_MONITOREOS
@@ -70,6 +74,14 @@ comment on column T_MONITOREOS.hora_maxima
   is 'Hora máxima de ejecución del monitoreo. Formato: HH24';
 comment on column T_MONITOREOS.comentarios
   is 'Comentarios del monitoreo';
+comment on column T_MONITOREOS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_MONITOREOS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_MONITOREOS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_MONITOREOS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_MONITOREOS
   add constraint PK_MONITOREOS primary key (ID_MONITOREO);
 alter table T_MONITOREOS

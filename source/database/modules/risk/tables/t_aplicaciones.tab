@@ -1,11 +1,15 @@
 create table T_APLICACIONES
 (
-  id_aplicacion VARCHAR2(5) not null,
-  nombre        VARCHAR2(100),
-  tipo          VARCHAR2(1),
-  activo        VARCHAR2(1) default 'N' not null,
-  detalle       VARCHAR2(2000),
-  id_dominio    VARCHAR2(30)
+  id_aplicacion        VARCHAR2(5) not null,
+  nombre               VARCHAR2(100),
+  tipo                 VARCHAR2(1),
+  activo               VARCHAR2(1) default 'N' not null,
+  detalle              VARCHAR2(2000),
+  id_dominio           VARCHAR2(30),
+  usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion VARCHAR2(300),
+  fecha_modificacion   TIMESTAMP(2)
 )
 ;
 comment on table T_APLICACIONES
@@ -22,6 +26,14 @@ comment on column T_APLICACIONES.detalle
   is 'Detalles adicionales de la aplicacion';
 comment on column T_APLICACIONES.id_dominio
   is 'Dominio de la aplicación';
+comment on column T_APLICACIONES.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_APLICACIONES.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_APLICACIONES.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_APLICACIONES.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_APLICACIONES
   add constraint PK_APLICACIONES primary key (ID_APLICACION);
 alter table T_APLICACIONES

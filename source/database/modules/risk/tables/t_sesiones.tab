@@ -15,7 +15,11 @@ create table T_SESIONES
   terminal                       VARCHAR2(300),
   id_dispositivo                 NUMBER,
   origen                         VARCHAR2(1),
-  dato_externo                   VARCHAR2(4000)
+  dato_externo                   VARCHAR2(4000),
+  usuario_insercion              VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion                TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion           VARCHAR2(300),
+  fecha_modificacion             TIMESTAMP(2)
 )
 ;
 comment on table T_SESIONES
@@ -52,6 +56,14 @@ comment on column T_SESIONES.origen
   is 'Origen de la sesion';
 comment on column T_SESIONES.dato_externo
   is 'Dato externo de la sesion';
+comment on column T_SESIONES.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_SESIONES.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_SESIONES.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_SESIONES.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_SESIONES
   add constraint PK_SESIONES primary key (ID_SESION);
 alter table T_SESIONES

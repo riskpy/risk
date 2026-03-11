@@ -48,6 +48,13 @@ prompt
 prompt Dropping triggers...
 prompt -----------------------------------
 prompt
+drop trigger ga_flujo_instancia_aprobaciones;
+drop trigger ga_flujo_instancia_historial;
+drop trigger ga_flujo_instancia_pasos;
+drop trigger ga_flujo_instancias;
+drop trigger ga_flujo_pasos;
+drop trigger ga_flujo_transiciones;
+drop trigger ga_flujos;
 drop trigger gb_flujo_instancia_pasos;
 drop trigger gb_roles;
 
@@ -57,6 +64,13 @@ prompt -----------------------------------
 prompt
 drop package k_flujo;
 drop package k_flujo_util;
+drop package t_flujo_instancia_aprobaciones_api;
+drop package t_flujo_instancia_historial_api;
+drop package t_flujo_instancia_pasos_api;
+drop package t_flujo_instancias_api;
+drop package t_flujo_pasos_api;
+drop package t_flujo_transiciones_api;
+drop package t_flujos_api;
 
 prompt
 prompt Dropping procedures...
@@ -82,6 +96,20 @@ prompt
 prompt Dropping views...
 prompt -----------------------------------
 prompt
+drop view t_flujo_instancia_aprobaciones_dml_v cascade constraints;
+drop view t_flujo_instancia_aprobaciones_v cascade constraints;
+drop view t_flujo_instancia_historial_dml_v cascade constraints;
+drop view t_flujo_instancia_historial_v cascade constraints;
+drop view t_flujo_instancia_pasos_dml_v cascade constraints;
+drop view t_flujo_instancia_pasos_v cascade constraints;
+drop view t_flujo_instancias_dml_v cascade constraints;
+drop view t_flujo_instancias_v cascade constraints;
+drop view t_flujo_pasos_dml_v cascade constraints;
+drop view t_flujo_pasos_v cascade constraints;
+drop view t_flujo_transiciones_dml_v cascade constraints;
+drop view t_flujo_transiciones_v cascade constraints;
+drop view t_flujos_dml_v cascade constraints;
+drop view t_flujos_v cascade constraints;
 drop view v_estado_flujo cascade constraints;
 drop view v_flujo_aprobador cascade constraints;
 drop view v_historial_aprobaciones cascade constraints;

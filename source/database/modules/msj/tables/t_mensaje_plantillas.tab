@@ -9,7 +9,11 @@ create table T_MENSAJE_PLANTILLAS
   fecha_ini_vigencia     DATE,
   fecha_fin_vigencia     DATE,
   cantidad_max_enviar    NUMBER,
-  cantidad_envio_por_dia NUMBER
+  cantidad_envio_por_dia NUMBER,
+  usuario_insercion      VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion        TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion   VARCHAR2(300),
+  fecha_modificacion     TIMESTAMP(2)
 )
 ;
 comment on table T_MENSAJE_PLANTILLAS
@@ -34,8 +38,17 @@ comment on column T_MENSAJE_PLANTILLAS.cantidad_max_enviar
   is 'Cantidad máxima posible de enviar mensaje con esta plantilla.';
 comment on column T_MENSAJE_PLANTILLAS.cantidad_envio_por_dia
   is 'Cantidad máxima por día permitido para enviar mensajes con esta plantilla.';
+comment on column T_MENSAJE_PLANTILLAS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_MENSAJE_PLANTILLAS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_MENSAJE_PLANTILLAS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_MENSAJE_PLANTILLAS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_MENSAJE_PLANTILLAS
   add constraint PK_MENSAJE_PLANTILLAS primary key (ID_PLANTILLA);
 alter table T_MENSAJE_PLANTILLAS
   add constraint CK_MENSAJE_PLANTILLAS_ACTIVO
   check (ACTIVO IN ('S', 'N'));
+

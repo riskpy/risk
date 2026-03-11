@@ -48,6 +48,17 @@ prompt
 prompt Dropping triggers...
 prompt -----------------------------------
 prompt
+drop trigger ga_correo_adjuntos;
+drop trigger ga_correo_plantillas;
+drop trigger ga_correos;
+drop trigger ga_dispositivo_suscripciones;
+drop trigger ga_mensaje_plantillas;
+drop trigger ga_mensajeria_categorias;
+drop trigger ga_mensajes;
+drop trigger ga_mensajes_recibidos;
+drop trigger ga_notificacion_plantillas;
+drop trigger ga_notificaciones;
+drop trigger ga_usuario_suscripciones;
 drop trigger gb_mensajes;
 
 prompt
@@ -56,6 +67,17 @@ prompt -----------------------------------
 prompt
 drop package k_mensajeria;
 drop package k_servicio_msj;
+drop package t_correo_adjuntos_api;
+drop package t_correo_plantillas_api;
+drop package t_correos_api;
+drop package t_dispositivo_suscripciones_api;
+drop package t_mensaje_plantillas_api;
+drop package t_mensajeria_categorias_api;
+drop package t_mensajes_api;
+drop package t_mensajes_recibidos_api;
+drop package t_notificacion_plantillas_api;
+drop package t_notificaciones_api;
+drop package t_usuario_suscripciones_api;
 
 prompt
 prompt Dropping procedures...
@@ -84,6 +106,28 @@ prompt
 prompt Dropping views...
 prompt -----------------------------------
 prompt
+drop view t_correo_adjuntos_dml_v cascade constraints;
+drop view t_correo_adjuntos_v cascade constraints;
+drop view t_correo_plantillas_dml_v cascade constraints;
+drop view t_correo_plantillas_v cascade constraints;
+drop view t_correos_dml_v cascade constraints;
+drop view t_correos_v cascade constraints;
+drop view t_dispositivo_suscripciones_dml_v cascade constraints;
+drop view t_dispositivo_suscripciones_v cascade constraints;
+drop view t_mensaje_plantillas_dml_v cascade constraints;
+drop view t_mensaje_plantillas_v cascade constraints;
+drop view t_mensajeria_categorias_dml_v cascade constraints;
+drop view t_mensajeria_categorias_v cascade constraints;
+drop view t_mensajes_dml_v cascade constraints;
+drop view t_mensajes_recibidos_dml_v cascade constraints;
+drop view t_mensajes_recibidos_v cascade constraints;
+drop view t_mensajes_v cascade constraints;
+drop view t_notificacion_plantillas_dml_v cascade constraints;
+drop view t_notificacion_plantillas_v cascade constraints;
+drop view t_notificaciones_dml_v cascade constraints;
+drop view t_notificaciones_v cascade constraints;
+drop view t_usuario_suscripciones_dml_v cascade constraints;
+drop view t_usuario_suscripciones_v cascade constraints;
 
 prompt
 prompt Dropping tables...

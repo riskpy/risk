@@ -6,7 +6,11 @@ create table T_AUTENTICACION_ORIGENES
   activo                             VARCHAR2(1) default 'N' not null,
   prefijo_dominio                    VARCHAR2(50),
   metodo_validacion_credenciales     VARCHAR2(10),
-  parametros_validacion_credenciales VARCHAR2(4000)
+  parametros_validacion_credenciales VARCHAR2(4000),
+  usuario_insercion                  VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion                    TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion               VARCHAR2(300),
+  fecha_modificacion                 TIMESTAMP(2)
 )
 ;
 comment on table T_AUTENTICACION_ORIGENES
@@ -25,6 +29,14 @@ comment on column T_AUTENTICACION_ORIGENES.metodo_validacion_credenciales
   is 'Método de validación de credenciales del origen de autenticación';
 comment on column T_AUTENTICACION_ORIGENES.parametros_validacion_credenciales
   is 'Parámetros de validación de credenciales del origen de autenticación';
+comment on column T_AUTENTICACION_ORIGENES.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_AUTENTICACION_ORIGENES.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_AUTENTICACION_ORIGENES.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_AUTENTICACION_ORIGENES.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_AUTENTICACION_ORIGENES
   add constraint PK_AUTENTICACION_ORIGENES primary key (ID_AUTENTICACION_ORIGEN);
 alter table T_AUTENTICACION_ORIGENES

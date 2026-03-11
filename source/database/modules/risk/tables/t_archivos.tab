@@ -1,15 +1,19 @@
 create table T_ARCHIVOS
 (
-  tabla          VARCHAR2(30) not null,
-  campo          VARCHAR2(30) not null,
-  referencia     VARCHAR2(500) not null,
-  contenido      BLOB,
-  url            VARCHAR2(4000),
-  checksum       VARCHAR2(100),
-  tamano         NUMBER,
-  nombre         VARCHAR2(4000),
-  extension      VARCHAR2(100),
-  version_actual NUMBER(10)
+  tabla                VARCHAR2(30) not null,
+  campo                VARCHAR2(30) not null,
+  referencia           VARCHAR2(500) not null,
+  contenido            BLOB,
+  url                  VARCHAR2(4000),
+  checksum             VARCHAR2(100),
+  tamano               NUMBER,
+  nombre               VARCHAR2(4000),
+  extension            VARCHAR2(100),
+  version_actual       NUMBER(10),
+  usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion VARCHAR2(300),
+  fecha_modificacion   TIMESTAMP(2)
 )
 ;
 comment on table T_ARCHIVOS
@@ -34,6 +38,14 @@ comment on column T_ARCHIVOS.extension
   is 'Extensión del archivo';
 comment on column T_ARCHIVOS.version_actual
   is 'Versión actual del archivo';
+comment on column T_ARCHIVOS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_ARCHIVOS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_ARCHIVOS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_ARCHIVOS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_ARCHIVOS
   add constraint PK_ARCHIVOS primary key (TABLA, CAMPO, REFERENCIA);
 

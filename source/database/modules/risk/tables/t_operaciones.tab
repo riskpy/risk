@@ -11,7 +11,11 @@ create table T_OPERACIONES
   parametros_automaticos         VARCHAR2(1000),
   tipo_implementacion            VARCHAR2(1) default 'K',
   aplicaciones_permitidas        VARCHAR2(1000),
-  nombre_programa_implementacion VARCHAR2(300)
+  nombre_programa_implementacion VARCHAR2(300),
+  usuario_insercion              VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion                TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion           VARCHAR2(300),
+  fecha_modificacion             TIMESTAMP(2)
 )
 ;
 comment on table T_OPERACIONES
@@ -40,6 +44,14 @@ comment on column T_OPERACIONES.aplicaciones_permitidas
   is 'Identificadores de las aplicaciones permitidas para ejecutar la operación, separados por coma. Ej.: APP1,APP2,APP3';
 comment on column T_OPERACIONES.nombre_programa_implementacion
   is 'Nombre del programa de implementación de la operación';
+comment on column T_OPERACIONES.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_OPERACIONES.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_OPERACIONES.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_OPERACIONES.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_OPERACIONES
   add constraint PK_OPERACIONES primary key (ID_OPERACION);
 alter table T_OPERACIONES

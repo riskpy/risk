@@ -1,10 +1,14 @@
 create table T_SIGNIFICADO_DOMINIOS
 (
-  dominio     VARCHAR2(50) not null,
-  descripcion VARCHAR2(500) not null,
-  detalle     VARCHAR2(2000),
-  activo      VARCHAR2(1) default 'N' not null,
-  id_dominio  VARCHAR2(30)
+  dominio              VARCHAR2(50) not null,
+  descripcion          VARCHAR2(500) not null,
+  detalle              VARCHAR2(2000),
+  activo               VARCHAR2(1) default 'N' not null,
+  id_dominio           VARCHAR2(30),
+  usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion VARCHAR2(300),
+  fecha_modificacion   TIMESTAMP(2)
 )
 ;
 comment on table T_SIGNIFICADO_DOMINIOS
@@ -19,8 +23,17 @@ comment on column T_SIGNIFICADO_DOMINIOS.activo
   is 'El dominio de significados está activo? (S/N)';
 comment on column T_SIGNIFICADO_DOMINIOS.id_dominio
   is 'Dominio del dominio de significados';
+comment on column T_SIGNIFICADO_DOMINIOS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_SIGNIFICADO_DOMINIOS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_SIGNIFICADO_DOMINIOS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_SIGNIFICADO_DOMINIOS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_SIGNIFICADO_DOMINIOS
   add constraint PK_SIGNIFICADO_DOMINIOS primary key (DOMINIO);
 alter table T_SIGNIFICADO_DOMINIOS
   add constraint CK_SIGNIFICADO_DOMINIOS_ACTIVO
   check (ACTIVO IN ('S', 'N'));
+

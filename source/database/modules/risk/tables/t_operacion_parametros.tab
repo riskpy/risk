@@ -1,19 +1,23 @@
 create table T_OPERACION_PARAMETROS
 (
-  id_operacion     NUMBER not null,
-  nombre           VARCHAR2(100) not null,
-  version          VARCHAR2(100) not null,
-  orden            NUMBER(3) not null,
-  activo           VARCHAR2(1) default 'N' not null,
-  tipo_dato        VARCHAR2(1) not null,
-  formato          VARCHAR2(100),
-  longitud_maxima  NUMBER(15),
-  obligatorio      VARCHAR2(1) default 'N' not null,
-  valor_defecto    VARCHAR2(1000),
-  etiqueta         VARCHAR2(2000),
-  detalle          VARCHAR2(4000),
-  valores_posibles VARCHAR2(50),
-  encriptado       VARCHAR2(1) default 'N' not null
+  id_operacion         NUMBER not null,
+  nombre               VARCHAR2(100) not null,
+  version              VARCHAR2(100) not null,
+  orden                NUMBER(3) not null,
+  activo               VARCHAR2(1) default 'N' not null,
+  tipo_dato            VARCHAR2(1) not null,
+  formato              VARCHAR2(100),
+  longitud_maxima      NUMBER(15),
+  obligatorio          VARCHAR2(1) default 'N' not null,
+  valor_defecto        VARCHAR2(1000),
+  etiqueta             VARCHAR2(2000),
+  detalle              VARCHAR2(4000),
+  valores_posibles     VARCHAR2(50),
+  encriptado           VARCHAR2(1) default 'N' not null,
+  usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion VARCHAR2(300),
+  fecha_modificacion   TIMESTAMP(2)
 )
 ;
 comment on table T_OPERACION_PARAMETROS
@@ -46,6 +50,14 @@ comment on column T_OPERACION_PARAMETROS.valores_posibles
   is 'Valores posibles. Dominio definido en tabla de significados';
 comment on column T_OPERACION_PARAMETROS.encriptado
   is 'El valor del parámetro es encriptado? (S/N)';
+comment on column T_OPERACION_PARAMETROS.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_OPERACION_PARAMETROS.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_OPERACION_PARAMETROS.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_OPERACION_PARAMETROS.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_OPERACION_PARAMETROS
   add constraint PK_OPERACION_PARAMETROS primary key (ID_OPERACION, NOMBRE, VERSION);
 alter table T_OPERACION_PARAMETROS
@@ -60,6 +72,12 @@ alter table T_OPERACION_PARAMETROS
   add constraint CK_OPE_PAR_OBLIGATORIO
   check (OBLIGATORIO IN ('S', 'N'));
 alter table T_OPERACION_PARAMETROS
+  add constraint CK_OPE_PAR_TIPO_DATO
+  check (TIPO_DATO IN ('S', 'N', 'B', 'D', 'O', 'J', 'A'));
+alter table T_OPERACION_PARAMETROS
+  add constraint CK_OPE_PAR_TIPO_DATO_FORMATO
+  check (TIPO_DATO <> 'O' OR (TIPO_DATO = 'O' AND FORMATO IS NOT NULL));
+alter table T_OPERACION_PARAMETROS
   add constraint CK_OPE_PAR_TIP_DAT_ENCRIPTADO
   check (ENCRIPTADO = 'N' OR (ENCRIPTADO = 'S' AND TIPO_DATO = 'S'));
 alter table T_OPERACION_PARAMETROS
@@ -68,10 +86,4 @@ alter table T_OPERACION_PARAMETROS
 alter table T_OPERACION_PARAMETROS
   add constraint CK_OPE_PAR_TIP_DAT_VAL_POS
   check (VALORES_POSIBLES IS NULL OR (VALORES_POSIBLES IS NOT NULL AND TIPO_DATO IN ('S', 'N')));
-alter table T_OPERACION_PARAMETROS
-  add constraint CK_OPE_PAR_TIPO_DATO
-  check (TIPO_DATO IN ('S', 'N', 'B', 'D', 'O', 'J', 'A'));
-alter table T_OPERACION_PARAMETROS
-  add constraint CK_OPE_PAR_TIPO_DATO_FORMATO
-  check (TIPO_DATO <> 'O' OR (TIPO_DATO = 'O' AND FORMATO IS NOT NULL));
 

@@ -1,8 +1,12 @@
 create table T_USUARIO_SUSCRIPCIONES
 (
-  id_usuario       NUMBER not null,
-  suscripcion      VARCHAR2(120) not null,
-  fecha_expiracion DATE
+  id_usuario           NUMBER not null,
+  suscripcion          VARCHAR2(120) not null,
+  fecha_expiracion     DATE,
+  usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
+  fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
+  usuario_modificacion VARCHAR2(300),
+  fecha_modificacion   TIMESTAMP(2)
 )
 ;
 comment on table T_USUARIO_SUSCRIPCIONES
@@ -13,6 +17,14 @@ comment on column T_USUARIO_SUSCRIPCIONES.suscripcion
   is 'Tag de la suscripción';
 comment on column T_USUARIO_SUSCRIPCIONES.fecha_expiracion
   is 'Fecha de expiración de la suscripción';
+comment on column T_USUARIO_SUSCRIPCIONES.usuario_insercion
+  is 'Usuario que realizó la creación del registro';
+comment on column T_USUARIO_SUSCRIPCIONES.fecha_insercion
+  is 'Fecha en que se realizó la creación del registro';
+comment on column T_USUARIO_SUSCRIPCIONES.usuario_modificacion
+  is 'Usuario que realizó la última edición del registro';
+comment on column T_USUARIO_SUSCRIPCIONES.fecha_modificacion
+  is 'Fecha en que se realizó la última edición del registro';
 alter table T_USUARIO_SUSCRIPCIONES
   add constraint PK_USUARIO_SUSCRIPCIONES primary key (ID_USUARIO, SUSCRIPCION);
 
