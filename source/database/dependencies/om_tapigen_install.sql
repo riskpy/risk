@@ -5225,8 +5225,7 @@ END {{ API_NAME }};';
       g_code_blocks.template := '
 CREATE OR REPLACE VIEW {{ OWNER }}.{{ DML_VIEW_NAME }} AS
 SELECT {% LIST_COLUMNS_W_PK_VIEW %}
-  FROM {{ TABLE_NAME }}
- {% LIST_WHERE_CLAUSE_TENANT_ID %}
+  FROM {{ TABLE_NAME }} {% LIST_WHERE_CLAUSE_TENANT_ID %}
   /*
   This is the DML view for the table {{ TABLE_NAME }}.
   - Generator:         {{ GENERATOR }}
@@ -5295,8 +5294,7 @@ END {{ DML_VIEW_TRIGGER_NAME }};';
       g_code_blocks.template := '
 CREATE OR REPLACE VIEW {{ OWNER }}.{{ ONE_TO_ONE_VIEW_NAME }} AS
 SELECT {% LIST_COLUMNS_W_PK_VIEW %}
-  FROM {{ TABLE_NAME }}
- {% LIST_WHERE_CLAUSE_TENANT_ID %}
+  FROM {{ TABLE_NAME }} {% LIST_WHERE_CLAUSE_TENANT_ID %}
   WITH READ ONLY
   /*
   This is the 1:1 view for the table {{ TABLE_NAME }}.
