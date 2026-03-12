@@ -32,8 +32,7 @@ declare
   cursor cr_tablas is
     select owner, lower(table_name) as tabla
       from all_tables
-     where owner like '&v_app_name\_%' escape
-     '\'
+     where owner like '&v_app_name\_%' escape '\'
        and lower(table_name) like 't\_%' escape '\';
 begin
   for t in cr_tablas loop
@@ -48,7 +47,7 @@ begin
                                                i_ejecutar  => true);
     exception
       when others then
-        dbms_output.put_line(sqlerrm);
+        dbms_output.put_line(dbms_utility.format_error_stack);
     end;
   
     dbms_output.put_line('Dropping audit columns for table ' ||
@@ -61,7 +60,7 @@ begin
                                               i_ejecutar  => true);
     exception
       when others then
-        dbms_output.put_line(sqlerrm);
+        dbms_output.put_line(dbms_utility.format_error_stack);
     end;
   end loop;
 end;

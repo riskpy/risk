@@ -37,19 +37,25 @@ declare
        and lower(table_name) like 't\_%' escape '\';
 begin
   for t in cr_tablas loop
+    dbms_output.put_line('Generating audit columns for table ' ||
+                         upper(t.owner) || '.' || upper(t.tabla) || '...');
+    dbms_output.put_line('-----------------------------------');
     begin
-      dbms_output.put_line('Generating audit columns for table ' ||
-                           upper(t.owner) || '.' || upper(t.tabla) ||
-                           '...');
-      dbms_output.put_line('-----------------------------------');
       k_auditoria.p_generar_campos_auditoria(o_sentencia => l_sentencia,
                                              i_esquema   => t.owner,
                                              i_tabla     => t.tabla,
                                              i_ejecutar  => true);
-      dbms_output.put_line('Generating audit triggers for table ' ||
-                           upper(t.owner) || '.' || upper(t.tabla) ||
-                           '...');
-      dbms_output.put_line('-----------------------------------');
+    exception
+      when others then
+        if utl_call_stack.error_number(1) <> 1430 then
+          dbms_output.put_line(dbms_utility.format_error_stack);
+        end if;
+    end;
+  
+    dbms_output.put_line('Generating audit triggers for table ' ||
+                         upper(t.owner) || '.' || upper(t.tabla) || '...');
+    dbms_output.put_line('-----------------------------------');
+    begin
       k_auditoria.p_generar_trigger_auditoria(o_sentencia => l_sentencia,
                                               i_esquema   => t.owner,
                                               i_tabla     => t.tabla,
@@ -57,9 +63,7 @@ begin
                                               i_ejecutar  => true);
     exception
       when others then
-        dbms_output.put_line('Error generating audit for table ' ||
-                             upper(t.tabla) || ': ' || sqlerrm);
-        dbms_output.put_line('-----------------------------------');
+        dbms_output.put_line(dbms_utility.format_error_stack);
     end;
   end loop;
 end;

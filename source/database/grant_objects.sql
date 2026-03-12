@@ -123,7 +123,7 @@ begin
           l_sentencias(i).granted := 'Y';
         exception
           when others then
-            dbms_output.put_line(sqlerrm);
+            dbms_output.put_line(dbms_utility.format_error_stack);
         end;
       end if;
       i := l_sentencias.next(i);

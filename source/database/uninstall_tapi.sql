@@ -45,7 +45,7 @@ begin
         execute immediate s.drop_statement;
       exception
         when others then
-          dbms_output.put_line(sqlerrm);
+          dbms_output.put_line(dbms_utility.format_error_stack);
       end;
     end loop;
   end loop;
