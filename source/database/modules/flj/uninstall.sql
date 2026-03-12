@@ -57,6 +57,13 @@ drop trigger ga_flujo_transiciones;
 drop trigger ga_flujos;
 drop trigger gb_flujo_instancia_pasos;
 drop trigger gb_roles;
+drop trigger t_flujo_instancia_aprobaciones_ioiud;
+drop trigger t_flujo_instancia_historial_ioiud;
+drop trigger t_flujo_instancia_pasos_ioiud;
+drop trigger t_flujo_instancias_ioiud;
+drop trigger t_flujo_pasos_ioiud;
+drop trigger t_flujo_transiciones_ioiud;
+drop trigger t_flujos_ioiud;
 
 prompt
 prompt Dropping packages...

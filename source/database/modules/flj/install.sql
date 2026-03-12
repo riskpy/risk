@@ -167,6 +167,13 @@ prompt
 @@triggers/ga_flujos.trg
 @@triggers/gb_flujo_instancia_pasos.trg
 @@triggers/gb_roles.trg
+@@triggers/t_flujo_instancia_aprobaciones_ioiud.trg
+@@triggers/t_flujo_instancia_historial_ioiud.trg
+@@triggers/t_flujo_instancia_pasos_ioiud.trg
+@@triggers/t_flujo_instancias_ioiud.trg
+@@triggers/t_flujo_pasos_ioiud.trg
+@@triggers/t_flujo_transiciones_ioiud.trg
+@@triggers/t_flujos_ioiud.trg
 
 @@../../compile_schema.sql
 

@@ -60,6 +60,17 @@ drop trigger ga_notificacion_plantillas;
 drop trigger ga_notificaciones;
 drop trigger ga_usuario_suscripciones;
 drop trigger gb_mensajes;
+drop trigger t_correo_adjuntos_ioiud;
+drop trigger t_correo_plantillas_ioiud;
+drop trigger t_correos_ioiud;
+drop trigger t_dispositivo_suscripciones_ioiud;
+drop trigger t_mensaje_plantillas_ioiud;
+drop trigger t_mensajeria_categorias_ioiud;
+drop trigger t_mensajes_ioiud;
+drop trigger t_mensajes_recibidos_ioiud;
+drop trigger t_notificacion_plantillas_ioiud;
+drop trigger t_notificaciones_ioiud;
+drop trigger t_usuario_suscripciones_ioiud;
 
 prompt
 prompt Dropping packages...

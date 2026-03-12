@@ -184,6 +184,17 @@ prompt
 @@triggers/ga_notificaciones.trg
 @@triggers/ga_usuario_suscripciones.trg
 @@triggers/gb_mensajes.trg
+@@triggers/t_correo_adjuntos_ioiud.trg
+@@triggers/t_correo_plantillas_ioiud.trg
+@@triggers/t_correos_ioiud.trg
+@@triggers/t_dispositivo_suscripciones_ioiud.trg
+@@triggers/t_mensaje_plantillas_ioiud.trg
+@@triggers/t_mensajeria_categorias_ioiud.trg
+@@triggers/t_mensajes_ioiud.trg
+@@triggers/t_mensajes_recibidos_ioiud.trg
+@@triggers/t_notificacion_plantillas_ioiud.trg
+@@triggers/t_notificaciones_ioiud.trg
+@@triggers/t_usuario_suscripciones_ioiud.trg
 
 @@../../compile_schema.sql
 
