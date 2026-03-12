@@ -374,7 +374,7 @@ create or replace package body k_usuario is
                                      i_suscripcion_alta in varchar2) is
   begin
     -- Actualiza suscripción
-    update t_usuario_suscripciones s
+    update t_usuario_suscripciones_dml_v s
        set s.suscripcion      = lower(i_suscripcion_alta),
            s.fecha_expiracion = sysdate + c_tiempo_expiracion_suscripcion
      where s.id_usuario = i_id_usuario
@@ -382,7 +382,7 @@ create or replace package body k_usuario is
   
     if sql%notfound then
       -- Inserta suscripción
-      insert into t_usuario_suscripciones
+      insert into t_usuario_suscripciones_dml_v
         (id_usuario, suscripcion, fecha_expiracion)
       values
         (i_id_usuario,
@@ -394,7 +394,7 @@ create or replace package body k_usuario is
   procedure p_desuscribir_notificacion(i_id_usuario       in number,
                                        i_suscripcion_baja in varchar2) is
   begin
-    delete t_usuario_suscripciones s
+    delete t_usuario_suscripciones_dml_v s
      where s.id_usuario = i_id_usuario
        and lower(s.suscripcion) = lower(i_suscripcion_baja);
   end;

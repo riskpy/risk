@@ -15,7 +15,7 @@ begin
   -- Validar roles responsables
   declare
     l_rol_json_arr json_array_t;
-    l_nombre_rol   t_roles.nombre%type;
+    l_nombre_rol   t_roles_v.nombre%type;
     l_cantidad     pls_integer;
   begin
     if :new.roles_responsables is null then
@@ -31,7 +31,7 @@ begin
       -- Verificar si existe el rol
       select count(*)
         into l_cantidad
-        from t_roles a
+        from t_roles_v a
        where a.nombre = l_nombre_rol;
     
       if l_cantidad = 0 then
@@ -46,7 +46,7 @@ begin
   -- Validar usuarios responsables
   declare
     l_usu_json_arr  json_array_t;
-    l_alias_usuario t_usuarios.alias%type;
+    l_alias_usuario t_usuarios_v.alias%type;
     l_cantidad      pls_integer;
   begin
     if :new.usuarios_responsables is null then
@@ -62,7 +62,7 @@ begin
       -- Verificar si existe el usuario
       select count(*)
         into l_cantidad
-        from t_usuarios a
+        from t_usuarios_v a
        where a.alias = l_alias_usuario
          and a.estado = 'A'; --Activo
     
@@ -77,3 +77,4 @@ begin
 
 end;
 /
+

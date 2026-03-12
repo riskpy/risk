@@ -163,14 +163,14 @@ create or replace package body k_dispositivo is
     $if k_modulo.c_instalado_msj $then
     cursor cr_plantillas(i_id_aplicacion in varchar2) is
       select n.nombre
-        from t_notificacion_plantillas n
+        from t_notificacion_plantillas_v n
        where n.id_aplicacion = i_id_aplicacion;
     $end
   
     $if k_modulo.c_instalado_msj $then
     cursor cr_suscripciones(i_id_dispositivo in number) is
       select s.suscripcion
-        from t_dispositivo_suscripciones s
+        from t_dispositivo_suscripciones_v s
        where (s.fecha_expiracion is null or s.fecha_expiracion > sysdate)
          and s.id_dispositivo = i_id_dispositivo;
     $end
@@ -230,8 +230,8 @@ create or replace package body k_dispositivo is
     -- Buscando plantillas de la aplicación
     $if k_modulo.c_instalado_msj $then
     for c in cr_plantillas(l_id_aplicacion) loop
-      l_plantilla           := new y_plantilla();
-      l_plantilla.nombre    := c.nombre;
+      l_plantilla        := new y_plantilla();
+      l_plantilla.nombre := c.nombre;
     
       l_plantillas.extend;
       l_plantillas(l_plantillas.count) := l_plantilla;
@@ -259,7 +259,7 @@ create or replace package body k_dispositivo is
                                      i_suscripcion_alta in varchar2) is
   begin
     -- Actualiza suscripción
-    update t_dispositivo_suscripciones s
+    update t_dispositivo_suscripciones_dml_v s
        set s.suscripcion      = lower(i_suscripcion_alta),
            s.fecha_expiracion = sysdate + c_tiempo_expiracion_suscripcion
      where s.id_dispositivo = i_id_dispositivo
@@ -267,7 +267,7 @@ create or replace package body k_dispositivo is
   
     if sql%notfound then
       -- Inserta suscripción
-      insert into t_dispositivo_suscripciones
+      insert into t_dispositivo_suscripciones_dml_v
         (id_dispositivo, suscripcion, fecha_expiracion)
       values
         (i_id_dispositivo,
@@ -280,7 +280,7 @@ create or replace package body k_dispositivo is
                                        i_suscripcion_alta in varchar2) is
     cursor cr_dispositivos(i_suscripcion in varchar2) is
       select s.id_dispositivo
-        from t_dispositivo_suscripciones s
+        from t_dispositivo_suscripciones_v s
        where lower(s.suscripcion) = lower(i_suscripcion)
          and (s.fecha_expiracion is null or s.fecha_expiracion > sysdate);
   begin
@@ -293,21 +293,21 @@ create or replace package body k_dispositivo is
                                              i_id_usuario     in number) is
   begin
     -- Inserta suscripción de dispositivo a partir de un usuario
-    insert into t_dispositivo_suscripciones
+    insert into t_dispositivo_suscripciones_dml_v
       (id_dispositivo, suscripcion, fecha_expiracion)
       select i_id_dispositivo, us.suscripcion, us.fecha_expiracion
-        from t_usuario_suscripciones us
+        from t_usuario_suscripciones_v us
        where us.id_usuario = i_id_usuario
          and us.suscripcion not in
              (select ds.suscripcion
-                from t_dispositivo_suscripciones ds
+                from t_dispositivo_suscripciones_v ds
                where ds.id_dispositivo = i_id_dispositivo);
   end;
 
   procedure p_desuscribir_notificacion(i_id_dispositivo   in number,
                                        i_suscripcion_baja in varchar2) is
   begin
-    delete t_dispositivo_suscripciones s
+    delete t_dispositivo_suscripciones_dml_v s
      where s.id_dispositivo = i_id_dispositivo
        and lower(s.suscripcion) = lower(i_suscripcion_baja);
   end;
@@ -316,7 +316,7 @@ create or replace package body k_dispositivo is
                                          i_suscripcion_baja in varchar2) is
     cursor cr_dispositivos(i_suscripcion in varchar2) is
       select s.id_dispositivo
-        from t_dispositivo_suscripciones s
+        from t_dispositivo_suscripciones_v s
        where lower(s.suscripcion) = lower(i_suscripcion)
          and (s.fecha_expiracion is null or s.fecha_expiracion > sysdate);
   begin
@@ -329,11 +329,11 @@ create or replace package body k_dispositivo is
                                                i_id_usuario     in number) is
   begin
     -- Elimina suscripción a dispositivo de un usuario
-    delete from t_dispositivo_suscripciones ds
+    delete from t_dispositivo_suscripciones_dml_v ds
      where ds.id_dispositivo = i_id_dispositivo
        and ds.suscripcion in
            (select us.suscripcion
-              from t_usuario_suscripciones us
+              from t_usuario_suscripciones_v us
              where us.id_usuario = i_id_usuario);
   end;
   $end
