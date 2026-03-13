@@ -17,7 +17,7 @@ create or replace package body k_aplicacion_util is
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('select id_aplicacion, nombre, tipo, activo, detalle, id_dominio from t_aplicaciones where id_aplicacion = ''%s''',
                                                i_aplicacion.id_aplicacion),
-                                't_aplicaciones');
+                                't_aplicaciones_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts ||
@@ -25,7 +25,7 @@ create or replace package body k_aplicacion_util is
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('select id_aplicacion, id_parametro, valor from t_aplicacion_parametros where id_aplicacion = ''%s'' order by id_aplicacion, id_parametro',
                                                i_aplicacion.id_aplicacion),
-                                't_aplicacion_parametros');
+                                't_aplicacion_parametros_dml_v');
     l_inserts := l_inserts || l_insert;
     --
   

@@ -28,7 +28,7 @@ begin
   l_clob(15) :=q'!!';
   l_clob(16) :=q'!N!';
 
-  insert into t_parametro_definiciones
+  insert into t_parametro_definiciones_dml_v
   (
      "TABLA"
     ,"ID_PARAMETRO"
@@ -85,7 +85,7 @@ begin
   l_clob(1) :=q'!DIRECCION_CORREO_REMITENTE!';
   l_clob(2) :=q'!!';
 
-  insert into t_parametros
+  insert into t_parametros_dml_v
   (
      "ID_PARAMETRO"
     ,"VALOR"

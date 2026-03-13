@@ -22,7 +22,7 @@ begin
   l_varchar2(5) :=q'!09.06.2022 00:00:00!';
   l_clob(6) :=q'!1.4.0!';
 
-  insert into t_modulos
+  insert into t_modulos_dml_v
   (
      "ID_MODULO"
     ,"NOMBRE"
@@ -62,7 +62,7 @@ begin
   l_clob(4) :=q'!S!';
   l_clob(5) :=q'!MSJ!';
 
-  insert into t_dominios
+  insert into t_dominios_dml_v
   (
      "ID_DOMINIO"
     ,"NOMBRE"

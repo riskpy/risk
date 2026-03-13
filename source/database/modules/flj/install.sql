@@ -186,6 +186,7 @@ prompt
 @@scripts/meanings/install.sql
 @@scripts/errors/install.sql
 @@scripts/applications/install.sql
+@@scripts/operations/install.sql
 commit;
 /
 

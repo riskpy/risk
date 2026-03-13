@@ -19,7 +19,7 @@ create or replace package body k_parametro_util is
     l_insert  := fn_gen_inserts(console.format('select tabla, id_parametro, descripcion, orden, nombre_referencia, tipo_dato, observacion, id_dominio, tipo_filtro, formato, longitud_maxima, obligatorio, valor_defecto, etiqueta, valores_posibles, encriptado from t_parametro_definiciones where tabla = ''%s'' and id_parametro = ''%s''',
                                                i_parametro_definicion.tabla,
                                                i_parametro_definicion.id_parametro),
-                                't_parametro_definiciones');
+                                't_parametro_definiciones_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_PARAMETROS') ||
@@ -27,10 +27,10 @@ create or replace package body k_parametro_util is
     if i_parametro_definicion.tabla = k_parametro.c_tabla_parametros then
       l_insert := fn_gen_inserts(console.format('select id_parametro, valor from t_parametros where id_parametro = ''%s''',
                                                 i_parametro_definicion.id_parametro),
-                                 't_parametros');
+                                 't_parametros_dml_v');
     else
       l_insert := fn_gen_inserts(console.format('select id_parametro, valor from t_parametros where 1 = 2'),
-                                 't_parametros');
+                                 't_parametros_dml_v');
     end if;
     l_inserts := l_inserts || l_insert;
   

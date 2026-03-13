@@ -17,14 +17,14 @@ create or replace package body k_significado_util is
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT dominio, descripcion, detalle, activo, id_dominio FROM t_significado_dominios WHERE dominio = ''%s''',
                                                i_significado_dominio.dominio),
-                                't_significado_dominios');
+                                't_significado_dominios_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_SIGNIFICADOS') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT dominio, codigo, significado, referencia, activo, referencia_2 FROM t_significados WHERE dominio = ''%s'' ORDER BY codigo',
                                                i_significado_dominio.dominio),
-                                't_significados');
+                                't_significados_dml_v');
     l_inserts := l_inserts || l_insert;
     --
   

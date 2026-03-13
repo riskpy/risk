@@ -165,6 +165,7 @@ prompt
 prompt Running scripts...
 prompt -----------------------------------
 prompt
+@@scripts/operations/uninstall.sql
 @@scripts/applications/uninstall.sql
 @@scripts/errors/uninstall.sql
 @@scripts/meanings/uninstall.sql

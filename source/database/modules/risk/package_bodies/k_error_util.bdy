@@ -17,7 +17,7 @@ create or replace package body k_error_util is
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('select clave, mensaje, id_dominio, id_idioma, id_pais from t_errores where clave = ''%s'' order by clave, id_idioma, id_pais',
                                                i_clave),
-                                't_errores');
+                                't_errores_dml_v');
     l_inserts := l_inserts || l_insert;
     --
   

@@ -16,49 +16,49 @@ create or replace package body k_operacion_util is
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT id_operacion, tipo, nombre, dominio, activo, detalle, version_actual, nivel_log, parametros_automaticos, tipo_implementacion, aplicaciones_permitidas, nombre_programa_implementacion FROM t_operaciones WHERE id_operacion = %s',
                                                to_char(i_operacion.id_operacion)),
-                                't_operaciones');
+                                't_operaciones_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_OPERACION_PARAMETROS') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT id_operacion, nombre, version, orden, activo, tipo_dato, formato, longitud_maxima, obligatorio, valor_defecto, etiqueta, detalle, valores_posibles, encriptado FROM t_operacion_parametros WHERE id_operacion = %s ORDER BY version, orden',
                                                to_char(i_operacion.id_operacion)),
-                                't_operacion_parametros');
+                                't_operacion_parametros_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_SERVICIOS') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT id_servicio, tipo, consulta_sql FROM t_servicios WHERE id_servicio = %s',
                                                to_char(i_operacion.id_operacion)),
-                                't_servicios');
+                                't_servicios_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_REPORTES') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT id_reporte, tipo, consulta_sql FROM t_reportes WHERE id_reporte = %s',
                                                to_char(i_operacion.id_operacion)),
-                                't_reportes');
+                                't_reportes_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_TRABAJOS') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT id_trabajo, tipo, accion, fecha_inicio, tiempo_inicio, intervalo_repeticion, fecha_fin, comentarios FROM t_trabajos WHERE id_trabajo = %s',
                                                to_char(i_operacion.id_operacion)),
-                                't_trabajos');
+                                't_trabajos_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_MONITOREOS') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT id_monitoreo, causa, plan_accion, activo, consulta_sql, bloque_plsql, prioridad, roles_responsables, usuarios_responsables, nivel_aviso_correo, aviso_notificacion, aviso_mensaje, frecuencia, opera_sistema_cerrado, opera_dia_no_habil, hora_minima, hora_maxima, comentarios FROM t_monitoreos WHERE id_monitoreo = %s',
                                                to_char(i_operacion.id_operacion)),
-                                't_monitoreos');
+                                't_monitoreos_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_IMPORTACIONES') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT id_importacion, separador_campos, delimitador_campo, linea_inicial, nombre_tabla, truncar_tabla, proceso_previo, proceso_posterior FROM t_importaciones WHERE id_importacion = %s',
                                                to_char(i_operacion.id_operacion)),
-                                't_importaciones');
+                                't_importaciones_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts ||
@@ -66,14 +66,14 @@ create or replace package body k_operacion_util is
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT a.id_importacion, a.nombre, a.version, a.posicion_inicial, a.longitud, a.posicion_decimal, a.mapeador FROM t_importacion_parametros a, t_operacion_parametros b WHERE a.id_importacion = %s AND b.id_operacion = a.id_importacion AND b.nombre=a.nombre AND b.version = a.version ORDER BY b.version, b.orden',
                                                to_char(i_operacion.id_operacion)),
-                                't_importacion_parametros');
+                                't_importacion_parametros_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_ROL_PERMISOS') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('SELECT id_rol, id_permiso, consultar, insertar, actualizar, eliminar, verificar, autorizar FROM t_rol_permisos WHERE id_permiso = k_operacion.f_id_permiso(%s) ORDER BY id_rol',
                                                to_char(i_operacion.id_operacion)),
-                                't_rol_permisos');
+                                't_rol_permisos_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     if i_operacion.tipo_implementacion =

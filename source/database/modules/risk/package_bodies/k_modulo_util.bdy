@@ -17,14 +17,14 @@ create or replace package body k_modulo_util is
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('select id_modulo, nombre, detalle, activo, fecha_actual, version_actual from t_modulos where id_modulo = ''%s''',
                                                i_modulo.id_modulo),
-                                't_modulos');
+                                't_modulos_dml_v');
     l_inserts := l_inserts || l_insert;
     --
     l_inserts := l_inserts || k_cadena.f_comentar('T_DOMINIOS') ||
                  utl_tcp.crlf;
     l_insert  := fn_gen_inserts(console.format('select id_dominio, nombre, detalle, activo, id_modulo from t_dominios where id_modulo = ''%s'' order by id_dominio',
                                                i_modulo.id_modulo),
-                                't_dominios');
+                                't_dominios_dml_v');
     l_inserts := l_inserts || l_insert;
     --
   
