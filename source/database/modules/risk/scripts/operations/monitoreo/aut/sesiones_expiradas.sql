@@ -21,8 +21,10 @@ begin
   l_varchar2(8) :=q'!0!';
   l_clob(9) :=q'!!';
   l_clob(10) :=q'!K!';
+  l_clob(11) :=q'!!';
+  l_clob(12) :=q'!!';
 
-  insert into t_operaciones
+  insert into t_operaciones_dml_v
   (
      "ID_OPERACION"
     ,"TIPO"
@@ -34,6 +36,8 @@ begin
     ,"NIVEL_LOG"
     ,"PARAMETROS_AUTOMATICOS"
     ,"TIPO_IMPLEMENTACION"
+    ,"APLICACIONES_PERMITIDAS"
+    ,"NOMBRE_PROGRAMA_IMPLEMENTACION"
   )
   values
   (
@@ -47,6 +51,8 @@ begin
     ,to_number(l_varchar2(8))
     ,to_char(l_clob(9))
     ,to_char(l_clob(10))
+    ,to_char(l_clob(11))
+    ,to_char(l_clob(12))
   );
 
 end;
@@ -79,7 +85,7 @@ begin
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
 
-  insert into t_operacion_parametros
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -176,47 +182,101 @@ begin
 
   l_varchar2(1) :=q'!502!';
   l_clob(2) :=q'!La sesión queda en Activo a menos que haya un intento y detecte que ya expiró.!';
-  l_clob(3) :=q'!SELECT se.id_usuario, us.alias, COUNT(se.access_token) sesiones
+  l_clob(3) :=q'!!';
+  l_clob(4) :=q'!S!';
+  l_clob(5) :=q'!SELECT se.id_usuario, us.alias, COUNT(se.access_token) sesiones
   FROM t_sesiones se, t_usuarios us
  WHERE se.id_usuario = us.id_usuario
    AND se.fecha_expiracion_access_token < SYSDATE
    AND se.estado = 'A'
  GROUP BY se.id_usuario, us.alias
  ORDER BY se.id_usuario!';
-  l_clob(4) :=q'!!';
-  l_varchar2(5) :=q'!5!';
-  l_varchar2(6) :=q'!1!';
-  l_varchar2(7) :=q'!!';
-  l_varchar2(8) :=q'!0!';
-  l_clob(9) :=q'!D!';
-  l_clob(10) :=q'!!';
+  l_clob(6) :=q'!!';
+  l_varchar2(7) :=q'!5!';
+  l_clob(8) :=q'!1!';
+  l_clob(9) :=q'!!';
+  l_varchar2(10) :=q'!0!';
+  l_clob(11) :=q'!!';
+  l_clob(12) :=q'!!';
+  l_clob(13) :=q'!D!';
+  l_clob(14) :=q'!!';
+  l_clob(15) :=q'!!';
+  l_clob(16) :=q'!!';
+  l_clob(17) :=q'!!';
+  l_clob(18) :=q'!!';
 
-  insert into t_monitoreos
+  insert into t_monitoreos_dml_v
   (
      "ID_MONITOREO"
     ,"CAUSA"
-    ,"CONSULTA_SQL"
     ,"PLAN_ACCION"
+    ,"ACTIVO"
+    ,"CONSULTA_SQL"
+    ,"BLOQUE_PLSQL"
     ,"PRIORIDAD"
     ,"ROLES_RESPONSABLES"
     ,"USUARIOS_RESPONSABLES"
     ,"NIVEL_AVISO_CORREO"
+    ,"AVISO_NOTIFICACION"
+    ,"AVISO_MENSAJE"
     ,"FRECUENCIA"
+    ,"OPERA_SISTEMA_CERRADO"
+    ,"OPERA_DIA_NO_HABIL"
+    ,"HORA_MINIMA"
+    ,"HORA_MAXIMA"
     ,"COMENTARIOS"
   )
   values
   (
      to_number(l_varchar2(1))
     ,to_char(l_clob(2))
-    ,l_clob(3)
+    ,to_char(l_clob(3))
     ,to_char(l_clob(4))
-    ,to_number(l_varchar2(5))
-    ,to_number(l_varchar2(6))
+    ,l_clob(5)
+    ,l_clob(6)
     ,to_number(l_varchar2(7))
-    ,to_number(l_varchar2(8))
+    ,to_char(l_clob(8))
     ,to_char(l_clob(9))
-    ,to_char(l_clob(10))
+    ,to_number(l_varchar2(10))
+    ,to_char(l_clob(11))
+    ,to_char(l_clob(12))
+    ,to_char(l_clob(13))
+    ,to_char(l_clob(14))
+    ,to_char(l_clob(15))
+    ,to_char(l_clob(16))
+    ,to_char(l_clob(17))
+    ,to_char(l_clob(18))
   );
+
+end;
+/
+/* ==================== T_IMPORTACIONES ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACION_PARAMETROS ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
 
 end;
 /

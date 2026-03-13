@@ -22,8 +22,9 @@ begin
   l_clob(9) :=q'!PAGINA_PARAMETROS!';
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
+  l_clob(12) :=q'!!';
 
-  insert into t_operaciones
+  insert into t_operaciones_dml_v
   (
      "ID_OPERACION"
     ,"TIPO"
@@ -36,6 +37,7 @@ begin
     ,"PARAMETROS_AUTOMATICOS"
     ,"TIPO_IMPLEMENTACION"
     ,"APLICACIONES_PERMITIDAS"
+    ,"NOMBRE_PROGRAMA_IMPLEMENTACION"
   )
   values
   (
@@ -50,6 +52,7 @@ begin
     ,to_char(l_clob(9))
     ,to_char(l_clob(10))
     ,to_char(l_clob(11))
+    ,to_char(l_clob(12))
   );
 
 end;
@@ -86,7 +89,7 @@ begin
   l_clob(2) :=q'!C!';
   l_clob(3) :=q'!SELECT k_parametro.f_valor_parametro('T_APLICACION_PARAMETROS', 'CLAVE', id_aplicacion) clave FROM t_aplicaciones WHERE activo = 'S'!';
 
-  insert into t_servicios
+  insert into t_servicios_dml_v
   (
      "ID_SERVICIO"
     ,"TIPO"
@@ -132,6 +135,36 @@ begin
 end;
 /
 /* ==================== T_MONITOREOS ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACIONES ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACION_PARAMETROS ==================== */
 set define off
 declare
   type   t_clob is table of clob index by binary_integer;

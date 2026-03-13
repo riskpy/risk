@@ -23,9 +23,8 @@ begin
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
   l_clob(12) :=q'!!';
-
-
-  insert into t_operaciones
+
+  insert into t_operaciones_dml_v
   (
      "ID_OPERACION"
     ,"TIPO"
@@ -85,9 +84,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -175,9 +173,8 @@ begin
   l_clob(6) :=q'!FREQ=HOURLY;BYHOUR=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23;BYMINUTE=40;BYSECOND=0;!';
   l_varchar2(7) :=q'!!';
   l_clob(8) :=q'!Trabajo de monitoreo de conflictos - Cada 30 Minutos!';
-
-
-  insert into t_trabajos
+
+  insert into t_trabajos_dml_v
   (
      "ID_TRABAJO"
     ,"TIPO"
@@ -203,6 +200,36 @@ begin
 end;
 /
 /* ==================== T_MONITOREOS ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACIONES ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACION_PARAMETROS ==================== */
 set define off
 declare
   type   t_clob is table of clob index by binary_integer;

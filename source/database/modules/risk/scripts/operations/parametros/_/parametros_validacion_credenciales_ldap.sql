@@ -23,9 +23,8 @@ begin
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
   l_clob(12) :=q'!!';
-
-
-  insert into t_operaciones
+
+  insert into t_operaciones_dml_v
   (
      "ID_OPERACION"
     ,"TIPO"
@@ -85,9 +84,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -136,9 +134,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -187,9 +184,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -238,9 +234,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -289,9 +284,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -340,9 +334,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -391,9 +384,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -476,6 +468,36 @@ begin
 end;
 /
 /* ==================== T_MONITOREOS ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACIONES ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACION_PARAMETROS ==================== */
 set define off
 declare
   type   t_clob is table of clob index by binary_integer;

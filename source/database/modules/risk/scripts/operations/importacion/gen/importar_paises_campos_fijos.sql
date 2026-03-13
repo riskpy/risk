@@ -22,9 +22,9 @@ begin
   l_clob(9) :=q'!!';
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
-
-
-  insert into t_operaciones
+  l_clob(12) :=q'!!';
+
+  insert into t_operaciones_dml_v
   (
      "ID_OPERACION"
     ,"TIPO"
@@ -37,6 +37,7 @@ begin
     ,"PARAMETROS_AUTOMATICOS"
     ,"TIPO_IMPLEMENTACION"
     ,"APLICACIONES_PERMITIDAS"
+    ,"NOMBRE_PROGRAMA_IMPLEMENTACION"
   )
   values
   (
@@ -51,6 +52,7 @@ begin
     ,to_char(l_clob(9))
     ,to_char(l_clob(10))
     ,to_char(l_clob(11))
+    ,to_char(l_clob(12))
   );
 
 end;
@@ -82,9 +84,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -133,9 +134,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -184,9 +184,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -235,9 +234,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -286,9 +284,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -337,9 +334,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
-  insert into t_operacion_parametros
+
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -457,9 +453,8 @@ begin
   l_clob(6) :=q'!N!';
   l_clob(7) :=q'!!';
   l_clob(8) :=q'!!';
-
-
-  insert into t_importaciones
+
+  insert into t_importaciones_dml_v
   (
      "ID_IMPORTACION"
     ,"SEPARADOR_CAMPOS"
@@ -504,9 +499,8 @@ begin
   l_varchar2(5) :=q'!9!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
-
-  insert into t_importacion_parametros
+
+  insert into t_importacion_parametros_dml_v
   (
      "ID_IMPORTACION"
     ,"NOMBRE"
@@ -534,9 +528,8 @@ begin
   l_varchar2(5) :=q'!20!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!upper(trim(:variable))!';
-
-
-  insert into t_importacion_parametros
+
+  insert into t_importacion_parametros_dml_v
   (
      "ID_IMPORTACION"
     ,"NOMBRE"
@@ -564,9 +557,8 @@ begin
   l_varchar2(5) :=q'!20!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
-
-  insert into t_importacion_parametros
+
+  insert into t_importacion_parametros_dml_v
   (
      "ID_IMPORTACION"
     ,"NOMBRE"
@@ -594,9 +586,8 @@ begin
   l_varchar2(5) :=q'!3!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
-
-  insert into t_importacion_parametros
+
+  insert into t_importacion_parametros_dml_v
   (
      "ID_IMPORTACION"
     ,"NOMBRE"
@@ -624,9 +615,8 @@ begin
   l_varchar2(5) :=q'!3!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
-
-  insert into t_importacion_parametros
+
+  insert into t_importacion_parametros_dml_v
   (
      "ID_IMPORTACION"
     ,"NOMBRE"
@@ -654,9 +644,8 @@ begin
   l_varchar2(5) :=q'!3!';
   l_varchar2(6) :=q'!!';
   l_clob(7) :=q'!trim(:variable)!';
-
-
-  insert into t_importacion_parametros
+
+  insert into t_importacion_parametros_dml_v
   (
      "ID_IMPORTACION"
     ,"NOMBRE"

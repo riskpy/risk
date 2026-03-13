@@ -20,8 +20,11 @@ begin
   l_clob(7) :=q'!0.1.0!';
   l_varchar2(8) :=q'!0!';
   l_clob(9) :=q'!PAGINA_PARAMETROS!';
+  l_clob(10) :=q'!K!';
+  l_clob(11) :=q'!!';
+  l_clob(12) :=q'!!';
 
-  insert into t_operaciones
+  insert into t_operaciones_dml_v
   (
      "ID_OPERACION"
     ,"TIPO"
@@ -32,6 +35,9 @@ begin
     ,"VERSION_ACTUAL"
     ,"NIVEL_LOG"
     ,"PARAMETROS_AUTOMATICOS"
+    ,"TIPO_IMPLEMENTACION"
+    ,"APLICACIONES_PERMITIDAS"
+    ,"NOMBRE_PROGRAMA_IMPLEMENTACION"
   )
   values
   (
@@ -44,6 +50,9 @@ begin
     ,to_char(l_clob(7))
     ,to_number(l_varchar2(8))
     ,to_char(l_clob(9))
+    ,to_char(l_clob(10))
+    ,to_char(l_clob(11))
+    ,to_char(l_clob(12))
   );
 
 end;
@@ -76,7 +85,7 @@ begin
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
 
-  insert into t_operacion_parametros
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -126,7 +135,7 @@ begin
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
 
-  insert into t_operacion_parametros
+  insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
     ,"NOMBRE"
@@ -180,7 +189,7 @@ begin
   l_clob(2) :=q'!T!';
   l_clob(3) :=q'!!';
 
-  insert into t_servicios
+  insert into t_servicios_dml_v
   (
      "ID_SERVICIO"
     ,"TIPO"
@@ -225,6 +234,51 @@ begin
 
 end;
 /
+/* ==================== T_MONITOREOS ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACIONES ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
+/* ==================== T_IMPORTACION_PARAMETROS ==================== */
+set define off
+declare
+  type   t_clob is table of clob index by binary_integer;
+  l_clob t_clob;
+  type   t_varchar2 is table of varchar2(64) index by binary_integer;
+  l_varchar2 t_varchar2;
+begin
+
+  null;
+  -- start generation of records
+  -----------------------------------
+
+end;
+/
 /* ==================== T_ROL_PERMISOS ==================== */
 set define off
 declare
@@ -244,8 +298,10 @@ begin
   l_clob(4) :=q'!N!';
   l_clob(5) :=q'!N!';
   l_clob(6) :=q'!N!';
+  l_clob(7) :=q'!N!';
+  l_clob(8) :=q'!N!';
 
-  insert into t_rol_permisos
+  insert into t_rol_permisos_dml_v
   (
      "ID_ROL"
     ,"ID_PERMISO"
@@ -253,6 +309,8 @@ begin
     ,"INSERTAR"
     ,"ACTUALIZAR"
     ,"ELIMINAR"
+    ,"VERIFICAR"
+    ,"AUTORIZAR"
   )
   values
   (
@@ -262,6 +320,8 @@ begin
     ,to_char(l_clob(4))
     ,to_char(l_clob(5))
     ,to_char(l_clob(6))
+    ,to_char(l_clob(7))
+    ,to_char(l_clob(8))
   );
 
   l_varchar2(1) :=q'!4!';
@@ -270,8 +330,10 @@ begin
   l_clob(4) :=q'!N!';
   l_clob(5) :=q'!N!';
   l_clob(6) :=q'!N!';
+  l_clob(7) :=q'!N!';
+  l_clob(8) :=q'!N!';
 
-  insert into t_rol_permisos
+  insert into t_rol_permisos_dml_v
   (
      "ID_ROL"
     ,"ID_PERMISO"
@@ -279,6 +341,8 @@ begin
     ,"INSERTAR"
     ,"ACTUALIZAR"
     ,"ELIMINAR"
+    ,"VERIFICAR"
+    ,"AUTORIZAR"
   )
   values
   (
@@ -288,6 +352,8 @@ begin
     ,to_char(l_clob(4))
     ,to_char(l_clob(5))
     ,to_char(l_clob(6))
+    ,to_char(l_clob(7))
+    ,to_char(l_clob(8))
   );
 
 end;
