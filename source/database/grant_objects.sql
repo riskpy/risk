@@ -47,7 +47,7 @@ begin
                 'TABLE',
                 'select, insert, delete, update, references',
                 'VIEW',
-                'select',
+                'select, insert, delete, update',
                 'SEQUENCE',
                 'select',
                 'TYPE',
@@ -77,10 +77,11 @@ begin
      and o.object_type in ('FUNCTION',
                            'PACKAGE',
                            'PROCEDURE',
-                           'SEQUENCE',
-                           'TABLE',
+                           --'SEQUENCE',
+                           --'TABLE',
                            'VIEW',
                            'TYPE',
+                           --'TRIGGER',
                            'JAVA SOURCE')
         /*and not exists (select 1
          from all_tab_privs p
