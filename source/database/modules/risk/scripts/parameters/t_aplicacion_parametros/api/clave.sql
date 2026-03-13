@@ -28,7 +28,7 @@ begin
   l_clob(15) :=q'!!';
   l_clob(16) :=q'!N!';
 
-  insert into t_parametro_definiciones
+  insert into t_parametro_definiciones_dml_v
   (
      "TABLA"
     ,"ID_PARAMETRO"

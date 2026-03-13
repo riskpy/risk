@@ -28,7 +28,7 @@ begin
   l_clob(15) :=q'!!';
   l_clob(16) :=q'!N!';
 
-  insert into t_parametro_definiciones
+  insert into t_parametro_definiciones_dml_v
   (
      "TABLA"
     ,"ID_PARAMETRO"
@@ -85,7 +85,7 @@ begin
   l_clob(1) :=q'!CLAVE_VALIDACION_ACCESS_TOKEN!';
   l_clob(2) :=q'!9vVzzZbbUCcYE3cDnE+IVMrLF+8X8TPyK2cmC3Vu7M0=!';
 
-  insert into t_parametros
+  insert into t_parametros_dml_v
   (
      "ID_PARAMETRO"
     ,"VALOR"

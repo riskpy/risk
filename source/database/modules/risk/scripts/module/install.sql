@@ -19,10 +19,10 @@ begin
   l_clob(2) :=q'!RISK!';
   l_clob(3) :=q'!Módulo principal con manejo de Operaciones (Servicios Web, Reportes, Trabajos) y sus Parámetros, Autenticación y Autorización de Usuarios, Parámetros, Significados, Archivos, Datos Adicionales, entre otros!';
   l_clob(4) :=q'!S!';
-  l_varchar2(5) :=q'!20.02.2026 00:00:00!';
+  l_varchar2(5) :=q'!12.03.2026 00:00:00!';
   l_clob(6) :=q'!1.4.0!';
 
-  insert into t_modulos
+  insert into t_modulos_dml_v
   (
      "ID_MODULO"
     ,"NOMBRE"
@@ -62,7 +62,7 @@ begin
   l_clob(4) :=q'!S!';
   l_clob(5) :=q'!RISK!';
 
-  insert into t_dominios
+  insert into t_dominios_dml_v
   (
      "ID_DOMINIO"
     ,"NOMBRE"
@@ -85,7 +85,7 @@ begin
   l_clob(4) :=q'!S!';
   l_clob(5) :=q'!RISK!';
 
-  insert into t_dominios
+  insert into t_dominios_dml_v
   (
      "ID_DOMINIO"
     ,"NOMBRE"
@@ -108,7 +108,7 @@ begin
   l_clob(4) :=q'!S!';
   l_clob(5) :=q'!RISK!';
 
-  insert into t_dominios
+  insert into t_dominios_dml_v
   (
      "ID_DOMINIO"
     ,"NOMBRE"
@@ -131,7 +131,7 @@ begin
   l_clob(4) :=q'!S!';
   l_clob(5) :=q'!RISK!';
 
-  insert into t_dominios
+  insert into t_dominios_dml_v
   (
      "ID_DOMINIO"
     ,"NOMBRE"

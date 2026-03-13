@@ -17,7 +17,7 @@ begin
   l_varchar2(4) :=q'!!';
   l_varchar2(5) :=q'!!';
 
-  insert into t_errores
+  insert into t_errores_dml_v
   (
      "CLAVE"
     ,"MENSAJE"

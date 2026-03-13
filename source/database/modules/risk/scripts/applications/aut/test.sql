@@ -18,7 +18,7 @@ begin
   l_clob(5) :=q'!Cliente HTTP para pruebas de Servicios Web!';
   l_clob(6) :=q'!AUT!';
 
-  insert into t_aplicaciones
+  insert into t_aplicaciones_dml_v
   (
      "ID_APLICACION"
     ,"NOMBRE"
@@ -56,7 +56,7 @@ begin
   l_clob(2) :=q'!CLAVE!';
   l_clob(3) :=q'!KM1gROAnPUAZykrHcOOJRAC1jkcnyBVLRWXcRD3pjvQ=!';
 
-  insert into t_aplicacion_parametros
+  insert into t_aplicacion_parametros_dml_v
   (
      "ID_APLICACION"
     ,"ID_PARAMETRO"
@@ -73,7 +73,7 @@ begin
   l_clob(2) :=q'!TIEMPO_EXPIRACION_ACCESS_TOKEN!';
   l_clob(3) :=q'!3600!';
 
-  insert into t_aplicacion_parametros
+  insert into t_aplicacion_parametros_dml_v
   (
      "ID_APLICACION"
     ,"ID_PARAMETRO"
@@ -90,7 +90,7 @@ begin
   l_clob(2) :=q'!TIEMPO_EXPIRACION_REFRESH_TOKEN!';
   l_clob(3) :=q'!5!';
 
-  insert into t_aplicacion_parametros
+  insert into t_aplicacion_parametros_dml_v
   (
      "ID_APLICACION"
     ,"ID_PARAMETRO"
@@ -107,7 +107,7 @@ begin
   l_clob(2) :=q'!VERSION_ACTUAL!';
   l_clob(3) :=q'!0.1.0!';
 
-  insert into t_aplicacion_parametros
+  insert into t_aplicacion_parametros_dml_v
   (
      "ID_APLICACION"
     ,"ID_PARAMETRO"
