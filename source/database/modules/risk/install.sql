@@ -221,6 +221,8 @@ prompt
 @@views/t_reportes_v.vw
 @@views/t_rol_permisos_dml_v.vw
 @@views/t_rol_permisos_v.vw
+@@views/t_rol_usuarios_dml_v.vw
+@@views/t_rol_usuarios_v.vw
 @@views/t_roles_dml_v.vw
 @@views/t_roles_v.vw
 @@views/t_servicios_dml_v.vw
@@ -402,6 +404,7 @@ prompt
 @@package_specs/t_personas_api.spc
 @@package_specs/t_reportes_api.spc
 @@package_specs/t_rol_permisos_api.spc
+@@package_specs/t_rol_usuarios_api.spc
 @@package_specs/t_roles_api.spc
 @@package_specs/t_servicios_api.spc
 @@package_specs/t_sesiones_api.spc
@@ -493,6 +496,7 @@ prompt
 @@package_bodies/t_personas_api.bdy
 @@package_bodies/t_reportes_api.bdy
 @@package_bodies/t_rol_permisos_api.bdy
+@@package_bodies/t_rol_usuarios_api.bdy
 @@package_bodies/t_roles_api.bdy
 @@package_bodies/t_servicios_api.bdy
 @@package_bodies/t_sesiones_api.bdy

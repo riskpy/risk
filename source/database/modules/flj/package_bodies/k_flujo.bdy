@@ -203,10 +203,10 @@ create or replace package body k_flujo as
          where a.id_paso_instancia = l_id_paso_instancia
            and exists
          (select 1
-                  from t_rol_usuarios y
+                  from t_rol_usuarios_v y
                  where y.id_usuario = k_usuario.f_id_usuario(i_usuario)
                    and (select z.nombre
-                          from t_roles z
+                          from t_roles_v z
                          where z.id_rol = y.id_rol) = a.id_rol);
         if l_cant_roles > 0 then
           l_puede_avanzar := true;
@@ -436,10 +436,10 @@ create or replace package body k_flujo as
          where a.id_paso_instancia = l_id_paso_instancia
            and exists
          (select 1
-                  from t_rol_usuarios y
+                  from t_rol_usuarios_v y
                  where y.id_usuario = k_usuario.f_id_usuario(i_usuario)
                    and (select z.nombre
-                          from t_roles z
+                          from t_roles_v z
                          where z.id_rol = y.id_rol) = a.id_rol);
         if l_cant_roles > 0 then
           l_puede_avanzar := true;
@@ -498,10 +498,10 @@ create or replace package body k_flujo as
         where a.id_paso_instancia = l_id_paso_instancia
           and exists
         (select 1
-                 from t_rol_usuarios y
+                 from t_rol_usuarios_v y
                 where y.id_usuario = k_usuario.f_id_usuario(i_usuario)
                   and (select z.nombre
-                         from t_roles z
+                         from t_roles_v z
                         where z.id_rol = y.id_rol) = a.id_rol)),
        l_id_paso_instancia,
        i_usuario,
@@ -534,3 +534,4 @@ create or replace package body k_flujo as
 
 end k_flujo;
 /
+

@@ -11,7 +11,7 @@ roles_usuario AS
  (SELECT DISTINCT a.id_instancia, a.id_paso_instancia, a.id_rol rol
     FROM v_roles_responsables_paso a
    WHERE EXISTS (SELECT 1
-            FROM t_rol_usuarios y
+            FROM t_rol_usuarios_v y
            WHERE y.id_usuario = ''
              AND y.id_rol = a.id_rol)),
 -- Extraer y unificar todos los roles firmados desde la tabla FIRMAS
@@ -51,4 +51,6 @@ SELECT r.id_instancia,
   LEFT JOIN conteo_usuario u
     ON r.rol = u.rol
    AND r.id_paso_instancia = u.id_paso_instancia
- WHERE greatest(r.cantidad - nvl(f.cantidad, 0) - nvl(u.cantidad, 0), 0) > 0;
+ WHERE greatest(r.cantidad - nvl(f.cantidad, 0) - nvl(u.cantidad, 0), 0) > 0
+;
+
