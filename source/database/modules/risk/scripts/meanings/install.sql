@@ -16,6 +16,7 @@ prompt
 @@scripts/meanings/aut/politica_validacion_clave_acceso.sql
 @@scripts/meanings/aut/politica_validacion_clave_transaccional.sql
 @@scripts/meanings/aut/tipo_clave.sql
+@@scripts/meanings/gen/estado_async_ejecucion.sql
 @@scripts/meanings/gen/estado_entidad.sql
 @@scripts/meanings/gen/estado_usuario.sql
 @@scripts/meanings/gen/extension_fuente.sql

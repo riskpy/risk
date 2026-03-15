@@ -59,6 +59,7 @@ prompt
 @@tables/t_archivo_definiciones.tab
 @@tables/t_archivos.tab
 @@tables/t_archivos_hist.tab
+@@tables/t_async_ejecuciones.tab
 @@tables/t_autenticacion_origenes.tab
 @@tables/t_autenticacion_tipos.tab
 @@tables/t_barrios.tab
@@ -329,6 +330,7 @@ prompt
 @@package_specs/k_aplicacion.spc
 @@package_specs/k_aplicacion_util.spc
 @@package_specs/k_archivo.spc
+@@package_specs/k_async.spc
 @@package_specs/k_auditoria.spc
 @@package_specs/k_autenticacion.spc
 @@package_specs/k_autorizacion.spc
@@ -421,6 +423,7 @@ prompt
 @@package_bodies/k_aplicacion.bdy
 @@package_bodies/k_aplicacion_util.bdy
 @@package_bodies/k_archivo.bdy
+@@package_bodies/k_async.bdy
 @@package_bodies/k_auditoria.bdy
 @@package_bodies/k_autenticacion.bdy
 @@package_bodies/k_autorizacion.bdy
@@ -609,6 +612,7 @@ prompt
 @@triggers/t_personas_ioiud.trg
 @@triggers/t_reportes_ioiud.trg
 @@triggers/t_rol_permisos_ioiud.trg
+@@triggers/t_rol_usuarios_ioiud.trg
 @@triggers/t_roles_ioiud.trg
 @@triggers/t_servicios_ioiud.trg
 @@triggers/t_sesiones_ioiud.trg
