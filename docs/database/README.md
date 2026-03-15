@@ -17,20 +17,20 @@ En la carpeta *source/database* está disponible una serie de scripts para la in
 Script|Descripción
 ------|-----------
 compile_schema.sql|Compila objetos inválidos del esquema actual.
-create_private_synonyms.sql|TO-DO
-create_public_synonyms.sql|TO-DO
-create_schemas.sql|TO-DO
-define_variables.sql|TO-DO
-drop_private_synonyms.sql|TO-DO
-drop_public_synonyms.sql|TO-DO
-drop_schemas.sql|TO-DO
-grant_objects.sql|TO-DO
+create_private_synonyms.sql|Crea sinónimos privados en cada esquema de módulo para referenciar objetos de otros esquemas sin necesidad de usar el prefijo de esquema.
+create_public_synonyms.sql|Crea sinónimos públicos para los objetos de los esquemas del proyecto, permitiendo acceder a ellos sin prefijo de esquema.
+create_schemas.sql|Crea los usuarios y roles del proyecto y les concede los permisos básicos necesarios para operar.
+define_variables.sql|Define las variables de sustitución (nombres de esquema/usuario) utilizadas por los scripts de instalación.
+drop_private_synonyms.sql|Elimina sinónimos privados obsoletos (que apuntan a objetos inexistentes).
+drop_public_synonyms.sql|Elimina sinónimos públicos obsoletos (que apuntan a objetos inexistentes).
+drop_schemas.sql|Elimina los usuarios y roles creados por el proceso de instalación (incluye CASCADE).
+grant_objects.sql|Otorga privilegios de ejecución/selección/inserción/actualización a los usuarios de módulo sobre los objetos del esquema del proyecto.
 grant_objects_access_role.sql|Otorga permisos necesarios al rol de acceso a la Base de Datos desde el API.
 install_audit.sql|Genera campos y triggers de auditoría para tablas del esquema actual.
 install_dependencies.sql|Instala en el esquema actual las dependencias de terceros (Ver [Dependencias](#dependencias)).
 install_headless.sql|Crea usuarios, otorga permisos necesarios e instala los objetos de Base de Datos del Proyecto RISK.
 install_tapi.sql|Genera API's para tablas del esquema actual.
-set_compiler_flags.sql|TO-DO
+set_compiler_flags.sql|Configura las banderas de compilación condicional PL/SQL (PLSQL_CCFLAGS) para los módulos y recompila el paquete K_MODULO.
 uninstall_audit.sql|Elimina campos y triggers de auditoría para tablas del esquema actual.
 uninstall_dependencies.sql|Desinstala del esquema actual las dependencias de terceros.
 uninstall_headless.sql|Elimina usuarios creados y sus objetos de Base de Datos.
@@ -53,9 +53,9 @@ Dependencia|Descripción
 [console](https://github.com/ogobrecht/console)|Herramienta para logging
 [om_tapigen](https://github.com/OraMUC/table-api-generator)|Generador de API's para tablas
 [plex](https://github.com/ogobrecht/plex)|Herramienta para exportación de objetos
-[audit_utility](https://github.com/connormcd/audit_utility)|TO-DO
-[occ](https://github.com/yerba1704/occ)|TO-DO
-[occ-utplsql](https://github.com/yerba1704/occ-utplsql)|TO-DO
+[audit_utility](https://github.com/connormcd/audit_utility)|Genera tablas, paquetes y triggers de auditoría para capturar cambios en tablas (utilizado para registrar DML y mantenimiento).
+[occ](https://github.com/yerba1704/occ)|Framework de reglas de calidad para objetos PL/SQL (ora* CODECOP), usado para validar convenciones de código y estructura de objetos.
+[occ-utplsql](https://github.com/yerba1704/occ-utplsql)|Extensión que genera pruebas unitarias de utPLSQL basadas en las reglas de ora* CODECOP.
 
 ### Configuración de PL/SQL Documentation (plsqldoc)
 
@@ -84,8 +84,8 @@ Tipo|Descripción
 Parámetros|Es un tipo de operación que sirve para agrupar ciertos parámetros especiales y no tiene una implementación
 Servicio|Es un proceso que recibe datos de entrada y retorna datos de salida. Sirve de comunicación entre el API y la Base de Datos
 Reporte|Es un proceso que recibe datos de entrada y retorna como salida un archivo de reporte, que puede ser en formatos PDF, DOCX, XLSX, CSV, HTML. Sirve de comunicación entre el API y la Base de Datos
-Trabajo|Es un proceso que se ejecuta automáticamente en un intérvalo de repetición configurado
-Monitoreo|TO-DO
+Trabajo|Es un proceso que se ejecuta automáticamente en un intervalo de repetición configurado
+Monitoreo|Es un proceso periódico que verifica el estado del sistema o de datos y genera alertas o informes.
 
 ### Parámetros
 
