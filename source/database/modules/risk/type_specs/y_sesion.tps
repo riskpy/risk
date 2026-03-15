@@ -33,7 +33,7 @@ SOFTWARE.
 /** Identificador de la sesion */
   id_sesion number,
 /** Estado de la sesion */
-  estado char(1),
+  estado varchar2(1),
 /** Access Token de la sesion */
   access_token varchar2(4000),
 /** Refresh Token de la sesion */

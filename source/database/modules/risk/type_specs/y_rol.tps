@@ -35,7 +35,7 @@ SOFTWARE.
 /** Nombre del rol */
   nombre varchar2(100),
 /** El rol esta activo? (S/N) */
-  activo char(1),
+  activo varchar2(1),
 /** Detalles adicionales del rol */
   detalle varchar2(2000),
 

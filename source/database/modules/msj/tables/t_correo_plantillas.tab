@@ -2,7 +2,7 @@ create table T_CORREO_PLANTILLAS
 (
   id_plantilla         VARCHAR2(50) not null,
   nombre               VARCHAR2(100),
-  activo               CHAR(1) default 'N' not null,
+  activo               VARCHAR2(1) default 'N' not null,
   id_categoria         NUMBER not null,
   detalle              VARCHAR2(2000),
   plantilla_asunto     VARCHAR2(2000) not null,

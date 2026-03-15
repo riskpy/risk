@@ -39,9 +39,9 @@ SOFTWARE.
 /** Apellido de la persona */
   apellido varchar2(100),
 /** Tipo de la persona */
-  tipo_persona char(1),
+  tipo_persona varchar2(1),
 /** Estado del usuario */
-  estado char(1),
+  estado varchar2(1),
 /** Direccion de correo electronico principal del usuario */
   direccion_correo varchar2(320),
 /** Numero de telefono principal del usuario */
@@ -49,7 +49,7 @@ SOFTWARE.
 /** Version del avatar del usuario */
   version_avatar number(10),
 /** Origen del usuario */
-  origen char(1),
+  origen varchar2(1),
 /** Roles del usuario */
   roles y_objetos,
 
