@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_PARAMETROS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:50"
+    generated_at="2026-03-15 15:13:55"
     generated_by="JAVIER"
     p_table_name="T_PARAMETROS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,13 +62,13 @@ CREATE OR REPLACE PACKAGE T_PARAMETROS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE DEFAULT NULL /*PK*/,
-    p_valor        IN T_PARAMETROS.VALOR%TYPE )
+    p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE           DEFAULT NULL /*PK*/,
+    p_valor        IN T_PARAMETROS.VALOR%TYPE                  DEFAULT NULL )
   RETURN T_PARAMETROS.ID_PARAMETRO%TYPE;
 
   PROCEDURE create_row (
-    p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE DEFAULT NULL /*PK*/,
-    p_valor        IN T_PARAMETROS.VALOR%TYPE );
+    p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE           DEFAULT NULL /*PK*/,
+    p_valor        IN T_PARAMETROS.VALOR%TYPE                  DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_PARAMETROS%ROWTYPE )
@@ -164,6 +164,12 @@ CREATE OR REPLACE PACKAGE T_PARAMETROS_API IS
   PROCEDURE set_valor (
     p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE /*PK*/,
     p_valor        IN T_PARAMETROS.VALOR%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_PARAMETROS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_PARAMETROS_API;
 /

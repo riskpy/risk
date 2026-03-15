@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_PARAMETRO_DEFINICIONES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:50"
+    generated_at="2026-03-15 15:13:55"
     generated_by="JAVIER"
     p_table_name="T_PARAMETRO_DEFINICIONES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,41 +64,41 @@ CREATE OR REPLACE PACKAGE T_PARAMETRO_DEFINICIONES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_tabla             IN T_PARAMETRO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_id_parametro      IN T_PARAMETRO_DEFINICIONES.ID_PARAMETRO%TYPE /*PK*/,
-    p_descripcion       IN T_PARAMETRO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_orden             IN T_PARAMETRO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia IN T_PARAMETRO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_tipo_dato         IN T_PARAMETRO_DEFINICIONES.TIPO_DATO%TYPE,
-    p_observacion       IN T_PARAMETRO_DEFINICIONES.OBSERVACION%TYPE,
-    p_id_dominio        IN T_PARAMETRO_DEFINICIONES.ID_DOMINIO%TYPE /*FK*/,
-    p_tipo_filtro       IN T_PARAMETRO_DEFINICIONES.TIPO_FILTRO%TYPE,
-    p_formato           IN T_PARAMETRO_DEFINICIONES.FORMATO%TYPE,
-    p_longitud_maxima   IN T_PARAMETRO_DEFINICIONES.LONGITUD_MAXIMA%TYPE,
-    p_obligatorio       IN T_PARAMETRO_DEFINICIONES.OBLIGATORIO%TYPE,
-    p_valor_defecto     IN T_PARAMETRO_DEFINICIONES.VALOR_DEFECTO%TYPE,
-    p_etiqueta          IN T_PARAMETRO_DEFINICIONES.ETIQUETA%TYPE,
-    p_valores_posibles  IN T_PARAMETRO_DEFINICIONES.VALORES_POSIBLES%TYPE,
-    p_encriptado        IN T_PARAMETRO_DEFINICIONES.ENCRIPTADO%TYPE )
+    p_tabla             IN T_PARAMETRO_DEFINICIONES.TABLA%TYPE                   /*PK*/,
+    p_id_parametro      IN T_PARAMETRO_DEFINICIONES.ID_PARAMETRO%TYPE            /*PK*/,
+    p_descripcion       IN T_PARAMETRO_DEFINICIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_orden             IN T_PARAMETRO_DEFINICIONES.ORDEN%TYPE                  DEFAULT NULL,
+    p_nombre_referencia IN T_PARAMETRO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE      DEFAULT NULL,
+    p_tipo_dato         IN T_PARAMETRO_DEFINICIONES.TIPO_DATO%TYPE              ,
+    p_observacion       IN T_PARAMETRO_DEFINICIONES.OBSERVACION%TYPE            DEFAULT NULL,
+    p_id_dominio        IN T_PARAMETRO_DEFINICIONES.ID_DOMINIO%TYPE             DEFAULT NULL /*FK*/,
+    p_tipo_filtro       IN T_PARAMETRO_DEFINICIONES.TIPO_FILTRO%TYPE            DEFAULT NULL,
+    p_formato           IN T_PARAMETRO_DEFINICIONES.FORMATO%TYPE                DEFAULT NULL,
+    p_longitud_maxima   IN T_PARAMETRO_DEFINICIONES.LONGITUD_MAXIMA%TYPE        DEFAULT NULL,
+    p_obligatorio       IN T_PARAMETRO_DEFINICIONES.OBLIGATORIO%TYPE            DEFAULT 'N' ,
+    p_valor_defecto     IN T_PARAMETRO_DEFINICIONES.VALOR_DEFECTO%TYPE          DEFAULT NULL,
+    p_etiqueta          IN T_PARAMETRO_DEFINICIONES.ETIQUETA%TYPE               DEFAULT NULL,
+    p_valores_posibles  IN T_PARAMETRO_DEFINICIONES.VALORES_POSIBLES%TYPE       DEFAULT NULL,
+    p_encriptado        IN T_PARAMETRO_DEFINICIONES.ENCRIPTADO%TYPE             DEFAULT 'N'  )
   RETURN T_PARAMETRO_DEFINICIONES%ROWTYPE;
 
   PROCEDURE create_row (
-    p_tabla             IN T_PARAMETRO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_id_parametro      IN T_PARAMETRO_DEFINICIONES.ID_PARAMETRO%TYPE /*PK*/,
-    p_descripcion       IN T_PARAMETRO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_orden             IN T_PARAMETRO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia IN T_PARAMETRO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_tipo_dato         IN T_PARAMETRO_DEFINICIONES.TIPO_DATO%TYPE,
-    p_observacion       IN T_PARAMETRO_DEFINICIONES.OBSERVACION%TYPE,
-    p_id_dominio        IN T_PARAMETRO_DEFINICIONES.ID_DOMINIO%TYPE /*FK*/,
-    p_tipo_filtro       IN T_PARAMETRO_DEFINICIONES.TIPO_FILTRO%TYPE,
-    p_formato           IN T_PARAMETRO_DEFINICIONES.FORMATO%TYPE,
-    p_longitud_maxima   IN T_PARAMETRO_DEFINICIONES.LONGITUD_MAXIMA%TYPE,
-    p_obligatorio       IN T_PARAMETRO_DEFINICIONES.OBLIGATORIO%TYPE,
-    p_valor_defecto     IN T_PARAMETRO_DEFINICIONES.VALOR_DEFECTO%TYPE,
-    p_etiqueta          IN T_PARAMETRO_DEFINICIONES.ETIQUETA%TYPE,
-    p_valores_posibles  IN T_PARAMETRO_DEFINICIONES.VALORES_POSIBLES%TYPE,
-    p_encriptado        IN T_PARAMETRO_DEFINICIONES.ENCRIPTADO%TYPE );
+    p_tabla             IN T_PARAMETRO_DEFINICIONES.TABLA%TYPE                   /*PK*/,
+    p_id_parametro      IN T_PARAMETRO_DEFINICIONES.ID_PARAMETRO%TYPE            /*PK*/,
+    p_descripcion       IN T_PARAMETRO_DEFINICIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_orden             IN T_PARAMETRO_DEFINICIONES.ORDEN%TYPE                  DEFAULT NULL,
+    p_nombre_referencia IN T_PARAMETRO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE      DEFAULT NULL,
+    p_tipo_dato         IN T_PARAMETRO_DEFINICIONES.TIPO_DATO%TYPE              ,
+    p_observacion       IN T_PARAMETRO_DEFINICIONES.OBSERVACION%TYPE            DEFAULT NULL,
+    p_id_dominio        IN T_PARAMETRO_DEFINICIONES.ID_DOMINIO%TYPE             DEFAULT NULL /*FK*/,
+    p_tipo_filtro       IN T_PARAMETRO_DEFINICIONES.TIPO_FILTRO%TYPE            DEFAULT NULL,
+    p_formato           IN T_PARAMETRO_DEFINICIONES.FORMATO%TYPE                DEFAULT NULL,
+    p_longitud_maxima   IN T_PARAMETRO_DEFINICIONES.LONGITUD_MAXIMA%TYPE        DEFAULT NULL,
+    p_obligatorio       IN T_PARAMETRO_DEFINICIONES.OBLIGATORIO%TYPE            DEFAULT 'N' ,
+    p_valor_defecto     IN T_PARAMETRO_DEFINICIONES.VALOR_DEFECTO%TYPE          DEFAULT NULL,
+    p_etiqueta          IN T_PARAMETRO_DEFINICIONES.ETIQUETA%TYPE               DEFAULT NULL,
+    p_valores_posibles  IN T_PARAMETRO_DEFINICIONES.VALORES_POSIBLES%TYPE       DEFAULT NULL,
+    p_encriptado        IN T_PARAMETRO_DEFINICIONES.ENCRIPTADO%TYPE             DEFAULT 'N'  );
 
   FUNCTION create_row (
     p_row IN T_PARAMETRO_DEFINICIONES%ROWTYPE )
@@ -402,6 +402,12 @@ CREATE OR REPLACE PACKAGE T_PARAMETRO_DEFINICIONES_API IS
     p_tabla        IN T_PARAMETRO_DEFINICIONES.TABLA%TYPE /*PK*/,
     p_id_parametro IN T_PARAMETRO_DEFINICIONES.ID_PARAMETRO%TYPE /*PK*/,
     p_encriptado   IN T_PARAMETRO_DEFINICIONES.ENCRIPTADO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_PARAMETRO_DEFINICIONES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_PARAMETRO_DEFINICIONES_API;
 /

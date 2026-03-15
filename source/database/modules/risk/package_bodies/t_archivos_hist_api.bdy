@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_ARCHIVOS_HIST_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:54
+  - generated_at: 2026-03-15 15:14:02
   - generated_by: JAVIER
   */
 
@@ -79,16 +79,16 @@ CREATE OR REPLACE PACKAGE BODY T_ARCHIVOS_HIST_API IS
   END;
 
   FUNCTION create_row (
-    p_tabla      IN T_ARCHIVOS_HIST.TABLA%TYPE /*PK*/ /*FK*/,
-    p_campo      IN T_ARCHIVOS_HIST.CAMPO%TYPE /*PK*/ /*FK*/,
-    p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE /*PK*/,
-    p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE /*PK*/,
-    p_contenido  IN T_ARCHIVOS_HIST.CONTENIDO%TYPE,
-    p_url        IN T_ARCHIVOS_HIST.URL%TYPE,
-    p_checksum   IN T_ARCHIVOS_HIST.CHECKSUM%TYPE,
-    p_tamano     IN T_ARCHIVOS_HIST.TAMANO%TYPE,
-    p_nombre     IN T_ARCHIVOS_HIST.NOMBRE%TYPE,
-    p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE )
+    p_tabla      IN T_ARCHIVOS_HIST.TABLA%TYPE                   /*PK*/ /*FK*/,
+    p_campo      IN T_ARCHIVOS_HIST.CAMPO%TYPE                   /*PK*/ /*FK*/,
+    p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE              /*PK*/,
+    p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE                 /*PK*/,
+    p_contenido  IN T_ARCHIVOS_HIST.CONTENIDO%TYPE              DEFAULT NULL,
+    p_url        IN T_ARCHIVOS_HIST.URL%TYPE                    DEFAULT NULL,
+    p_checksum   IN T_ARCHIVOS_HIST.CHECKSUM%TYPE               DEFAULT NULL,
+    p_tamano     IN T_ARCHIVOS_HIST.TAMANO%TYPE                 DEFAULT NULL,
+    p_nombre     IN T_ARCHIVOS_HIST.NOMBRE%TYPE                 DEFAULT NULL,
+    p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE              DEFAULT NULL )
   RETURN T_ARCHIVOS_HIST%ROWTYPE
   IS
     v_return T_ARCHIVOS_HIST%ROWTYPE; 
@@ -140,16 +140,16 @@ CREATE OR REPLACE PACKAGE BODY T_ARCHIVOS_HIST_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_tabla      IN T_ARCHIVOS_HIST.TABLA%TYPE /*PK*/ /*FK*/,
-    p_campo      IN T_ARCHIVOS_HIST.CAMPO%TYPE /*PK*/ /*FK*/,
-    p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE /*PK*/,
-    p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE /*PK*/,
-    p_contenido  IN T_ARCHIVOS_HIST.CONTENIDO%TYPE,
-    p_url        IN T_ARCHIVOS_HIST.URL%TYPE,
-    p_checksum   IN T_ARCHIVOS_HIST.CHECKSUM%TYPE,
-    p_tamano     IN T_ARCHIVOS_HIST.TAMANO%TYPE,
-    p_nombre     IN T_ARCHIVOS_HIST.NOMBRE%TYPE,
-    p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE )
+    p_tabla      IN T_ARCHIVOS_HIST.TABLA%TYPE                   /*PK*/ /*FK*/,
+    p_campo      IN T_ARCHIVOS_HIST.CAMPO%TYPE                   /*PK*/ /*FK*/,
+    p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE              /*PK*/,
+    p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE                 /*PK*/,
+    p_contenido  IN T_ARCHIVOS_HIST.CONTENIDO%TYPE              DEFAULT NULL,
+    p_url        IN T_ARCHIVOS_HIST.URL%TYPE                    DEFAULT NULL,
+    p_checksum   IN T_ARCHIVOS_HIST.CHECKSUM%TYPE               DEFAULT NULL,
+    p_tamano     IN T_ARCHIVOS_HIST.TAMANO%TYPE                 DEFAULT NULL,
+    p_nombre     IN T_ARCHIVOS_HIST.NOMBRE%TYPE                 DEFAULT NULL,
+    p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE              DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_ARCHIVOS_HIST (
@@ -983,6 +983,16 @@ CREATE OR REPLACE PACKAGE BODY T_ARCHIVOS_HIST_API IS
       AND REFERENCIA = p_referencia
       AND VERSION = p_version;
   END set_extension;
+
+  FUNCTION get_default_row
+  RETURN T_ARCHIVOS_HIST%ROWTYPE
+  IS
+    v_row T_ARCHIVOS_HIST%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_ARCHIVOS_HIST_API;
 /

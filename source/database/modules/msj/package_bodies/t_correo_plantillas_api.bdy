@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_CORREO_PLANTILLAS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:56
+  - generated_at: 2026-03-15 15:14:05
   - generated_by: JAVIER
   */
 
@@ -67,13 +67,13 @@ CREATE OR REPLACE PACKAGE BODY T_CORREO_PLANTILLAS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE DEFAULT NULL /*PK*/,
-    p_nombre              IN T_CORREO_PLANTILLAS.NOMBRE%TYPE,
-    p_activo              IN T_CORREO_PLANTILLAS.ACTIVO%TYPE,
-    p_id_categoria        IN T_CORREO_PLANTILLAS.ID_CATEGORIA%TYPE /*FK*/,
-    p_detalle             IN T_CORREO_PLANTILLAS.DETALLE%TYPE,
-    p_plantilla_asunto    IN T_CORREO_PLANTILLAS.PLANTILLA_ASUNTO%TYPE,
-    p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE )
+    p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE           DEFAULT NULL /*PK*/,
+    p_nombre              IN T_CORREO_PLANTILLAS.NOMBRE%TYPE                 DEFAULT NULL,
+    p_activo              IN T_CORREO_PLANTILLAS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_id_categoria        IN T_CORREO_PLANTILLAS.ID_CATEGORIA%TYPE            /*FK*/,
+    p_detalle             IN T_CORREO_PLANTILLAS.DETALLE%TYPE                DEFAULT NULL,
+    p_plantilla_asunto    IN T_CORREO_PLANTILLAS.PLANTILLA_ASUNTO%TYPE       ,
+    p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE     )
   RETURN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE
   IS
     v_return T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE; 
@@ -106,13 +106,13 @@ CREATE OR REPLACE PACKAGE BODY T_CORREO_PLANTILLAS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE DEFAULT NULL /*PK*/,
-    p_nombre              IN T_CORREO_PLANTILLAS.NOMBRE%TYPE,
-    p_activo              IN T_CORREO_PLANTILLAS.ACTIVO%TYPE,
-    p_id_categoria        IN T_CORREO_PLANTILLAS.ID_CATEGORIA%TYPE /*FK*/,
-    p_detalle             IN T_CORREO_PLANTILLAS.DETALLE%TYPE,
-    p_plantilla_asunto    IN T_CORREO_PLANTILLAS.PLANTILLA_ASUNTO%TYPE,
-    p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE )
+    p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE           DEFAULT NULL /*PK*/,
+    p_nombre              IN T_CORREO_PLANTILLAS.NOMBRE%TYPE                 DEFAULT NULL,
+    p_activo              IN T_CORREO_PLANTILLAS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_id_categoria        IN T_CORREO_PLANTILLAS.ID_CATEGORIA%TYPE            /*FK*/,
+    p_detalle             IN T_CORREO_PLANTILLAS.DETALLE%TYPE                DEFAULT NULL,
+    p_plantilla_asunto    IN T_CORREO_PLANTILLAS.PLANTILLA_ASUNTO%TYPE       ,
+    p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE     )
   IS
   BEGIN
     INSERT INTO T_CORREO_PLANTILLAS (
@@ -726,6 +726,17 @@ CREATE OR REPLACE PACKAGE BODY T_CORREO_PLANTILLAS_API IS
     WHERE
       ID_PLANTILLA = p_id_plantilla;
   END set_plantilla_contenido;
+
+  FUNCTION get_default_row
+  RETURN T_CORREO_PLANTILLAS%ROWTYPE
+  IS
+    v_row T_CORREO_PLANTILLAS%ROWTYPE;
+  BEGIN
+    v_row.ACTIVO            := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_CORREO_PLANTILLAS_API;
 /

@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_TRABAJOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:52
+  - generated_at: 2026-03-15 15:13:59
   - generated_by: JAVIER
   */
 
@@ -67,17 +67,17 @@ CREATE OR REPLACE PACKAGE BODY T_TRABAJOS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_trabajo             IN T_TRABAJOS.ID_TRABAJO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_tipo                   IN T_TRABAJOS.TIPO%TYPE,
-    p_accion                 IN T_TRABAJOS.ACCION%TYPE,
-    p_fecha_inicio           IN T_TRABAJOS.FECHA_INICIO%TYPE,
-    p_tiempo_inicio          IN T_TRABAJOS.TIEMPO_INICIO%TYPE,
-    p_intervalo_repeticion   IN T_TRABAJOS.INTERVALO_REPETICION%TYPE,
-    p_fecha_fin              IN T_TRABAJOS.FECHA_FIN%TYPE,
-    p_comentarios            IN T_TRABAJOS.COMENTARIOS%TYPE,
-    p_cantidad_ejecuciones   IN T_TRABAJOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion IN T_TRABAJOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_programa               IN T_TRABAJOS.PROGRAMA%TYPE )
+    p_id_trabajo             IN T_TRABAJOS.ID_TRABAJO%TYPE               DEFAULT NULL /*PK*/ /*FK*/,
+    p_tipo                   IN T_TRABAJOS.TIPO%TYPE                     DEFAULT NULL,
+    p_accion                 IN T_TRABAJOS.ACCION%TYPE                   DEFAULT NULL,
+    p_fecha_inicio           IN T_TRABAJOS.FECHA_INICIO%TYPE             DEFAULT NULL,
+    p_tiempo_inicio          IN T_TRABAJOS.TIEMPO_INICIO%TYPE            DEFAULT NULL,
+    p_intervalo_repeticion   IN T_TRABAJOS.INTERVALO_REPETICION%TYPE     DEFAULT NULL,
+    p_fecha_fin              IN T_TRABAJOS.FECHA_FIN%TYPE                DEFAULT NULL,
+    p_comentarios            IN T_TRABAJOS.COMENTARIOS%TYPE              DEFAULT NULL,
+    p_cantidad_ejecuciones   IN T_TRABAJOS.CANTIDAD_EJECUCIONES%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion IN T_TRABAJOS.FECHA_ULTIMA_EJECUCION%TYPE   DEFAULT NULL,
+    p_programa               IN T_TRABAJOS.PROGRAMA%TYPE                 DEFAULT NULL )
   RETURN T_TRABAJOS.ID_TRABAJO%TYPE
   IS
     v_return T_TRABAJOS.ID_TRABAJO%TYPE; 
@@ -118,17 +118,17 @@ CREATE OR REPLACE PACKAGE BODY T_TRABAJOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_trabajo             IN T_TRABAJOS.ID_TRABAJO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_tipo                   IN T_TRABAJOS.TIPO%TYPE,
-    p_accion                 IN T_TRABAJOS.ACCION%TYPE,
-    p_fecha_inicio           IN T_TRABAJOS.FECHA_INICIO%TYPE,
-    p_tiempo_inicio          IN T_TRABAJOS.TIEMPO_INICIO%TYPE,
-    p_intervalo_repeticion   IN T_TRABAJOS.INTERVALO_REPETICION%TYPE,
-    p_fecha_fin              IN T_TRABAJOS.FECHA_FIN%TYPE,
-    p_comentarios            IN T_TRABAJOS.COMENTARIOS%TYPE,
-    p_cantidad_ejecuciones   IN T_TRABAJOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion IN T_TRABAJOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_programa               IN T_TRABAJOS.PROGRAMA%TYPE )
+    p_id_trabajo             IN T_TRABAJOS.ID_TRABAJO%TYPE               DEFAULT NULL /*PK*/ /*FK*/,
+    p_tipo                   IN T_TRABAJOS.TIPO%TYPE                     DEFAULT NULL,
+    p_accion                 IN T_TRABAJOS.ACCION%TYPE                   DEFAULT NULL,
+    p_fecha_inicio           IN T_TRABAJOS.FECHA_INICIO%TYPE             DEFAULT NULL,
+    p_tiempo_inicio          IN T_TRABAJOS.TIEMPO_INICIO%TYPE            DEFAULT NULL,
+    p_intervalo_repeticion   IN T_TRABAJOS.INTERVALO_REPETICION%TYPE     DEFAULT NULL,
+    p_fecha_fin              IN T_TRABAJOS.FECHA_FIN%TYPE                DEFAULT NULL,
+    p_comentarios            IN T_TRABAJOS.COMENTARIOS%TYPE              DEFAULT NULL,
+    p_cantidad_ejecuciones   IN T_TRABAJOS.CANTIDAD_EJECUCIONES%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion IN T_TRABAJOS.FECHA_ULTIMA_EJECUCION%TYPE   DEFAULT NULL,
+    p_programa               IN T_TRABAJOS.PROGRAMA%TYPE                 DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_TRABAJOS (
@@ -950,6 +950,16 @@ CREATE OR REPLACE PACKAGE BODY T_TRABAJOS_API IS
     WHERE
       ID_TRABAJO = p_id_trabajo;
   END set_programa;
+
+  FUNCTION get_default_row
+  RETURN T_TRABAJOS%ROWTYPE
+  IS
+    v_row T_TRABAJOS%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_TRABAJOS_API;
 /

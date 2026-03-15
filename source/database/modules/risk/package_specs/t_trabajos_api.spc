@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_TRABAJOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:52"
+    generated_at="2026-03-15 15:13:59"
     generated_by="JAVIER"
     p_table_name="T_TRABAJOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,31 +62,31 @@ CREATE OR REPLACE PACKAGE T_TRABAJOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_trabajo             IN T_TRABAJOS.ID_TRABAJO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_tipo                   IN T_TRABAJOS.TIPO%TYPE,
-    p_accion                 IN T_TRABAJOS.ACCION%TYPE,
-    p_fecha_inicio           IN T_TRABAJOS.FECHA_INICIO%TYPE,
-    p_tiempo_inicio          IN T_TRABAJOS.TIEMPO_INICIO%TYPE,
-    p_intervalo_repeticion   IN T_TRABAJOS.INTERVALO_REPETICION%TYPE,
-    p_fecha_fin              IN T_TRABAJOS.FECHA_FIN%TYPE,
-    p_comentarios            IN T_TRABAJOS.COMENTARIOS%TYPE,
-    p_cantidad_ejecuciones   IN T_TRABAJOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion IN T_TRABAJOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_programa               IN T_TRABAJOS.PROGRAMA%TYPE )
+    p_id_trabajo             IN T_TRABAJOS.ID_TRABAJO%TYPE               DEFAULT NULL /*PK*/ /*FK*/,
+    p_tipo                   IN T_TRABAJOS.TIPO%TYPE                     DEFAULT NULL,
+    p_accion                 IN T_TRABAJOS.ACCION%TYPE                   DEFAULT NULL,
+    p_fecha_inicio           IN T_TRABAJOS.FECHA_INICIO%TYPE             DEFAULT NULL,
+    p_tiempo_inicio          IN T_TRABAJOS.TIEMPO_INICIO%TYPE            DEFAULT NULL,
+    p_intervalo_repeticion   IN T_TRABAJOS.INTERVALO_REPETICION%TYPE     DEFAULT NULL,
+    p_fecha_fin              IN T_TRABAJOS.FECHA_FIN%TYPE                DEFAULT NULL,
+    p_comentarios            IN T_TRABAJOS.COMENTARIOS%TYPE              DEFAULT NULL,
+    p_cantidad_ejecuciones   IN T_TRABAJOS.CANTIDAD_EJECUCIONES%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion IN T_TRABAJOS.FECHA_ULTIMA_EJECUCION%TYPE   DEFAULT NULL,
+    p_programa               IN T_TRABAJOS.PROGRAMA%TYPE                 DEFAULT NULL )
   RETURN T_TRABAJOS.ID_TRABAJO%TYPE;
 
   PROCEDURE create_row (
-    p_id_trabajo             IN T_TRABAJOS.ID_TRABAJO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_tipo                   IN T_TRABAJOS.TIPO%TYPE,
-    p_accion                 IN T_TRABAJOS.ACCION%TYPE,
-    p_fecha_inicio           IN T_TRABAJOS.FECHA_INICIO%TYPE,
-    p_tiempo_inicio          IN T_TRABAJOS.TIEMPO_INICIO%TYPE,
-    p_intervalo_repeticion   IN T_TRABAJOS.INTERVALO_REPETICION%TYPE,
-    p_fecha_fin              IN T_TRABAJOS.FECHA_FIN%TYPE,
-    p_comentarios            IN T_TRABAJOS.COMENTARIOS%TYPE,
-    p_cantidad_ejecuciones   IN T_TRABAJOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion IN T_TRABAJOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_programa               IN T_TRABAJOS.PROGRAMA%TYPE );
+    p_id_trabajo             IN T_TRABAJOS.ID_TRABAJO%TYPE               DEFAULT NULL /*PK*/ /*FK*/,
+    p_tipo                   IN T_TRABAJOS.TIPO%TYPE                     DEFAULT NULL,
+    p_accion                 IN T_TRABAJOS.ACCION%TYPE                   DEFAULT NULL,
+    p_fecha_inicio           IN T_TRABAJOS.FECHA_INICIO%TYPE             DEFAULT NULL,
+    p_tiempo_inicio          IN T_TRABAJOS.TIEMPO_INICIO%TYPE            DEFAULT NULL,
+    p_intervalo_repeticion   IN T_TRABAJOS.INTERVALO_REPETICION%TYPE     DEFAULT NULL,
+    p_fecha_fin              IN T_TRABAJOS.FECHA_FIN%TYPE                DEFAULT NULL,
+    p_comentarios            IN T_TRABAJOS.COMENTARIOS%TYPE              DEFAULT NULL,
+    p_cantidad_ejecuciones   IN T_TRABAJOS.CANTIDAD_EJECUCIONES%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion IN T_TRABAJOS.FECHA_ULTIMA_EJECUCION%TYPE   DEFAULT NULL,
+    p_programa               IN T_TRABAJOS.PROGRAMA%TYPE                 DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_TRABAJOS%ROWTYPE )
@@ -299,6 +299,12 @@ CREATE OR REPLACE PACKAGE T_TRABAJOS_API IS
   PROCEDURE set_programa (
     p_id_trabajo IN T_TRABAJOS.ID_TRABAJO%TYPE /*PK*/,
     p_programa   IN T_TRABAJOS.PROGRAMA%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_TRABAJOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_TRABAJOS_API;
 /

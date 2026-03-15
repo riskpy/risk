@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_CORREO_PLANTILLAS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:56"
+    generated_at="2026-03-15 15:14:05"
     generated_by="JAVIER"
     p_table_name="T_CORREO_PLANTILLAS"
     p_owner="RISK_MSJ"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,23 +62,23 @@ CREATE OR REPLACE PACKAGE T_CORREO_PLANTILLAS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE DEFAULT NULL /*PK*/,
-    p_nombre              IN T_CORREO_PLANTILLAS.NOMBRE%TYPE,
-    p_activo              IN T_CORREO_PLANTILLAS.ACTIVO%TYPE,
-    p_id_categoria        IN T_CORREO_PLANTILLAS.ID_CATEGORIA%TYPE /*FK*/,
-    p_detalle             IN T_CORREO_PLANTILLAS.DETALLE%TYPE,
-    p_plantilla_asunto    IN T_CORREO_PLANTILLAS.PLANTILLA_ASUNTO%TYPE,
-    p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE )
+    p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE           DEFAULT NULL /*PK*/,
+    p_nombre              IN T_CORREO_PLANTILLAS.NOMBRE%TYPE                 DEFAULT NULL,
+    p_activo              IN T_CORREO_PLANTILLAS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_id_categoria        IN T_CORREO_PLANTILLAS.ID_CATEGORIA%TYPE            /*FK*/,
+    p_detalle             IN T_CORREO_PLANTILLAS.DETALLE%TYPE                DEFAULT NULL,
+    p_plantilla_asunto    IN T_CORREO_PLANTILLAS.PLANTILLA_ASUNTO%TYPE       ,
+    p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE     )
   RETURN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE;
 
   PROCEDURE create_row (
-    p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE DEFAULT NULL /*PK*/,
-    p_nombre              IN T_CORREO_PLANTILLAS.NOMBRE%TYPE,
-    p_activo              IN T_CORREO_PLANTILLAS.ACTIVO%TYPE,
-    p_id_categoria        IN T_CORREO_PLANTILLAS.ID_CATEGORIA%TYPE /*FK*/,
-    p_detalle             IN T_CORREO_PLANTILLAS.DETALLE%TYPE,
-    p_plantilla_asunto    IN T_CORREO_PLANTILLAS.PLANTILLA_ASUNTO%TYPE,
-    p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE );
+    p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE           DEFAULT NULL /*PK*/,
+    p_nombre              IN T_CORREO_PLANTILLAS.NOMBRE%TYPE                 DEFAULT NULL,
+    p_activo              IN T_CORREO_PLANTILLAS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_id_categoria        IN T_CORREO_PLANTILLAS.ID_CATEGORIA%TYPE            /*FK*/,
+    p_detalle             IN T_CORREO_PLANTILLAS.DETALLE%TYPE                DEFAULT NULL,
+    p_plantilla_asunto    IN T_CORREO_PLANTILLAS.PLANTILLA_ASUNTO%TYPE       ,
+    p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE     );
 
   FUNCTION create_row (
     p_row IN T_CORREO_PLANTILLAS%ROWTYPE )
@@ -239,6 +239,12 @@ CREATE OR REPLACE PACKAGE T_CORREO_PLANTILLAS_API IS
   PROCEDURE set_plantilla_contenido (
     p_id_plantilla        IN T_CORREO_PLANTILLAS.ID_PLANTILLA%TYPE /*PK*/,
     p_plantilla_contenido IN T_CORREO_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_CORREO_PLANTILLAS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_CORREO_PLANTILLAS_API;
 /

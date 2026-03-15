@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_ARCHIVOS_HIST_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:54"
+    generated_at="2026-03-15 15:14:02"
     generated_by="JAVIER"
     p_table_name="T_ARCHIVOS_HIST"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -68,29 +68,29 @@ CREATE OR REPLACE PACKAGE T_ARCHIVOS_HIST_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_tabla      IN T_ARCHIVOS_HIST.TABLA%TYPE /*PK*/ /*FK*/,
-    p_campo      IN T_ARCHIVOS_HIST.CAMPO%TYPE /*PK*/ /*FK*/,
-    p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE /*PK*/,
-    p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE /*PK*/,
-    p_contenido  IN T_ARCHIVOS_HIST.CONTENIDO%TYPE,
-    p_url        IN T_ARCHIVOS_HIST.URL%TYPE,
-    p_checksum   IN T_ARCHIVOS_HIST.CHECKSUM%TYPE,
-    p_tamano     IN T_ARCHIVOS_HIST.TAMANO%TYPE,
-    p_nombre     IN T_ARCHIVOS_HIST.NOMBRE%TYPE,
-    p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE )
+    p_tabla      IN T_ARCHIVOS_HIST.TABLA%TYPE                   /*PK*/ /*FK*/,
+    p_campo      IN T_ARCHIVOS_HIST.CAMPO%TYPE                   /*PK*/ /*FK*/,
+    p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE              /*PK*/,
+    p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE                 /*PK*/,
+    p_contenido  IN T_ARCHIVOS_HIST.CONTENIDO%TYPE              DEFAULT NULL,
+    p_url        IN T_ARCHIVOS_HIST.URL%TYPE                    DEFAULT NULL,
+    p_checksum   IN T_ARCHIVOS_HIST.CHECKSUM%TYPE               DEFAULT NULL,
+    p_tamano     IN T_ARCHIVOS_HIST.TAMANO%TYPE                 DEFAULT NULL,
+    p_nombre     IN T_ARCHIVOS_HIST.NOMBRE%TYPE                 DEFAULT NULL,
+    p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE              DEFAULT NULL )
   RETURN T_ARCHIVOS_HIST%ROWTYPE;
 
   PROCEDURE create_row (
-    p_tabla      IN T_ARCHIVOS_HIST.TABLA%TYPE /*PK*/ /*FK*/,
-    p_campo      IN T_ARCHIVOS_HIST.CAMPO%TYPE /*PK*/ /*FK*/,
-    p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE /*PK*/,
-    p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE /*PK*/,
-    p_contenido  IN T_ARCHIVOS_HIST.CONTENIDO%TYPE,
-    p_url        IN T_ARCHIVOS_HIST.URL%TYPE,
-    p_checksum   IN T_ARCHIVOS_HIST.CHECKSUM%TYPE,
-    p_tamano     IN T_ARCHIVOS_HIST.TAMANO%TYPE,
-    p_nombre     IN T_ARCHIVOS_HIST.NOMBRE%TYPE,
-    p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE );
+    p_tabla      IN T_ARCHIVOS_HIST.TABLA%TYPE                   /*PK*/ /*FK*/,
+    p_campo      IN T_ARCHIVOS_HIST.CAMPO%TYPE                   /*PK*/ /*FK*/,
+    p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE              /*PK*/,
+    p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE                 /*PK*/,
+    p_contenido  IN T_ARCHIVOS_HIST.CONTENIDO%TYPE              DEFAULT NULL,
+    p_url        IN T_ARCHIVOS_HIST.URL%TYPE                    DEFAULT NULL,
+    p_checksum   IN T_ARCHIVOS_HIST.CHECKSUM%TYPE               DEFAULT NULL,
+    p_tamano     IN T_ARCHIVOS_HIST.TAMANO%TYPE                 DEFAULT NULL,
+    p_nombre     IN T_ARCHIVOS_HIST.NOMBRE%TYPE                 DEFAULT NULL,
+    p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE              DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_ARCHIVOS_HIST%ROWTYPE )
@@ -320,6 +320,12 @@ CREATE OR REPLACE PACKAGE T_ARCHIVOS_HIST_API IS
     p_referencia IN T_ARCHIVOS_HIST.REFERENCIA%TYPE /*PK*/,
     p_version    IN T_ARCHIVOS_HIST.VERSION%TYPE /*PK*/,
     p_extension  IN T_ARCHIVOS_HIST.EXTENSION%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_ARCHIVOS_HIST%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_ARCHIVOS_HIST_API;
 /

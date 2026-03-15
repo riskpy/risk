@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_IMPORTACION_PARAMETROS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:51"
+    generated_at="2026-03-15 15:13:57"
     generated_by="JAVIER"
     p_table_name="T_IMPORTACION_PARAMETROS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -66,23 +66,23 @@ CREATE OR REPLACE PACKAGE T_IMPORTACION_PARAMETROS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_importacion   IN T_IMPORTACION_PARAMETROS.ID_IMPORTACION%TYPE /*PK*/ /*FK*/,
-    p_nombre           IN T_IMPORTACION_PARAMETROS.NOMBRE%TYPE /*PK*/ /*FK*/,
-    p_version          IN T_IMPORTACION_PARAMETROS.VERSION%TYPE /*PK*/ /*FK*/,
-    p_posicion_inicial IN T_IMPORTACION_PARAMETROS.POSICION_INICIAL%TYPE,
-    p_longitud         IN T_IMPORTACION_PARAMETROS.LONGITUD%TYPE,
-    p_posicion_decimal IN T_IMPORTACION_PARAMETROS.POSICION_DECIMAL%TYPE,
-    p_mapeador         IN T_IMPORTACION_PARAMETROS.MAPEADOR%TYPE )
+    p_id_importacion   IN T_IMPORTACION_PARAMETROS.ID_IMPORTACION%TYPE          /*PK*/ /*FK*/,
+    p_nombre           IN T_IMPORTACION_PARAMETROS.NOMBRE%TYPE                  /*PK*/ /*FK*/,
+    p_version          IN T_IMPORTACION_PARAMETROS.VERSION%TYPE                 /*PK*/ /*FK*/,
+    p_posicion_inicial IN T_IMPORTACION_PARAMETROS.POSICION_INICIAL%TYPE       DEFAULT NULL,
+    p_longitud         IN T_IMPORTACION_PARAMETROS.LONGITUD%TYPE               DEFAULT NULL,
+    p_posicion_decimal IN T_IMPORTACION_PARAMETROS.POSICION_DECIMAL%TYPE       DEFAULT NULL,
+    p_mapeador         IN T_IMPORTACION_PARAMETROS.MAPEADOR%TYPE               DEFAULT 'trim(:variable)' )
   RETURN T_IMPORTACION_PARAMETROS%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_importacion   IN T_IMPORTACION_PARAMETROS.ID_IMPORTACION%TYPE /*PK*/ /*FK*/,
-    p_nombre           IN T_IMPORTACION_PARAMETROS.NOMBRE%TYPE /*PK*/ /*FK*/,
-    p_version          IN T_IMPORTACION_PARAMETROS.VERSION%TYPE /*PK*/ /*FK*/,
-    p_posicion_inicial IN T_IMPORTACION_PARAMETROS.POSICION_INICIAL%TYPE,
-    p_longitud         IN T_IMPORTACION_PARAMETROS.LONGITUD%TYPE,
-    p_posicion_decimal IN T_IMPORTACION_PARAMETROS.POSICION_DECIMAL%TYPE,
-    p_mapeador         IN T_IMPORTACION_PARAMETROS.MAPEADOR%TYPE );
+    p_id_importacion   IN T_IMPORTACION_PARAMETROS.ID_IMPORTACION%TYPE          /*PK*/ /*FK*/,
+    p_nombre           IN T_IMPORTACION_PARAMETROS.NOMBRE%TYPE                  /*PK*/ /*FK*/,
+    p_version          IN T_IMPORTACION_PARAMETROS.VERSION%TYPE                 /*PK*/ /*FK*/,
+    p_posicion_inicial IN T_IMPORTACION_PARAMETROS.POSICION_INICIAL%TYPE       DEFAULT NULL,
+    p_longitud         IN T_IMPORTACION_PARAMETROS.LONGITUD%TYPE               DEFAULT NULL,
+    p_posicion_decimal IN T_IMPORTACION_PARAMETROS.POSICION_DECIMAL%TYPE       DEFAULT NULL,
+    p_mapeador         IN T_IMPORTACION_PARAMETROS.MAPEADOR%TYPE               DEFAULT 'trim(:variable)' );
 
   FUNCTION create_row (
     p_row IN T_IMPORTACION_PARAMETROS%ROWTYPE )
@@ -255,6 +255,12 @@ CREATE OR REPLACE PACKAGE T_IMPORTACION_PARAMETROS_API IS
     p_nombre         IN T_IMPORTACION_PARAMETROS.NOMBRE%TYPE /*PK*/,
     p_version        IN T_IMPORTACION_PARAMETROS.VERSION%TYPE /*PK*/,
     p_mapeador       IN T_IMPORTACION_PARAMETROS.MAPEADOR%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_IMPORTACION_PARAMETROS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_IMPORTACION_PARAMETROS_API;
 /

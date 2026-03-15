@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_NOTIFICACION_PLANTILLAS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:55"
+    generated_at="2026-03-15 15:14:04"
     generated_by="JAVIER"
     p_table_name="T_NOTIFICACION_PLANTILLAS"
     p_owner="RISK_MSJ"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,39 +64,39 @@ CREATE OR REPLACE PACKAGE T_NOTIFICACION_PLANTILLAS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_aplicacion          IN T_NOTIFICACION_PLANTILLAS.ID_APLICACION%TYPE /*PK*/,
-    p_id_plantilla           IN T_NOTIFICACION_PLANTILLAS.ID_PLANTILLA%TYPE /*PK*/,
-    p_nombre                 IN T_NOTIFICACION_PLANTILLAS.NOMBRE%TYPE,
-    p_activo                 IN T_NOTIFICACION_PLANTILLAS.ACTIVO%TYPE,
-    p_detalle                IN T_NOTIFICACION_PLANTILLAS.DETALLE%TYPE,
-    p_fecha_ini_vigencia     IN T_NOTIFICACION_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE,
-    p_fecha_fin_vigencia     IN T_NOTIFICACION_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE,
-    p_accion                 IN T_NOTIFICACION_PLANTILLAS.ACCION%TYPE,
-    p_cantidad_max_enviar    IN T_NOTIFICACION_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE,
-    p_propiedades            IN T_NOTIFICACION_PLANTILLAS.PROPIEDADES%TYPE,
-    p_cantidad_envio_por_dia IN T_NOTIFICACION_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE,
-    p_plantilla_titulo       IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_TITULO%TYPE,
-    p_plantilla_contenido    IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE,
-    p_plantilla_datos_extra  IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_DATOS_EXTRA%TYPE,
-    p_id_categoria           IN T_NOTIFICACION_PLANTILLAS.ID_CATEGORIA%TYPE )
+    p_id_aplicacion          IN T_NOTIFICACION_PLANTILLAS.ID_APLICACION%TYPE             /*PK*/,
+    p_id_plantilla           IN T_NOTIFICACION_PLANTILLAS.ID_PLANTILLA%TYPE              /*PK*/,
+    p_nombre                 IN T_NOTIFICACION_PLANTILLAS.NOMBRE%TYPE                   DEFAULT NULL,
+    p_activo                 IN T_NOTIFICACION_PLANTILLAS.ACTIVO%TYPE                   DEFAULT 'N' ,
+    p_detalle                IN T_NOTIFICACION_PLANTILLAS.DETALLE%TYPE                  DEFAULT NULL,
+    p_fecha_ini_vigencia     IN T_NOTIFICACION_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE       DEFAULT NULL,
+    p_fecha_fin_vigencia     IN T_NOTIFICACION_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE       DEFAULT NULL,
+    p_accion                 IN T_NOTIFICACION_PLANTILLAS.ACCION%TYPE                   DEFAULT NULL,
+    p_cantidad_max_enviar    IN T_NOTIFICACION_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE      DEFAULT NULL,
+    p_propiedades            IN T_NOTIFICACION_PLANTILLAS.PROPIEDADES%TYPE              DEFAULT NULL,
+    p_cantidad_envio_por_dia IN T_NOTIFICACION_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE   DEFAULT NULL,
+    p_plantilla_titulo       IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_TITULO%TYPE         DEFAULT NULL,
+    p_plantilla_contenido    IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE      DEFAULT NULL,
+    p_plantilla_datos_extra  IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_DATOS_EXTRA%TYPE    DEFAULT NULL,
+    p_id_categoria           IN T_NOTIFICACION_PLANTILLAS.ID_CATEGORIA%TYPE             DEFAULT NULL )
   RETURN T_NOTIFICACION_PLANTILLAS%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_aplicacion          IN T_NOTIFICACION_PLANTILLAS.ID_APLICACION%TYPE /*PK*/,
-    p_id_plantilla           IN T_NOTIFICACION_PLANTILLAS.ID_PLANTILLA%TYPE /*PK*/,
-    p_nombre                 IN T_NOTIFICACION_PLANTILLAS.NOMBRE%TYPE,
-    p_activo                 IN T_NOTIFICACION_PLANTILLAS.ACTIVO%TYPE,
-    p_detalle                IN T_NOTIFICACION_PLANTILLAS.DETALLE%TYPE,
-    p_fecha_ini_vigencia     IN T_NOTIFICACION_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE,
-    p_fecha_fin_vigencia     IN T_NOTIFICACION_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE,
-    p_accion                 IN T_NOTIFICACION_PLANTILLAS.ACCION%TYPE,
-    p_cantidad_max_enviar    IN T_NOTIFICACION_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE,
-    p_propiedades            IN T_NOTIFICACION_PLANTILLAS.PROPIEDADES%TYPE,
-    p_cantidad_envio_por_dia IN T_NOTIFICACION_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE,
-    p_plantilla_titulo       IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_TITULO%TYPE,
-    p_plantilla_contenido    IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE,
-    p_plantilla_datos_extra  IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_DATOS_EXTRA%TYPE,
-    p_id_categoria           IN T_NOTIFICACION_PLANTILLAS.ID_CATEGORIA%TYPE );
+    p_id_aplicacion          IN T_NOTIFICACION_PLANTILLAS.ID_APLICACION%TYPE             /*PK*/,
+    p_id_plantilla           IN T_NOTIFICACION_PLANTILLAS.ID_PLANTILLA%TYPE              /*PK*/,
+    p_nombre                 IN T_NOTIFICACION_PLANTILLAS.NOMBRE%TYPE                   DEFAULT NULL,
+    p_activo                 IN T_NOTIFICACION_PLANTILLAS.ACTIVO%TYPE                   DEFAULT 'N' ,
+    p_detalle                IN T_NOTIFICACION_PLANTILLAS.DETALLE%TYPE                  DEFAULT NULL,
+    p_fecha_ini_vigencia     IN T_NOTIFICACION_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE       DEFAULT NULL,
+    p_fecha_fin_vigencia     IN T_NOTIFICACION_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE       DEFAULT NULL,
+    p_accion                 IN T_NOTIFICACION_PLANTILLAS.ACCION%TYPE                   DEFAULT NULL,
+    p_cantidad_max_enviar    IN T_NOTIFICACION_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE      DEFAULT NULL,
+    p_propiedades            IN T_NOTIFICACION_PLANTILLAS.PROPIEDADES%TYPE              DEFAULT NULL,
+    p_cantidad_envio_por_dia IN T_NOTIFICACION_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE   DEFAULT NULL,
+    p_plantilla_titulo       IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_TITULO%TYPE         DEFAULT NULL,
+    p_plantilla_contenido    IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_CONTENIDO%TYPE      DEFAULT NULL,
+    p_plantilla_datos_extra  IN T_NOTIFICACION_PLANTILLAS.PLANTILLA_DATOS_EXTRA%TYPE    DEFAULT NULL,
+    p_id_categoria           IN T_NOTIFICACION_PLANTILLAS.ID_CATEGORIA%TYPE             DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_NOTIFICACION_PLANTILLAS%ROWTYPE )
@@ -385,6 +385,12 @@ CREATE OR REPLACE PACKAGE T_NOTIFICACION_PLANTILLAS_API IS
     p_id_aplicacion IN T_NOTIFICACION_PLANTILLAS.ID_APLICACION%TYPE /*PK*/,
     p_id_plantilla  IN T_NOTIFICACION_PLANTILLAS.ID_PLANTILLA%TYPE /*PK*/,
     p_id_categoria  IN T_NOTIFICACION_PLANTILLAS.ID_CATEGORIA%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_NOTIFICACION_PLANTILLAS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_NOTIFICACION_PLANTILLAS_API;
 /

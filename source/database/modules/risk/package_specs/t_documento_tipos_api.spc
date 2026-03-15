@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_DOCUMENTO_TIPOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:55"
+    generated_at="2026-03-15 15:14:03"
     generated_by="JAVIER"
     p_table_name="T_DOCUMENTO_TIPOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,17 +62,17 @@ CREATE OR REPLACE PACKAGE T_DOCUMENTO_TIPOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre            IN T_DOCUMENTO_TIPOS.NOMBRE%TYPE,
-    p_detalle           IN T_DOCUMENTO_TIPOS.DETALLE%TYPE,
-    p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE )
+    p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE      DEFAULT NULL /*PK*/,
+    p_nombre            IN T_DOCUMENTO_TIPOS.NOMBRE%TYPE                 ,
+    p_detalle           IN T_DOCUMENTO_TIPOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE                 DEFAULT 'N'  )
   RETURN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE;
 
   PROCEDURE create_row (
-    p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre            IN T_DOCUMENTO_TIPOS.NOMBRE%TYPE,
-    p_detalle           IN T_DOCUMENTO_TIPOS.DETALLE%TYPE,
-    p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE );
+    p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE      DEFAULT NULL /*PK*/,
+    p_nombre            IN T_DOCUMENTO_TIPOS.NOMBRE%TYPE                 ,
+    p_detalle           IN T_DOCUMENTO_TIPOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE                 DEFAULT 'N'  );
 
   FUNCTION create_row (
     p_row IN T_DOCUMENTO_TIPOS%ROWTYPE )
@@ -194,6 +194,12 @@ CREATE OR REPLACE PACKAGE T_DOCUMENTO_TIPOS_API IS
   PROCEDURE set_activo (
     p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE /*PK*/,
     p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_DOCUMENTO_TIPOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_DOCUMENTO_TIPOS_API;
 /

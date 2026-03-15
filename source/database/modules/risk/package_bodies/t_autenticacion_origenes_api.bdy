@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_AUTENTICACION_ORIGENES_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:51
+  - generated_at: 2026-03-15 15:13:56
   - generated_by: JAVIER
   */
 
@@ -67,13 +67,13 @@ CREATE OR REPLACE PACKAGE BODY T_AUTENTICACION_ORIGENES_API IS
   END;
 
   FUNCTION create_row (
-    p_id_autenticacion_origen            IN T_AUTENTICACION_ORIGENES.ID_AUTENTICACION_ORIGEN%TYPE DEFAULT NULL /*PK*/,
-    p_nombre                             IN T_AUTENTICACION_ORIGENES.NOMBRE%TYPE,
-    p_detalle                            IN T_AUTENTICACION_ORIGENES.DETALLE%TYPE,
-    p_activo                             IN T_AUTENTICACION_ORIGENES.ACTIVO%TYPE,
-    p_prefijo_dominio                    IN T_AUTENTICACION_ORIGENES.PREFIJO_DOMINIO%TYPE,
-    p_metodo_validacion_credenciales     IN T_AUTENTICACION_ORIGENES.METODO_VALIDACION_CREDENCIALES%TYPE,
-    p_parametros_validacion_credenciales IN T_AUTENTICACION_ORIGENES.PARAMETROS_VALIDACION_CREDENCIALES%TYPE )
+    p_id_autenticacion_origen            IN T_AUTENTICACION_ORIGENES.ID_AUTENTICACION_ORIGEN%TYPE              DEFAULT NULL /*PK*/,
+    p_nombre                             IN T_AUTENTICACION_ORIGENES.NOMBRE%TYPE                               ,
+    p_detalle                            IN T_AUTENTICACION_ORIGENES.DETALLE%TYPE                              DEFAULT NULL,
+    p_activo                             IN T_AUTENTICACION_ORIGENES.ACTIVO%TYPE                               DEFAULT 'N' ,
+    p_prefijo_dominio                    IN T_AUTENTICACION_ORIGENES.PREFIJO_DOMINIO%TYPE                      DEFAULT NULL,
+    p_metodo_validacion_credenciales     IN T_AUTENTICACION_ORIGENES.METODO_VALIDACION_CREDENCIALES%TYPE       DEFAULT NULL,
+    p_parametros_validacion_credenciales IN T_AUTENTICACION_ORIGENES.PARAMETROS_VALIDACION_CREDENCIALES%TYPE   DEFAULT NULL )
   RETURN T_AUTENTICACION_ORIGENES.ID_AUTENTICACION_ORIGEN%TYPE
   IS
     v_return T_AUTENTICACION_ORIGENES.ID_AUTENTICACION_ORIGEN%TYPE; 
@@ -106,13 +106,13 @@ CREATE OR REPLACE PACKAGE BODY T_AUTENTICACION_ORIGENES_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_autenticacion_origen            IN T_AUTENTICACION_ORIGENES.ID_AUTENTICACION_ORIGEN%TYPE DEFAULT NULL /*PK*/,
-    p_nombre                             IN T_AUTENTICACION_ORIGENES.NOMBRE%TYPE,
-    p_detalle                            IN T_AUTENTICACION_ORIGENES.DETALLE%TYPE,
-    p_activo                             IN T_AUTENTICACION_ORIGENES.ACTIVO%TYPE,
-    p_prefijo_dominio                    IN T_AUTENTICACION_ORIGENES.PREFIJO_DOMINIO%TYPE,
-    p_metodo_validacion_credenciales     IN T_AUTENTICACION_ORIGENES.METODO_VALIDACION_CREDENCIALES%TYPE,
-    p_parametros_validacion_credenciales IN T_AUTENTICACION_ORIGENES.PARAMETROS_VALIDACION_CREDENCIALES%TYPE )
+    p_id_autenticacion_origen            IN T_AUTENTICACION_ORIGENES.ID_AUTENTICACION_ORIGEN%TYPE              DEFAULT NULL /*PK*/,
+    p_nombre                             IN T_AUTENTICACION_ORIGENES.NOMBRE%TYPE                               ,
+    p_detalle                            IN T_AUTENTICACION_ORIGENES.DETALLE%TYPE                              DEFAULT NULL,
+    p_activo                             IN T_AUTENTICACION_ORIGENES.ACTIVO%TYPE                               DEFAULT 'N' ,
+    p_prefijo_dominio                    IN T_AUTENTICACION_ORIGENES.PREFIJO_DOMINIO%TYPE                      DEFAULT NULL,
+    p_metodo_validacion_credenciales     IN T_AUTENTICACION_ORIGENES.METODO_VALIDACION_CREDENCIALES%TYPE       DEFAULT NULL,
+    p_parametros_validacion_credenciales IN T_AUTENTICACION_ORIGENES.PARAMETROS_VALIDACION_CREDENCIALES%TYPE   DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_AUTENTICACION_ORIGENES (
@@ -726,6 +726,17 @@ CREATE OR REPLACE PACKAGE BODY T_AUTENTICACION_ORIGENES_API IS
     WHERE
       ID_AUTENTICACION_ORIGEN = p_id_autenticacion_origen;
   END set_parametros_validacion_credenciales;
+
+  FUNCTION get_default_row
+  RETURN T_AUTENTICACION_ORIGENES%ROWTYPE
+  IS
+    v_row T_AUTENTICACION_ORIGENES%ROWTYPE;
+  BEGIN
+    v_row.ACTIVO            := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_AUTENTICACION_ORIGENES_API;
 /

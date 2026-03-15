@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_MIGRACIONES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:53"
+    generated_at="2026-03-15 15:13:59"
     generated_by="JAVIER"
     p_table_name="T_MIGRACIONES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,17 +62,17 @@ CREATE OR REPLACE PACKAGE T_MIGRACIONES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_migracion    IN T_MIGRACIONES.ID_MIGRACION%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion     IN T_MIGRACIONES.DESCRIPCION%TYPE,
-    p_fecha_ejecucion IN T_MIGRACIONES.FECHA_EJECUCION%TYPE,
-    p_referencia      IN T_MIGRACIONES.REFERENCIA%TYPE )
+    p_id_migracion    IN T_MIGRACIONES.ID_MIGRACION%TYPE           DEFAULT NULL /*PK*/,
+    p_descripcion     IN T_MIGRACIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_fecha_ejecucion IN T_MIGRACIONES.FECHA_EJECUCION%TYPE        DEFAULT SYSDATE,
+    p_referencia      IN T_MIGRACIONES.REFERENCIA%TYPE             DEFAULT NULL )
   RETURN T_MIGRACIONES.ID_MIGRACION%TYPE;
 
   PROCEDURE create_row (
-    p_id_migracion    IN T_MIGRACIONES.ID_MIGRACION%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion     IN T_MIGRACIONES.DESCRIPCION%TYPE,
-    p_fecha_ejecucion IN T_MIGRACIONES.FECHA_EJECUCION%TYPE,
-    p_referencia      IN T_MIGRACIONES.REFERENCIA%TYPE );
+    p_id_migracion    IN T_MIGRACIONES.ID_MIGRACION%TYPE           DEFAULT NULL /*PK*/,
+    p_descripcion     IN T_MIGRACIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_fecha_ejecucion IN T_MIGRACIONES.FECHA_EJECUCION%TYPE        DEFAULT SYSDATE,
+    p_referencia      IN T_MIGRACIONES.REFERENCIA%TYPE             DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_MIGRACIONES%ROWTYPE )
@@ -194,6 +194,12 @@ CREATE OR REPLACE PACKAGE T_MIGRACIONES_API IS
   PROCEDURE set_referencia (
     p_id_migracion IN T_MIGRACIONES.ID_MIGRACION%TYPE /*PK*/,
     p_referencia   IN T_MIGRACIONES.REFERENCIA%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_MIGRACIONES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_MIGRACIONES_API;
 /

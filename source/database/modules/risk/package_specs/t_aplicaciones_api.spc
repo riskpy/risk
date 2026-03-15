@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_APLICACIONES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:50"
+    generated_at="2026-03-15 15:13:56"
     generated_by="JAVIER"
     p_table_name="T_APLICACIONES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,21 +62,21 @@ CREATE OR REPLACE PACKAGE T_APLICACIONES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_aplicacion IN T_APLICACIONES.ID_APLICACION%TYPE DEFAULT NULL /*PK*/,
-    p_nombre        IN T_APLICACIONES.NOMBRE%TYPE,
-    p_tipo          IN T_APLICACIONES.TIPO%TYPE,
-    p_activo        IN T_APLICACIONES.ACTIVO%TYPE,
-    p_detalle       IN T_APLICACIONES.DETALLE%TYPE,
-    p_id_dominio    IN T_APLICACIONES.ID_DOMINIO%TYPE /*FK*/ )
+    p_id_aplicacion IN T_APLICACIONES.ID_APLICACION%TYPE          DEFAULT NULL /*PK*/,
+    p_nombre        IN T_APLICACIONES.NOMBRE%TYPE                 DEFAULT NULL,
+    p_tipo          IN T_APLICACIONES.TIPO%TYPE                   DEFAULT NULL,
+    p_activo        IN T_APLICACIONES.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_detalle       IN T_APLICACIONES.DETALLE%TYPE                DEFAULT NULL,
+    p_id_dominio    IN T_APLICACIONES.ID_DOMINIO%TYPE             DEFAULT NULL /*FK*/ )
   RETURN T_APLICACIONES.ID_APLICACION%TYPE;
 
   PROCEDURE create_row (
-    p_id_aplicacion IN T_APLICACIONES.ID_APLICACION%TYPE DEFAULT NULL /*PK*/,
-    p_nombre        IN T_APLICACIONES.NOMBRE%TYPE,
-    p_tipo          IN T_APLICACIONES.TIPO%TYPE,
-    p_activo        IN T_APLICACIONES.ACTIVO%TYPE,
-    p_detalle       IN T_APLICACIONES.DETALLE%TYPE,
-    p_id_dominio    IN T_APLICACIONES.ID_DOMINIO%TYPE /*FK*/ );
+    p_id_aplicacion IN T_APLICACIONES.ID_APLICACION%TYPE          DEFAULT NULL /*PK*/,
+    p_nombre        IN T_APLICACIONES.NOMBRE%TYPE                 DEFAULT NULL,
+    p_tipo          IN T_APLICACIONES.TIPO%TYPE                   DEFAULT NULL,
+    p_activo        IN T_APLICACIONES.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_detalle       IN T_APLICACIONES.DETALLE%TYPE                DEFAULT NULL,
+    p_id_dominio    IN T_APLICACIONES.ID_DOMINIO%TYPE             DEFAULT NULL /*FK*/ );
 
   FUNCTION create_row (
     p_row IN T_APLICACIONES%ROWTYPE )
@@ -224,6 +224,12 @@ CREATE OR REPLACE PACKAGE T_APLICACIONES_API IS
   PROCEDURE set_id_dominio (
     p_id_aplicacion IN T_APLICACIONES.ID_APLICACION%TYPE /*PK*/,
     p_id_dominio    IN T_APLICACIONES.ID_DOMINIO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_APLICACIONES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_APLICACIONES_API;
 /

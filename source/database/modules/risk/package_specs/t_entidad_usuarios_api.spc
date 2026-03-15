@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_ENTIDAD_USUARIOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:55"
+    generated_at="2026-03-15 15:14:04"
     generated_by="JAVIER"
     p_table_name="T_ENTIDAD_USUARIOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -66,23 +66,23 @@ CREATE OR REPLACE PACKAGE T_ENTIDAD_USUARIOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_entidad       IN T_ENTIDAD_USUARIOS.ID_ENTIDAD%TYPE /*PK*/ /*FK*/,
-    p_id_usuario       IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE /*PK*/ /*FK*/,
-    p_grupo            IN T_ENTIDAD_USUARIOS.GRUPO%TYPE /*PK*/,
-    p_estado           IN T_ENTIDAD_USUARIOS.ESTADO%TYPE,
-    p_fecha_expiracion IN T_ENTIDAD_USUARIOS.FECHA_EXPIRACION%TYPE,
-    p_direccion_correo IN T_ENTIDAD_USUARIOS.DIRECCION_CORREO%TYPE,
-    p_numero_telefono  IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE )
+    p_id_entidad       IN T_ENTIDAD_USUARIOS.ID_ENTIDAD%TYPE              /*PK*/ /*FK*/,
+    p_id_usuario       IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE              /*PK*/ /*FK*/,
+    p_grupo            IN T_ENTIDAD_USUARIOS.GRUPO%TYPE                   /*PK*/,
+    p_estado           IN T_ENTIDAD_USUARIOS.ESTADO%TYPE                 DEFAULT NULL,
+    p_fecha_expiracion IN T_ENTIDAD_USUARIOS.FECHA_EXPIRACION%TYPE       DEFAULT NULL,
+    p_direccion_correo IN T_ENTIDAD_USUARIOS.DIRECCION_CORREO%TYPE       DEFAULT NULL,
+    p_numero_telefono  IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE        DEFAULT NULL )
   RETURN T_ENTIDAD_USUARIOS%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_entidad       IN T_ENTIDAD_USUARIOS.ID_ENTIDAD%TYPE /*PK*/ /*FK*/,
-    p_id_usuario       IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE /*PK*/ /*FK*/,
-    p_grupo            IN T_ENTIDAD_USUARIOS.GRUPO%TYPE /*PK*/,
-    p_estado           IN T_ENTIDAD_USUARIOS.ESTADO%TYPE,
-    p_fecha_expiracion IN T_ENTIDAD_USUARIOS.FECHA_EXPIRACION%TYPE,
-    p_direccion_correo IN T_ENTIDAD_USUARIOS.DIRECCION_CORREO%TYPE,
-    p_numero_telefono  IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE );
+    p_id_entidad       IN T_ENTIDAD_USUARIOS.ID_ENTIDAD%TYPE              /*PK*/ /*FK*/,
+    p_id_usuario       IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE              /*PK*/ /*FK*/,
+    p_grupo            IN T_ENTIDAD_USUARIOS.GRUPO%TYPE                   /*PK*/,
+    p_estado           IN T_ENTIDAD_USUARIOS.ESTADO%TYPE                 DEFAULT NULL,
+    p_fecha_expiracion IN T_ENTIDAD_USUARIOS.FECHA_EXPIRACION%TYPE       DEFAULT NULL,
+    p_direccion_correo IN T_ENTIDAD_USUARIOS.DIRECCION_CORREO%TYPE       DEFAULT NULL,
+    p_numero_telefono  IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE        DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_ENTIDAD_USUARIOS%ROWTYPE )
@@ -255,6 +255,12 @@ CREATE OR REPLACE PACKAGE T_ENTIDAD_USUARIOS_API IS
     p_id_usuario      IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE /*PK*/,
     p_grupo           IN T_ENTIDAD_USUARIOS.GRUPO%TYPE /*PK*/,
     p_numero_telefono IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_ENTIDAD_USUARIOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_ENTIDAD_USUARIOS_API;
 /

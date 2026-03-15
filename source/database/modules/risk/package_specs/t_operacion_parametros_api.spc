@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_OPERACION_PARAMETROS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:51"
+    generated_at="2026-03-15 15:13:57"
     generated_by="JAVIER"
     p_table_name="T_OPERACION_PARAMETROS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -66,37 +66,37 @@ CREATE OR REPLACE PACKAGE T_OPERACION_PARAMETROS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_operacion     IN T_OPERACION_PARAMETROS.ID_OPERACION%TYPE /*PK*/ /*UK*/ /*FK*/,
-    p_nombre           IN T_OPERACION_PARAMETROS.NOMBRE%TYPE /*PK*/,
-    p_version          IN T_OPERACION_PARAMETROS.VERSION%TYPE /*PK*/ /*UK*/,
-    p_orden            IN T_OPERACION_PARAMETROS.ORDEN%TYPE /*UK*/,
-    p_activo           IN T_OPERACION_PARAMETROS.ACTIVO%TYPE,
-    p_tipo_dato        IN T_OPERACION_PARAMETROS.TIPO_DATO%TYPE,
-    p_formato          IN T_OPERACION_PARAMETROS.FORMATO%TYPE,
-    p_longitud_maxima  IN T_OPERACION_PARAMETROS.LONGITUD_MAXIMA%TYPE,
-    p_obligatorio      IN T_OPERACION_PARAMETROS.OBLIGATORIO%TYPE,
-    p_valor_defecto    IN T_OPERACION_PARAMETROS.VALOR_DEFECTO%TYPE,
-    p_etiqueta         IN T_OPERACION_PARAMETROS.ETIQUETA%TYPE,
-    p_detalle          IN T_OPERACION_PARAMETROS.DETALLE%TYPE,
-    p_valores_posibles IN T_OPERACION_PARAMETROS.VALORES_POSIBLES%TYPE,
-    p_encriptado       IN T_OPERACION_PARAMETROS.ENCRIPTADO%TYPE )
+    p_id_operacion     IN T_OPERACION_PARAMETROS.ID_OPERACION%TYPE            /*PK*/ /*UK*/ /*FK*/,
+    p_nombre           IN T_OPERACION_PARAMETROS.NOMBRE%TYPE                  /*PK*/,
+    p_version          IN T_OPERACION_PARAMETROS.VERSION%TYPE                 /*PK*/ /*UK*/,
+    p_orden            IN T_OPERACION_PARAMETROS.ORDEN%TYPE                   /*UK*/,
+    p_activo           IN T_OPERACION_PARAMETROS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_tipo_dato        IN T_OPERACION_PARAMETROS.TIPO_DATO%TYPE              ,
+    p_formato          IN T_OPERACION_PARAMETROS.FORMATO%TYPE                DEFAULT NULL,
+    p_longitud_maxima  IN T_OPERACION_PARAMETROS.LONGITUD_MAXIMA%TYPE        DEFAULT NULL,
+    p_obligatorio      IN T_OPERACION_PARAMETROS.OBLIGATORIO%TYPE            DEFAULT 'N' ,
+    p_valor_defecto    IN T_OPERACION_PARAMETROS.VALOR_DEFECTO%TYPE          DEFAULT NULL,
+    p_etiqueta         IN T_OPERACION_PARAMETROS.ETIQUETA%TYPE               DEFAULT NULL,
+    p_detalle          IN T_OPERACION_PARAMETROS.DETALLE%TYPE                DEFAULT NULL,
+    p_valores_posibles IN T_OPERACION_PARAMETROS.VALORES_POSIBLES%TYPE       DEFAULT NULL,
+    p_encriptado       IN T_OPERACION_PARAMETROS.ENCRIPTADO%TYPE             DEFAULT 'N'  )
   RETURN T_OPERACION_PARAMETROS%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_operacion     IN T_OPERACION_PARAMETROS.ID_OPERACION%TYPE /*PK*/ /*UK*/ /*FK*/,
-    p_nombre           IN T_OPERACION_PARAMETROS.NOMBRE%TYPE /*PK*/,
-    p_version          IN T_OPERACION_PARAMETROS.VERSION%TYPE /*PK*/ /*UK*/,
-    p_orden            IN T_OPERACION_PARAMETROS.ORDEN%TYPE /*UK*/,
-    p_activo           IN T_OPERACION_PARAMETROS.ACTIVO%TYPE,
-    p_tipo_dato        IN T_OPERACION_PARAMETROS.TIPO_DATO%TYPE,
-    p_formato          IN T_OPERACION_PARAMETROS.FORMATO%TYPE,
-    p_longitud_maxima  IN T_OPERACION_PARAMETROS.LONGITUD_MAXIMA%TYPE,
-    p_obligatorio      IN T_OPERACION_PARAMETROS.OBLIGATORIO%TYPE,
-    p_valor_defecto    IN T_OPERACION_PARAMETROS.VALOR_DEFECTO%TYPE,
-    p_etiqueta         IN T_OPERACION_PARAMETROS.ETIQUETA%TYPE,
-    p_detalle          IN T_OPERACION_PARAMETROS.DETALLE%TYPE,
-    p_valores_posibles IN T_OPERACION_PARAMETROS.VALORES_POSIBLES%TYPE,
-    p_encriptado       IN T_OPERACION_PARAMETROS.ENCRIPTADO%TYPE );
+    p_id_operacion     IN T_OPERACION_PARAMETROS.ID_OPERACION%TYPE            /*PK*/ /*UK*/ /*FK*/,
+    p_nombre           IN T_OPERACION_PARAMETROS.NOMBRE%TYPE                  /*PK*/,
+    p_version          IN T_OPERACION_PARAMETROS.VERSION%TYPE                 /*PK*/ /*UK*/,
+    p_orden            IN T_OPERACION_PARAMETROS.ORDEN%TYPE                   /*UK*/,
+    p_activo           IN T_OPERACION_PARAMETROS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_tipo_dato        IN T_OPERACION_PARAMETROS.TIPO_DATO%TYPE              ,
+    p_formato          IN T_OPERACION_PARAMETROS.FORMATO%TYPE                DEFAULT NULL,
+    p_longitud_maxima  IN T_OPERACION_PARAMETROS.LONGITUD_MAXIMA%TYPE        DEFAULT NULL,
+    p_obligatorio      IN T_OPERACION_PARAMETROS.OBLIGATORIO%TYPE            DEFAULT 'N' ,
+    p_valor_defecto    IN T_OPERACION_PARAMETROS.VALOR_DEFECTO%TYPE          DEFAULT NULL,
+    p_etiqueta         IN T_OPERACION_PARAMETROS.ETIQUETA%TYPE               DEFAULT NULL,
+    p_detalle          IN T_OPERACION_PARAMETROS.DETALLE%TYPE                DEFAULT NULL,
+    p_valores_posibles IN T_OPERACION_PARAMETROS.VALORES_POSIBLES%TYPE       DEFAULT NULL,
+    p_encriptado       IN T_OPERACION_PARAMETROS.ENCRIPTADO%TYPE             DEFAULT 'N'  );
 
   FUNCTION create_row (
     p_row IN T_OPERACION_PARAMETROS%ROWTYPE )
@@ -394,6 +394,12 @@ CREATE OR REPLACE PACKAGE T_OPERACION_PARAMETROS_API IS
     p_nombre       IN T_OPERACION_PARAMETROS.NOMBRE%TYPE /*PK*/,
     p_version      IN T_OPERACION_PARAMETROS.VERSION%TYPE /*PK*/,
     p_encriptado   IN T_OPERACION_PARAMETROS.ENCRIPTADO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_OPERACION_PARAMETROS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_OPERACION_PARAMETROS_API;
 /

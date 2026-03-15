@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_MODULOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:49
+  - generated_at: 2026-03-15 15:13:54
   - generated_by: JAVIER
   */
 
@@ -67,12 +67,12 @@ CREATE OR REPLACE PACKAGE BODY T_MODULOS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre         IN T_MODULOS.NOMBRE%TYPE,
-    p_detalle        IN T_MODULOS.DETALLE%TYPE,
-    p_activo         IN T_MODULOS.ACTIVO%TYPE,
-    p_fecha_actual   IN T_MODULOS.FECHA_ACTUAL%TYPE,
-    p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE )
+    p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE              DEFAULT NULL /*PK*/,
+    p_nombre         IN T_MODULOS.NOMBRE%TYPE                 ,
+    p_detalle        IN T_MODULOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo         IN T_MODULOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_fecha_actual   IN T_MODULOS.FECHA_ACTUAL%TYPE           DEFAULT NULL,
+    p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE         DEFAULT NULL )
   RETURN T_MODULOS.ID_MODULO%TYPE
   IS
     v_return T_MODULOS.ID_MODULO%TYPE; 
@@ -103,12 +103,12 @@ CREATE OR REPLACE PACKAGE BODY T_MODULOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre         IN T_MODULOS.NOMBRE%TYPE,
-    p_detalle        IN T_MODULOS.DETALLE%TYPE,
-    p_activo         IN T_MODULOS.ACTIVO%TYPE,
-    p_fecha_actual   IN T_MODULOS.FECHA_ACTUAL%TYPE,
-    p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE )
+    p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE              DEFAULT NULL /*PK*/,
+    p_nombre         IN T_MODULOS.NOMBRE%TYPE                 ,
+    p_detalle        IN T_MODULOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo         IN T_MODULOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_fecha_actual   IN T_MODULOS.FECHA_ACTUAL%TYPE           DEFAULT NULL,
+    p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE         DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_MODULOS (
@@ -670,6 +670,17 @@ CREATE OR REPLACE PACKAGE BODY T_MODULOS_API IS
     WHERE
       ID_MODULO = p_id_modulo;
   END set_version_actual;
+
+  FUNCTION get_default_row
+  RETURN T_MODULOS%ROWTYPE
+  IS
+    v_row T_MODULOS%ROWTYPE;
+  BEGIN
+    v_row.ACTIVO            := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_MODULOS_API;
 /

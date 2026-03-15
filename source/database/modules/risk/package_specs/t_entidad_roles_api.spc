@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_ENTIDAD_ROLES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:55"
+    generated_at="2026-03-15 15:14:03"
     generated_by="JAVIER"
     p_table_name="T_ENTIDAD_ROLES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,17 +64,17 @@ CREATE OR REPLACE PACKAGE T_ENTIDAD_ROLES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE /*PK*/ /*FK*/,
-    p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE /*PK*/ /*FK*/,
-    p_estado                             IN T_ENTIDAD_ROLES.ESTADO%TYPE,
-    p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE )
+    p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE                            /*PK*/ /*FK*/,
+    p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE                                /*PK*/ /*FK*/,
+    p_estado                             IN T_ENTIDAD_ROLES.ESTADO%TYPE                               DEFAULT NULL,
+    p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE   DEFAULT 0  )
   RETURN T_ENTIDAD_ROLES%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE /*PK*/ /*FK*/,
-    p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE /*PK*/ /*FK*/,
-    p_estado                             IN T_ENTIDAD_ROLES.ESTADO%TYPE,
-    p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE );
+    p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE                            /*PK*/ /*FK*/,
+    p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE                                /*PK*/ /*FK*/,
+    p_estado                             IN T_ENTIDAD_ROLES.ESTADO%TYPE                               DEFAULT NULL,
+    p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE   DEFAULT 0  );
 
   FUNCTION create_row (
     p_row IN T_ENTIDAD_ROLES%ROWTYPE )
@@ -198,6 +198,12 @@ CREATE OR REPLACE PACKAGE T_ENTIDAD_ROLES_API IS
     p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE /*PK*/,
     p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE /*PK*/,
     p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_ENTIDAD_ROLES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_ENTIDAD_ROLES_API;
 /

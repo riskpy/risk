@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_DATO_DEFINICIONES_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:54
+  - generated_at: 2026-03-15 15:14:01
   - generated_by: JAVIER
   */
 
@@ -71,12 +71,12 @@ CREATE OR REPLACE PACKAGE BODY T_DATO_DEFINICIONES_API IS
   END;
 
   FUNCTION create_row (
-    p_tabla             IN T_DATO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_campo             IN T_DATO_DEFINICIONES.CAMPO%TYPE /*PK*/,
-    p_descripcion       IN T_DATO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_orden             IN T_DATO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia IN T_DATO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_tipo_dato         IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE )
+    p_tabla             IN T_DATO_DEFINICIONES.TABLA%TYPE                   /*PK*/,
+    p_campo             IN T_DATO_DEFINICIONES.CAMPO%TYPE                   /*PK*/,
+    p_descripcion       IN T_DATO_DEFINICIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_orden             IN T_DATO_DEFINICIONES.ORDEN%TYPE                  ,
+    p_nombre_referencia IN T_DATO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE      DEFAULT NULL,
+    p_tipo_dato         IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE               )
   RETURN T_DATO_DEFINICIONES%ROWTYPE
   IS
     v_return T_DATO_DEFINICIONES%ROWTYPE; 
@@ -116,12 +116,12 @@ CREATE OR REPLACE PACKAGE BODY T_DATO_DEFINICIONES_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_tabla             IN T_DATO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_campo             IN T_DATO_DEFINICIONES.CAMPO%TYPE /*PK*/,
-    p_descripcion       IN T_DATO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_orden             IN T_DATO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia IN T_DATO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_tipo_dato         IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE )
+    p_tabla             IN T_DATO_DEFINICIONES.TABLA%TYPE                   /*PK*/,
+    p_campo             IN T_DATO_DEFINICIONES.CAMPO%TYPE                   /*PK*/,
+    p_descripcion       IN T_DATO_DEFINICIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_orden             IN T_DATO_DEFINICIONES.ORDEN%TYPE                  ,
+    p_nombre_referencia IN T_DATO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE      DEFAULT NULL,
+    p_tipo_dato         IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE               )
   IS
   BEGIN
     INSERT INTO T_DATO_DEFINICIONES (
@@ -701,6 +701,16 @@ CREATE OR REPLACE PACKAGE BODY T_DATO_DEFINICIONES_API IS
       TABLA = p_tabla
       AND CAMPO = p_campo;
   END set_tipo_dato;
+
+  FUNCTION get_default_row
+  RETURN T_DATO_DEFINICIONES%ROWTYPE
+  IS
+    v_row T_DATO_DEFINICIONES%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_DATO_DEFINICIONES_API;
 /

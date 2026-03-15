@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_DOMINIOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:49"
+    generated_at="2026-03-15 15:13:55"
     generated_by="JAVIER"
     p_table_name="T_DOMINIOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,19 +62,19 @@ CREATE OR REPLACE PACKAGE T_DOMINIOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre     IN T_DOMINIOS.NOMBRE%TYPE,
-    p_detalle    IN T_DOMINIOS.DETALLE%TYPE,
-    p_activo     IN T_DOMINIOS.ACTIVO%TYPE,
-    p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE /*FK*/ )
+    p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE             DEFAULT NULL /*PK*/,
+    p_nombre     IN T_DOMINIOS.NOMBRE%TYPE                 ,
+    p_detalle    IN T_DOMINIOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo     IN T_DOMINIOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE               /*FK*/ )
   RETURN T_DOMINIOS.ID_DOMINIO%TYPE;
 
   PROCEDURE create_row (
-    p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre     IN T_DOMINIOS.NOMBRE%TYPE,
-    p_detalle    IN T_DOMINIOS.DETALLE%TYPE,
-    p_activo     IN T_DOMINIOS.ACTIVO%TYPE,
-    p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE /*FK*/ );
+    p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE             DEFAULT NULL /*PK*/,
+    p_nombre     IN T_DOMINIOS.NOMBRE%TYPE                 ,
+    p_detalle    IN T_DOMINIOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo     IN T_DOMINIOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE               /*FK*/ );
 
   FUNCTION create_row (
     p_row IN T_DOMINIOS%ROWTYPE )
@@ -209,6 +209,12 @@ CREATE OR REPLACE PACKAGE T_DOMINIOS_API IS
   PROCEDURE set_id_modulo (
     p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE /*PK*/,
     p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_DOMINIOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_DOMINIOS_API;
 /

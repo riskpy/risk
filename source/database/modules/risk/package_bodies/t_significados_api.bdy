@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_SIGNIFICADOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:50
+  - generated_at: 2026-03-15 15:13:56
   - generated_by: JAVIER
   */
 
@@ -71,12 +71,12 @@ CREATE OR REPLACE PACKAGE BODY T_SIGNIFICADOS_API IS
   END;
 
   FUNCTION create_row (
-    p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE /*PK*/,
-    p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE /*PK*/,
-    p_significado  IN T_SIGNIFICADOS.SIGNIFICADO%TYPE,
-    p_referencia   IN T_SIGNIFICADOS.REFERENCIA%TYPE,
-    p_activo       IN T_SIGNIFICADOS.ACTIVO%TYPE,
-    p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE )
+    p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE                 /*PK*/,
+    p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE                  /*PK*/,
+    p_significado  IN T_SIGNIFICADOS.SIGNIFICADO%TYPE            DEFAULT NULL,
+    p_referencia   IN T_SIGNIFICADOS.REFERENCIA%TYPE             DEFAULT NULL,
+    p_activo       IN T_SIGNIFICADOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE           DEFAULT NULL )
   RETURN T_SIGNIFICADOS%ROWTYPE
   IS
     v_return T_SIGNIFICADOS%ROWTYPE; 
@@ -116,12 +116,12 @@ CREATE OR REPLACE PACKAGE BODY T_SIGNIFICADOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE /*PK*/,
-    p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE /*PK*/,
-    p_significado  IN T_SIGNIFICADOS.SIGNIFICADO%TYPE,
-    p_referencia   IN T_SIGNIFICADOS.REFERENCIA%TYPE,
-    p_activo       IN T_SIGNIFICADOS.ACTIVO%TYPE,
-    p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE )
+    p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE                 /*PK*/,
+    p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE                  /*PK*/,
+    p_significado  IN T_SIGNIFICADOS.SIGNIFICADO%TYPE            DEFAULT NULL,
+    p_referencia   IN T_SIGNIFICADOS.REFERENCIA%TYPE             DEFAULT NULL,
+    p_activo       IN T_SIGNIFICADOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE           DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_SIGNIFICADOS (
@@ -701,6 +701,17 @@ CREATE OR REPLACE PACKAGE BODY T_SIGNIFICADOS_API IS
       DOMINIO = p_dominio
       AND CODIGO = p_codigo;
   END set_referencia_2;
+
+  FUNCTION get_default_row
+  RETURN T_SIGNIFICADOS%ROWTYPE
+  IS
+    v_row T_SIGNIFICADOS%ROWTYPE;
+  BEGIN
+    v_row.ACTIVO            := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_SIGNIFICADOS_API;
 /

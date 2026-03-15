@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_USUARIO_CLAVES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:53"
+    generated_at="2026-03-15 15:14:00"
     generated_by="JAVIER"
     p_table_name="T_USUARIO_CLAVES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -66,29 +66,29 @@ CREATE OR REPLACE PACKAGE T_USUARIO_CLAVES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_usuario                 IN T_USUARIO_CLAVES.ID_USUARIO%TYPE /*PK*/ /*FK*/,
-    p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE /*PK*/,
-    p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE /*PK*/,
-    p_estado                     IN T_USUARIO_CLAVES.ESTADO%TYPE,
-    p_hash                       IN T_USUARIO_CLAVES.HASH%TYPE,
-    p_salt                       IN T_USUARIO_CLAVES.SALT%TYPE,
-    p_algoritmo                  IN T_USUARIO_CLAVES.ALGORITMO%TYPE,
-    p_iteraciones                IN T_USUARIO_CLAVES.ITERACIONES%TYPE,
-    p_cantidad_intentos_fallidos IN T_USUARIO_CLAVES.CANTIDAD_INTENTOS_FALLIDOS%TYPE,
-    p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE )
+    p_id_usuario                 IN T_USUARIO_CLAVES.ID_USUARIO%TYPE                    /*PK*/ /*FK*/,
+    p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE                          /*PK*/,
+    p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE                         /*PK*/,
+    p_estado                     IN T_USUARIO_CLAVES.ESTADO%TYPE                       DEFAULT NULL,
+    p_hash                       IN T_USUARIO_CLAVES.HASH%TYPE                         DEFAULT NULL,
+    p_salt                       IN T_USUARIO_CLAVES.SALT%TYPE                         DEFAULT NULL,
+    p_algoritmo                  IN T_USUARIO_CLAVES.ALGORITMO%TYPE                    DEFAULT NULL,
+    p_iteraciones                IN T_USUARIO_CLAVES.ITERACIONES%TYPE                  DEFAULT NULL,
+    p_cantidad_intentos_fallidos IN T_USUARIO_CLAVES.CANTIDAD_INTENTOS_FALLIDOS%TYPE   DEFAULT NULL,
+    p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE   DEFAULT NULL )
   RETURN T_USUARIO_CLAVES%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_usuario                 IN T_USUARIO_CLAVES.ID_USUARIO%TYPE /*PK*/ /*FK*/,
-    p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE /*PK*/,
-    p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE /*PK*/,
-    p_estado                     IN T_USUARIO_CLAVES.ESTADO%TYPE,
-    p_hash                       IN T_USUARIO_CLAVES.HASH%TYPE,
-    p_salt                       IN T_USUARIO_CLAVES.SALT%TYPE,
-    p_algoritmo                  IN T_USUARIO_CLAVES.ALGORITMO%TYPE,
-    p_iteraciones                IN T_USUARIO_CLAVES.ITERACIONES%TYPE,
-    p_cantidad_intentos_fallidos IN T_USUARIO_CLAVES.CANTIDAD_INTENTOS_FALLIDOS%TYPE,
-    p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE );
+    p_id_usuario                 IN T_USUARIO_CLAVES.ID_USUARIO%TYPE                    /*PK*/ /*FK*/,
+    p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE                          /*PK*/,
+    p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE                         /*PK*/,
+    p_estado                     IN T_USUARIO_CLAVES.ESTADO%TYPE                       DEFAULT NULL,
+    p_hash                       IN T_USUARIO_CLAVES.HASH%TYPE                         DEFAULT NULL,
+    p_salt                       IN T_USUARIO_CLAVES.SALT%TYPE                         DEFAULT NULL,
+    p_algoritmo                  IN T_USUARIO_CLAVES.ALGORITMO%TYPE                    DEFAULT NULL,
+    p_iteraciones                IN T_USUARIO_CLAVES.ITERACIONES%TYPE                  DEFAULT NULL,
+    p_cantidad_intentos_fallidos IN T_USUARIO_CLAVES.CANTIDAD_INTENTOS_FALLIDOS%TYPE   DEFAULT NULL,
+    p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE   DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_USUARIO_CLAVES%ROWTYPE )
@@ -312,6 +312,12 @@ CREATE OR REPLACE PACKAGE T_USUARIO_CLAVES_API IS
     p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE /*PK*/,
     p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE /*PK*/,
     p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_USUARIO_CLAVES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_USUARIO_CLAVES_API;
 /

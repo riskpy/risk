@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_MODULOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:49"
+    generated_at="2026-03-15 15:13:54"
     generated_by="JAVIER"
     p_table_name="T_MODULOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,21 +62,21 @@ CREATE OR REPLACE PACKAGE T_MODULOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre         IN T_MODULOS.NOMBRE%TYPE,
-    p_detalle        IN T_MODULOS.DETALLE%TYPE,
-    p_activo         IN T_MODULOS.ACTIVO%TYPE,
-    p_fecha_actual   IN T_MODULOS.FECHA_ACTUAL%TYPE,
-    p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE )
+    p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE              DEFAULT NULL /*PK*/,
+    p_nombre         IN T_MODULOS.NOMBRE%TYPE                 ,
+    p_detalle        IN T_MODULOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo         IN T_MODULOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_fecha_actual   IN T_MODULOS.FECHA_ACTUAL%TYPE           DEFAULT NULL,
+    p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE         DEFAULT NULL )
   RETURN T_MODULOS.ID_MODULO%TYPE;
 
   PROCEDURE create_row (
-    p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre         IN T_MODULOS.NOMBRE%TYPE,
-    p_detalle        IN T_MODULOS.DETALLE%TYPE,
-    p_activo         IN T_MODULOS.ACTIVO%TYPE,
-    p_fecha_actual   IN T_MODULOS.FECHA_ACTUAL%TYPE,
-    p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE );
+    p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE              DEFAULT NULL /*PK*/,
+    p_nombre         IN T_MODULOS.NOMBRE%TYPE                 ,
+    p_detalle        IN T_MODULOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo         IN T_MODULOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_fecha_actual   IN T_MODULOS.FECHA_ACTUAL%TYPE           DEFAULT NULL,
+    p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE         DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_MODULOS%ROWTYPE )
@@ -224,6 +224,12 @@ CREATE OR REPLACE PACKAGE T_MODULOS_API IS
   PROCEDURE set_version_actual (
     p_id_modulo      IN T_MODULOS.ID_MODULO%TYPE /*PK*/,
     p_version_actual IN T_MODULOS.VERSION_ACTUAL%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_MODULOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_MODULOS_API;
 /

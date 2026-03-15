@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_SERVICIOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:52
+  - generated_at: 2026-03-15 15:13:58
   - generated_by: JAVIER
   */
 
@@ -67,12 +67,12 @@ CREATE OR REPLACE PACKAGE BODY T_SERVICIOS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_servicio            IN T_SERVICIOS.ID_SERVICIO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_tipo                   IN T_SERVICIOS.TIPO%TYPE,
-    p_cantidad_ejecuciones   IN T_SERVICIOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion IN T_SERVICIOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_consulta_sql           IN T_SERVICIOS.CONSULTA_SQL%TYPE,
-    p_sql_ultima_ejecucion   IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE )
+    p_id_servicio            IN T_SERVICIOS.ID_SERVICIO%TYPE              DEFAULT NULL /*PK*/ /*FK*/,
+    p_tipo                   IN T_SERVICIOS.TIPO%TYPE                     ,
+    p_cantidad_ejecuciones   IN T_SERVICIOS.CANTIDAD_EJECUCIONES%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion IN T_SERVICIOS.FECHA_ULTIMA_EJECUCION%TYPE   DEFAULT NULL,
+    p_consulta_sql           IN T_SERVICIOS.CONSULTA_SQL%TYPE             DEFAULT NULL,
+    p_sql_ultima_ejecucion   IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE     DEFAULT NULL )
   RETURN T_SERVICIOS.ID_SERVICIO%TYPE
   IS
     v_return T_SERVICIOS.ID_SERVICIO%TYPE; 
@@ -103,12 +103,12 @@ CREATE OR REPLACE PACKAGE BODY T_SERVICIOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_servicio            IN T_SERVICIOS.ID_SERVICIO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_tipo                   IN T_SERVICIOS.TIPO%TYPE,
-    p_cantidad_ejecuciones   IN T_SERVICIOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion IN T_SERVICIOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_consulta_sql           IN T_SERVICIOS.CONSULTA_SQL%TYPE,
-    p_sql_ultima_ejecucion   IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE )
+    p_id_servicio            IN T_SERVICIOS.ID_SERVICIO%TYPE              DEFAULT NULL /*PK*/ /*FK*/,
+    p_tipo                   IN T_SERVICIOS.TIPO%TYPE                     ,
+    p_cantidad_ejecuciones   IN T_SERVICIOS.CANTIDAD_EJECUCIONES%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion IN T_SERVICIOS.FECHA_ULTIMA_EJECUCION%TYPE   DEFAULT NULL,
+    p_consulta_sql           IN T_SERVICIOS.CONSULTA_SQL%TYPE             DEFAULT NULL,
+    p_sql_ultima_ejecucion   IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE     DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_SERVICIOS (
@@ -670,6 +670,16 @@ CREATE OR REPLACE PACKAGE BODY T_SERVICIOS_API IS
     WHERE
       ID_SERVICIO = p_id_servicio;
   END set_sql_ultima_ejecucion;
+
+  FUNCTION get_default_row
+  RETURN T_SERVICIOS%ROWTYPE
+  IS
+    v_row T_SERVICIOS%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_SERVICIOS_API;
 /

@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_DOCUMENTO_TIPOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:55
+  - generated_at: 2026-03-15 15:14:03
   - generated_by: JAVIER
   */
 
@@ -67,10 +67,10 @@ CREATE OR REPLACE PACKAGE BODY T_DOCUMENTO_TIPOS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre            IN T_DOCUMENTO_TIPOS.NOMBRE%TYPE,
-    p_detalle           IN T_DOCUMENTO_TIPOS.DETALLE%TYPE,
-    p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE )
+    p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE      DEFAULT NULL /*PK*/,
+    p_nombre            IN T_DOCUMENTO_TIPOS.NOMBRE%TYPE                 ,
+    p_detalle           IN T_DOCUMENTO_TIPOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE                 DEFAULT 'N'  )
   RETURN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE
   IS
     v_return T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE; 
@@ -97,10 +97,10 @@ CREATE OR REPLACE PACKAGE BODY T_DOCUMENTO_TIPOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre            IN T_DOCUMENTO_TIPOS.NOMBRE%TYPE,
-    p_detalle           IN T_DOCUMENTO_TIPOS.DETALLE%TYPE,
-    p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE )
+    p_id_documento_tipo IN T_DOCUMENTO_TIPOS.ID_DOCUMENTO_TIPO%TYPE      DEFAULT NULL /*PK*/,
+    p_nombre            IN T_DOCUMENTO_TIPOS.NOMBRE%TYPE                 ,
+    p_detalle           IN T_DOCUMENTO_TIPOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo            IN T_DOCUMENTO_TIPOS.ACTIVO%TYPE                 DEFAULT 'N'  )
   IS
   BEGIN
     INSERT INTO T_DOCUMENTO_TIPOS (
@@ -558,6 +558,17 @@ CREATE OR REPLACE PACKAGE BODY T_DOCUMENTO_TIPOS_API IS
     WHERE
       ID_DOCUMENTO_TIPO = p_id_documento_tipo;
   END set_activo;
+
+  FUNCTION get_default_row
+  RETURN T_DOCUMENTO_TIPOS%ROWTYPE
+  IS
+    v_row T_DOCUMENTO_TIPOS%ROWTYPE;
+  BEGIN
+    v_row.ACTIVO            := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_DOCUMENTO_TIPOS_API;
 /

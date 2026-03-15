@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_MIGRACIONES_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:53
+  - generated_at: 2026-03-15 15:13:59
   - generated_by: JAVIER
   */
 
@@ -67,10 +67,10 @@ CREATE OR REPLACE PACKAGE BODY T_MIGRACIONES_API IS
   END;
 
   FUNCTION create_row (
-    p_id_migracion    IN T_MIGRACIONES.ID_MIGRACION%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion     IN T_MIGRACIONES.DESCRIPCION%TYPE,
-    p_fecha_ejecucion IN T_MIGRACIONES.FECHA_EJECUCION%TYPE,
-    p_referencia      IN T_MIGRACIONES.REFERENCIA%TYPE )
+    p_id_migracion    IN T_MIGRACIONES.ID_MIGRACION%TYPE           DEFAULT NULL /*PK*/,
+    p_descripcion     IN T_MIGRACIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_fecha_ejecucion IN T_MIGRACIONES.FECHA_EJECUCION%TYPE        DEFAULT SYSDATE,
+    p_referencia      IN T_MIGRACIONES.REFERENCIA%TYPE             DEFAULT NULL )
   RETURN T_MIGRACIONES.ID_MIGRACION%TYPE
   IS
     v_return T_MIGRACIONES.ID_MIGRACION%TYPE; 
@@ -97,10 +97,10 @@ CREATE OR REPLACE PACKAGE BODY T_MIGRACIONES_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_migracion    IN T_MIGRACIONES.ID_MIGRACION%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion     IN T_MIGRACIONES.DESCRIPCION%TYPE,
-    p_fecha_ejecucion IN T_MIGRACIONES.FECHA_EJECUCION%TYPE,
-    p_referencia      IN T_MIGRACIONES.REFERENCIA%TYPE )
+    p_id_migracion    IN T_MIGRACIONES.ID_MIGRACION%TYPE           DEFAULT NULL /*PK*/,
+    p_descripcion     IN T_MIGRACIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_fecha_ejecucion IN T_MIGRACIONES.FECHA_EJECUCION%TYPE        DEFAULT SYSDATE,
+    p_referencia      IN T_MIGRACIONES.REFERENCIA%TYPE             DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_MIGRACIONES (
@@ -558,6 +558,17 @@ CREATE OR REPLACE PACKAGE BODY T_MIGRACIONES_API IS
     WHERE
       ID_MIGRACION = p_id_migracion;
   END set_referencia;
+
+  FUNCTION get_default_row
+  RETURN T_MIGRACIONES%ROWTYPE
+  IS
+    v_row T_MIGRACIONES%ROWTYPE;
+  BEGIN
+    v_row.FECHA_EJECUCION   := SYSDATE;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_MIGRACIONES_API;
 /

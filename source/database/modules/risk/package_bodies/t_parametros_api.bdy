@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_PARAMETROS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:50
+  - generated_at: 2026-03-15 15:13:55
   - generated_by: JAVIER
   */
 
@@ -67,8 +67,8 @@ CREATE OR REPLACE PACKAGE BODY T_PARAMETROS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE DEFAULT NULL /*PK*/,
-    p_valor        IN T_PARAMETROS.VALOR%TYPE )
+    p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE           DEFAULT NULL /*PK*/,
+    p_valor        IN T_PARAMETROS.VALOR%TYPE                  DEFAULT NULL )
   RETURN T_PARAMETROS.ID_PARAMETRO%TYPE
   IS
     v_return T_PARAMETROS.ID_PARAMETRO%TYPE; 
@@ -91,8 +91,8 @@ CREATE OR REPLACE PACKAGE BODY T_PARAMETROS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE DEFAULT NULL /*PK*/,
-    p_valor        IN T_PARAMETROS.VALOR%TYPE )
+    p_id_parametro IN T_PARAMETROS.ID_PARAMETRO%TYPE           DEFAULT NULL /*PK*/,
+    p_valor        IN T_PARAMETROS.VALOR%TYPE                  DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_PARAMETROS (
@@ -446,6 +446,16 @@ CREATE OR REPLACE PACKAGE BODY T_PARAMETROS_API IS
     WHERE
       ID_PARAMETRO = p_id_parametro;
   END set_valor;
+
+  FUNCTION get_default_row
+  RETURN T_PARAMETROS%ROWTYPE
+  IS
+    v_row T_PARAMETROS%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_PARAMETROS_API;
 /

@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_DISPOSITIVO_UBICACIONES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:54"
+    generated_at="2026-03-15 15:14:03"
     generated_by="JAVIER"
     p_table_name="T_DISPOSITIVO_UBICACIONES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,19 +64,19 @@ CREATE OR REPLACE PACKAGE T_DISPOSITIVO_UBICACIONES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_dispositivo IN T_DISPOSITIVO_UBICACIONES.ID_DISPOSITIVO%TYPE /*PK*/ /*FK*/,
-    p_orden          IN T_DISPOSITIVO_UBICACIONES.ORDEN%TYPE /*PK*/,
-    p_fecha          IN T_DISPOSITIVO_UBICACIONES.FECHA%TYPE,
-    p_latitud        IN T_DISPOSITIVO_UBICACIONES.LATITUD%TYPE,
-    p_longitud       IN T_DISPOSITIVO_UBICACIONES.LONGITUD%TYPE )
+    p_id_dispositivo IN T_DISPOSITIVO_UBICACIONES.ID_DISPOSITIVO%TYPE          /*PK*/ /*FK*/,
+    p_orden          IN T_DISPOSITIVO_UBICACIONES.ORDEN%TYPE                   /*PK*/,
+    p_fecha          IN T_DISPOSITIVO_UBICACIONES.FECHA%TYPE                  ,
+    p_latitud        IN T_DISPOSITIVO_UBICACIONES.LATITUD%TYPE                ,
+    p_longitud       IN T_DISPOSITIVO_UBICACIONES.LONGITUD%TYPE                )
   RETURN T_DISPOSITIVO_UBICACIONES%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_dispositivo IN T_DISPOSITIVO_UBICACIONES.ID_DISPOSITIVO%TYPE /*PK*/ /*FK*/,
-    p_orden          IN T_DISPOSITIVO_UBICACIONES.ORDEN%TYPE /*PK*/,
-    p_fecha          IN T_DISPOSITIVO_UBICACIONES.FECHA%TYPE,
-    p_latitud        IN T_DISPOSITIVO_UBICACIONES.LATITUD%TYPE,
-    p_longitud       IN T_DISPOSITIVO_UBICACIONES.LONGITUD%TYPE );
+    p_id_dispositivo IN T_DISPOSITIVO_UBICACIONES.ID_DISPOSITIVO%TYPE          /*PK*/ /*FK*/,
+    p_orden          IN T_DISPOSITIVO_UBICACIONES.ORDEN%TYPE                   /*PK*/,
+    p_fecha          IN T_DISPOSITIVO_UBICACIONES.FECHA%TYPE                  ,
+    p_latitud        IN T_DISPOSITIVO_UBICACIONES.LATITUD%TYPE                ,
+    p_longitud       IN T_DISPOSITIVO_UBICACIONES.LONGITUD%TYPE                );
 
   FUNCTION create_row (
     p_row IN T_DISPOSITIVO_UBICACIONES%ROWTYPE )
@@ -215,6 +215,12 @@ CREATE OR REPLACE PACKAGE T_DISPOSITIVO_UBICACIONES_API IS
     p_id_dispositivo IN T_DISPOSITIVO_UBICACIONES.ID_DISPOSITIVO%TYPE /*PK*/,
     p_orden          IN T_DISPOSITIVO_UBICACIONES.ORDEN%TYPE /*PK*/,
     p_longitud       IN T_DISPOSITIVO_UBICACIONES.LONGITUD%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_DISPOSITIVO_UBICACIONES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_DISPOSITIVO_UBICACIONES_API;
 /

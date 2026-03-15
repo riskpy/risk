@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_DATOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:54"
+    generated_at="2026-03-15 15:14:01"
     generated_by="JAVIER"
     p_table_name="T_DATOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -66,17 +66,17 @@ CREATE OR REPLACE PACKAGE T_DATOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_tabla      IN T_DATOS.TABLA%TYPE /*PK*/ /*FK*/,
-    p_campo      IN T_DATOS.CAMPO%TYPE /*PK*/ /*FK*/,
-    p_referencia IN T_DATOS.REFERENCIA%TYPE /*PK*/,
-    p_contenido  IN T_DATOS.CONTENIDO%TYPE )
+    p_tabla      IN T_DATOS.TABLA%TYPE                   /*PK*/ /*FK*/,
+    p_campo      IN T_DATOS.CAMPO%TYPE                   /*PK*/ /*FK*/,
+    p_referencia IN T_DATOS.REFERENCIA%TYPE              /*PK*/,
+    p_contenido  IN T_DATOS.CONTENIDO%TYPE              DEFAULT NULL )
   RETURN T_DATOS%ROWTYPE;
 
   PROCEDURE create_row (
-    p_tabla      IN T_DATOS.TABLA%TYPE /*PK*/ /*FK*/,
-    p_campo      IN T_DATOS.CAMPO%TYPE /*PK*/ /*FK*/,
-    p_referencia IN T_DATOS.REFERENCIA%TYPE /*PK*/,
-    p_contenido  IN T_DATOS.CONTENIDO%TYPE );
+    p_tabla      IN T_DATOS.TABLA%TYPE                   /*PK*/ /*FK*/,
+    p_campo      IN T_DATOS.CAMPO%TYPE                   /*PK*/ /*FK*/,
+    p_referencia IN T_DATOS.REFERENCIA%TYPE              /*PK*/,
+    p_contenido  IN T_DATOS.CONTENIDO%TYPE              DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_DATOS%ROWTYPE )
@@ -198,6 +198,12 @@ CREATE OR REPLACE PACKAGE T_DATOS_API IS
     p_campo      IN T_DATOS.CAMPO%TYPE /*PK*/,
     p_referencia IN T_DATOS.REFERENCIA%TYPE /*PK*/,
     p_contenido  IN T_DATOS.CONTENIDO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_DATOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_DATOS_API;
 /

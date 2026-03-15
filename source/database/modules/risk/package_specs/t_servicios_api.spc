@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_SERVICIOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:52"
+    generated_at="2026-03-15 15:13:58"
     generated_by="JAVIER"
     p_table_name="T_SERVICIOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,21 +62,21 @@ CREATE OR REPLACE PACKAGE T_SERVICIOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_servicio            IN T_SERVICIOS.ID_SERVICIO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_tipo                   IN T_SERVICIOS.TIPO%TYPE,
-    p_cantidad_ejecuciones   IN T_SERVICIOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion IN T_SERVICIOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_consulta_sql           IN T_SERVICIOS.CONSULTA_SQL%TYPE,
-    p_sql_ultima_ejecucion   IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE )
+    p_id_servicio            IN T_SERVICIOS.ID_SERVICIO%TYPE              DEFAULT NULL /*PK*/ /*FK*/,
+    p_tipo                   IN T_SERVICIOS.TIPO%TYPE                     ,
+    p_cantidad_ejecuciones   IN T_SERVICIOS.CANTIDAD_EJECUCIONES%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion IN T_SERVICIOS.FECHA_ULTIMA_EJECUCION%TYPE   DEFAULT NULL,
+    p_consulta_sql           IN T_SERVICIOS.CONSULTA_SQL%TYPE             DEFAULT NULL,
+    p_sql_ultima_ejecucion   IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE     DEFAULT NULL )
   RETURN T_SERVICIOS.ID_SERVICIO%TYPE;
 
   PROCEDURE create_row (
-    p_id_servicio            IN T_SERVICIOS.ID_SERVICIO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_tipo                   IN T_SERVICIOS.TIPO%TYPE,
-    p_cantidad_ejecuciones   IN T_SERVICIOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion IN T_SERVICIOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_consulta_sql           IN T_SERVICIOS.CONSULTA_SQL%TYPE,
-    p_sql_ultima_ejecucion   IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE );
+    p_id_servicio            IN T_SERVICIOS.ID_SERVICIO%TYPE              DEFAULT NULL /*PK*/ /*FK*/,
+    p_tipo                   IN T_SERVICIOS.TIPO%TYPE                     ,
+    p_cantidad_ejecuciones   IN T_SERVICIOS.CANTIDAD_EJECUCIONES%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion IN T_SERVICIOS.FECHA_ULTIMA_EJECUCION%TYPE   DEFAULT NULL,
+    p_consulta_sql           IN T_SERVICIOS.CONSULTA_SQL%TYPE             DEFAULT NULL,
+    p_sql_ultima_ejecucion   IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE     DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_SERVICIOS%ROWTYPE )
@@ -224,6 +224,12 @@ CREATE OR REPLACE PACKAGE T_SERVICIOS_API IS
   PROCEDURE set_sql_ultima_ejecucion (
     p_id_servicio          IN T_SERVICIOS.ID_SERVICIO%TYPE /*PK*/,
     p_sql_ultima_ejecucion IN T_SERVICIOS.SQL_ULTIMA_EJECUCION%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_SERVICIOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_SERVICIOS_API;
 /

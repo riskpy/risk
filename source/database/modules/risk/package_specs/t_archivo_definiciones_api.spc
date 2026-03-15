@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_ARCHIVO_DEFINICIONES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:52"
+    generated_at="2026-03-15 15:13:59"
     generated_by="JAVIER"
     p_table_name="T_ARCHIVO_DEFINICIONES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,25 +64,25 @@ CREATE OR REPLACE PACKAGE T_ARCHIVO_DEFINICIONES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_tabla                  IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_campo                  IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE /*PK*/,
-    p_descripcion            IN T_ARCHIVO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_tamano_maximo          IN T_ARCHIVO_DEFINICIONES.TAMANO_MAXIMO%TYPE,
-    p_orden                  IN T_ARCHIVO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia      IN T_ARCHIVO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_extensiones_permitidas IN T_ARCHIVO_DEFINICIONES.EXTENSIONES_PERMITIDAS%TYPE,
-    p_historico_activo       IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE )
+    p_tabla                  IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE                     /*PK*/,
+    p_campo                  IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE                     /*PK*/,
+    p_descripcion            IN T_ARCHIVO_DEFINICIONES.DESCRIPCION%TYPE              DEFAULT NULL,
+    p_tamano_maximo          IN T_ARCHIVO_DEFINICIONES.TAMANO_MAXIMO%TYPE            DEFAULT NULL,
+    p_orden                  IN T_ARCHIVO_DEFINICIONES.ORDEN%TYPE                    ,
+    p_nombre_referencia      IN T_ARCHIVO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE        DEFAULT NULL,
+    p_extensiones_permitidas IN T_ARCHIVO_DEFINICIONES.EXTENSIONES_PERMITIDAS%TYPE   DEFAULT NULL,
+    p_historico_activo       IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE         DEFAULT 'N'  )
   RETURN T_ARCHIVO_DEFINICIONES%ROWTYPE;
 
   PROCEDURE create_row (
-    p_tabla                  IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_campo                  IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE /*PK*/,
-    p_descripcion            IN T_ARCHIVO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_tamano_maximo          IN T_ARCHIVO_DEFINICIONES.TAMANO_MAXIMO%TYPE,
-    p_orden                  IN T_ARCHIVO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia      IN T_ARCHIVO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_extensiones_permitidas IN T_ARCHIVO_DEFINICIONES.EXTENSIONES_PERMITIDAS%TYPE,
-    p_historico_activo       IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE );
+    p_tabla                  IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE                     /*PK*/,
+    p_campo                  IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE                     /*PK*/,
+    p_descripcion            IN T_ARCHIVO_DEFINICIONES.DESCRIPCION%TYPE              DEFAULT NULL,
+    p_tamano_maximo          IN T_ARCHIVO_DEFINICIONES.TAMANO_MAXIMO%TYPE            DEFAULT NULL,
+    p_orden                  IN T_ARCHIVO_DEFINICIONES.ORDEN%TYPE                    ,
+    p_nombre_referencia      IN T_ARCHIVO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE        DEFAULT NULL,
+    p_extensiones_permitidas IN T_ARCHIVO_DEFINICIONES.EXTENSIONES_PERMITIDAS%TYPE   DEFAULT NULL,
+    p_historico_activo       IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE         DEFAULT 'N'  );
 
   FUNCTION create_row (
     p_row IN T_ARCHIVO_DEFINICIONES%ROWTYPE )
@@ -266,6 +266,12 @@ CREATE OR REPLACE PACKAGE T_ARCHIVO_DEFINICIONES_API IS
     p_tabla            IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE /*PK*/,
     p_campo            IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE /*PK*/,
     p_historico_activo IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_ARCHIVO_DEFINICIONES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_ARCHIVO_DEFINICIONES_API;
 /

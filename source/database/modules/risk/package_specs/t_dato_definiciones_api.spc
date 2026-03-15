@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_DATO_DEFINICIONES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:54"
+    generated_at="2026-03-15 15:14:01"
     generated_by="JAVIER"
     p_table_name="T_DATO_DEFINICIONES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,21 +64,21 @@ CREATE OR REPLACE PACKAGE T_DATO_DEFINICIONES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_tabla             IN T_DATO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_campo             IN T_DATO_DEFINICIONES.CAMPO%TYPE /*PK*/,
-    p_descripcion       IN T_DATO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_orden             IN T_DATO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia IN T_DATO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_tipo_dato         IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE )
+    p_tabla             IN T_DATO_DEFINICIONES.TABLA%TYPE                   /*PK*/,
+    p_campo             IN T_DATO_DEFINICIONES.CAMPO%TYPE                   /*PK*/,
+    p_descripcion       IN T_DATO_DEFINICIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_orden             IN T_DATO_DEFINICIONES.ORDEN%TYPE                  ,
+    p_nombre_referencia IN T_DATO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE      DEFAULT NULL,
+    p_tipo_dato         IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE               )
   RETURN T_DATO_DEFINICIONES%ROWTYPE;
 
   PROCEDURE create_row (
-    p_tabla             IN T_DATO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_campo             IN T_DATO_DEFINICIONES.CAMPO%TYPE /*PK*/,
-    p_descripcion       IN T_DATO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_orden             IN T_DATO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia IN T_DATO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_tipo_dato         IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE );
+    p_tabla             IN T_DATO_DEFINICIONES.TABLA%TYPE                   /*PK*/,
+    p_campo             IN T_DATO_DEFINICIONES.CAMPO%TYPE                   /*PK*/,
+    p_descripcion       IN T_DATO_DEFINICIONES.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_orden             IN T_DATO_DEFINICIONES.ORDEN%TYPE                  ,
+    p_nombre_referencia IN T_DATO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE      DEFAULT NULL,
+    p_tipo_dato         IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE               );
 
   FUNCTION create_row (
     p_row IN T_DATO_DEFINICIONES%ROWTYPE )
@@ -232,6 +232,12 @@ CREATE OR REPLACE PACKAGE T_DATO_DEFINICIONES_API IS
     p_tabla     IN T_DATO_DEFINICIONES.TABLA%TYPE /*PK*/,
     p_campo     IN T_DATO_DEFINICIONES.CAMPO%TYPE /*PK*/,
     p_tipo_dato IN T_DATO_DEFINICIONES.TIPO_DATO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_DATO_DEFINICIONES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_DATO_DEFINICIONES_API;
 /

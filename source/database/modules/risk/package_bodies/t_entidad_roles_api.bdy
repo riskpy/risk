@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_ENTIDAD_ROLES_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:55
+  - generated_at: 2026-03-15 15:14:03
   - generated_by: JAVIER
   */
 
@@ -71,10 +71,10 @@ CREATE OR REPLACE PACKAGE BODY T_ENTIDAD_ROLES_API IS
   END;
 
   FUNCTION create_row (
-    p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE /*PK*/ /*FK*/,
-    p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE /*PK*/ /*FK*/,
-    p_estado                             IN T_ENTIDAD_ROLES.ESTADO%TYPE,
-    p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE )
+    p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE                            /*PK*/ /*FK*/,
+    p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE                                /*PK*/ /*FK*/,
+    p_estado                             IN T_ENTIDAD_ROLES.ESTADO%TYPE                               DEFAULT NULL,
+    p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE   DEFAULT 0  )
   RETURN T_ENTIDAD_ROLES%ROWTYPE
   IS
     v_return T_ENTIDAD_ROLES%ROWTYPE; 
@@ -108,10 +108,10 @@ CREATE OR REPLACE PACKAGE BODY T_ENTIDAD_ROLES_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE /*PK*/ /*FK*/,
-    p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE /*PK*/ /*FK*/,
-    p_estado                             IN T_ENTIDAD_ROLES.ESTADO%TYPE,
-    p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE )
+    p_id_entidad                         IN T_ENTIDAD_ROLES.ID_ENTIDAD%TYPE                            /*PK*/ /*FK*/,
+    p_id_rol                             IN T_ENTIDAD_ROLES.ID_ROL%TYPE                                /*PK*/ /*FK*/,
+    p_estado                             IN T_ENTIDAD_ROLES.ESTADO%TYPE                               DEFAULT NULL,
+    p_cantidad_autorizaciones_requeridas IN T_ENTIDAD_ROLES.CANTIDAD_AUTORIZACIONES_REQUERIDAS%TYPE   DEFAULT 0  )
   IS
   BEGIN
     INSERT INTO T_ENTIDAD_ROLES (
@@ -577,6 +577,17 @@ CREATE OR REPLACE PACKAGE BODY T_ENTIDAD_ROLES_API IS
       ID_ENTIDAD = p_id_entidad
       AND ID_ROL = p_id_rol;
   END set_cantidad_autorizaciones_requeridas;
+
+  FUNCTION get_default_row
+  RETURN T_ENTIDAD_ROLES%ROWTYPE
+  IS
+    v_row T_ENTIDAD_ROLES%ROWTYPE;
+  BEGIN
+    v_row.CANTIDAD_AUTORIZACIONES_REQUERIDAS := 0 ;
+    v_row.USUARIO_INSERCION                  := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION                    := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_ENTIDAD_ROLES_API;
 /

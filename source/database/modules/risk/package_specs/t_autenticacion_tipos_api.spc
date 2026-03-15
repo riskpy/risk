@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_AUTENTICACION_TIPOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:52"
+    generated_at="2026-03-15 15:13:59"
     generated_by="JAVIER"
     p_table_name="T_AUTENTICACION_TIPOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,21 +62,21 @@ CREATE OR REPLACE PACKAGE T_AUTENTICACION_TIPOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_autenticacion_tipo              IN T_AUTENTICACION_TIPOS.ID_AUTENTICACION_TIPO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre                             IN T_AUTENTICACION_TIPOS.NOMBRE%TYPE,
-    p_detalle                            IN T_AUTENTICACION_TIPOS.DETALLE%TYPE,
-    p_activo                             IN T_AUTENTICACION_TIPOS.ACTIVO%TYPE,
-    p_metodo_validacion_credenciales     IN T_AUTENTICACION_TIPOS.METODO_VALIDACION_CREDENCIALES%TYPE,
-    p_parametros_validacion_credenciales IN T_AUTENTICACION_TIPOS.PARAMETROS_VALIDACION_CREDENCIALES%TYPE )
+    p_id_autenticacion_tipo              IN T_AUTENTICACION_TIPOS.ID_AUTENTICACION_TIPO%TYPE                DEFAULT NULL /*PK*/,
+    p_nombre                             IN T_AUTENTICACION_TIPOS.NOMBRE%TYPE                               ,
+    p_detalle                            IN T_AUTENTICACION_TIPOS.DETALLE%TYPE                              DEFAULT NULL,
+    p_activo                             IN T_AUTENTICACION_TIPOS.ACTIVO%TYPE                               DEFAULT 'N' ,
+    p_metodo_validacion_credenciales     IN T_AUTENTICACION_TIPOS.METODO_VALIDACION_CREDENCIALES%TYPE       DEFAULT NULL,
+    p_parametros_validacion_credenciales IN T_AUTENTICACION_TIPOS.PARAMETROS_VALIDACION_CREDENCIALES%TYPE   DEFAULT NULL )
   RETURN T_AUTENTICACION_TIPOS.ID_AUTENTICACION_TIPO%TYPE;
 
   PROCEDURE create_row (
-    p_id_autenticacion_tipo              IN T_AUTENTICACION_TIPOS.ID_AUTENTICACION_TIPO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre                             IN T_AUTENTICACION_TIPOS.NOMBRE%TYPE,
-    p_detalle                            IN T_AUTENTICACION_TIPOS.DETALLE%TYPE,
-    p_activo                             IN T_AUTENTICACION_TIPOS.ACTIVO%TYPE,
-    p_metodo_validacion_credenciales     IN T_AUTENTICACION_TIPOS.METODO_VALIDACION_CREDENCIALES%TYPE,
-    p_parametros_validacion_credenciales IN T_AUTENTICACION_TIPOS.PARAMETROS_VALIDACION_CREDENCIALES%TYPE );
+    p_id_autenticacion_tipo              IN T_AUTENTICACION_TIPOS.ID_AUTENTICACION_TIPO%TYPE                DEFAULT NULL /*PK*/,
+    p_nombre                             IN T_AUTENTICACION_TIPOS.NOMBRE%TYPE                               ,
+    p_detalle                            IN T_AUTENTICACION_TIPOS.DETALLE%TYPE                              DEFAULT NULL,
+    p_activo                             IN T_AUTENTICACION_TIPOS.ACTIVO%TYPE                               DEFAULT 'N' ,
+    p_metodo_validacion_credenciales     IN T_AUTENTICACION_TIPOS.METODO_VALIDACION_CREDENCIALES%TYPE       DEFAULT NULL,
+    p_parametros_validacion_credenciales IN T_AUTENTICACION_TIPOS.PARAMETROS_VALIDACION_CREDENCIALES%TYPE   DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_AUTENTICACION_TIPOS%ROWTYPE )
@@ -224,6 +224,12 @@ CREATE OR REPLACE PACKAGE T_AUTENTICACION_TIPOS_API IS
   PROCEDURE set_parametros_validacion_credenciales (
     p_id_autenticacion_tipo              IN T_AUTENTICACION_TIPOS.ID_AUTENTICACION_TIPO%TYPE /*PK*/,
     p_parametros_validacion_credenciales IN T_AUTENTICACION_TIPOS.PARAMETROS_VALIDACION_CREDENCIALES%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_AUTENTICACION_TIPOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_AUTENTICACION_TIPOS_API;
 /

@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_MONITOREOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:52"
+    generated_at="2026-03-15 15:13:58"
     generated_by="JAVIER"
     p_table_name="T_MONITOREOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,53 +62,53 @@ CREATE OR REPLACE PACKAGE T_MONITOREOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_monitoreo                     IN T_MONITOREOS.ID_MONITOREO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_causa                            IN T_MONITOREOS.CAUSA%TYPE,
-    p_plan_accion                      IN T_MONITOREOS.PLAN_ACCION%TYPE,
-    p_activo                           IN T_MONITOREOS.ACTIVO%TYPE,
-    p_consulta_sql                     IN T_MONITOREOS.CONSULTA_SQL%TYPE,
-    p_bloque_plsql                     IN T_MONITOREOS.BLOQUE_PLSQL%TYPE,
-    p_prioridad                        IN T_MONITOREOS.PRIORIDAD%TYPE,
-    p_cantidad_ejecuciones             IN T_MONITOREOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion           IN T_MONITOREOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_cantidad_ejecuciones_conflicto   IN T_MONITOREOS.CANTIDAD_EJECUCIONES_CONFLICTO%TYPE,
-    p_fecha_ultima_ejecucion_conflicto IN T_MONITOREOS.FECHA_ULTIMA_EJECUCION_CONFLICTO%TYPE,
-    p_roles_responsables               IN T_MONITOREOS.ROLES_RESPONSABLES%TYPE,
-    p_usuarios_responsables            IN T_MONITOREOS.USUARIOS_RESPONSABLES%TYPE,
-    p_nivel_aviso_correo               IN T_MONITOREOS.NIVEL_AVISO_CORREO%TYPE,
-    p_aviso_notificacion               IN T_MONITOREOS.AVISO_NOTIFICACION%TYPE,
-    p_aviso_mensaje                    IN T_MONITOREOS.AVISO_MENSAJE%TYPE,
-    p_frecuencia                       IN T_MONITOREOS.FRECUENCIA%TYPE,
-    p_opera_sistema_cerrado            IN T_MONITOREOS.OPERA_SISTEMA_CERRADO%TYPE,
-    p_opera_dia_no_habil               IN T_MONITOREOS.OPERA_DIA_NO_HABIL%TYPE,
-    p_hora_minima                      IN T_MONITOREOS.HORA_MINIMA%TYPE,
-    p_hora_maxima                      IN T_MONITOREOS.HORA_MAXIMA%TYPE,
-    p_comentarios                      IN T_MONITOREOS.COMENTARIOS%TYPE )
+    p_id_monitoreo                     IN T_MONITOREOS.ID_MONITOREO%TYPE                       DEFAULT NULL /*PK*/ /*FK*/,
+    p_causa                            IN T_MONITOREOS.CAUSA%TYPE                              DEFAULT NULL,
+    p_plan_accion                      IN T_MONITOREOS.PLAN_ACCION%TYPE                        DEFAULT NULL,
+    p_activo                           IN T_MONITOREOS.ACTIVO%TYPE                             DEFAULT 'N' ,
+    p_consulta_sql                     IN T_MONITOREOS.CONSULTA_SQL%TYPE                       DEFAULT NULL,
+    p_bloque_plsql                     IN T_MONITOREOS.BLOQUE_PLSQL%TYPE                       DEFAULT NULL,
+    p_prioridad                        IN T_MONITOREOS.PRIORIDAD%TYPE                          DEFAULT 3 ,
+    p_cantidad_ejecuciones             IN T_MONITOREOS.CANTIDAD_EJECUCIONES%TYPE               DEFAULT NULL,
+    p_fecha_ultima_ejecucion           IN T_MONITOREOS.FECHA_ULTIMA_EJECUCION%TYPE             DEFAULT NULL,
+    p_cantidad_ejecuciones_conflicto   IN T_MONITOREOS.CANTIDAD_EJECUCIONES_CONFLICTO%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion_conflicto IN T_MONITOREOS.FECHA_ULTIMA_EJECUCION_CONFLICTO%TYPE   DEFAULT NULL,
+    p_roles_responsables               IN T_MONITOREOS.ROLES_RESPONSABLES%TYPE                 DEFAULT NULL,
+    p_usuarios_responsables            IN T_MONITOREOS.USUARIOS_RESPONSABLES%TYPE              DEFAULT NULL,
+    p_nivel_aviso_correo               IN T_MONITOREOS.NIVEL_AVISO_CORREO%TYPE                 DEFAULT 1 ,
+    p_aviso_notificacion               IN T_MONITOREOS.AVISO_NOTIFICACION%TYPE                 DEFAULT 'N' ,
+    p_aviso_mensaje                    IN T_MONITOREOS.AVISO_MENSAJE%TYPE                      DEFAULT 'N' ,
+    p_frecuencia                       IN T_MONITOREOS.FRECUENCIA%TYPE                         DEFAULT 'D' ,
+    p_opera_sistema_cerrado            IN T_MONITOREOS.OPERA_SISTEMA_CERRADO%TYPE              DEFAULT 'N' ,
+    p_opera_dia_no_habil               IN T_MONITOREOS.OPERA_DIA_NO_HABIL%TYPE                 DEFAULT 'N' ,
+    p_hora_minima                      IN T_MONITOREOS.HORA_MINIMA%TYPE                        DEFAULT NULL,
+    p_hora_maxima                      IN T_MONITOREOS.HORA_MAXIMA%TYPE                        DEFAULT NULL,
+    p_comentarios                      IN T_MONITOREOS.COMENTARIOS%TYPE                        DEFAULT NULL )
   RETURN T_MONITOREOS.ID_MONITOREO%TYPE;
 
   PROCEDURE create_row (
-    p_id_monitoreo                     IN T_MONITOREOS.ID_MONITOREO%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_causa                            IN T_MONITOREOS.CAUSA%TYPE,
-    p_plan_accion                      IN T_MONITOREOS.PLAN_ACCION%TYPE,
-    p_activo                           IN T_MONITOREOS.ACTIVO%TYPE,
-    p_consulta_sql                     IN T_MONITOREOS.CONSULTA_SQL%TYPE,
-    p_bloque_plsql                     IN T_MONITOREOS.BLOQUE_PLSQL%TYPE,
-    p_prioridad                        IN T_MONITOREOS.PRIORIDAD%TYPE,
-    p_cantidad_ejecuciones             IN T_MONITOREOS.CANTIDAD_EJECUCIONES%TYPE,
-    p_fecha_ultima_ejecucion           IN T_MONITOREOS.FECHA_ULTIMA_EJECUCION%TYPE,
-    p_cantidad_ejecuciones_conflicto   IN T_MONITOREOS.CANTIDAD_EJECUCIONES_CONFLICTO%TYPE,
-    p_fecha_ultima_ejecucion_conflicto IN T_MONITOREOS.FECHA_ULTIMA_EJECUCION_CONFLICTO%TYPE,
-    p_roles_responsables               IN T_MONITOREOS.ROLES_RESPONSABLES%TYPE,
-    p_usuarios_responsables            IN T_MONITOREOS.USUARIOS_RESPONSABLES%TYPE,
-    p_nivel_aviso_correo               IN T_MONITOREOS.NIVEL_AVISO_CORREO%TYPE,
-    p_aviso_notificacion               IN T_MONITOREOS.AVISO_NOTIFICACION%TYPE,
-    p_aviso_mensaje                    IN T_MONITOREOS.AVISO_MENSAJE%TYPE,
-    p_frecuencia                       IN T_MONITOREOS.FRECUENCIA%TYPE,
-    p_opera_sistema_cerrado            IN T_MONITOREOS.OPERA_SISTEMA_CERRADO%TYPE,
-    p_opera_dia_no_habil               IN T_MONITOREOS.OPERA_DIA_NO_HABIL%TYPE,
-    p_hora_minima                      IN T_MONITOREOS.HORA_MINIMA%TYPE,
-    p_hora_maxima                      IN T_MONITOREOS.HORA_MAXIMA%TYPE,
-    p_comentarios                      IN T_MONITOREOS.COMENTARIOS%TYPE );
+    p_id_monitoreo                     IN T_MONITOREOS.ID_MONITOREO%TYPE                       DEFAULT NULL /*PK*/ /*FK*/,
+    p_causa                            IN T_MONITOREOS.CAUSA%TYPE                              DEFAULT NULL,
+    p_plan_accion                      IN T_MONITOREOS.PLAN_ACCION%TYPE                        DEFAULT NULL,
+    p_activo                           IN T_MONITOREOS.ACTIVO%TYPE                             DEFAULT 'N' ,
+    p_consulta_sql                     IN T_MONITOREOS.CONSULTA_SQL%TYPE                       DEFAULT NULL,
+    p_bloque_plsql                     IN T_MONITOREOS.BLOQUE_PLSQL%TYPE                       DEFAULT NULL,
+    p_prioridad                        IN T_MONITOREOS.PRIORIDAD%TYPE                          DEFAULT 3 ,
+    p_cantidad_ejecuciones             IN T_MONITOREOS.CANTIDAD_EJECUCIONES%TYPE               DEFAULT NULL,
+    p_fecha_ultima_ejecucion           IN T_MONITOREOS.FECHA_ULTIMA_EJECUCION%TYPE             DEFAULT NULL,
+    p_cantidad_ejecuciones_conflicto   IN T_MONITOREOS.CANTIDAD_EJECUCIONES_CONFLICTO%TYPE     DEFAULT NULL,
+    p_fecha_ultima_ejecucion_conflicto IN T_MONITOREOS.FECHA_ULTIMA_EJECUCION_CONFLICTO%TYPE   DEFAULT NULL,
+    p_roles_responsables               IN T_MONITOREOS.ROLES_RESPONSABLES%TYPE                 DEFAULT NULL,
+    p_usuarios_responsables            IN T_MONITOREOS.USUARIOS_RESPONSABLES%TYPE              DEFAULT NULL,
+    p_nivel_aviso_correo               IN T_MONITOREOS.NIVEL_AVISO_CORREO%TYPE                 DEFAULT 1 ,
+    p_aviso_notificacion               IN T_MONITOREOS.AVISO_NOTIFICACION%TYPE                 DEFAULT 'N' ,
+    p_aviso_mensaje                    IN T_MONITOREOS.AVISO_MENSAJE%TYPE                      DEFAULT 'N' ,
+    p_frecuencia                       IN T_MONITOREOS.FRECUENCIA%TYPE                         DEFAULT 'D' ,
+    p_opera_sistema_cerrado            IN T_MONITOREOS.OPERA_SISTEMA_CERRADO%TYPE              DEFAULT 'N' ,
+    p_opera_dia_no_habil               IN T_MONITOREOS.OPERA_DIA_NO_HABIL%TYPE                 DEFAULT 'N' ,
+    p_hora_minima                      IN T_MONITOREOS.HORA_MINIMA%TYPE                        DEFAULT NULL,
+    p_hora_maxima                      IN T_MONITOREOS.HORA_MAXIMA%TYPE                        DEFAULT NULL,
+    p_comentarios                      IN T_MONITOREOS.COMENTARIOS%TYPE                        DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_MONITOREOS%ROWTYPE )
@@ -464,6 +464,12 @@ CREATE OR REPLACE PACKAGE T_MONITOREOS_API IS
   PROCEDURE set_comentarios (
     p_id_monitoreo IN T_MONITOREOS.ID_MONITOREO%TYPE /*PK*/,
     p_comentarios  IN T_MONITOREOS.COMENTARIOS%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_MONITOREOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_MONITOREOS_API;
 /

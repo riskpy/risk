@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_DOMINIOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:49
+  - generated_at: 2026-03-15 15:13:55
   - generated_by: JAVIER
   */
 
@@ -67,11 +67,11 @@ CREATE OR REPLACE PACKAGE BODY T_DOMINIOS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre     IN T_DOMINIOS.NOMBRE%TYPE,
-    p_detalle    IN T_DOMINIOS.DETALLE%TYPE,
-    p_activo     IN T_DOMINIOS.ACTIVO%TYPE,
-    p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE /*FK*/ )
+    p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE             DEFAULT NULL /*PK*/,
+    p_nombre     IN T_DOMINIOS.NOMBRE%TYPE                 ,
+    p_detalle    IN T_DOMINIOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo     IN T_DOMINIOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE               /*FK*/ )
   RETURN T_DOMINIOS.ID_DOMINIO%TYPE
   IS
     v_return T_DOMINIOS.ID_DOMINIO%TYPE; 
@@ -100,11 +100,11 @@ CREATE OR REPLACE PACKAGE BODY T_DOMINIOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE DEFAULT NULL /*PK*/,
-    p_nombre     IN T_DOMINIOS.NOMBRE%TYPE,
-    p_detalle    IN T_DOMINIOS.DETALLE%TYPE,
-    p_activo     IN T_DOMINIOS.ACTIVO%TYPE,
-    p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE /*FK*/ )
+    p_id_dominio IN T_DOMINIOS.ID_DOMINIO%TYPE             DEFAULT NULL /*PK*/,
+    p_nombre     IN T_DOMINIOS.NOMBRE%TYPE                 ,
+    p_detalle    IN T_DOMINIOS.DETALLE%TYPE                DEFAULT NULL,
+    p_activo     IN T_DOMINIOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_id_modulo  IN T_DOMINIOS.ID_MODULO%TYPE               /*FK*/ )
   IS
   BEGIN
     INSERT INTO T_DOMINIOS (
@@ -614,6 +614,17 @@ CREATE OR REPLACE PACKAGE BODY T_DOMINIOS_API IS
     WHERE
       ID_DOMINIO = p_id_dominio;
   END set_id_modulo;
+
+  FUNCTION get_default_row
+  RETURN T_DOMINIOS%ROWTYPE
+  IS
+    v_row T_DOMINIOS%ROWTYPE;
+  BEGIN
+    v_row.ACTIVO            := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_DOMINIOS_API;
 /

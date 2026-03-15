@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_DATOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:54
+  - generated_at: 2026-03-15 15:14:01
   - generated_by: JAVIER
   */
 
@@ -75,10 +75,10 @@ CREATE OR REPLACE PACKAGE BODY T_DATOS_API IS
   END;
 
   FUNCTION create_row (
-    p_tabla      IN T_DATOS.TABLA%TYPE /*PK*/ /*FK*/,
-    p_campo      IN T_DATOS.CAMPO%TYPE /*PK*/ /*FK*/,
-    p_referencia IN T_DATOS.REFERENCIA%TYPE /*PK*/,
-    p_contenido  IN T_DATOS.CONTENIDO%TYPE )
+    p_tabla      IN T_DATOS.TABLA%TYPE                   /*PK*/ /*FK*/,
+    p_campo      IN T_DATOS.CAMPO%TYPE                   /*PK*/ /*FK*/,
+    p_referencia IN T_DATOS.REFERENCIA%TYPE              /*PK*/,
+    p_contenido  IN T_DATOS.CONTENIDO%TYPE              DEFAULT NULL )
   RETURN T_DATOS%ROWTYPE
   IS
     v_return T_DATOS%ROWTYPE; 
@@ -112,10 +112,10 @@ CREATE OR REPLACE PACKAGE BODY T_DATOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_tabla      IN T_DATOS.TABLA%TYPE /*PK*/ /*FK*/,
-    p_campo      IN T_DATOS.CAMPO%TYPE /*PK*/ /*FK*/,
-    p_referencia IN T_DATOS.REFERENCIA%TYPE /*PK*/,
-    p_contenido  IN T_DATOS.CONTENIDO%TYPE )
+    p_tabla      IN T_DATOS.TABLA%TYPE                   /*PK*/ /*FK*/,
+    p_campo      IN T_DATOS.CAMPO%TYPE                   /*PK*/ /*FK*/,
+    p_referencia IN T_DATOS.REFERENCIA%TYPE              /*PK*/,
+    p_contenido  IN T_DATOS.CONTENIDO%TYPE              DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_DATOS (
@@ -574,6 +574,16 @@ CREATE OR REPLACE PACKAGE BODY T_DATOS_API IS
       AND CAMPO = p_campo
       AND REFERENCIA = p_referencia;
   END set_contenido;
+
+  FUNCTION get_default_row
+  RETURN T_DATOS%ROWTYPE
+  IS
+    v_row T_DATOS%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_DATOS_API;
 /

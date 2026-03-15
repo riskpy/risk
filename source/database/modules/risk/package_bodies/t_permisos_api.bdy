@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_PERMISOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:52
+  - generated_at: 2026-03-15 15:13:58
   - generated_by: JAVIER
   */
 
@@ -67,9 +67,9 @@ CREATE OR REPLACE PACKAGE BODY T_PERMISOS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_permiso  IN T_PERMISOS.ID_PERMISO%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion IN T_PERMISOS.DESCRIPCION%TYPE,
-    p_detalle     IN T_PERMISOS.DETALLE%TYPE )
+    p_id_permiso  IN T_PERMISOS.ID_PERMISO%TYPE             DEFAULT NULL /*PK*/,
+    p_descripcion IN T_PERMISOS.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_detalle     IN T_PERMISOS.DETALLE%TYPE                DEFAULT NULL )
   RETURN T_PERMISOS.ID_PERMISO%TYPE
   IS
     v_return T_PERMISOS.ID_PERMISO%TYPE; 
@@ -94,9 +94,9 @@ CREATE OR REPLACE PACKAGE BODY T_PERMISOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_permiso  IN T_PERMISOS.ID_PERMISO%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion IN T_PERMISOS.DESCRIPCION%TYPE,
-    p_detalle     IN T_PERMISOS.DETALLE%TYPE )
+    p_id_permiso  IN T_PERMISOS.ID_PERMISO%TYPE             DEFAULT NULL /*PK*/,
+    p_descripcion IN T_PERMISOS.DESCRIPCION%TYPE            DEFAULT NULL,
+    p_detalle     IN T_PERMISOS.DETALLE%TYPE                DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_PERMISOS (
@@ -502,6 +502,16 @@ CREATE OR REPLACE PACKAGE BODY T_PERMISOS_API IS
     WHERE
       ID_PERMISO = p_id_permiso;
   END set_detalle;
+
+  FUNCTION get_default_row
+  RETURN T_PERMISOS%ROWTYPE
+  IS
+    v_row T_PERMISOS%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_PERMISOS_API;
 /

@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_ROL_PERMISOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:52"
+    generated_at="2026-03-15 15:13:58"
     generated_by="JAVIER"
     p_table_name="T_ROL_PERMISOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,25 +64,25 @@ CREATE OR REPLACE PACKAGE T_ROL_PERMISOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE /*PK*/ /*FK*/,
-    p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE /*PK*/ /*FK*/,
-    p_consultar  IN T_ROL_PERMISOS.CONSULTAR%TYPE,
-    p_insertar   IN T_ROL_PERMISOS.INSERTAR%TYPE,
-    p_actualizar IN T_ROL_PERMISOS.ACTUALIZAR%TYPE,
-    p_eliminar   IN T_ROL_PERMISOS.ELIMINAR%TYPE,
-    p_verificar  IN T_ROL_PERMISOS.VERIFICAR%TYPE,
-    p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE )
+    p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE                  /*PK*/ /*FK*/,
+    p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE              /*PK*/ /*FK*/,
+    p_consultar  IN T_ROL_PERMISOS.CONSULTAR%TYPE              DEFAULT 'N' ,
+    p_insertar   IN T_ROL_PERMISOS.INSERTAR%TYPE               DEFAULT 'N' ,
+    p_actualizar IN T_ROL_PERMISOS.ACTUALIZAR%TYPE             DEFAULT 'N' ,
+    p_eliminar   IN T_ROL_PERMISOS.ELIMINAR%TYPE               DEFAULT 'N' ,
+    p_verificar  IN T_ROL_PERMISOS.VERIFICAR%TYPE              DEFAULT 'N' ,
+    p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE              DEFAULT 'N'  )
   RETURN T_ROL_PERMISOS%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE /*PK*/ /*FK*/,
-    p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE /*PK*/ /*FK*/,
-    p_consultar  IN T_ROL_PERMISOS.CONSULTAR%TYPE,
-    p_insertar   IN T_ROL_PERMISOS.INSERTAR%TYPE,
-    p_actualizar IN T_ROL_PERMISOS.ACTUALIZAR%TYPE,
-    p_eliminar   IN T_ROL_PERMISOS.ELIMINAR%TYPE,
-    p_verificar  IN T_ROL_PERMISOS.VERIFICAR%TYPE,
-    p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE );
+    p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE                  /*PK*/ /*FK*/,
+    p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE              /*PK*/ /*FK*/,
+    p_consultar  IN T_ROL_PERMISOS.CONSULTAR%TYPE              DEFAULT 'N' ,
+    p_insertar   IN T_ROL_PERMISOS.INSERTAR%TYPE               DEFAULT 'N' ,
+    p_actualizar IN T_ROL_PERMISOS.ACTUALIZAR%TYPE             DEFAULT 'N' ,
+    p_eliminar   IN T_ROL_PERMISOS.ELIMINAR%TYPE               DEFAULT 'N' ,
+    p_verificar  IN T_ROL_PERMISOS.VERIFICAR%TYPE              DEFAULT 'N' ,
+    p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE              DEFAULT 'N'  );
 
   FUNCTION create_row (
     p_row IN T_ROL_PERMISOS%ROWTYPE )
@@ -266,6 +266,12 @@ CREATE OR REPLACE PACKAGE T_ROL_PERMISOS_API IS
     p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE /*PK*/,
     p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE /*PK*/,
     p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_ROL_PERMISOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_ROL_PERMISOS_API;
 /

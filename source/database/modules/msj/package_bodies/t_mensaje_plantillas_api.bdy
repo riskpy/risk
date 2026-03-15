@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJE_PLANTILLAS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:56
+  - generated_at: 2026-03-15 15:14:06
   - generated_by: JAVIER
   */
 
@@ -67,16 +67,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJE_PLANTILLAS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE DEFAULT NULL /*PK*/,
-    p_nombre                 IN T_MENSAJE_PLANTILLAS.NOMBRE%TYPE,
-    p_activo                 IN T_MENSAJE_PLANTILLAS.ACTIVO%TYPE,
-    p_id_categoria           IN T_MENSAJE_PLANTILLAS.ID_CATEGORIA%TYPE /*FK*/,
-    p_detalle                IN T_MENSAJE_PLANTILLAS.DETALLE%TYPE,
-    p_plantilla              IN T_MENSAJE_PLANTILLAS.PLANTILLA%TYPE,
-    p_fecha_ini_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE,
-    p_fecha_fin_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE,
-    p_cantidad_max_enviar    IN T_MENSAJE_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE,
-    p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE )
+    p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE             DEFAULT NULL /*PK*/,
+    p_nombre                 IN T_MENSAJE_PLANTILLAS.NOMBRE%TYPE                   DEFAULT NULL,
+    p_activo                 IN T_MENSAJE_PLANTILLAS.ACTIVO%TYPE                   DEFAULT 'N' ,
+    p_id_categoria           IN T_MENSAJE_PLANTILLAS.ID_CATEGORIA%TYPE              /*FK*/,
+    p_detalle                IN T_MENSAJE_PLANTILLAS.DETALLE%TYPE                  DEFAULT NULL,
+    p_plantilla              IN T_MENSAJE_PLANTILLAS.PLANTILLA%TYPE                ,
+    p_fecha_ini_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE       DEFAULT NULL,
+    p_fecha_fin_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE       DEFAULT NULL,
+    p_cantidad_max_enviar    IN T_MENSAJE_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE      DEFAULT NULL,
+    p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE   DEFAULT NULL )
   RETURN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE
   IS
     v_return T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE; 
@@ -115,16 +115,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJE_PLANTILLAS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE DEFAULT NULL /*PK*/,
-    p_nombre                 IN T_MENSAJE_PLANTILLAS.NOMBRE%TYPE,
-    p_activo                 IN T_MENSAJE_PLANTILLAS.ACTIVO%TYPE,
-    p_id_categoria           IN T_MENSAJE_PLANTILLAS.ID_CATEGORIA%TYPE /*FK*/,
-    p_detalle                IN T_MENSAJE_PLANTILLAS.DETALLE%TYPE,
-    p_plantilla              IN T_MENSAJE_PLANTILLAS.PLANTILLA%TYPE,
-    p_fecha_ini_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE,
-    p_fecha_fin_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE,
-    p_cantidad_max_enviar    IN T_MENSAJE_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE,
-    p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE )
+    p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE             DEFAULT NULL /*PK*/,
+    p_nombre                 IN T_MENSAJE_PLANTILLAS.NOMBRE%TYPE                   DEFAULT NULL,
+    p_activo                 IN T_MENSAJE_PLANTILLAS.ACTIVO%TYPE                   DEFAULT 'N' ,
+    p_id_categoria           IN T_MENSAJE_PLANTILLAS.ID_CATEGORIA%TYPE              /*FK*/,
+    p_detalle                IN T_MENSAJE_PLANTILLAS.DETALLE%TYPE                  DEFAULT NULL,
+    p_plantilla              IN T_MENSAJE_PLANTILLAS.PLANTILLA%TYPE                ,
+    p_fecha_ini_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE       DEFAULT NULL,
+    p_fecha_fin_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE       DEFAULT NULL,
+    p_cantidad_max_enviar    IN T_MENSAJE_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE      DEFAULT NULL,
+    p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE   DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_MENSAJE_PLANTILLAS (
@@ -894,6 +894,17 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJE_PLANTILLAS_API IS
     WHERE
       ID_PLANTILLA = p_id_plantilla;
   END set_cantidad_envio_por_dia;
+
+  FUNCTION get_default_row
+  RETURN T_MENSAJE_PLANTILLAS%ROWTYPE
+  IS
+    v_row T_MENSAJE_PLANTILLAS%ROWTYPE;
+  BEGIN
+    v_row.ACTIVO            := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_MENSAJE_PLANTILLAS_API;
 /

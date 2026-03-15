@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:54"
+    generated_at="2026-03-15 15:14:01"
     generated_by="JAVIER"
     p_table_name="T_MONEDAS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,23 +62,23 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE,
-    p_activo      IN T_MONEDAS.ACTIVO%TYPE,
-    p_formato     IN T_MONEDAS.FORMATO%TYPE,
-    p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE,
-    p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE )
+    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE              DEFAULT NULL /*PK*/,
+    p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE            ,
+    p_activo      IN T_MONEDAS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_formato     IN T_MONEDAS.FORMATO%TYPE                DEFAULT NULL,
+    p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE                DEFAULT NULL,
+    p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE                DEFAULT NULL /*FK*/,
+    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE             DEFAULT NULL )
   RETURN T_MONEDAS.ID_MONEDA%TYPE;
 
   PROCEDURE create_row (
-    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE,
-    p_activo      IN T_MONEDAS.ACTIVO%TYPE,
-    p_formato     IN T_MONEDAS.FORMATO%TYPE,
-    p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE,
-    p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE );
+    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE              DEFAULT NULL /*PK*/,
+    p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE            ,
+    p_activo      IN T_MONEDAS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_formato     IN T_MONEDAS.FORMATO%TYPE                DEFAULT NULL,
+    p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE                DEFAULT NULL,
+    p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE                DEFAULT NULL /*FK*/,
+    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE             DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_MONEDAS%ROWTYPE )
@@ -239,6 +239,12 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
   PROCEDURE set_codigo_iso (
     p_id_moneda  IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/,
     p_codigo_iso IN T_MONEDAS.CODIGO_ISO%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_MONEDAS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_MONEDAS_API;
 /

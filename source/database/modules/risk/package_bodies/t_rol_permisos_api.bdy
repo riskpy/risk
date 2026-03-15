@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_ROL_PERMISOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:52
+  - generated_at: 2026-03-15 15:13:58
   - generated_by: JAVIER
   */
 
@@ -71,14 +71,14 @@ CREATE OR REPLACE PACKAGE BODY T_ROL_PERMISOS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE /*PK*/ /*FK*/,
-    p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE /*PK*/ /*FK*/,
-    p_consultar  IN T_ROL_PERMISOS.CONSULTAR%TYPE,
-    p_insertar   IN T_ROL_PERMISOS.INSERTAR%TYPE,
-    p_actualizar IN T_ROL_PERMISOS.ACTUALIZAR%TYPE,
-    p_eliminar   IN T_ROL_PERMISOS.ELIMINAR%TYPE,
-    p_verificar  IN T_ROL_PERMISOS.VERIFICAR%TYPE,
-    p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE )
+    p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE                  /*PK*/ /*FK*/,
+    p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE              /*PK*/ /*FK*/,
+    p_consultar  IN T_ROL_PERMISOS.CONSULTAR%TYPE              DEFAULT 'N' ,
+    p_insertar   IN T_ROL_PERMISOS.INSERTAR%TYPE               DEFAULT 'N' ,
+    p_actualizar IN T_ROL_PERMISOS.ACTUALIZAR%TYPE             DEFAULT 'N' ,
+    p_eliminar   IN T_ROL_PERMISOS.ELIMINAR%TYPE               DEFAULT 'N' ,
+    p_verificar  IN T_ROL_PERMISOS.VERIFICAR%TYPE              DEFAULT 'N' ,
+    p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE              DEFAULT 'N'  )
   RETURN T_ROL_PERMISOS%ROWTYPE
   IS
     v_return T_ROL_PERMISOS%ROWTYPE; 
@@ -124,14 +124,14 @@ CREATE OR REPLACE PACKAGE BODY T_ROL_PERMISOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE /*PK*/ /*FK*/,
-    p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE /*PK*/ /*FK*/,
-    p_consultar  IN T_ROL_PERMISOS.CONSULTAR%TYPE,
-    p_insertar   IN T_ROL_PERMISOS.INSERTAR%TYPE,
-    p_actualizar IN T_ROL_PERMISOS.ACTUALIZAR%TYPE,
-    p_eliminar   IN T_ROL_PERMISOS.ELIMINAR%TYPE,
-    p_verificar  IN T_ROL_PERMISOS.VERIFICAR%TYPE,
-    p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE )
+    p_id_rol     IN T_ROL_PERMISOS.ID_ROL%TYPE                  /*PK*/ /*FK*/,
+    p_id_permiso IN T_ROL_PERMISOS.ID_PERMISO%TYPE              /*PK*/ /*FK*/,
+    p_consultar  IN T_ROL_PERMISOS.CONSULTAR%TYPE              DEFAULT 'N' ,
+    p_insertar   IN T_ROL_PERMISOS.INSERTAR%TYPE               DEFAULT 'N' ,
+    p_actualizar IN T_ROL_PERMISOS.ACTUALIZAR%TYPE             DEFAULT 'N' ,
+    p_eliminar   IN T_ROL_PERMISOS.ELIMINAR%TYPE               DEFAULT 'N' ,
+    p_verificar  IN T_ROL_PERMISOS.VERIFICAR%TYPE              DEFAULT 'N' ,
+    p_autorizar  IN T_ROL_PERMISOS.AUTORIZAR%TYPE              DEFAULT 'N'  )
   IS
   BEGIN
     INSERT INTO T_ROL_PERMISOS (
@@ -825,6 +825,22 @@ CREATE OR REPLACE PACKAGE BODY T_ROL_PERMISOS_API IS
       ID_ROL = p_id_rol
       AND ID_PERMISO = p_id_permiso;
   END set_autorizar;
+
+  FUNCTION get_default_row
+  RETURN T_ROL_PERMISOS%ROWTYPE
+  IS
+    v_row T_ROL_PERMISOS%ROWTYPE;
+  BEGIN
+    v_row.CONSULTAR         := 'N' ;
+    v_row.INSERTAR          := 'N' ;
+    v_row.ACTUALIZAR        := 'N' ;
+    v_row.ELIMINAR          := 'N' ;
+    v_row.VERIFICAR         := 'N' ;
+    v_row.AUTORIZAR         := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_ROL_PERMISOS_API;
 /

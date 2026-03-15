@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_IMPORTACIONES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:51"
+    generated_at="2026-03-15 15:13:57"
     generated_by="JAVIER"
     p_table_name="T_IMPORTACIONES"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,25 +62,25 @@ CREATE OR REPLACE PACKAGE T_IMPORTACIONES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_importacion    IN T_IMPORTACIONES.ID_IMPORTACION%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_separador_campos  IN T_IMPORTACIONES.SEPARADOR_CAMPOS%TYPE,
-    p_delimitador_campo IN T_IMPORTACIONES.DELIMITADOR_CAMPO%TYPE,
-    p_linea_inicial     IN T_IMPORTACIONES.LINEA_INICIAL%TYPE,
-    p_nombre_tabla      IN T_IMPORTACIONES.NOMBRE_TABLA%TYPE,
-    p_truncar_tabla     IN T_IMPORTACIONES.TRUNCAR_TABLA%TYPE,
-    p_proceso_previo    IN T_IMPORTACIONES.PROCESO_PREVIO%TYPE,
-    p_proceso_posterior IN T_IMPORTACIONES.PROCESO_POSTERIOR%TYPE )
+    p_id_importacion    IN T_IMPORTACIONES.ID_IMPORTACION%TYPE         DEFAULT NULL /*PK*/ /*FK*/,
+    p_separador_campos  IN T_IMPORTACIONES.SEPARADOR_CAMPOS%TYPE       DEFAULT NULL,
+    p_delimitador_campo IN T_IMPORTACIONES.DELIMITADOR_CAMPO%TYPE      DEFAULT NULL,
+    p_linea_inicial     IN T_IMPORTACIONES.LINEA_INICIAL%TYPE          DEFAULT NULL,
+    p_nombre_tabla      IN T_IMPORTACIONES.NOMBRE_TABLA%TYPE           DEFAULT NULL,
+    p_truncar_tabla     IN T_IMPORTACIONES.TRUNCAR_TABLA%TYPE          DEFAULT NULL,
+    p_proceso_previo    IN T_IMPORTACIONES.PROCESO_PREVIO%TYPE         DEFAULT NULL,
+    p_proceso_posterior IN T_IMPORTACIONES.PROCESO_POSTERIOR%TYPE      DEFAULT NULL )
   RETURN T_IMPORTACIONES.ID_IMPORTACION%TYPE;
 
   PROCEDURE create_row (
-    p_id_importacion    IN T_IMPORTACIONES.ID_IMPORTACION%TYPE DEFAULT NULL /*PK*/ /*FK*/,
-    p_separador_campos  IN T_IMPORTACIONES.SEPARADOR_CAMPOS%TYPE,
-    p_delimitador_campo IN T_IMPORTACIONES.DELIMITADOR_CAMPO%TYPE,
-    p_linea_inicial     IN T_IMPORTACIONES.LINEA_INICIAL%TYPE,
-    p_nombre_tabla      IN T_IMPORTACIONES.NOMBRE_TABLA%TYPE,
-    p_truncar_tabla     IN T_IMPORTACIONES.TRUNCAR_TABLA%TYPE,
-    p_proceso_previo    IN T_IMPORTACIONES.PROCESO_PREVIO%TYPE,
-    p_proceso_posterior IN T_IMPORTACIONES.PROCESO_POSTERIOR%TYPE );
+    p_id_importacion    IN T_IMPORTACIONES.ID_IMPORTACION%TYPE         DEFAULT NULL /*PK*/ /*FK*/,
+    p_separador_campos  IN T_IMPORTACIONES.SEPARADOR_CAMPOS%TYPE       DEFAULT NULL,
+    p_delimitador_campo IN T_IMPORTACIONES.DELIMITADOR_CAMPO%TYPE      DEFAULT NULL,
+    p_linea_inicial     IN T_IMPORTACIONES.LINEA_INICIAL%TYPE          DEFAULT NULL,
+    p_nombre_tabla      IN T_IMPORTACIONES.NOMBRE_TABLA%TYPE           DEFAULT NULL,
+    p_truncar_tabla     IN T_IMPORTACIONES.TRUNCAR_TABLA%TYPE          DEFAULT NULL,
+    p_proceso_previo    IN T_IMPORTACIONES.PROCESO_PREVIO%TYPE         DEFAULT NULL,
+    p_proceso_posterior IN T_IMPORTACIONES.PROCESO_POSTERIOR%TYPE      DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_IMPORTACIONES%ROWTYPE )
@@ -254,6 +254,12 @@ CREATE OR REPLACE PACKAGE T_IMPORTACIONES_API IS
   PROCEDURE set_proceso_posterior (
     p_id_importacion    IN T_IMPORTACIONES.ID_IMPORTACION%TYPE /*PK*/,
     p_proceso_posterior IN T_IMPORTACIONES.PROCESO_POSTERIOR%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_IMPORTACIONES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_IMPORTACIONES_API;
 /

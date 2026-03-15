@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_ARCHIVO_DEFINICIONES_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:52
+  - generated_at: 2026-03-15 15:13:59
   - generated_by: JAVIER
   */
 
@@ -71,14 +71,14 @@ CREATE OR REPLACE PACKAGE BODY T_ARCHIVO_DEFINICIONES_API IS
   END;
 
   FUNCTION create_row (
-    p_tabla                  IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_campo                  IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE /*PK*/,
-    p_descripcion            IN T_ARCHIVO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_tamano_maximo          IN T_ARCHIVO_DEFINICIONES.TAMANO_MAXIMO%TYPE,
-    p_orden                  IN T_ARCHIVO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia      IN T_ARCHIVO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_extensiones_permitidas IN T_ARCHIVO_DEFINICIONES.EXTENSIONES_PERMITIDAS%TYPE,
-    p_historico_activo       IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE )
+    p_tabla                  IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE                     /*PK*/,
+    p_campo                  IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE                     /*PK*/,
+    p_descripcion            IN T_ARCHIVO_DEFINICIONES.DESCRIPCION%TYPE              DEFAULT NULL,
+    p_tamano_maximo          IN T_ARCHIVO_DEFINICIONES.TAMANO_MAXIMO%TYPE            DEFAULT NULL,
+    p_orden                  IN T_ARCHIVO_DEFINICIONES.ORDEN%TYPE                    ,
+    p_nombre_referencia      IN T_ARCHIVO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE        DEFAULT NULL,
+    p_extensiones_permitidas IN T_ARCHIVO_DEFINICIONES.EXTENSIONES_PERMITIDAS%TYPE   DEFAULT NULL,
+    p_historico_activo       IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE         DEFAULT 'N'  )
   RETURN T_ARCHIVO_DEFINICIONES%ROWTYPE
   IS
     v_return T_ARCHIVO_DEFINICIONES%ROWTYPE; 
@@ -124,14 +124,14 @@ CREATE OR REPLACE PACKAGE BODY T_ARCHIVO_DEFINICIONES_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_tabla                  IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE /*PK*/,
-    p_campo                  IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE /*PK*/,
-    p_descripcion            IN T_ARCHIVO_DEFINICIONES.DESCRIPCION%TYPE,
-    p_tamano_maximo          IN T_ARCHIVO_DEFINICIONES.TAMANO_MAXIMO%TYPE,
-    p_orden                  IN T_ARCHIVO_DEFINICIONES.ORDEN%TYPE,
-    p_nombre_referencia      IN T_ARCHIVO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE,
-    p_extensiones_permitidas IN T_ARCHIVO_DEFINICIONES.EXTENSIONES_PERMITIDAS%TYPE,
-    p_historico_activo       IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE )
+    p_tabla                  IN T_ARCHIVO_DEFINICIONES.TABLA%TYPE                     /*PK*/,
+    p_campo                  IN T_ARCHIVO_DEFINICIONES.CAMPO%TYPE                     /*PK*/,
+    p_descripcion            IN T_ARCHIVO_DEFINICIONES.DESCRIPCION%TYPE              DEFAULT NULL,
+    p_tamano_maximo          IN T_ARCHIVO_DEFINICIONES.TAMANO_MAXIMO%TYPE            DEFAULT NULL,
+    p_orden                  IN T_ARCHIVO_DEFINICIONES.ORDEN%TYPE                    ,
+    p_nombre_referencia      IN T_ARCHIVO_DEFINICIONES.NOMBRE_REFERENCIA%TYPE        DEFAULT NULL,
+    p_extensiones_permitidas IN T_ARCHIVO_DEFINICIONES.EXTENSIONES_PERMITIDAS%TYPE   DEFAULT NULL,
+    p_historico_activo       IN T_ARCHIVO_DEFINICIONES.HISTORICO_ACTIVO%TYPE         DEFAULT 'N'  )
   IS
   BEGIN
     INSERT INTO T_ARCHIVO_DEFINICIONES (
@@ -825,6 +825,17 @@ CREATE OR REPLACE PACKAGE BODY T_ARCHIVO_DEFINICIONES_API IS
       TABLA = p_tabla
       AND CAMPO = p_campo;
   END set_historico_activo;
+
+  FUNCTION get_default_row
+  RETURN T_ARCHIVO_DEFINICIONES%ROWTYPE
+  IS
+    v_row T_ARCHIVO_DEFINICIONES%ROWTYPE;
+  BEGIN
+    v_row.HISTORICO_ACTIVO  := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_ARCHIVO_DEFINICIONES_API;
 /

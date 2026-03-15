@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_DISPOSITIVO_SUSCRIPCIONES_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:56"
+    generated_at="2026-03-15 15:14:05"
     generated_by="JAVIER"
     p_table_name="T_DISPOSITIVO_SUSCRIPCIONES"
     p_owner="RISK_MSJ"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,15 +64,15 @@ CREATE OR REPLACE PACKAGE T_DISPOSITIVO_SUSCRIPCIONES_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_dispositivo   IN T_DISPOSITIVO_SUSCRIPCIONES.ID_DISPOSITIVO%TYPE /*PK*/,
-    p_suscripcion      IN T_DISPOSITIVO_SUSCRIPCIONES.SUSCRIPCION%TYPE /*PK*/,
-    p_fecha_expiracion IN T_DISPOSITIVO_SUSCRIPCIONES.FECHA_EXPIRACION%TYPE )
+    p_id_dispositivo   IN T_DISPOSITIVO_SUSCRIPCIONES.ID_DISPOSITIVO%TYPE          /*PK*/,
+    p_suscripcion      IN T_DISPOSITIVO_SUSCRIPCIONES.SUSCRIPCION%TYPE             /*PK*/,
+    p_fecha_expiracion IN T_DISPOSITIVO_SUSCRIPCIONES.FECHA_EXPIRACION%TYPE       DEFAULT NULL )
   RETURN T_DISPOSITIVO_SUSCRIPCIONES%ROWTYPE;
 
   PROCEDURE create_row (
-    p_id_dispositivo   IN T_DISPOSITIVO_SUSCRIPCIONES.ID_DISPOSITIVO%TYPE /*PK*/,
-    p_suscripcion      IN T_DISPOSITIVO_SUSCRIPCIONES.SUSCRIPCION%TYPE /*PK*/,
-    p_fecha_expiracion IN T_DISPOSITIVO_SUSCRIPCIONES.FECHA_EXPIRACION%TYPE );
+    p_id_dispositivo   IN T_DISPOSITIVO_SUSCRIPCIONES.ID_DISPOSITIVO%TYPE          /*PK*/,
+    p_suscripcion      IN T_DISPOSITIVO_SUSCRIPCIONES.SUSCRIPCION%TYPE             /*PK*/,
+    p_fecha_expiracion IN T_DISPOSITIVO_SUSCRIPCIONES.FECHA_EXPIRACION%TYPE       DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_DISPOSITIVO_SUSCRIPCIONES%ROWTYPE )
@@ -181,6 +181,12 @@ CREATE OR REPLACE PACKAGE T_DISPOSITIVO_SUSCRIPCIONES_API IS
     p_id_dispositivo   IN T_DISPOSITIVO_SUSCRIPCIONES.ID_DISPOSITIVO%TYPE /*PK*/,
     p_suscripcion      IN T_DISPOSITIVO_SUSCRIPCIONES.SUSCRIPCION%TYPE /*PK*/,
     p_fecha_expiracion IN T_DISPOSITIVO_SUSCRIPCIONES.FECHA_EXPIRACION%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_DISPOSITIVO_SUSCRIPCIONES%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_DISPOSITIVO_SUSCRIPCIONES_API;
 /

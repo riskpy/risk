@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_ENTIDAD_USUARIOS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:55
+  - generated_at: 2026-03-15 15:14:04
   - generated_by: JAVIER
   */
 
@@ -75,13 +75,13 @@ CREATE OR REPLACE PACKAGE BODY T_ENTIDAD_USUARIOS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_entidad       IN T_ENTIDAD_USUARIOS.ID_ENTIDAD%TYPE /*PK*/ /*FK*/,
-    p_id_usuario       IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE /*PK*/ /*FK*/,
-    p_grupo            IN T_ENTIDAD_USUARIOS.GRUPO%TYPE /*PK*/,
-    p_estado           IN T_ENTIDAD_USUARIOS.ESTADO%TYPE,
-    p_fecha_expiracion IN T_ENTIDAD_USUARIOS.FECHA_EXPIRACION%TYPE,
-    p_direccion_correo IN T_ENTIDAD_USUARIOS.DIRECCION_CORREO%TYPE,
-    p_numero_telefono  IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE )
+    p_id_entidad       IN T_ENTIDAD_USUARIOS.ID_ENTIDAD%TYPE              /*PK*/ /*FK*/,
+    p_id_usuario       IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE              /*PK*/ /*FK*/,
+    p_grupo            IN T_ENTIDAD_USUARIOS.GRUPO%TYPE                   /*PK*/,
+    p_estado           IN T_ENTIDAD_USUARIOS.ESTADO%TYPE                 DEFAULT NULL,
+    p_fecha_expiracion IN T_ENTIDAD_USUARIOS.FECHA_EXPIRACION%TYPE       DEFAULT NULL,
+    p_direccion_correo IN T_ENTIDAD_USUARIOS.DIRECCION_CORREO%TYPE       DEFAULT NULL,
+    p_numero_telefono  IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE        DEFAULT NULL )
   RETURN T_ENTIDAD_USUARIOS%ROWTYPE
   IS
     v_return T_ENTIDAD_USUARIOS%ROWTYPE; 
@@ -124,13 +124,13 @@ CREATE OR REPLACE PACKAGE BODY T_ENTIDAD_USUARIOS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_entidad       IN T_ENTIDAD_USUARIOS.ID_ENTIDAD%TYPE /*PK*/ /*FK*/,
-    p_id_usuario       IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE /*PK*/ /*FK*/,
-    p_grupo            IN T_ENTIDAD_USUARIOS.GRUPO%TYPE /*PK*/,
-    p_estado           IN T_ENTIDAD_USUARIOS.ESTADO%TYPE,
-    p_fecha_expiracion IN T_ENTIDAD_USUARIOS.FECHA_EXPIRACION%TYPE,
-    p_direccion_correo IN T_ENTIDAD_USUARIOS.DIRECCION_CORREO%TYPE,
-    p_numero_telefono  IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE )
+    p_id_entidad       IN T_ENTIDAD_USUARIOS.ID_ENTIDAD%TYPE              /*PK*/ /*FK*/,
+    p_id_usuario       IN T_ENTIDAD_USUARIOS.ID_USUARIO%TYPE              /*PK*/ /*FK*/,
+    p_grupo            IN T_ENTIDAD_USUARIOS.GRUPO%TYPE                   /*PK*/,
+    p_estado           IN T_ENTIDAD_USUARIOS.ESTADO%TYPE                 DEFAULT NULL,
+    p_fecha_expiracion IN T_ENTIDAD_USUARIOS.FECHA_EXPIRACION%TYPE       DEFAULT NULL,
+    p_direccion_correo IN T_ENTIDAD_USUARIOS.DIRECCION_CORREO%TYPE       DEFAULT NULL,
+    p_numero_telefono  IN T_ENTIDAD_USUARIOS.NUMERO_TELEFONO%TYPE        DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_ENTIDAD_USUARIOS (
@@ -772,6 +772,16 @@ CREATE OR REPLACE PACKAGE BODY T_ENTIDAD_USUARIOS_API IS
       AND ID_USUARIO = p_id_usuario
       AND GRUPO = p_grupo;
   END set_numero_telefono;
+
+  FUNCTION get_default_row
+  RETURN T_ENTIDAD_USUARIOS%ROWTYPE
+  IS
+    v_row T_ENTIDAD_USUARIOS%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_ENTIDAD_USUARIOS_API;
 /

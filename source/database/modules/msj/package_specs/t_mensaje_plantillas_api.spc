@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_MENSAJE_PLANTILLAS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:56"
+    generated_at="2026-03-15 15:14:06"
     generated_by="JAVIER"
     p_table_name="T_MENSAJE_PLANTILLAS"
     p_owner="RISK_MSJ"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -62,29 +62,29 @@ CREATE OR REPLACE PACKAGE T_MENSAJE_PLANTILLAS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE DEFAULT NULL /*PK*/,
-    p_nombre                 IN T_MENSAJE_PLANTILLAS.NOMBRE%TYPE,
-    p_activo                 IN T_MENSAJE_PLANTILLAS.ACTIVO%TYPE,
-    p_id_categoria           IN T_MENSAJE_PLANTILLAS.ID_CATEGORIA%TYPE /*FK*/,
-    p_detalle                IN T_MENSAJE_PLANTILLAS.DETALLE%TYPE,
-    p_plantilla              IN T_MENSAJE_PLANTILLAS.PLANTILLA%TYPE,
-    p_fecha_ini_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE,
-    p_fecha_fin_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE,
-    p_cantidad_max_enviar    IN T_MENSAJE_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE,
-    p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE )
+    p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE             DEFAULT NULL /*PK*/,
+    p_nombre                 IN T_MENSAJE_PLANTILLAS.NOMBRE%TYPE                   DEFAULT NULL,
+    p_activo                 IN T_MENSAJE_PLANTILLAS.ACTIVO%TYPE                   DEFAULT 'N' ,
+    p_id_categoria           IN T_MENSAJE_PLANTILLAS.ID_CATEGORIA%TYPE              /*FK*/,
+    p_detalle                IN T_MENSAJE_PLANTILLAS.DETALLE%TYPE                  DEFAULT NULL,
+    p_plantilla              IN T_MENSAJE_PLANTILLAS.PLANTILLA%TYPE                ,
+    p_fecha_ini_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE       DEFAULT NULL,
+    p_fecha_fin_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE       DEFAULT NULL,
+    p_cantidad_max_enviar    IN T_MENSAJE_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE      DEFAULT NULL,
+    p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE   DEFAULT NULL )
   RETURN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE;
 
   PROCEDURE create_row (
-    p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE DEFAULT NULL /*PK*/,
-    p_nombre                 IN T_MENSAJE_PLANTILLAS.NOMBRE%TYPE,
-    p_activo                 IN T_MENSAJE_PLANTILLAS.ACTIVO%TYPE,
-    p_id_categoria           IN T_MENSAJE_PLANTILLAS.ID_CATEGORIA%TYPE /*FK*/,
-    p_detalle                IN T_MENSAJE_PLANTILLAS.DETALLE%TYPE,
-    p_plantilla              IN T_MENSAJE_PLANTILLAS.PLANTILLA%TYPE,
-    p_fecha_ini_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE,
-    p_fecha_fin_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE,
-    p_cantidad_max_enviar    IN T_MENSAJE_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE,
-    p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE );
+    p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE             DEFAULT NULL /*PK*/,
+    p_nombre                 IN T_MENSAJE_PLANTILLAS.NOMBRE%TYPE                   DEFAULT NULL,
+    p_activo                 IN T_MENSAJE_PLANTILLAS.ACTIVO%TYPE                   DEFAULT 'N' ,
+    p_id_categoria           IN T_MENSAJE_PLANTILLAS.ID_CATEGORIA%TYPE              /*FK*/,
+    p_detalle                IN T_MENSAJE_PLANTILLAS.DETALLE%TYPE                  DEFAULT NULL,
+    p_plantilla              IN T_MENSAJE_PLANTILLAS.PLANTILLA%TYPE                ,
+    p_fecha_ini_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_INI_VIGENCIA%TYPE       DEFAULT NULL,
+    p_fecha_fin_vigencia     IN T_MENSAJE_PLANTILLAS.FECHA_FIN_VIGENCIA%TYPE       DEFAULT NULL,
+    p_cantidad_max_enviar    IN T_MENSAJE_PLANTILLAS.CANTIDAD_MAX_ENVIAR%TYPE      DEFAULT NULL,
+    p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE   DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_MENSAJE_PLANTILLAS%ROWTYPE )
@@ -284,6 +284,12 @@ CREATE OR REPLACE PACKAGE T_MENSAJE_PLANTILLAS_API IS
   PROCEDURE set_cantidad_envio_por_dia (
     p_id_plantilla           IN T_MENSAJE_PLANTILLAS.ID_PLANTILLA%TYPE /*PK*/,
     p_cantidad_envio_por_dia IN T_MENSAJE_PLANTILLAS.CANTIDAD_ENVIO_POR_DIA%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_MENSAJE_PLANTILLAS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_MENSAJE_PLANTILLAS_API;
 /

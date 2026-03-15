@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_USUARIO_CLAVES_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:53
+  - generated_at: 2026-03-15 15:14:00
   - generated_by: JAVIER
   */
 
@@ -75,16 +75,16 @@ CREATE OR REPLACE PACKAGE BODY T_USUARIO_CLAVES_API IS
   END;
 
   FUNCTION create_row (
-    p_id_usuario                 IN T_USUARIO_CLAVES.ID_USUARIO%TYPE /*PK*/ /*FK*/,
-    p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE /*PK*/,
-    p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE /*PK*/,
-    p_estado                     IN T_USUARIO_CLAVES.ESTADO%TYPE,
-    p_hash                       IN T_USUARIO_CLAVES.HASH%TYPE,
-    p_salt                       IN T_USUARIO_CLAVES.SALT%TYPE,
-    p_algoritmo                  IN T_USUARIO_CLAVES.ALGORITMO%TYPE,
-    p_iteraciones                IN T_USUARIO_CLAVES.ITERACIONES%TYPE,
-    p_cantidad_intentos_fallidos IN T_USUARIO_CLAVES.CANTIDAD_INTENTOS_FALLIDOS%TYPE,
-    p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE )
+    p_id_usuario                 IN T_USUARIO_CLAVES.ID_USUARIO%TYPE                    /*PK*/ /*FK*/,
+    p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE                          /*PK*/,
+    p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE                         /*PK*/,
+    p_estado                     IN T_USUARIO_CLAVES.ESTADO%TYPE                       DEFAULT NULL,
+    p_hash                       IN T_USUARIO_CLAVES.HASH%TYPE                         DEFAULT NULL,
+    p_salt                       IN T_USUARIO_CLAVES.SALT%TYPE                         DEFAULT NULL,
+    p_algoritmo                  IN T_USUARIO_CLAVES.ALGORITMO%TYPE                    DEFAULT NULL,
+    p_iteraciones                IN T_USUARIO_CLAVES.ITERACIONES%TYPE                  DEFAULT NULL,
+    p_cantidad_intentos_fallidos IN T_USUARIO_CLAVES.CANTIDAD_INTENTOS_FALLIDOS%TYPE   DEFAULT NULL,
+    p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE   DEFAULT NULL )
   RETURN T_USUARIO_CLAVES%ROWTYPE
   IS
     v_return T_USUARIO_CLAVES%ROWTYPE; 
@@ -136,16 +136,16 @@ CREATE OR REPLACE PACKAGE BODY T_USUARIO_CLAVES_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_usuario                 IN T_USUARIO_CLAVES.ID_USUARIO%TYPE /*PK*/ /*FK*/,
-    p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE /*PK*/,
-    p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE /*PK*/,
-    p_estado                     IN T_USUARIO_CLAVES.ESTADO%TYPE,
-    p_hash                       IN T_USUARIO_CLAVES.HASH%TYPE,
-    p_salt                       IN T_USUARIO_CLAVES.SALT%TYPE,
-    p_algoritmo                  IN T_USUARIO_CLAVES.ALGORITMO%TYPE,
-    p_iteraciones                IN T_USUARIO_CLAVES.ITERACIONES%TYPE,
-    p_cantidad_intentos_fallidos IN T_USUARIO_CLAVES.CANTIDAD_INTENTOS_FALLIDOS%TYPE,
-    p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE )
+    p_id_usuario                 IN T_USUARIO_CLAVES.ID_USUARIO%TYPE                    /*PK*/ /*FK*/,
+    p_tipo                       IN T_USUARIO_CLAVES.TIPO%TYPE                          /*PK*/,
+    p_orden                      IN T_USUARIO_CLAVES.ORDEN%TYPE                         /*PK*/,
+    p_estado                     IN T_USUARIO_CLAVES.ESTADO%TYPE                       DEFAULT NULL,
+    p_hash                       IN T_USUARIO_CLAVES.HASH%TYPE                         DEFAULT NULL,
+    p_salt                       IN T_USUARIO_CLAVES.SALT%TYPE                         DEFAULT NULL,
+    p_algoritmo                  IN T_USUARIO_CLAVES.ALGORITMO%TYPE                    DEFAULT NULL,
+    p_iteraciones                IN T_USUARIO_CLAVES.ITERACIONES%TYPE                  DEFAULT NULL,
+    p_cantidad_intentos_fallidos IN T_USUARIO_CLAVES.CANTIDAD_INTENTOS_FALLIDOS%TYPE   DEFAULT NULL,
+    p_fecha_ultima_autenticacion IN T_USUARIO_CLAVES.FECHA_ULTIMA_AUTENTICACION%TYPE   DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_USUARIO_CLAVES (
@@ -970,6 +970,16 @@ CREATE OR REPLACE PACKAGE BODY T_USUARIO_CLAVES_API IS
       AND TIPO = p_tipo
       AND ORDEN = p_orden;
   END set_fecha_ultima_autenticacion;
+
+  FUNCTION get_default_row
+  RETURN T_USUARIO_CLAVES%ROWTYPE
+  IS
+    v_row T_USUARIO_CLAVES%ROWTYPE;
+  BEGIN
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_USUARIO_CLAVES_API;
 /

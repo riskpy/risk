@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_MONEDAS_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-10 22:59:54
+  - generated_at: 2026-03-15 15:14:01
   - generated_by: JAVIER
   */
 
@@ -67,13 +67,13 @@ CREATE OR REPLACE PACKAGE BODY T_MONEDAS_API IS
   END;
 
   FUNCTION create_row (
-    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE,
-    p_activo      IN T_MONEDAS.ACTIVO%TYPE,
-    p_formato     IN T_MONEDAS.FORMATO%TYPE,
-    p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE,
-    p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE )
+    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE              DEFAULT NULL /*PK*/,
+    p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE            ,
+    p_activo      IN T_MONEDAS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_formato     IN T_MONEDAS.FORMATO%TYPE                DEFAULT NULL,
+    p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE                DEFAULT NULL,
+    p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE                DEFAULT NULL /*FK*/,
+    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE             DEFAULT NULL )
   RETURN T_MONEDAS.ID_MONEDA%TYPE
   IS
     v_return T_MONEDAS.ID_MONEDA%TYPE; 
@@ -106,13 +106,13 @@ CREATE OR REPLACE PACKAGE BODY T_MONEDAS_API IS
   END create_row;
 
   PROCEDURE create_row (
-    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE DEFAULT NULL /*PK*/,
-    p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE,
-    p_activo      IN T_MONEDAS.ACTIVO%TYPE,
-    p_formato     IN T_MONEDAS.FORMATO%TYPE,
-    p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE,
-    p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE )
+    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE              DEFAULT NULL /*PK*/,
+    p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE            ,
+    p_activo      IN T_MONEDAS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_formato     IN T_MONEDAS.FORMATO%TYPE                DEFAULT NULL,
+    p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE                DEFAULT NULL,
+    p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE                DEFAULT NULL /*FK*/,
+    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE             DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_MONEDAS (
@@ -726,6 +726,17 @@ CREATE OR REPLACE PACKAGE BODY T_MONEDAS_API IS
     WHERE
       ID_MONEDA = p_id_moneda;
   END set_codigo_iso;
+
+  FUNCTION get_default_row
+  RETURN T_MONEDAS%ROWTYPE
+  IS
+    v_row T_MONEDAS%ROWTYPE;
+  BEGIN
+    v_row.ACTIVO            := 'N' ;
+    v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
+    v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
+    RETURN v_row;
+  END get_default_row;
 
 END T_MONEDAS_API;
 /

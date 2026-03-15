@@ -10,12 +10,12 @@ CREATE OR REPLACE PACKAGE T_SIGNIFICADOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-10 22:59:50"
+    generated_at="2026-03-15 15:13:56"
     generated_by="JAVIER"
     p_table_name="T_SIGNIFICADOS"
     p_owner="RISK_RISK"
     p_enable_insertion_of_rows="TRUE"
-    p_enable_column_defaults="FALSE"
+    p_enable_column_defaults="TRUE"
     p_enable_update_of_rows="TRUE"
     p_enable_deletion_of_rows="TRUE"
     p_enable_parameter_prefixes="TRUE"
@@ -64,21 +64,21 @@ CREATE OR REPLACE PACKAGE T_SIGNIFICADOS_API IS
   RETURN VARCHAR2;
 
   FUNCTION create_row (
-    p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE /*PK*/,
-    p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE /*PK*/,
-    p_significado  IN T_SIGNIFICADOS.SIGNIFICADO%TYPE,
-    p_referencia   IN T_SIGNIFICADOS.REFERENCIA%TYPE,
-    p_activo       IN T_SIGNIFICADOS.ACTIVO%TYPE,
-    p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE )
+    p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE                 /*PK*/,
+    p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE                  /*PK*/,
+    p_significado  IN T_SIGNIFICADOS.SIGNIFICADO%TYPE            DEFAULT NULL,
+    p_referencia   IN T_SIGNIFICADOS.REFERENCIA%TYPE             DEFAULT NULL,
+    p_activo       IN T_SIGNIFICADOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE           DEFAULT NULL )
   RETURN T_SIGNIFICADOS%ROWTYPE;
 
   PROCEDURE create_row (
-    p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE /*PK*/,
-    p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE /*PK*/,
-    p_significado  IN T_SIGNIFICADOS.SIGNIFICADO%TYPE,
-    p_referencia   IN T_SIGNIFICADOS.REFERENCIA%TYPE,
-    p_activo       IN T_SIGNIFICADOS.ACTIVO%TYPE,
-    p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE );
+    p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE                 /*PK*/,
+    p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE                  /*PK*/,
+    p_significado  IN T_SIGNIFICADOS.SIGNIFICADO%TYPE            DEFAULT NULL,
+    p_referencia   IN T_SIGNIFICADOS.REFERENCIA%TYPE             DEFAULT NULL,
+    p_activo       IN T_SIGNIFICADOS.ACTIVO%TYPE                 DEFAULT 'N' ,
+    p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE           DEFAULT NULL );
 
   FUNCTION create_row (
     p_row IN T_SIGNIFICADOS%ROWTYPE )
@@ -232,6 +232,12 @@ CREATE OR REPLACE PACKAGE T_SIGNIFICADOS_API IS
     p_dominio      IN T_SIGNIFICADOS.DOMINIO%TYPE /*PK*/,
     p_codigo       IN T_SIGNIFICADOS.CODIGO%TYPE /*PK*/,
     p_referencia_2 IN T_SIGNIFICADOS.REFERENCIA_2%TYPE );
+
+  FUNCTION get_default_row
+  RETURN T_SIGNIFICADOS%ROWTYPE;
+  /*
+  Helper to get a prepopulated row with the table defaults from the dictionary.
+  */
 
 END T_SIGNIFICADOS_API;
 /
