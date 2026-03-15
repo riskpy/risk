@@ -23,7 +23,8 @@ begin
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
   l_clob(12) :=q'!!';
-
+
+
   insert into t_operaciones_dml_v
   (
      "ID_OPERACION"
@@ -84,7 +85,8 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
+
+
   insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
@@ -181,7 +183,7 @@ begin
   -----------------------------------
 
   l_varchar2(1) :=q'!502!';
-  l_clob(2) :=q'!La sesiÃ³n queda en Activo a menos que haya un intento y detecte que ya expirÃ³.!';
+  l_clob(2) :=q'!La sesión queda en Activo a menos que haya un intento y detecte que ya expiró.!';
   l_clob(3) :=q'!!';
   l_clob(4) :=q'!S!';
   l_clob(5) :=q'!SELECT se.id_usuario, us.alias, COUNT(se.access_token) sesiones
@@ -196,15 +198,16 @@ begin
   l_clob(8) :=q'!1!';
   l_clob(9) :=q'!!';
   l_varchar2(10) :=q'!0!';
-  l_clob(11) :=q'!!';
-  l_clob(12) :=q'!!';
+  l_clob(11) :=q'!N!';
+  l_clob(12) :=q'!N!';
   l_clob(13) :=q'!D!';
-  l_clob(14) :=q'!!';
-  l_clob(15) :=q'!!';
+  l_clob(14) :=q'!N!';
+  l_clob(15) :=q'!N!';
   l_clob(16) :=q'!!';
   l_clob(17) :=q'!!';
   l_clob(18) :=q'!!';
-
+
+
   insert into t_monitoreos_dml_v
   (
      "ID_MONITOREO"
