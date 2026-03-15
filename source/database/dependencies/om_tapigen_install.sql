@@ -2659,7 +2659,7 @@ CREATE OR REPLACE PACKAGE BODY om_tapigen IS
           v_result(v_index).col1 := v_list_padding || 'v_row.' ||
             util_double_quote(g_columns(i).column_name);
           v_result(v_index).col2 :=
-            ' := ' || g_columns(i).data_default ||
+            ' := ' || CASE WHEN g_columns(i).identity_type IS NOT NULL THEN 'NULL' ELSE g_columns(i).data_default END ||
             get_column_comment(i) || ';' ||
             c_lf;
         END IF;

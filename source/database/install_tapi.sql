@@ -54,6 +54,7 @@ begin
       om_tapigen.compile_api(p_table_name               => upper(t.tabla),
                              p_owner                    => upper(t.owner),
                              p_enable_insertion_of_rows => true,
+                             p_enable_column_defaults   => true,
                              p_enable_update_of_rows    => true,
                              p_enable_deletion_of_rows  => true,
                              p_double_quote_names       => false,
