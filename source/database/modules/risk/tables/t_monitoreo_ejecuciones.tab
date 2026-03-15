@@ -35,5 +35,5 @@ comment on column T_MONITOREO_EJECUCIONES.usuario_modificacion
 comment on column T_MONITOREO_EJECUCIONES.fecha_modificacion
   is 'Fecha en que se realizó la última edición del registro';
 alter table T_MONITOREO_EJECUCIONES
-  add constraint PK_MONITOREO_EJECUCIONES primary key (ID_MONITOREO_EJECUCION, ID_MONITOREO);
+  add constraint PK_MONITOREO_EJECUCIONES primary key (ID_MONITOREO_EJECUCION);
 
