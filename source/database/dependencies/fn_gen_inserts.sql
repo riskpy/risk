@@ -33,7 +33,7 @@ CREATE OR REPLACE function fn_gen_inserts
   p_new_table_name             varchar2,
   p_new_owner_name             varchar2 default null
 )
-return clob
+return clob authid current_user
 is
   l_cur                        number;
   NL                           varchar2(2) := chr(13)||chr(10);
