@@ -68,6 +68,13 @@ ALTER USER &v_msj_module_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER &v_flj_module_user GRANT CONNECT THROUGH &v_dev_user;
 
 prompt
+prompt Creating context...
+prompt -----------------------------------
+prompt
+-- Create context
+CREATE CONTEXT &v_app_name._CTX USING &v_risk_module_user..k_contexto;
+
+prompt
 prompt Granting privileges to roles...
 prompt -----------------------------------
 prompt
