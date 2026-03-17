@@ -31,6 +31,7 @@ prompt
 @@scripts/parameters/t_parametros/gen/base_datos_produccion.sql
 @@scripts/parameters/t_parametros/gen/charset_exportacion_scripts.sql
 @@scripts/parameters/t_parametros/gen/clave_encriptacion_desencriptacion.sql
+@@scripts/parameters/t_parametros/gen/nombre_sistema.sql
 @@scripts/parameters/t_parametros/glo/id_idioma_iso.sql
 @@scripts/parameters/t_parametros/glo/id_pais_iso.sql
 @@scripts/parameters/t_parametros/glo/zona_horaria.sql

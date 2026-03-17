@@ -1,28 +1,18 @@
 create or replace package body k_contexto is
 
   -- Cache en memoria por sesión
-  g_namespace varchar2(50);
+  g_namespace varchar2(300);
 
   function f_namespace return varchar2 is
-    l_namespace varchar2(50);
-    l_app_name  t_modulos.usuario_insercion%type;
+    l_namespace varchar2(300);
+    l_app_name  t_parametros.valor%type;
   begin
     if g_namespace is not null then
       return g_namespace;
     end if;
   
-    begin
-      select substr(usuario_insercion,
-                    1,
-                    instr(usuario_insercion, '_' || id_modulo) - 1)
-        into l_app_name
-        from t_modulos
-       where id_modulo = k_modulo.c_id_risk;
-    exception
-      when others then
-        l_app_name := k_modulo.c_id_risk;
-    end;
-    l_namespace := l_app_name || '_CTX';
+    l_app_name  := k_util.f_valor_parametro('NOMBRE_SISTEMA');
+    l_namespace := nvl(l_app_name, k_modulo.c_id_risk) || '_CTX';
   
     g_namespace := l_namespace;
     return l_namespace;
