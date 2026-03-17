@@ -94,6 +94,11 @@ create or replace package body k_sistema is
     return anydata.accessdate(f_valor_parametro(i_parametro));
   end;
 
+  function f_valor_parametro_clob(i_parametro in varchar2) return clob is
+  begin
+    return anydata.accessclob(f_valor_parametro(i_parametro));
+  end;
+
   procedure p_definir_parametro(i_parametro in varchar2,
                                 i_valor     in anydata) is
   begin
@@ -123,6 +128,12 @@ create or replace package body k_sistema is
                                      i_valor     in date) is
   begin
     p_definir_parametro(i_parametro, anydata.convertdate(i_valor));
+  end;
+
+  procedure p_definir_parametro_clob(i_parametro in varchar2,
+                                     i_valor     in clob) is
+  begin
+    p_definir_parametro(i_parametro, anydata.convertclob(i_valor));
   end;
 
   procedure p_inicializar_parametros is

@@ -195,6 +195,15 @@ create or replace package k_sistema is
   function f_valor_parametro_date(i_parametro in varchar2) return date;
 
   /**
+  Retorna el valor de un parámetro de tipo clob en la sesión
+
+  %author dmezac 20/11/2025 09:50:30
+  %param i_parametro Nombre del parámetro
+  %return Valor del parámetro de tipo clob, si no existe retorna null
+  */
+  function f_valor_parametro_clob(i_parametro in varchar2) return clob;
+
+  /**
   Define el valor de un parámetro en la sesión
   
   %author jtsoya539 27/3/2020 17:00:28
@@ -243,6 +252,16 @@ create or replace package k_sistema is
   */
   procedure p_definir_parametro_date(i_parametro in varchar2,
                                      i_valor     in date);
+
+  /**
+  Define el valor de un parámetro de tipo clob en la sesión
+
+  %author dmezac 20/11/2025 11:41:30
+  %param i_parametro Nombre del parámetro de tipo clob
+  %param i_valor Valor del parámetro de tipo clob
+  */
+  procedure p_definir_parametro_clob(i_parametro in varchar2,
+                                     i_valor     in clob);
 
   /**
   Define el valor de los parámetros por defecto de la sesión
