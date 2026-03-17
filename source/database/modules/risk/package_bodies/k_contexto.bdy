@@ -39,6 +39,31 @@ create or replace package body k_contexto is
     return sys_context(f_namespace, i_parametro, 4000);
   end;
 
+  function f_base_datos return varchar2 is
+  begin
+    return sys_context('USERENV', 'DB_NAME');
+  end;
+
+  function f_terminal return varchar2 is
+  begin
+    return sys_context('USERENV', 'TERMINAL');
+  end;
+
+  function f_host return varchar2 is
+  begin
+    return sys_context('USERENV', 'HOST');
+  end;
+
+  function f_direccion_ip return varchar2 is
+  begin
+    return sys_context('USERENV', 'IP_ADDRESS');
+  end;
+
+  function f_esquema_actual return varchar2 is
+  begin
+    return sys_context('USERENV', 'CURRENT_SCHEMA');
+  end;
+
 end;
 /
 

@@ -626,8 +626,8 @@ create or replace package body k_autenticacion is
          i_refresh_token,
          l_fecha_expiracion_refresh_token,
          k_sistema.f_valor_parametro_string(k_sistema.c_direccion_ip),
-         k_util.f_host,
-         k_util.f_terminal,
+         k_contexto.f_host,
+         k_contexto.f_terminal,
          l_id_dispositivo,
          l_origen,
          i_dato_externo)
@@ -644,8 +644,8 @@ create or replace package body k_autenticacion is
                refresh_token                  = i_refresh_token,
                fecha_expiracion_refresh_token = l_fecha_expiracion_refresh_token,
                direccion_ip                   = k_sistema.f_valor_parametro_string(k_sistema.c_direccion_ip),
-               host                           = k_util.f_host,
-               terminal                       = k_util.f_terminal,
+               host                           = k_contexto.f_host,
+               terminal                       = k_contexto.f_terminal,
                id_dispositivo                 = l_id_dispositivo,
                origen                         = l_origen,
                dato_externo                   = i_dato_externo
@@ -898,3 +898,4 @@ create or replace package body k_autenticacion is
 
 end;
 /
+

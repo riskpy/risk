@@ -56,6 +56,7 @@ prompt
 @@package_specs/test_k_autorizacion.spc
 @@package_specs/test_k_cadena.spc
 @@package_specs/test_k_clave.spc
+@@package_specs/test_k_contexto.spc
 @@package_specs/test_k_dato.spc
 @@package_specs/test_k_dispositivo.spc
 @@package_specs/test_k_dominio.spc
@@ -90,6 +91,7 @@ prompt
 @@package_bodies/test_k_autorizacion.bdy
 @@package_bodies/test_k_cadena.bdy
 @@package_bodies/test_k_clave.bdy
+@@package_bodies/test_k_contexto.bdy
 @@package_bodies/test_k_dato.bdy
 @@package_bodies/test_k_dispositivo.bdy
 @@package_bodies/test_k_dominio.bdy

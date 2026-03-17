@@ -9,7 +9,7 @@ create or replace package body k_sistema is
 
   function f_es_produccion return boolean is
   begin
-    return upper(k_util.f_valor_parametro('BASE_DATOS_PRODUCCION')) = upper(k_util.f_base_datos);
+    return upper(k_util.f_valor_parametro('BASE_DATOS_PRODUCCION')) = upper(k_contexto.f_base_datos);
   end;
 
   function f_fecha return date is

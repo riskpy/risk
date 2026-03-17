@@ -37,6 +37,16 @@ create or replace package k_contexto is
 
   function f_valor_parametro(i_parametro in varchar2) return varchar2;
 
+  function f_base_datos return varchar2;
+
+  function f_terminal return varchar2;
+
+  function f_host return varchar2;
+
+  function f_direccion_ip return varchar2;
+
+  function f_esquema_actual return varchar2;
+
 end;
 /
 

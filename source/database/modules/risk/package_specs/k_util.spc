@@ -88,16 +88,6 @@ create or replace package k_util is
 
   function read_http_body(resp in out utl_http.resp) return clob;
 
-  function f_base_datos return varchar2;
-
-  function f_terminal return varchar2;
-
-  function f_host return varchar2;
-
-  function f_direccion_ip return varchar2;
-
-  function f_esquema_actual return varchar2;
-
   function f_charset return varchar2;
 
   /**
