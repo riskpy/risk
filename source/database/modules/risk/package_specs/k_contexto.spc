@@ -1,7 +1,7 @@
 create or replace package k_contexto is
 
   /**
-  Agrupa operaciones relacionadas con parámetros de contexto de la sesión
+  Agrupa operaciones relacionadas con parámetros del contexto
   
   %author jtsoya539 15/3/2026 21:31:00
   */
@@ -37,6 +37,35 @@ create or replace package k_contexto is
 
   function f_valor_parametro(i_parametro in varchar2) return varchar2;
 
+  /**
+  Define el valor de los parámetros por defecto del contexto
+  
+  %author jtsoya539 15/3/2026 21:31:00
+  */
+  procedure p_inicializar_parametros;
+
+  /**
+  Define el valor de todos los parámetros del contexto a null
+  
+  %author jtsoya539 15/3/2026 21:31:00
+  */
+  procedure p_limpiar_parametros;
+
+  /**
+  Elimina todos los parámetros definidos en el contexto
+  
+  %author jtsoya539 15/3/2026 21:31:00
+  */
+  procedure p_eliminar_parametros;
+
+  /**
+  Imprime todos los parámetros definidos en el contexto
+  
+  %author jtsoya539 15/3/2026 21:31:00
+  */
+  procedure p_imprimir_parametros;
+
+  --
   function f_base_datos return varchar2;
 
   function f_terminal return varchar2;
@@ -46,6 +75,7 @@ create or replace package k_contexto is
   function f_direccion_ip return varchar2;
 
   function f_esquema_actual return varchar2;
+  --
 
 end;
 /

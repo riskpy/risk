@@ -1,10 +1,12 @@
 create or replace package body k_contexto is
 
   -- Cache en memoria por sesión
-  g_namespace varchar2(300);
+  g_namespace varchar2(30);
+
+  g_indice binary_integer;
 
   function f_namespace return varchar2 is
-    l_namespace varchar2(300);
+    l_namespace varchar2(30);
     l_app_name  t_parametros.valor%type;
   begin
     if g_namespace is not null then
@@ -29,6 +31,52 @@ create or replace package body k_contexto is
     return sys_context(f_namespace, i_parametro, 4000);
   end;
 
+  procedure p_inicializar_parametros is
+  begin
+    -- Elimina parámetros
+    p_eliminar_parametros;
+  
+    -- Define parámetros por defecto  
+  end;
+
+  procedure p_limpiar_parametros is
+    l_list  dbms_session.appctxtabtyp;
+    l_lsize number;
+  begin
+    dbms_session.list_context(l_list, l_lsize);
+  
+    g_indice := l_list.first;
+    while g_indice is not null loop
+      if l_list(g_indice).namespace = f_namespace then
+        p_definir_parametro(l_list(g_indice).attribute, null);
+      end if;
+      g_indice := l_list.next(g_indice);
+    end loop;
+  end;
+
+  procedure p_eliminar_parametros is
+  begin
+    dbms_session.clear_all_context(f_namespace);
+  end;
+
+  procedure p_imprimir_parametros is
+    l_list  dbms_session.appctxtabtyp;
+    l_lsize number;
+  begin
+    dbms_session.list_context(l_list, l_lsize);
+  
+    g_indice := l_list.first;
+    while g_indice is not null loop
+      if l_list(g_indice).namespace = f_namespace then
+        dbms_output.put(l_list(g_indice).attribute || ': ');
+        dbms_output.put(l_list(g_indice).value);
+        dbms_output.new_line;
+      end if;
+      g_indice := l_list.next(g_indice);
+    end loop;
+  end;
+
+  --
   function f_base_datos return varchar2 is
   begin
     return sys_context('USERENV', 'DB_NAME');
@@ -53,6 +101,7 @@ create or replace package body k_contexto is
   begin
     return sys_context('USERENV', 'CURRENT_SCHEMA');
   end;
+  --
 
 end;
 /
