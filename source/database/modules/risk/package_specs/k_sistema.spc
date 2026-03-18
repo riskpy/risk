@@ -194,9 +194,15 @@ create or replace package k_sistema is
   */
   function f_valor_parametro_date(i_parametro in varchar2) return date;
 
+  function f_valor_parametro_json_object(i_parametro in varchar2)
+    return json_object_t;
+
+  function f_valor_parametro_json_array(i_parametro in varchar2)
+    return json_array_t;
+
   /**
   Retorna el valor de un parámetro de tipo clob en la sesión
-
+  
   %author dmezac 20/11/2025 09:50:30
   %param i_parametro Nombre del parámetro
   %return Valor del parámetro de tipo clob, si no existe retorna null
@@ -253,9 +259,15 @@ create or replace package k_sistema is
   procedure p_definir_parametro_date(i_parametro in varchar2,
                                      i_valor     in date);
 
+  procedure p_definir_parametro_json_object(i_parametro in varchar2,
+                                            i_valor     in json_object_t);
+
+  procedure p_definir_parametro_json_array(i_parametro in varchar2,
+                                           i_valor     in json_array_t);
+
   /**
   Define el valor de un parámetro de tipo clob en la sesión
-
+  
   %author dmezac 20/11/2025 11:41:30
   %param i_parametro Nombre del parámetro de tipo clob
   %param i_valor Valor del parámetro de tipo clob
@@ -316,3 +328,4 @@ create or replace package k_sistema is
 
 end;
 /
+

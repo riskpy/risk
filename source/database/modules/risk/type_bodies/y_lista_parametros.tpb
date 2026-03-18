@@ -372,6 +372,64 @@ create or replace type body y_lista_parametros is
                                                                 par.nombre)));
           end if;
         
+        when 'C' then
+          -- CLOB
+          if l_json_element is not null and not l_json_element.is_null and
+             not l_json_element.is_string then
+            raise_application_error(-20000,
+                                    k_error.f_mensaje_error('ora0005',
+                                                            nvl(par.etiqueta,
+                                                                par.nombre)));
+          end if;
+        
+          if par.encriptado = 'S' then
+            begin
+              l_parametro.valor := anydata.convertclob(k_util.decrypt(l_json_object.get_string(par.nombre)));
+            exception
+              when value_error then
+                raise_application_error(-20000,
+                                        k_error.f_mensaje_error('ora0008',
+                                                                nvl(par.etiqueta,
+                                                                    par.nombre)));
+              when others then
+                raise_application_error(-20000,
+                                        k_error.f_mensaje_error('ora0009',
+                                                                nvl(par.etiqueta,
+                                                                    par.nombre)));
+            end;
+          else
+            l_parametro.valor := anydata.convertclob(l_json_object.get_string(par.nombre));
+          end if;
+          if l_parametro.valor.accessvarchar2 is null and
+             par.valor_defecto is not null then
+            l_parametro.valor := anydata.convertclob(par.valor_defecto);
+          end if;
+          if l_parametro.valor.accessvarchar2 is null and
+             par.obligatorio = 'S' then
+            raise_application_error(-20000,
+                                    k_error.f_mensaje_error('ora0004',
+                                                            nvl(par.etiqueta,
+                                                                par.nombre)));
+          end if;
+          if par.longitud_maxima is not null and
+             nvl(length(l_parametro.valor.accessvarchar2), 0) >
+             par.longitud_maxima then
+            raise_application_error(-20000,
+                                    k_error.f_mensaje_error('ora0006',
+                                                            nvl(par.etiqueta,
+                                                                par.nombre),
+                                                            to_char(par.longitud_maxima)));
+          end if;
+          if par.valores_posibles is not null and
+             l_parametro.valor.accessvarchar2 is not null and not
+              k_significado.f_existe_codigo(par.valores_posibles,
+                                                                                             l_parametro.valor.accessvarchar2) then
+            raise_application_error(-20000,
+                                    k_error.f_mensaje_error('ora0007',
+                                                            nvl(par.etiqueta,
+                                                                par.nombre)));
+          end if;
+        
         else
           raise_application_error(-20000,
                                   k_error.f_mensaje_error('ora0002',
@@ -484,6 +542,11 @@ create or replace type body y_lista_parametros is
     end if;
   
     return l_json_array;
+  end;
+
+  member function f_valor_parametro_clob(i_nombre in varchar2) return clob is
+  begin
+    return anydata.accessclob(f_valor_parametro(i_nombre));
   end;
 
 end;

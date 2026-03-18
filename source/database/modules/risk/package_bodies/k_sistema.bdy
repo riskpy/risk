@@ -94,6 +94,38 @@ create or replace package body k_sistema is
     return anydata.accessdate(f_valor_parametro(i_parametro));
   end;
 
+  function f_valor_parametro_json_object(i_parametro in varchar2)
+    return json_object_t is
+    l_json_object json_object_t;
+    l_json_clob   clob;
+  begin
+    l_json_clob := anydata.accessclob(f_valor_parametro(i_parametro));
+  
+    if l_json_clob is null or dbms_lob.getlength(l_json_clob) = 0 then
+      l_json_object := json_object_t.parse(k_json_util.c_json_object_vacio);
+    else
+      l_json_object := json_object_t.parse(l_json_clob);
+    end if;
+  
+    return l_json_object;
+  end;
+
+  function f_valor_parametro_json_array(i_parametro in varchar2)
+    return json_array_t is
+    l_json_array json_array_t;
+    l_json_clob  clob;
+  begin
+    l_json_clob := anydata.accessclob(f_valor_parametro(i_parametro));
+  
+    if l_json_clob is null or dbms_lob.getlength(l_json_clob) = 0 then
+      l_json_array := json_array_t.parse(k_json_util.c_json_array_vacio);
+    else
+      l_json_array := json_array_t.parse(l_json_clob);
+    end if;
+  
+    return l_json_array;
+  end;
+
   function f_valor_parametro_clob(i_parametro in varchar2) return clob is
   begin
     return anydata.accessclob(f_valor_parametro(i_parametro));
@@ -128,6 +160,18 @@ create or replace package body k_sistema is
                                      i_valor     in date) is
   begin
     p_definir_parametro(i_parametro, anydata.convertdate(i_valor));
+  end;
+
+  procedure p_definir_parametro_json_object(i_parametro in varchar2,
+                                            i_valor     in json_object_t) is
+  begin
+    p_definir_parametro(i_parametro, anydata.convertclob(i_valor.to_clob));
+  end;
+
+  procedure p_definir_parametro_json_array(i_parametro in varchar2,
+                                           i_valor     in json_array_t) is
+  begin
+    p_definir_parametro(i_parametro, anydata.convertclob(i_valor.to_clob));
   end;
 
   procedure p_definir_parametro_clob(i_parametro in varchar2,

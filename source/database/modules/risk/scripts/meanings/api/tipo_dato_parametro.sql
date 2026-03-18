@@ -102,6 +102,32 @@ begin
   );
 
   l_clob(1) :=q'!TIPO_DATO_PARAMETRO!';
+  l_clob(2) :=q'!C!';
+  l_clob(3) :=q'!CLOB!';
+  l_clob(4) :=q'!!';
+  l_clob(5) :=q'!S!';
+  l_clob(6) :=q'!!';
+
+  insert into t_significados_dml_v
+  (
+     "DOMINIO"
+    ,"CODIGO"
+    ,"SIGNIFICADO"
+    ,"REFERENCIA"
+    ,"ACTIVO"
+    ,"REFERENCIA_2"
+  )
+  values
+  (
+     to_char(l_clob(1))
+    ,to_char(l_clob(2))
+    ,to_char(l_clob(3))
+    ,to_char(l_clob(4))
+    ,to_char(l_clob(5))
+    ,to_char(l_clob(6))
+  );
+
+  l_clob(1) :=q'!TIPO_DATO_PARAMETRO!';
   l_clob(2) :=q'!D!';
   l_clob(3) :=q'!DATE!';
   l_clob(4) :=q'!!';

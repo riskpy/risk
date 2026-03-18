@@ -73,7 +73,9 @@ Constructor del objeto sin parámetros.
     return json_object_t,
 
   member function f_valor_parametro_json_array(i_nombre in varchar2)
-    return json_array_t
+    return json_array_t,
+
+  member function f_valor_parametro_clob(i_nombre in varchar2) return clob
 
 )
 /

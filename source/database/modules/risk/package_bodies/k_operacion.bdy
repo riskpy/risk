@@ -891,6 +891,15 @@ create or replace package body k_operacion is
     return l_lista_parametros.f_valor_parametro_json_array(i_nombre);
   end;
 
+  function f_valor_parametro_clob(i_parametros in y_parametros,
+                                  i_nombre     in varchar2) return clob is
+    l_lista_parametros y_lista_parametros;
+  begin
+    l_lista_parametros := new
+                          y_lista_parametros(i_parametros => i_parametros);
+    return l_lista_parametros.f_valor_parametro_clob(i_nombre);
+  end;
+
 end;
 /
 

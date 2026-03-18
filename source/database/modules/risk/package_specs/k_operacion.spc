@@ -31,12 +31,12 @@ create or replace package k_operacion is
   */
 
   -- Tipos de Operaciones
-  c_tipo_servicio   constant char(1) := 'S';
-  c_tipo_reporte    constant char(1) := 'R';
-  c_tipo_trabajo    constant char(1) := 'T';
-  c_tipo_monitoreo  constant char(1) := 'M';
+  c_tipo_servicio    constant char(1) := 'S';
+  c_tipo_reporte     constant char(1) := 'R';
+  c_tipo_trabajo     constant char(1) := 'T';
+  c_tipo_monitoreo   constant char(1) := 'M';
   c_tipo_importacion constant char(1) := 'I';
-  c_tipo_parametros constant char(1) := 'P';
+  c_tipo_parametros  constant char(1) := 'P';
 
   -- Tipos de Implementaciones
   c_tipo_implementacion_paquete constant char(1) := 'K';
@@ -180,6 +180,9 @@ create or replace package k_operacion is
   function f_valor_parametro_json_array(i_parametros in y_parametros,
                                         i_nombre     in varchar2)
     return json_array_t;
+
+  function f_valor_parametro_clob(i_parametros in y_parametros,
+                                  i_nombre     in varchar2) return clob;
 
 end;
 /
