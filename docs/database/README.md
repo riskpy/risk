@@ -92,16 +92,16 @@ Importación|TO-DO
 
 Tipos de datos existentes y soporte:
 
-Tipo de dato|Parámetro de operación|Parámetro de sesión|Parámetro de contexto|Parámetro de configuración 
-------------|----------------------|-------------------|---------------------|--------------------------
-S-STRING|✅|✅|✅|✅
-N-NUMBER|✅|✅|🔜|🔜
-B-BOOLEAN|✅|✅|🔜|🔜
-D-DATE|✅|✅|🔜|🔜
-O-OBJECT|✅|❌|❌|❌
-J-JSON OBJECT|✅|✅|❌|❌
-A-JSON ARRAY|✅|✅|❌|❌
-C-CLOB|✅|✅|❌|❌
+Tipo de dato|Parámetro de operación|Parámetro de sesión|Parámetro de contexto|Parámetro adicional|Dato adicional
+------------|----------------------|-------------------|---------------------|-------------------|--------------
+S-STRING|✅|✅|✅|✅|✅
+N-NUMBER|✅|✅|🔜|🔜|🔜
+B-BOOLEAN|✅|✅|🔜|🔜|🔜
+D-DATE|✅|✅|🔜|🔜|🔜
+O-OBJECT|✅|❌|❌|❌|❌
+J-JSON OBJECT|✅|✅|❌|❌|❌
+A-JSON ARRAY|✅|✅|❌|❌|❌
+C-CLOB|✅|✅|❌|❌|❌
 
 ### Logs
 TO-DO
