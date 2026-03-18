@@ -77,7 +77,7 @@ Una operación es cualquier programa o proceso que recibe parámetros de entrada
 
 El resultado de una operación puede variar desde un simple indicador de éxito/error a datos complejos con propiedades y listas, o incluso archivos, como en el caso de los reportes.
 
-Existen 5 tipos de operaciones:
+Existen 6 tipos de operaciones:
 
 Tipo|Descripción
 ----|-----------
@@ -85,9 +85,23 @@ Parámetros|Es un tipo de operación que sirve para agrupar ciertos parámetros 
 Servicio|Es un proceso que recibe datos de entrada y retorna datos de salida. Sirve de comunicación entre el API y la Base de Datos
 Reporte|Es un proceso que recibe datos de entrada y retorna como salida un archivo de reporte, que puede ser en formatos PDF, DOCX, XLSX, CSV, HTML. Sirve de comunicación entre el API y la Base de Datos
 Trabajo|Es un proceso que se ejecuta automáticamente en un intervalo de repetición configurado
-Monitoreo|Es un proceso periódico que verifica el estado del sistema o de datos y genera alertas o informes.
+Monitoreo|Es un proceso periódico que verifica el estado del sistema o de datos y genera alertas o informes
+Importación|TO-DO
 
 ### Parámetros
+
+Tipos de datos existentes y soporte:
+
+Tipo de dato|Parámetro de operación|Parámetro de sesión|Parámetro de contexto|Parámetro de configuración 
+------------|----------------------|-------------------|---------------------|--------------------------
+S-STRING|✅|✅|✅|✅
+N-NUMBER|✅|✅|🔜|🔜
+B-BOOLEAN|✅|✅|🔜|🔜
+D-DATE|✅|✅|🔜|🔜
+O-OBJECT|✅|❌|❌|❌
+J-JSON OBJECT|✅|✅|❌|❌
+A-JSON ARRAY|✅|✅|❌|❌
+C-CLOB|✅|✅|❌|❌
 
 ### Logs
 TO-DO
