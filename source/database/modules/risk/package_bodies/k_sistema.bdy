@@ -265,6 +265,8 @@ create or replace package body k_sistema is
         elsif l_typecode = dbms_types.typecode_date then
           dbms_output.put(to_char(anydata.accessdate(g_parametros(g_indice)),
                                   'YYYY-MM-DD'));
+        elsif l_typecode = dbms_types.typecode_clob then
+          dbms_output.put(anydata.accessclob(g_parametros(g_indice)));
         else
           dbms_output.put('Tipo de dato no soportado');
         end if;
