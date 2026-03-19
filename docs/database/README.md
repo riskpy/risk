@@ -95,17 +95,17 @@ Tipos de datos existentes y soporte:
 Tipo de dato|Parámetro de operación<sup>1</sup>|Parámetro de sesión<sup>1</sup>|Parámetro de contexto<sup>2</sup>|Parámetro adicional<sup>2</sup>|Dato adicional<sup>2</sup>
 ------------|----------------------------------|-------------------------------|---------------------------------|-------------------------------|--------------------------
 S-STRING|✅|✅|✅|✅|✅
-N-NUMBER|✅|✅|✅|🔜|🔜
-B-BOOLEAN|✅|✅|✅|🔜|🔜
-D-DATE|✅|✅|✅|🔜|🔜
+N-NUMBER|✅|✅|✅|🔜|✅
+B-BOOLEAN|✅|✅|✅|🔜|✅
+D-DATE|✅|✅|✅|🔜|✅
 O-OBJECT|✅|❌|❌|❌|❌
 J-JSON OBJECT|✅|✅|❌|❌|❌
 A-JSON ARRAY|✅|✅|❌|❌|❌
 C-CLOB|✅|✅|❌|❌|❌
 
-<sup>1</sup> Se maneja internamente como *anydata*
+<sup>1</sup> Se maneja internamente o persiste como *anydata*
 
-<sup>2</sup> Se maneja internamente como *varchar2*
+<sup>2</sup> Se maneja internamente o persiste como *varchar2*
 
 ### Logs
 TO-DO

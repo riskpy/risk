@@ -23,6 +23,38 @@ create or replace package body k_dato is
     return l_dato;
   end;
 
+  function f_recuperar_dato_string(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2) return varchar2 is
+  begin
+    return f_recuperar_dato(i_tabla, i_campo, i_referencia);
+  end;
+
+  function f_recuperar_dato_number(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2) return number is
+  begin
+    return to_number(f_recuperar_dato(i_tabla, i_campo, i_referencia));
+  end;
+
+  function f_recuperar_dato_boolean(i_tabla      in varchar2,
+                                    i_campo      in varchar2,
+                                    i_referencia in varchar2) return boolean is
+  begin
+    return k_util.string_to_bool(f_recuperar_dato(i_tabla,
+                                                  i_campo,
+                                                  i_referencia));
+  end;
+
+  function f_recuperar_dato_date(i_tabla      in varchar2,
+                                 i_campo      in varchar2,
+                                 i_referencia in varchar2) return date is
+  begin
+    return k_util.string_to_date(f_recuperar_dato(i_tabla,
+                                                  i_campo,
+                                                  i_referencia));
+  end;
+
   function f_recuperar_referencia(i_tabla     in varchar2,
                                   i_campo     in varchar2,
                                   i_contenido in varchar2) return varchar2 is
@@ -51,7 +83,7 @@ create or replace package body k_dato is
                            i_dato       in varchar2) is
   begin
     update t_datos a
-       set a.contenido = i_dato
+       set a.contenido = substr(i_dato, 1, 4000)
      where upper(a.tabla) = upper(i_tabla)
        and upper(a.campo) = upper(i_campo)
        and a.referencia = i_referencia;
@@ -60,8 +92,49 @@ create or replace package body k_dato is
       insert into t_datos
         (tabla, campo, referencia, contenido)
       values
-        (upper(i_tabla), upper(i_campo), i_referencia, i_dato);
+        (upper(i_tabla),
+         upper(i_campo),
+         i_referencia,
+         substr(i_dato, 1, 4000));
     end if;
+  end;
+
+  procedure p_guardar_dato_string(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2,
+                                  i_dato       in varchar2) is
+  begin
+    p_guardar_dato(i_tabla, i_campo, i_referencia, i_dato);
+  end;
+
+  procedure p_guardar_dato_number(i_tabla      in varchar2,
+                                  i_campo      in varchar2,
+                                  i_referencia in varchar2,
+                                  i_dato       in number) is
+  begin
+    p_guardar_dato(i_tabla, i_campo, i_referencia, to_char(i_dato));
+  end;
+
+  procedure p_guardar_dato_boolean(i_tabla      in varchar2,
+                                   i_campo      in varchar2,
+                                   i_referencia in varchar2,
+                                   i_dato       in boolean) is
+  begin
+    p_guardar_dato(i_tabla,
+                   i_campo,
+                   i_referencia,
+                   k_util.bool_to_string(i_dato));
+  end;
+
+  procedure p_guardar_dato_date(i_tabla      in varchar2,
+                                i_campo      in varchar2,
+                                i_referencia in varchar2,
+                                i_dato       in date) is
+  begin
+    p_guardar_dato(i_tabla,
+                   i_campo,
+                   i_referencia,
+                   k_util.date_to_string(i_dato));
   end;
 
   procedure p_guardar_dato_autonomo(i_tabla      in varchar2,
@@ -70,18 +143,7 @@ create or replace package body k_dato is
                                     i_dato       in varchar2) is
     pragma autonomous_transaction;
   begin
-    update t_datos a
-       set a.contenido = i_dato
-     where upper(a.tabla) = upper(i_tabla)
-       and upper(a.campo) = upper(i_campo)
-       and a.referencia = i_referencia;
-  
-    if sql%notfound then
-      insert into t_datos
-        (tabla, campo, referencia, contenido)
-      values
-        (upper(i_tabla), upper(i_campo), i_referencia, i_dato);
-    end if;
+    p_guardar_dato(i_tabla, i_campo, i_referencia, i_dato);
   
     commit;
   exception
@@ -92,3 +154,4 @@ create or replace package body k_dato is
 
 end;
 /
+

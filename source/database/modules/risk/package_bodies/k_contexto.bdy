@@ -20,6 +20,31 @@ create or replace package body k_contexto is
     return l_namespace;
   end;
 
+  function f_valor_parametro(i_parametro in varchar2) return varchar2 is
+  begin
+    return sys_context(f_namespace, i_parametro, 4000);
+  end;
+
+  function f_valor_parametro_string(i_parametro in varchar2) return varchar2 is
+  begin
+    return f_valor_parametro(i_parametro);
+  end;
+
+  function f_valor_parametro_number(i_parametro in varchar2) return number is
+  begin
+    return to_number(f_valor_parametro(i_parametro));
+  end;
+
+  function f_valor_parametro_boolean(i_parametro in varchar2) return boolean is
+  begin
+    return k_util.string_to_bool(f_valor_parametro(i_parametro));
+  end;
+
+  function f_valor_parametro_date(i_parametro in varchar2) return date is
+  begin
+    return k_util.string_to_date(f_valor_parametro(i_parametro));
+  end;
+
   procedure p_definir_parametro(i_parametro in varchar2,
                                 i_valor     in varchar2) is
   begin
@@ -50,31 +75,6 @@ create or replace package body k_contexto is
                                      i_valor     in date) is
   begin
     p_definir_parametro(i_parametro, k_util.date_to_string(i_valor));
-  end;
-
-  function f_valor_parametro(i_parametro in varchar2) return varchar2 is
-  begin
-    return sys_context(f_namespace, i_parametro, 4000);
-  end;
-
-  function f_valor_parametro_string(i_parametro in varchar2) return varchar2 is
-  begin
-    return f_valor_parametro(i_parametro);
-  end;
-
-  function f_valor_parametro_number(i_parametro in varchar2) return number is
-  begin
-    return to_number(f_valor_parametro(i_parametro));
-  end;
-
-  function f_valor_parametro_boolean(i_parametro in varchar2) return boolean is
-  begin
-    return k_util.string_to_bool(f_valor_parametro(i_parametro));
-  end;
-
-  function f_valor_parametro_date(i_parametro in varchar2) return date is
-  begin
-    return k_util.string_to_date(f_valor_parametro(i_parametro));
   end;
 
   procedure p_inicializar_parametros is
