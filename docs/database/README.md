@@ -53,9 +53,9 @@ Dependencia|Descripción
 [console](https://github.com/ogobrecht/console)|Herramienta para logging
 [om_tapigen](https://github.com/OraMUC/table-api-generator)|Generador de API's para tablas
 [plex](https://github.com/ogobrecht/plex)|Herramienta para exportación de objetos
-[audit_utility](https://github.com/connormcd/audit_utility)|Genera tablas, paquetes y triggers de auditoría para capturar cambios en tablas (utilizado para registrar DML y mantenimiento).
-[occ](https://github.com/yerba1704/occ)|Framework de reglas de calidad para objetos PL/SQL (ora* CODECOP), usado para validar convenciones de código y estructura de objetos.
-[occ-utplsql](https://github.com/yerba1704/occ-utplsql)|Extensión que genera pruebas unitarias de utPLSQL basadas en las reglas de ora* CODECOP.
+[audit_utility](https://github.com/connormcd/audit_utility)|Genera tablas, paquetes y triggers de auditoría para capturar cambios en tablas (utilizado para registrar DML y mantenimiento)
+[occ](https://github.com/yerba1704/occ)|Framework de reglas de calidad para objetos PL/SQL (ora* CODECOP), usado para validar convenciones de código y estructura de objetos
+[occ-utplsql](https://github.com/yerba1704/occ-utplsql)|Extensión que genera pruebas unitarias de utPLSQL basadas en las reglas de ora* CODECOP
 
 ### Configuración de PL/SQL Documentation (plsqldoc)
 
@@ -79,8 +79,8 @@ El resultado de una operación puede variar desde un simple indicador de éxito/
 
 Existen 6 tipos de operaciones:
 
-Tipo|Descripción
-----|-----------
+Tipo de operación|Descripción
+-----------------|-----------
 Parámetros|Es un tipo de operación que sirve para agrupar ciertos parámetros especiales y no tiene una implementación
 Servicio|Es un proceso que recibe datos de entrada y retorna datos de salida. Sirve de comunicación entre el API y la Base de Datos
 Reporte|Es un proceso que recibe datos de entrada y retorna como salida un archivo de reporte, que puede ser en formatos PDF, DOCX, XLSX, CSV, HTML. Sirve de comunicación entre el API y la Base de Datos
@@ -92,8 +92,8 @@ Importación|TO-DO
 
 Tipos de datos existentes y soporte:
 
-Tipo de dato|Parámetro de operación|Parámetro de sesión|Parámetro de contexto|Parámetro adicional|Dato adicional
-------------|----------------------|-------------------|---------------------|-------------------|--------------
+Tipo de dato|Parámetro de operación<sup>1</sup>|Parámetro de sesión<sup>1</sup>|Parámetro de contexto<sup>2</sup>|Parámetro adicional<sup>2</sup>|Dato adicional<sup>2</sup>
+------------|----------------------------------|-------------------------------|---------------------------------|-------------------------------|--------------------------
 S-STRING|✅|✅|✅|✅|✅
 N-NUMBER|✅|✅|🔜|🔜|🔜
 B-BOOLEAN|✅|✅|🔜|🔜|🔜
@@ -102,6 +102,10 @@ O-OBJECT|✅|❌|❌|❌|❌
 J-JSON OBJECT|✅|✅|❌|❌|❌
 A-JSON ARRAY|✅|✅|❌|❌|❌
 C-CLOB|✅|✅|❌|❌|❌
+
+<sup>1</sup> Se maneja internamente como *anydata*
+
+<sup>2</sup> Se maneja internamente como *varchar2*
 
 ### Logs
 TO-DO
