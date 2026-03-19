@@ -167,6 +167,23 @@ END;';
     end if;
   end;
 
+  function date_to_string(i_date in date) return varchar2 is
+  begin
+    if to_char(i_date, 'HH24:MI:SS') = '00:00:00' then
+      return to_char(i_date, 'DD/MM/YYYY');
+    else
+      return to_char(i_date, 'DD/MM/YYYY HH24:MI:SS');
+    end if;
+  end;
+
+  function string_to_date(i_string in varchar2) return date is
+  begin
+    return to_date(i_string, 'DD/MM/YYYY HH24:MI:SS');
+  exception
+    when others then
+      return null;
+  end;
+
   function blob_to_clob(p_data in blob) return clob is
     -- -----------------------------------------------------------------------------------
     -- File Name    : https://oracle-base.com/dba/miscellaneous/blob_to_clob.sql
@@ -324,7 +341,7 @@ END;';
   end;
 
   function f_es_valor_numerico(i_valor in varchar2) return boolean is
-    l_numero number(20, 2);
+    l_numero number;
     l_result boolean;
   begin
     l_result := false;

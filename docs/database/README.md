@@ -95,9 +95,9 @@ Tipos de datos existentes y soporte:
 Tipo de dato|Parámetro de operación<sup>1</sup>|Parámetro de sesión<sup>1</sup>|Parámetro de contexto<sup>2</sup>|Parámetro adicional<sup>2</sup>|Dato adicional<sup>2</sup>
 ------------|----------------------------------|-------------------------------|---------------------------------|-------------------------------|--------------------------
 S-STRING|✅|✅|✅|✅|✅
-N-NUMBER|✅|✅|🔜|🔜|🔜
-B-BOOLEAN|✅|✅|🔜|🔜|🔜
-D-DATE|✅|✅|🔜|🔜|🔜
+N-NUMBER|✅|✅|✅|🔜|🔜
+B-BOOLEAN|✅|✅|✅|🔜|🔜
+D-DATE|✅|✅|✅|🔜|🔜
 O-OBJECT|✅|❌|❌|❌|❌
 J-JSON OBJECT|✅|✅|❌|❌|❌
 A-JSON ARRAY|✅|✅|❌|❌|❌

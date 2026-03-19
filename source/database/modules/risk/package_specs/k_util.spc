@@ -73,6 +73,10 @@ create or replace package k_util is
 
   function string_to_bool(i_string in varchar2) return boolean;
 
+  function date_to_string(i_date in date) return varchar2;
+
+  function string_to_date(i_string in varchar2) return date;
+
   function blob_to_clob(p_data in blob) return clob;
 
   function clob_to_blob(p_data    in clob,

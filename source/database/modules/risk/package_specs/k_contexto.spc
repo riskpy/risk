@@ -35,7 +35,27 @@ create or replace package k_contexto is
   procedure p_definir_parametro(i_parametro in varchar2,
                                 i_valor     in varchar2);
 
+  procedure p_definir_parametro_string(i_parametro in varchar2,
+                                       i_valor     in varchar2);
+
+  procedure p_definir_parametro_number(i_parametro in varchar2,
+                                       i_valor     in number);
+
+  procedure p_definir_parametro_boolean(i_parametro in varchar2,
+                                        i_valor     in boolean);
+
+  procedure p_definir_parametro_date(i_parametro in varchar2,
+                                     i_valor     in date);
+
   function f_valor_parametro(i_parametro in varchar2) return varchar2;
+
+  function f_valor_parametro_string(i_parametro in varchar2) return varchar2;
+
+  function f_valor_parametro_number(i_parametro in varchar2) return number;
+
+  function f_valor_parametro_boolean(i_parametro in varchar2) return boolean;
+
+  function f_valor_parametro_date(i_parametro in varchar2) return date;
 
   /**
   Define el valor de los parámetros por defecto del contexto
