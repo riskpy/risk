@@ -20,18 +20,473 @@ create or replace package body k_parametro is
     return rw_parametro_definicion;
   end;
 
+  function f_validar_parametro(i_parametro_definicion in ry_datos_definicion_parametro,
+                               i_parametro            in json_element_t,
+                               i_parametros           in json_object_t)
+    return anydata is
+    l_valor        anydata;
+    l_json_object  json_object_t;
+    l_json_element json_element_t;
+  begin
+    l_json_object  := i_parametros;
+    l_json_element := i_parametro;
+  
+    /*if i_parametro_definicion.obligatorio = 'S' then
+      if not l_json_object.has(i_parametro_definicion.nombre) then
+        raise_application_error(-20000,
+                                k_error.f_mensaje_error('ora0003',
+                                                        nvl(i_parametro_definicion.etiqueta,
+                                                            i_parametro_definicion.nombre)));
+      else
+        if l_json_element.is_null then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      end if;
+    end if;*/
+  
+    case i_parametro_definicion.tipo_dato
+    
+      when c_tipo_dato_string then
+        -- String
+        if l_json_element is not null and not l_json_element.is_null and
+           not l_json_element.is_string then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0005',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+        if i_parametro_definicion.encriptado = 'S' then
+          begin
+            l_valor := anydata.convertvarchar2(k_util.decrypt(l_json_object.get_string(i_parametro_definicion.nombre)));
+          exception
+            when value_error then
+              raise_application_error(-20000,
+                                      k_error.f_mensaje_error('ora0008',
+                                                              nvl(i_parametro_definicion.etiqueta,
+                                                                  i_parametro_definicion.nombre)));
+            when others then
+              raise_application_error(-20000,
+                                      k_error.f_mensaje_error('ora0009',
+                                                              nvl(i_parametro_definicion.etiqueta,
+                                                                  i_parametro_definicion.nombre)));
+          end;
+        else
+          l_valor := anydata.convertvarchar2(l_json_object.get_string(i_parametro_definicion.nombre));
+        end if;
+        if l_valor.accessvarchar2 is null and
+           i_parametro_definicion.valor_defecto is not null then
+          l_valor := anydata.convertvarchar2(i_parametro_definicion.valor_defecto);
+        end if;
+        if l_valor.accessvarchar2 is null and
+           i_parametro_definicion.obligatorio = 'S' then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+        if i_parametro_definicion.longitud_maxima is not null and
+           nvl(length(l_valor.accessvarchar2), 0) >
+           i_parametro_definicion.longitud_maxima then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0006',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre),
+                                                          to_char(i_parametro_definicion.longitud_maxima)));
+        end if;
+        if i_parametro_definicion.valores_posibles is not null and
+           l_valor.accessvarchar2 is not null and
+           not k_significado.f_existe_codigo(i_parametro_definicion.valores_posibles,
+                                             l_valor.accessvarchar2) then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0007',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+      when c_tipo_dato_number then
+        -- Number
+        if l_json_element is not null and not l_json_element.is_null and
+           not l_json_element.is_number then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0005',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+        l_valor := anydata.convertnumber(l_json_object.get_number(i_parametro_definicion.nombre));
+        if l_valor.accessnumber is null and
+           i_parametro_definicion.valor_defecto is not null then
+          l_valor := anydata.convertnumber(to_number(i_parametro_definicion.valor_defecto));
+        end if;
+        if l_valor.accessnumber is null and
+           i_parametro_definicion.obligatorio = 'S' then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+        if i_parametro_definicion.longitud_maxima is not null and
+           nvl(length(to_char(abs(trunc(l_valor.accessnumber)))), 0) >
+           i_parametro_definicion.longitud_maxima then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0006',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre),
+                                                          to_char(i_parametro_definicion.longitud_maxima)));
+        end if;
+        if i_parametro_definicion.valores_posibles is not null and
+           l_valor.accessnumber is not null and not
+            k_significado.f_existe_codigo(i_parametro_definicion.valores_posibles,
+                                                                               to_char(l_valor.accessnumber)) then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0007',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+      when c_tipo_dato_boolean then
+        -- Boolean
+        if l_json_element is not null and not l_json_element.is_null and
+           not l_json_element.is_boolean then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0005',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+        l_valor := anydata.convertnumber(sys.diutil.bool_to_int(l_json_object.get_boolean(i_parametro_definicion.nombre)));
+        if l_valor.accessnumber is null and
+           i_parametro_definicion.valor_defecto is not null then
+          l_valor := anydata.convertnumber(to_number(i_parametro_definicion.valor_defecto));
+        end if;
+        if l_valor.accessnumber is null and
+           i_parametro_definicion.obligatorio = 'S' then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+      when c_tipo_dato_date then
+        -- Date
+        if l_json_element is not null and not l_json_element.is_null and
+           not l_json_element.is_string /*l_json_element.is_date*/
+         then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0005',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+        l_valor := anydata.convertdate(l_json_object.get_date(i_parametro_definicion.nombre));
+        if l_valor.accessdate is null and
+           i_parametro_definicion.valor_defecto is not null then
+          l_valor := anydata.convertdate(to_date(i_parametro_definicion.valor_defecto,
+                                                 i_parametro_definicion.formato));
+        end if;
+        if l_valor.accessdate is null and
+           i_parametro_definicion.obligatorio = 'S' then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+      when c_tipo_dato_object then
+        -- Object
+        if l_json_element is not null and not l_json_element.is_null and
+           not l_json_element.is_object then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0005',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+        if l_json_element is not null and l_json_element.is_object then
+          l_valor := k_objeto_util.json_to_objeto(l_json_element.to_clob,
+                                                  i_parametro_definicion.formato);
+        end if;
+      
+        if l_valor is null and
+           i_parametro_definicion.valor_defecto is not null then
+          l_valor := k_objeto_util.json_to_objeto(i_parametro_definicion.valor_defecto,
+                                                  i_parametro_definicion.formato);
+        end if;
+        if l_valor is null and i_parametro_definicion.obligatorio = 'S' then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+      when c_tipo_dato_json_object then
+        -- JSON Object
+        if l_json_element is not null and not l_json_element.is_null and
+           not l_json_element.is_object then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0005',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+        if l_json_element is not null and l_json_element.is_object then
+          l_valor := anydata.convertclob(l_json_element.to_clob);
+        end if;
+      
+        if l_valor is null and
+           i_parametro_definicion.valor_defecto is not null then
+          l_valor := anydata.convertclob(json_object_t.parse(i_parametro_definicion.valor_defecto).to_clob);
+        end if;
+        if l_valor is null and i_parametro_definicion.obligatorio = 'S' then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+      when c_tipo_dato_json_array then
+        -- JSON Array
+        if l_json_element is not null and not l_json_element.is_null and
+           not l_json_element.is_array then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0005',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+        if l_json_element is not null and l_json_element.is_array then
+          l_valor := anydata.convertclob(l_json_element.to_clob);
+        end if;
+      
+        if l_valor is null and
+           i_parametro_definicion.valor_defecto is not null then
+          l_valor := anydata.convertclob(json_array_t.parse(i_parametro_definicion.valor_defecto).to_clob);
+        end if;
+        if l_valor is null and i_parametro_definicion.obligatorio = 'S' then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+      when c_tipo_dato_clob then
+        -- CLOB
+        if l_json_element is not null and not l_json_element.is_null and
+           not l_json_element.is_string then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0005',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+        if i_parametro_definicion.encriptado = 'S' then
+          begin
+            l_valor := anydata.convertclob(k_util.decrypt(l_json_object.get_string(i_parametro_definicion.nombre)));
+          exception
+            when value_error then
+              raise_application_error(-20000,
+                                      k_error.f_mensaje_error('ora0008',
+                                                              nvl(i_parametro_definicion.etiqueta,
+                                                                  i_parametro_definicion.nombre)));
+            when others then
+              raise_application_error(-20000,
+                                      k_error.f_mensaje_error('ora0009',
+                                                              nvl(i_parametro_definicion.etiqueta,
+                                                                  i_parametro_definicion.nombre)));
+          end;
+        else
+          l_valor := anydata.convertclob(l_json_object.get_string(i_parametro_definicion.nombre));
+        end if;
+        if l_valor.accessvarchar2 is null and
+           i_parametro_definicion.valor_defecto is not null then
+          l_valor := anydata.convertclob(i_parametro_definicion.valor_defecto);
+        end if;
+        if l_valor.accessvarchar2 is null and
+           i_parametro_definicion.obligatorio = 'S' then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0004',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+        if i_parametro_definicion.longitud_maxima is not null and
+           nvl(length(l_valor.accessvarchar2), 0) >
+           i_parametro_definicion.longitud_maxima then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0006',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre),
+                                                          to_char(i_parametro_definicion.longitud_maxima)));
+        end if;
+        if i_parametro_definicion.valores_posibles is not null and
+           l_valor.accessvarchar2 is not null and
+           not k_significado.f_existe_codigo(i_parametro_definicion.valores_posibles,
+                                             l_valor.accessvarchar2) then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0007',
+                                                          nvl(i_parametro_definicion.etiqueta,
+                                                              i_parametro_definicion.nombre)));
+        end if;
+      
+      else
+        raise_application_error(-20000,
+                                k_error.f_mensaje_error('ora0002',
+                                                        'parámetro',
+                                                        nvl(i_parametro_definicion.etiqueta,
+                                                            i_parametro_definicion.nombre)));
+      
+    end case;
+  
+    return l_valor;
+  end;
+
+  function f_procesar_parametros(i_parametros in clob,
+                                 -- OPERACION
+                                 i_id_operacion in number default null,
+                                 i_version      in varchar2 default null,
+                                 -- PARAMETRO
+                                 i_tabla       in varchar2 default null,
+                                 i_tipo_filtro in varchar2 default null)
+    return y_parametros is
+    l_parametros           y_parametros;
+    l_parametro            y_parametro;
+    l_json_object          json_object_t;
+    l_json_element         json_element_t;
+    l_parametro_definicion ry_datos_definicion_parametro;
+    c_id_ope_par_automaticos constant pls_integer := 1000;
+    c_tipo_operacion         constant varchar2(10) := 'OPERACION';
+    c_tipo_parametro         constant varchar2(10) := 'PARAMETRO';
+  
+    cursor cr_parametros is
+      select x.*
+        from ( -- OPERACION
+              select c_tipo_operacion tipo,
+                      lower(op.nombre) nombre,
+                      op.orden,
+                      op.activo,
+                      op.tipo_dato,
+                      op.formato,
+                      op.longitud_maxima,
+                      op.obligatorio,
+                      op.valor_defecto,
+                      op.etiqueta,
+                      op.detalle,
+                      op.valores_posibles,
+                      op.encriptado
+                from t_operacion_parametros op, t_operaciones o
+               where o.id_operacion = op.id_operacion
+                 and op.activo = 'S'
+                 and op.id_operacion = i_id_operacion
+                 and op.version = nvl(i_version, o.version_actual)
+              union
+              -- Parámetros automáticos
+              select c_tipo_operacion tipo,
+                      lower(op.nombre) nombre,
+                      op.orden,
+                      op.activo,
+                      op.tipo_dato,
+                      op.formato,
+                      op.longitud_maxima,
+                      op.obligatorio,
+                      op.valor_defecto,
+                      op.etiqueta,
+                      op.detalle,
+                      op.valores_posibles,
+                      op.encriptado
+                from t_operacion_parametros op
+               where op.activo = 'S'
+                 and op.id_operacion = c_id_ope_par_automaticos
+                 and exists
+               (select 1
+                        from t_operaciones o
+                       where lower(op.nombre) in
+                             (select lower(trim(column_value))
+                                from k_cadena.f_separar_cadenas(o.parametros_automaticos,
+                                                                ','))
+                         and o.id_operacion = i_id_operacion)
+              union all
+              -- PARAMETRO
+              select c_tipo_parametro tipo,
+                      lower(pd.id_parametro) nombre,
+                      pd.orden,
+                      'S' activo,
+                      pd.tipo_dato,
+                      pd.formato formato,
+                      pd.longitud_maxima longitud_maxima,
+                      pd.obligatorio obligatorio,
+                      pd.valor_defecto valor_defecto,
+                      pd.etiqueta etiqueta,
+                      pd.observacion detalle,
+                      pd.valores_posibles valores_posibles,
+                      pd.encriptado encriptado
+                from t_parametro_definiciones pd
+               where pd.tabla = i_tabla
+                 and pd.tipo_filtro = nvl(i_tipo_filtro, pd.tipo_filtro)) x
+       where x.tipo = case
+               when i_id_operacion is not null then
+                c_tipo_operacion
+               when i_tabla is not null then
+                c_tipo_parametro
+             end
+       order by x.orden;
+  begin
+    -- Inicializa respuesta
+    l_parametros := new y_parametros();
+  
+    if i_parametros is null or dbms_lob.getlength(i_parametros) = 0 then
+      l_json_object := json_object_t.parse(k_json_util.c_json_object_vacio);
+    else
+      l_json_object := json_object_t.parse(i_parametros);
+    end if;
+  
+    -- Renombra claves a minúsculas
+    k_json_util.p_renombrar_claves(l_json_object);
+  
+    for par in cr_parametros loop
+      l_parametro        := new y_parametro();
+      l_parametro.nombre := par.nombre;
+    
+      l_parametro_definicion := new
+                                ry_datos_definicion_parametro(par.tipo,
+                                                              par.nombre,
+                                                              par.orden,
+                                                              par.activo,
+                                                              par.tipo_dato,
+                                                              par.formato,
+                                                              par.longitud_maxima,
+                                                              par.obligatorio,
+                                                              par.valor_defecto,
+                                                              par.etiqueta,
+                                                              par.detalle,
+                                                              par.valores_posibles,
+                                                              par.encriptado);
+    
+      l_json_element := l_json_object.get(par.nombre);
+    
+      l_parametro.valor := f_validar_parametro(l_parametro_definicion,
+                                               l_json_element,
+                                               l_json_object);
+    
+      l_parametros.extend;
+      l_parametros(l_parametros.count) := l_parametro;
+    end loop;
+  
+    return l_parametros;
+  end;
+
   function f_procesar_parametros(i_tabla       in varchar2,
                                  i_parametros  in clob,
                                  i_tipo_filtro in varchar2 default null)
     return y_parametros is
-    l_lista_parametros y_lista_parametros;
   begin
-    l_lista_parametros := new y_lista_parametros(i_parametros,
-                                                 null,
-                                                 null,
-                                                 i_tabla,
-                                                 i_tipo_filtro);
-    return l_lista_parametros.parametros;
+    return f_procesar_parametros(i_parametros,
+                                 null,
+                                 null,
+                                 i_tabla,
+                                 i_tipo_filtro);
   end;
 
   function f_datos_valor_parametro(i_tabla        in varchar2,

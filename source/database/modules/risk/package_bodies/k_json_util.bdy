@@ -372,5 +372,23 @@ create or replace package body k_json_util as
       raise;
   end f_replace_clob;
 
+  procedure p_renombrar_claves(io_json in out nocopy json_object_t) is
+    l_json_key_list json_key_list;
+    i               integer;
+  begin
+    if io_json is not null then
+      l_json_key_list := io_json.get_keys;
+      i               := l_json_key_list.first;
+      while i is not null loop
+        -- Renombra claves a minúsculas
+        if l_json_key_list(i) <> lower(l_json_key_list(i)) then
+          io_json.rename_key(l_json_key_list(i), lower(l_json_key_list(i)));
+        end if;
+        i := l_json_key_list.next(i);
+      end loop;
+    end if;
+  end;
+
 end k_json_util;
 /
+

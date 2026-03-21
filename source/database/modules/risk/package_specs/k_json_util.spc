@@ -63,5 +63,8 @@ create or replace package k_json_util as
                           i_find    in varchar2,
                           i_replace in clob) return clob;
 
+  procedure p_renombrar_claves(io_json in out nocopy json_object_t);
+
 end k_json_util;
 /
+

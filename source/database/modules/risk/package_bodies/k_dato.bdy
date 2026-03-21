@@ -111,7 +111,8 @@ create or replace package body k_dato is
                               'Definición de dato adicional inexistente');
     end if;
   
-    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <> 'S' then
+    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <>
+       k_parametro.c_tipo_dato_string then
       -- String
       raise_application_error(-20000, 'Tipo de dato incorrecto');
     end if;
@@ -131,7 +132,8 @@ create or replace package body k_dato is
                               'Definición de dato adicional inexistente');
     end if;
   
-    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <> 'N' then
+    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <>
+       k_parametro.c_tipo_dato_number then
       -- Number
       raise_application_error(-20000, 'Tipo de dato incorrecto');
     end if;
@@ -151,7 +153,8 @@ create or replace package body k_dato is
                               'Definición de dato adicional inexistente');
     end if;
   
-    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <> 'B' then
+    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <>
+       k_parametro.c_tipo_dato_boolean then
       -- Boolean
       raise_application_error(-20000, 'Tipo de dato incorrecto');
     end if;
@@ -174,7 +177,8 @@ create or replace package body k_dato is
                               'Definición de dato adicional inexistente');
     end if;
   
-    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <> 'D' then
+    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <>
+       k_parametro.c_tipo_dato_date then
       -- Date
       raise_application_error(-20000, 'Tipo de dato incorrecto');
     end if;
