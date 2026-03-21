@@ -104,6 +104,18 @@ create or replace package body k_dato is
                                   i_referencia in varchar2,
                                   i_dato       in varchar2) is
   begin
+    -- Valida definición
+    if not
+        t_dato_definiciones_api.row_exists(upper(i_tabla), upper(i_campo)) then
+      raise_application_error(-20000,
+                              'Definición de dato adicional inexistente');
+    end if;
+  
+    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <> 'S' then
+      -- String
+      raise_application_error(-20000, 'Tipo de dato incorrecto');
+    end if;
+  
     p_guardar_dato(i_tabla, i_campo, i_referencia, i_dato);
   end;
 
@@ -112,6 +124,18 @@ create or replace package body k_dato is
                                   i_referencia in varchar2,
                                   i_dato       in number) is
   begin
+    -- Valida definición
+    if not
+        t_dato_definiciones_api.row_exists(upper(i_tabla), upper(i_campo)) then
+      raise_application_error(-20000,
+                              'Definición de dato adicional inexistente');
+    end if;
+  
+    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <> 'N' then
+      -- Number
+      raise_application_error(-20000, 'Tipo de dato incorrecto');
+    end if;
+  
     p_guardar_dato(i_tabla, i_campo, i_referencia, to_char(i_dato));
   end;
 
@@ -120,6 +144,18 @@ create or replace package body k_dato is
                                    i_referencia in varchar2,
                                    i_dato       in boolean) is
   begin
+    -- Valida definición
+    if not
+        t_dato_definiciones_api.row_exists(upper(i_tabla), upper(i_campo)) then
+      raise_application_error(-20000,
+                              'Definición de dato adicional inexistente');
+    end if;
+  
+    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <> 'B' then
+      -- Boolean
+      raise_application_error(-20000, 'Tipo de dato incorrecto');
+    end if;
+  
     p_guardar_dato(i_tabla,
                    i_campo,
                    i_referencia,
@@ -131,6 +167,18 @@ create or replace package body k_dato is
                                 i_referencia in varchar2,
                                 i_dato       in date) is
   begin
+    -- Valida definición
+    if not
+        t_dato_definiciones_api.row_exists(upper(i_tabla), upper(i_campo)) then
+      raise_application_error(-20000,
+                              'Definición de dato adicional inexistente');
+    end if;
+  
+    if t_dato_definiciones_api.get_tipo_dato(upper(i_tabla), upper(i_campo)) <> 'D' then
+      -- Date
+      raise_application_error(-20000, 'Tipo de dato incorrecto');
+    end if;
+  
     p_guardar_dato(i_tabla,
                    i_campo,
                    i_referencia,

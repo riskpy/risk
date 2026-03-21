@@ -4,9 +4,6 @@ create or replace trigger gb_datos
 declare
   l_existe_registro   varchar2(1);
   l_nombre_referencia t_dato_definiciones.nombre_referencia%type;
-  l_tipo_dato         t_dato_definiciones.tipo_dato%type;
-  l_typeinfo          anytype;
-  l_typecode          pls_integer;
 begin
   /*
   --------------------------------- MIT License ---------------------------------
@@ -32,20 +29,19 @@ begin
   -------------------------------------------------------------------------------
   */
 
+  :new.tabla := upper(:new.tabla);
+  :new.campo := upper(:new.campo);
+
   if inserting or updating then
   
     -- Valida definición
-    begin
-      select d.nombre_referencia, d.tipo_dato
-        into l_nombre_referencia, l_tipo_dato
-        from t_dato_definiciones d
-       where upper(d.tabla) = upper(:new.tabla)
-         and upper(d.campo) = upper(:new.campo);
-    exception
-      when no_data_found then
-        raise_application_error(-20000,
-                                'Definición de dato adicional inexistente');
-    end;
+    if not t_dato_definiciones_api.row_exists(:new.tabla, :new.campo) then
+      raise_application_error(-20000,
+                              'Definición de dato adicional inexistente');
+    end if;
+  
+    l_nombre_referencia := t_dato_definiciones_api.get_nombre_referencia(:new.tabla,
+                                                                         :new.campo);
   
     -- Valida registro relacionado
     if l_nombre_referencia is not null then
@@ -74,54 +70,8 @@ END;'
       end if;
     end if;
   
-    if :new.contenido is null then
-      null; -- ?
-    else
-      null; -- ?
-      /*
-      -- Valida tipo de dato
-      l_typecode := :new.contenido.gettype(l_typeinfo);
-      
-      case l_tipo_dato
-      
-        when 'S' then
-          -- String
-          if l_typecode <> dbms_types.typecode_varchar2 then
-            raise_application_error(-20000, 'Tipo de dato incorrecto');
-          end if;
-      
-        when 'N' then
-          -- Number
-          if l_typecode <> dbms_types.typecode_number then
-            raise_application_error(-20000, 'Tipo de dato incorrecto');
-          end if;
-      
-        when 'B' then
-          -- Boolean
-          if l_typecode <> dbms_types.typecode_number then
-            raise_application_error(-20000, 'Tipo de dato incorrecto');
-          end if;
-      
-        when 'D' then
-          -- Date
-          if l_typecode <> dbms_types.typecode_date then
-            raise_application_error(-20000, 'Tipo de dato incorrecto');
-          end if;
-      
-        when 'O' then
-          -- Object
-          if l_typecode <> dbms_types.typecode_object then
-            raise_application_error(-20000, 'Tipo de dato incorrecto');
-          end if;
-      
-        else
-          raise_application_error(-20000, 'Tipo de dato no soportado');
-      
-      end case;
-      */
-    end if;
-  
   end if;
 
 end;
 /
+
