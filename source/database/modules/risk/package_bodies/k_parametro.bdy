@@ -20,6 +20,92 @@ create or replace package body k_parametro is
     return rw_parametro_definicion;
   end;
 
+  function f_parametro_definiciones( -- OPERACION
+                                    i_id_operacion in number default null,
+                                    i_version      in varchar2 default null,
+                                    -- PARAMETRO
+                                    i_tabla       in varchar2 default null,
+                                    i_tipo_filtro in varchar2 default null)
+    return y_datos_definiciones is
+    l_datos_definiciones y_datos_definiciones;
+  begin
+    select x.*
+      bulk collect
+      into l_datos_definiciones
+      from ( -- OPERACION
+            select c_tipo_definicion_operacion tipo,
+                    lower(op.nombre) nombre,
+                    op.orden,
+                    op.activo,
+                    op.tipo_dato,
+                    op.formato,
+                    op.longitud_maxima,
+                    op.obligatorio,
+                    op.valor_defecto,
+                    op.etiqueta,
+                    op.detalle,
+                    op.valores_posibles,
+                    op.encriptado
+              from t_operacion_parametros op, t_operaciones o
+             where o.id_operacion = op.id_operacion
+               and op.activo = 'S'
+               and op.id_operacion = i_id_operacion
+               and op.version = nvl(i_version, o.version_actual)
+            union
+            -- Parámetros automáticos
+            select c_tipo_definicion_operacion tipo,
+                    lower(op.nombre) nombre,
+                    op.orden,
+                    op.activo,
+                    op.tipo_dato,
+                    op.formato,
+                    op.longitud_maxima,
+                    op.obligatorio,
+                    op.valor_defecto,
+                    op.etiqueta,
+                    op.detalle,
+                    op.valores_posibles,
+                    op.encriptado
+              from t_operacion_parametros op
+             where op.activo = 'S'
+               and op.id_operacion = c_id_ope_par_automaticos
+               and exists
+             (select 1
+                      from t_operaciones o
+                     where lower(op.nombre) in
+                           (select lower(trim(column_value))
+                              from k_cadena.f_separar_cadenas(o.parametros_automaticos,
+                                                              ','))
+                       and o.id_operacion = i_id_operacion)
+            union all
+            -- PARAMETRO
+            select c_tipo_definicion_parametro tipo,
+                    lower(pd.id_parametro) nombre,
+                    pd.orden,
+                    'S' activo,
+                    pd.tipo_dato,
+                    pd.formato formato,
+                    pd.longitud_maxima longitud_maxima,
+                    pd.obligatorio obligatorio,
+                    pd.valor_defecto valor_defecto,
+                    pd.etiqueta etiqueta,
+                    pd.observacion detalle,
+                    pd.valores_posibles valores_posibles,
+                    pd.encriptado encriptado
+              from t_parametro_definiciones pd
+             where pd.tabla = i_tabla
+               and pd.tipo_filtro = nvl(i_tipo_filtro, pd.tipo_filtro)) x
+     where x.tipo = case
+             when i_id_operacion is not null then
+              c_tipo_definicion_operacion
+             when i_tabla is not null then
+              c_tipo_definicion_parametro
+           end
+     order by x.orden;
+  
+    return l_datos_definiciones;
+  end;
+
   function f_validar_parametro(i_parametro_definicion in ry_datos_definicion_parametro,
                                i_parametro            in json_element_t,
                                i_parametros           in json_object_t)
@@ -351,87 +437,12 @@ create or replace package body k_parametro is
                                  i_tabla       in varchar2 default null,
                                  i_tipo_filtro in varchar2 default null)
     return y_parametros is
-    l_parametros           y_parametros;
-    l_parametro            y_parametro;
-    l_json_object          json_object_t;
-    l_json_element         json_element_t;
-    l_parametro_definicion ry_datos_definicion_parametro;
-    c_id_ope_par_automaticos constant pls_integer := 1000;
-    c_tipo_operacion         constant varchar2(10) := 'OPERACION';
-    c_tipo_parametro         constant varchar2(10) := 'PARAMETRO';
-  
-    cursor cr_parametros is
-      select x.*
-        from ( -- OPERACION
-              select c_tipo_operacion tipo,
-                      lower(op.nombre) nombre,
-                      op.orden,
-                      op.activo,
-                      op.tipo_dato,
-                      op.formato,
-                      op.longitud_maxima,
-                      op.obligatorio,
-                      op.valor_defecto,
-                      op.etiqueta,
-                      op.detalle,
-                      op.valores_posibles,
-                      op.encriptado
-                from t_operacion_parametros op, t_operaciones o
-               where o.id_operacion = op.id_operacion
-                 and op.activo = 'S'
-                 and op.id_operacion = i_id_operacion
-                 and op.version = nvl(i_version, o.version_actual)
-              union
-              -- Parámetros automáticos
-              select c_tipo_operacion tipo,
-                      lower(op.nombre) nombre,
-                      op.orden,
-                      op.activo,
-                      op.tipo_dato,
-                      op.formato,
-                      op.longitud_maxima,
-                      op.obligatorio,
-                      op.valor_defecto,
-                      op.etiqueta,
-                      op.detalle,
-                      op.valores_posibles,
-                      op.encriptado
-                from t_operacion_parametros op
-               where op.activo = 'S'
-                 and op.id_operacion = c_id_ope_par_automaticos
-                 and exists
-               (select 1
-                        from t_operaciones o
-                       where lower(op.nombre) in
-                             (select lower(trim(column_value))
-                                from k_cadena.f_separar_cadenas(o.parametros_automaticos,
-                                                                ','))
-                         and o.id_operacion = i_id_operacion)
-              union all
-              -- PARAMETRO
-              select c_tipo_parametro tipo,
-                      lower(pd.id_parametro) nombre,
-                      pd.orden,
-                      'S' activo,
-                      pd.tipo_dato,
-                      pd.formato formato,
-                      pd.longitud_maxima longitud_maxima,
-                      pd.obligatorio obligatorio,
-                      pd.valor_defecto valor_defecto,
-                      pd.etiqueta etiqueta,
-                      pd.observacion detalle,
-                      pd.valores_posibles valores_posibles,
-                      pd.encriptado encriptado
-                from t_parametro_definiciones pd
-               where pd.tabla = i_tabla
-                 and pd.tipo_filtro = nvl(i_tipo_filtro, pd.tipo_filtro)) x
-       where x.tipo = case
-               when i_id_operacion is not null then
-                c_tipo_operacion
-               when i_tabla is not null then
-                c_tipo_parametro
-             end
-       order by x.orden;
+    l_parametros         y_parametros;
+    l_parametro          y_parametro;
+    l_json_object        json_object_t;
+    l_json_element       json_element_t;
+    l_datos_definiciones y_datos_definiciones;
+    i                    integer;
   begin
     -- Inicializa respuesta
     l_parametros := new y_parametros();
@@ -445,33 +456,26 @@ create or replace package body k_parametro is
     -- Renombra claves a minúsculas
     k_json_util.p_renombrar_claves(l_json_object);
   
-    for par in cr_parametros loop
+    l_datos_definiciones := f_parametro_definiciones(i_id_operacion,
+                                                     i_version,
+                                                     i_tabla,
+                                                     i_tipo_filtro);
+  
+    i := l_datos_definiciones.first;
+    while i is not null loop
       l_parametro        := new y_parametro();
-      l_parametro.nombre := par.nombre;
+      l_parametro.nombre := l_datos_definiciones(i).nombre;
     
-      l_parametro_definicion := new
-                                ry_datos_definicion_parametro(par.tipo,
-                                                              par.nombre,
-                                                              par.orden,
-                                                              par.activo,
-                                                              par.tipo_dato,
-                                                              par.formato,
-                                                              par.longitud_maxima,
-                                                              par.obligatorio,
-                                                              par.valor_defecto,
-                                                              par.etiqueta,
-                                                              par.detalle,
-                                                              par.valores_posibles,
-                                                              par.encriptado);
+      l_json_element := l_json_object.get(l_datos_definiciones(i).nombre);
     
-      l_json_element := l_json_object.get(par.nombre);
-    
-      l_parametro.valor := f_validar_parametro(l_parametro_definicion,
+      l_parametro.valor := f_validar_parametro(l_datos_definiciones(i),
                                                l_json_element,
                                                l_json_object);
     
       l_parametros.extend;
       l_parametros(l_parametros.count) := l_parametro;
+    
+      i := l_datos_definiciones.next(i);
     end loop;
   
     return l_parametros;
@@ -566,10 +570,11 @@ end;'
     return l_datos_valor_parametro;
   end;
 
-  function f_valor_parametro_string(i_tabla        in varchar2,
-                                    i_id_parametro in varchar2,
-                                    i_referencia   in varchar2 default null)
-    return varchar2 is
+  function f_valor_parametro(i_tabla        in varchar2,
+                             i_id_parametro in varchar2,
+                             i_referencia   in varchar2 default null)
+  
+   return varchar2 is
     l_datos_valor_parametro ry_datos_valor_parametro;
   begin
     l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
@@ -577,6 +582,14 @@ end;'
                                                        i_referencia);
     return nvl(l_datos_valor_parametro.valor,
                l_datos_valor_parametro.valor_defecto);
+  end;
+
+  function f_valor_parametro_string(i_tabla        in varchar2,
+                                    i_id_parametro in varchar2,
+                                    i_referencia   in varchar2 default null)
+    return varchar2 is
+  begin
+    return f_valor_parametro(i_tabla, i_id_parametro, i_referencia);
   end;
 
   function f_valor_parametro_number(i_tabla        in varchar2,
@@ -588,8 +601,9 @@ end;'
     l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
                                                        i_id_parametro,
                                                        i_referencia);
-    return to_number(nvl(l_datos_valor_parametro.valor,
-                         l_datos_valor_parametro.valor_defecto),
+    return to_number(f_valor_parametro(i_tabla,
+                                       i_id_parametro,
+                                       i_referencia),
                      nvl(l_datos_valor_parametro.formato,
                          '999G999G999G999G999D00'));
   end;
@@ -598,13 +612,10 @@ end;'
                                      i_id_parametro in varchar2,
                                      i_referencia   in varchar2 default null)
     return boolean is
-    l_datos_valor_parametro ry_datos_valor_parametro;
   begin
-    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
-                                                       i_id_parametro,
-                                                       i_referencia);
-    return k_util.string_to_bool(nvl(l_datos_valor_parametro.valor,
-                                     l_datos_valor_parametro.valor_defecto));
+    return k_util.string_to_bool(f_valor_parametro(i_tabla,
+                                                   i_id_parametro,
+                                                   i_referencia));
   end;
 
   function f_valor_parametro_date(i_tabla        in varchar2,
@@ -616,17 +627,8 @@ end;'
     l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
                                                        i_id_parametro,
                                                        i_referencia);
-    return to_date(nvl(l_datos_valor_parametro.valor,
-                       l_datos_valor_parametro.valor_defecto),
+    return to_date(f_valor_parametro(i_tabla, i_id_parametro, i_referencia),
                    nvl(l_datos_valor_parametro.formato, 'dd/mm/yyyy'));
-  end;
-
-  function f_valor_parametro(i_tabla        in varchar2,
-                             i_id_parametro in varchar2,
-                             i_referencia   in varchar2 default null)
-    return varchar2 is
-  begin
-    return f_valor_parametro_string(i_tabla, i_id_parametro, i_referencia);
   end;
 
   procedure p_definir_parametro(i_tabla        in varchar2,
@@ -686,6 +688,91 @@ end;'
         raise_application_error(-20000,
                                 'Error al definir parámetro. ' || sqlerrm);
     end;
+  end;
+
+  procedure p_definir_parametro_string(i_tabla        in varchar2,
+                                       i_id_parametro in varchar2,
+                                       i_valor        in varchar2,
+                                       i_referencia   in varchar2 default null) is
+    l_datos_valor_parametro ry_datos_valor_parametro;
+  begin
+    -- Valida definición
+    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
+                                                       i_id_parametro,
+                                                       i_referencia);
+  
+    if l_datos_valor_parametro.tipo_dato <> k_parametro.c_tipo_dato_string then
+      -- String
+      raise_application_error(-20000, 'Tipo de dato incorrecto');
+    end if;
+  
+    p_definir_parametro(i_tabla, i_id_parametro, i_valor, i_referencia);
+  end;
+
+  procedure p_definir_parametro_number(i_tabla        in varchar2,
+                                       i_id_parametro in varchar2,
+                                       i_valor        in number,
+                                       i_referencia   in varchar2 default null) is
+    l_datos_valor_parametro ry_datos_valor_parametro;
+  begin
+    -- Valida definición
+    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
+                                                       i_id_parametro,
+                                                       i_referencia);
+  
+    if l_datos_valor_parametro.tipo_dato <> k_parametro.c_tipo_dato_number then
+      -- Number
+      raise_application_error(-20000, 'Tipo de dato incorrecto');
+    end if;
+  
+    p_definir_parametro(i_tabla,
+                        i_id_parametro,
+                        to_char(i_valor),
+                        i_referencia);
+  end;
+
+  procedure p_definir_parametro_boolean(i_tabla        in varchar2,
+                                        i_id_parametro in varchar2,
+                                        i_valor        in boolean,
+                                        i_referencia   in varchar2 default null) is
+    l_datos_valor_parametro ry_datos_valor_parametro;
+  begin
+    -- Valida definición
+    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
+                                                       i_id_parametro,
+                                                       i_referencia);
+  
+    if l_datos_valor_parametro.tipo_dato <> k_parametro.c_tipo_dato_boolean then
+      -- Boolean
+      raise_application_error(-20000, 'Tipo de dato incorrecto');
+    end if;
+  
+    p_definir_parametro(i_tabla,
+                        i_id_parametro,
+                        k_util.bool_to_string(i_valor),
+                        i_referencia);
+  end;
+
+  procedure p_definir_parametro_date(i_tabla        in varchar2,
+                                     i_id_parametro in varchar2,
+                                     i_valor        in date,
+                                     i_referencia   in varchar2 default null) is
+    l_datos_valor_parametro ry_datos_valor_parametro;
+  begin
+    -- Valida definición
+    l_datos_valor_parametro := f_datos_valor_parametro(i_tabla,
+                                                       i_id_parametro,
+                                                       i_referencia);
+  
+    if l_datos_valor_parametro.tipo_dato <> k_parametro.c_tipo_dato_date then
+      -- Date
+      raise_application_error(-20000, 'Tipo de dato incorrecto');
+    end if;
+  
+    p_definir_parametro(i_tabla,
+                        i_id_parametro,
+                        k_util.date_to_string(i_valor),
+                        i_referencia);
   end;
 
 end;
