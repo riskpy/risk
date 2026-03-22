@@ -49,6 +49,7 @@ namespace Risk.Common.Helpers
         public const string HEADER_AUTHORIZATION = "Authorization";
         public const string HEADER_RISK_SERVICE_VERSION = "Risk-Service-Version";
         public const string HEADER_RISK_DEVICE_TOKEN = "Risk-Device-Token";
+        public const string HEADER_RISK_TRACE_ID = "Risk-Trace-Id";
 
         // Swagger Response Descriptions
         public const string SWAGGER_RESPONSE_200 = "Operación exitosa";

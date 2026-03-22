@@ -23,9 +23,11 @@ SOFTWARE.
 */
 
 using System;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -235,6 +237,14 @@ namespace Risk.API
             app.UseCors();
 
             app.UseRiskApplicationKeyValidator();
+
+            // Add middleware to include the Trace ID in the response headers
+            app.Use(async (context, next) =>
+            {
+                string traceId = Activity.Current?.Id ?? context.TraceIdentifier;
+                context.Response.Headers.Append(RiskConstants.HEADER_RISK_TRACE_ID, traceId);
+                await next();
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();
