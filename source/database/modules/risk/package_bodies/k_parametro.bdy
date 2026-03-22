@@ -9,8 +9,8 @@ create or replace package body k_parametro is
       select a.*
         into rw_parametro_definicion
         from t_parametro_definiciones a
-       where a.tabla = i_tabla
-         and a.id_parametro = i_id_parametro;
+       where upper(a.tabla) = upper(i_tabla)
+         and upper(a.id_parametro) = upper(i_id_parametro);
     exception
       when no_data_found then
         rw_parametro_definicion := null;
@@ -24,8 +24,11 @@ create or replace package body k_parametro is
                                     i_id_operacion in number default null,
                                     i_version      in varchar2 default null,
                                     -- PARAMETRO
-                                    i_tabla       in varchar2 default null,
-                                    i_tipo_filtro in varchar2 default null)
+                                    i_tabla_parametro in varchar2 default null,
+                                    i_tipo_filtro     in varchar2 default null,
+                                    -- DATO
+                                    i_tabla_dato in varchar2 default null,
+                                    i_campo      in varchar2 default null)
     return y_datos_definiciones is
     l_datos_definiciones y_datos_definiciones;
   begin
@@ -33,7 +36,7 @@ create or replace package body k_parametro is
       bulk collect
       into l_datos_definiciones
       from ( -- OPERACION
-            select c_tipo_definicion_operacion tipo,
+            select c_tipo_definicion_operacion tipo_definicion,
                     lower(op.nombre) nombre,
                     op.orden,
                     op.activo,
@@ -53,7 +56,7 @@ create or replace package body k_parametro is
                and op.version = nvl(i_version, o.version_actual)
             union
             -- Parámetros automáticos
-            select c_tipo_definicion_operacion tipo,
+            select c_tipo_definicion_operacion tipo_definicion,
                     lower(op.nombre) nombre,
                     op.orden,
                     op.activo,
@@ -79,7 +82,7 @@ create or replace package body k_parametro is
                        and o.id_operacion = i_id_operacion)
             union all
             -- PARAMETRO
-            select c_tipo_definicion_parametro tipo,
+            select c_tipo_definicion_parametro tipo_definicion,
                     lower(pd.id_parametro) nombre,
                     pd.orden,
                     'S' activo,
@@ -93,13 +96,15 @@ create or replace package body k_parametro is
                     pd.valores_posibles valores_posibles,
                     pd.encriptado encriptado
               from t_parametro_definiciones pd
-             where pd.tabla = i_tabla
+             where pd.tabla = i_tabla_parametro
                and pd.tipo_filtro = nvl(i_tipo_filtro, pd.tipo_filtro)) x
-     where x.tipo = case
+     where x.tipo_definicion = case
              when i_id_operacion is not null then
               c_tipo_definicion_operacion
-             when i_tabla is not null then
+             when i_tabla_parametro is not null then
               c_tipo_definicion_parametro
+             when i_tabla_dato is not null then
+              c_tipo_definicion_dato
            end
      order by x.orden;
   
@@ -107,29 +112,19 @@ create or replace package body k_parametro is
   end;
 
   function f_validar_parametro(i_parametro_definicion in ry_datos_definicion_parametro,
-                               i_parametro            in json_element_t,
-                               i_parametros           in json_object_t)
+                               i_valor                in json_element_t)
     return anydata is
     l_valor        anydata;
-    l_json_object  json_object_t;
     l_json_element json_element_t;
   begin
-    l_json_object  := i_parametros;
-    l_json_element := i_parametro;
+    l_json_element := i_valor;
   
     /*if i_parametro_definicion.obligatorio = 'S' then
-      if not l_json_object.has(i_parametro_definicion.nombre) then
+      if l_json_element.is_null then
         raise_application_error(-20000,
-                                k_error.f_mensaje_error('ora0003',
+                                k_error.f_mensaje_error('ora0004',
                                                         nvl(i_parametro_definicion.etiqueta,
                                                             i_parametro_definicion.nombre)));
-      else
-        if l_json_element.is_null then
-          raise_application_error(-20000,
-                                  k_error.f_mensaje_error('ora0004',
-                                                          nvl(i_parametro_definicion.etiqueta,
-                                                              i_parametro_definicion.nombre)));
-        end if;
       end if;
     end if;*/
   
@@ -147,7 +142,12 @@ create or replace package body k_parametro is
       
         if i_parametro_definicion.encriptado = 'S' then
           begin
-            l_valor := anydata.convertvarchar2(k_util.decrypt(l_json_object.get_string(i_parametro_definicion.nombre)));
+            l_valor := anydata.convertvarchar2(k_util.decrypt(case
+                                                                when l_json_element is null then
+                                                                 null
+                                                                else
+                                                                 l_json_element.to_clob
+                                                              end));
           exception
             when value_error then
               raise_application_error(-20000,
@@ -161,7 +161,12 @@ create or replace package body k_parametro is
                                                                   i_parametro_definicion.nombre)));
           end;
         else
-          l_valor := anydata.convertvarchar2(l_json_object.get_string(i_parametro_definicion.nombre));
+          l_valor := anydata.convertvarchar2(case
+                                               when l_json_element is null then
+                                                null
+                                               else
+                                                l_json_element.to_clob
+                                             end);
         end if;
         if l_valor.accessvarchar2 is null and
            i_parametro_definicion.valor_defecto is not null then
@@ -203,7 +208,12 @@ create or replace package body k_parametro is
                                                               i_parametro_definicion.nombre)));
         end if;
       
-        l_valor := anydata.convertnumber(l_json_object.get_number(i_parametro_definicion.nombre));
+        l_valor := anydata.convertnumber(case
+                                           when l_json_element is null then
+                                            null
+                                           else
+                                            l_json_element.to_number
+                                         end);
         if l_valor.accessnumber is null and
            i_parametro_definicion.valor_defecto is not null then
           l_valor := anydata.convertnumber(to_number(i_parametro_definicion.valor_defecto));
@@ -244,7 +254,12 @@ create or replace package body k_parametro is
                                                               i_parametro_definicion.nombre)));
         end if;
       
-        l_valor := anydata.convertnumber(sys.diutil.bool_to_int(l_json_object.get_boolean(i_parametro_definicion.nombre)));
+        l_valor := anydata.convertnumber(sys.diutil.bool_to_int(case
+                                                                  when l_json_element is null then
+                                                                   null
+                                                                  else
+                                                                   l_json_element.to_boolean
+                                                                end));
         if l_valor.accessnumber is null and
            i_parametro_definicion.valor_defecto is not null then
           l_valor := anydata.convertnumber(to_number(i_parametro_definicion.valor_defecto));
@@ -268,7 +283,12 @@ create or replace package body k_parametro is
                                                               i_parametro_definicion.nombre)));
         end if;
       
-        l_valor := anydata.convertdate(l_json_object.get_date(i_parametro_definicion.nombre));
+        l_valor := anydata.convertdate(case
+                                         when l_json_element is null then
+                                          null
+                                         else
+                                          l_json_element.to_date
+                                       end);
         if l_valor.accessdate is null and
            i_parametro_definicion.valor_defecto is not null then
           l_valor := anydata.convertdate(to_date(i_parametro_definicion.valor_defecto,
@@ -371,7 +391,12 @@ create or replace package body k_parametro is
       
         if i_parametro_definicion.encriptado = 'S' then
           begin
-            l_valor := anydata.convertclob(k_util.decrypt(l_json_object.get_string(i_parametro_definicion.nombre)));
+            l_valor := anydata.convertclob(k_util.decrypt(case
+                                                            when l_json_element is null then
+                                                             null
+                                                            else
+                                                             l_json_element.to_clob
+                                                          end));
           exception
             when value_error then
               raise_application_error(-20000,
@@ -385,7 +410,12 @@ create or replace package body k_parametro is
                                                                   i_parametro_definicion.nombre)));
           end;
         else
-          l_valor := anydata.convertclob(l_json_object.get_string(i_parametro_definicion.nombre));
+          l_valor := anydata.convertclob(case
+                                           when l_json_element is null then
+                                            null
+                                           else
+                                            l_json_element.to_clob
+                                         end);
         end if;
         if l_valor.accessvarchar2 is null and
            i_parametro_definicion.valor_defecto is not null then
@@ -434,8 +464,11 @@ create or replace package body k_parametro is
                                  i_id_operacion in number default null,
                                  i_version      in varchar2 default null,
                                  -- PARAMETRO
-                                 i_tabla       in varchar2 default null,
-                                 i_tipo_filtro in varchar2 default null)
+                                 i_tabla_parametro in varchar2 default null,
+                                 i_tipo_filtro     in varchar2 default null,
+                                 -- DATO
+                                 i_tabla_dato in varchar2 default null,
+                                 i_campo      in varchar2 default null)
     return y_parametros is
     l_parametros         y_parametros;
     l_parametro          y_parametro;
@@ -458,8 +491,10 @@ create or replace package body k_parametro is
   
     l_datos_definiciones := f_parametro_definiciones(i_id_operacion,
                                                      i_version,
-                                                     i_tabla,
-                                                     i_tipo_filtro);
+                                                     i_tabla_parametro,
+                                                     i_tipo_filtro,
+                                                     i_tabla_dato,
+                                                     i_campo);
   
     i := l_datos_definiciones.first;
     while i is not null loop
@@ -468,9 +503,17 @@ create or replace package body k_parametro is
     
       l_json_element := l_json_object.get(l_datos_definiciones(i).nombre);
     
+      /*if l_datos_definiciones(i).obligatorio = 'S' then
+        if not l_json_object.has(l_datos_definiciones(i).nombre) then
+          raise_application_error(-20000,
+                                  k_error.f_mensaje_error('ora0003',
+                                                          nvl(l_datos_definiciones(i).etiqueta,
+                                                              l_datos_definiciones(i).nombre)));
+        end if;
+      end if;*/
+    
       l_parametro.valor := f_validar_parametro(l_datos_definiciones(i),
-                                               l_json_element,
-                                               l_json_object);
+                                               l_json_element);
     
       l_parametros.extend;
       l_parametros(l_parametros.count) := l_parametro;
@@ -481,15 +524,15 @@ create or replace package body k_parametro is
     return l_parametros;
   end;
 
-  function f_procesar_parametros(i_tabla       in varchar2,
-                                 i_parametros  in clob,
-                                 i_tipo_filtro in varchar2 default null)
+  function f_procesar_parametros(i_parametros      in clob,
+                                 i_tabla_parametro in varchar2,
+                                 i_tipo_filtro     in varchar2 default null)
     return y_parametros is
   begin
     return f_procesar_parametros(i_parametros,
                                  null,
                                  null,
-                                 i_tabla,
+                                 i_tabla_parametro,
                                  i_tipo_filtro);
   end;
 

@@ -563,6 +563,7 @@ prompt
 @@triggers/ga_usuario_claves.trg
 @@triggers/ga_usuarios.trg
 @@triggers/gb_archivos.trg
+@@triggers/gb_dato_definiciones.trg
 @@triggers/gb_datos.trg
 @@triggers/gb_entidades.trg
 @@triggers/gb_errores_actualizar_clave.trg

@@ -96,6 +96,7 @@ drop trigger ga_trabajos;
 drop trigger ga_usuario_claves;
 drop trigger ga_usuarios;
 drop trigger gb_archivos;
+drop trigger gb_dato_definiciones;
 drop trigger gb_datos;
 drop trigger gb_entidades;
 drop trigger gb_errores_actualizar_clave;

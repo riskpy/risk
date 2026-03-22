@@ -19,6 +19,7 @@ create or replace package k_parametro authid current_user is
   -- Tipos de definiciones soportados
   c_tipo_definicion_operacion constant varchar2(10) := 'OPERACION';
   c_tipo_definicion_parametro constant varchar2(10) := 'PARAMETRO';
+  c_tipo_definicion_dato      constant varchar2(10) := 'DATO';
 
   -- Tablas de parámetros soportadas
   c_tabla_parametros               constant varchar2(50) := 'T_PARAMETROS';
@@ -36,7 +37,7 @@ create or replace package k_parametro authid current_user is
     encriptado    varchar2(1));
 
   type ry_datos_definicion_parametro is record(
-    tipo             varchar2(100),
+    tipo_definicion  varchar2(100),
     nombre           varchar2(100),
     orden            number(3),
     activo           varchar2(1),
@@ -60,13 +61,15 @@ create or replace package k_parametro authid current_user is
                                     i_id_operacion in number default null,
                                     i_version      in varchar2 default null,
                                     -- PARAMETRO
-                                    i_tabla       in varchar2 default null,
-                                    i_tipo_filtro in varchar2 default null)
+                                    i_tabla_parametro in varchar2 default null,
+                                    i_tipo_filtro     in varchar2 default null,
+                                    -- DATO
+                                    i_tabla_dato in varchar2 default null,
+                                    i_campo      in varchar2 default null)
     return y_datos_definiciones;
 
   function f_validar_parametro(i_parametro_definicion in ry_datos_definicion_parametro,
-                               i_parametro            in json_element_t,
-                               i_parametros           in json_object_t)
+                               i_valor                in json_element_t)
     return anydata;
 
   function f_procesar_parametros(i_parametros in clob,
@@ -74,13 +77,16 @@ create or replace package k_parametro authid current_user is
                                  i_id_operacion in number default null,
                                  i_version      in varchar2 default null,
                                  -- PARAMETRO
-                                 i_tabla       in varchar2 default null,
-                                 i_tipo_filtro in varchar2 default null)
+                                 i_tabla_parametro in varchar2 default null,
+                                 i_tipo_filtro     in varchar2 default null,
+                                 -- DATO
+                                 i_tabla_dato in varchar2 default null,
+                                 i_campo      in varchar2 default null)
     return y_parametros;
 
-  function f_procesar_parametros(i_tabla       in varchar2,
-                                 i_parametros  in clob,
-                                 i_tipo_filtro in varchar2 default null)
+  function f_procesar_parametros(i_parametros      in clob,
+                                 i_tabla_parametro in varchar2,
+                                 i_tipo_filtro     in varchar2 default null)
     return y_parametros;
 
   function f_datos_valor_parametro(i_tabla        in varchar2,

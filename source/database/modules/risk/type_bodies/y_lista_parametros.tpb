@@ -22,14 +22,14 @@ create or replace type body y_lista_parametros is
                                           i_id_operacion in number default null,
                                           i_version      in varchar2 default null,
                                           -- PARAMETRO
-                                          i_tabla       in varchar2 default null,
-                                          i_tipo_filtro in varchar2 default null)
+                                          i_tabla_parametro in varchar2 default null,
+                                          i_tipo_filtro     in varchar2 default null)
     return self as result as
   begin
     self.parametros := k_parametro.f_procesar_parametros(i_parametros,
                                                          i_id_operacion,
                                                          i_version,
-                                                         i_tabla,
+                                                         i_tabla_parametro,
                                                          i_tipo_filtro);
     return;
   end;
