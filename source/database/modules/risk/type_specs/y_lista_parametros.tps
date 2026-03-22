@@ -50,7 +50,9 @@ Constructor del objeto sin parámetros.
                                           i_version      in varchar2 default null,
                                           -- PARAMETRO
                                           i_tabla_parametro in varchar2 default null,
-                                          i_tipo_filtro     in varchar2 default null)
+                                          i_tipo_filtro     in varchar2 default null,
+                                          -- DATO
+                                          i_tabla_dato in varchar2 default null)
     return self as result,
 
   member function f_valor_parametro(i_nombre in varchar2) return anydata,

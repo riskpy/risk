@@ -64,8 +64,7 @@ create or replace package k_parametro authid current_user is
                                     i_tabla_parametro in varchar2 default null,
                                     i_tipo_filtro     in varchar2 default null,
                                     -- DATO
-                                    i_tabla_dato in varchar2 default null,
-                                    i_campo      in varchar2 default null)
+                                    i_tabla_dato in varchar2 default null)
     return y_datos_definiciones;
 
   function f_validar_parametro(i_parametro_definicion in ry_datos_definicion_parametro,
@@ -80,8 +79,7 @@ create or replace package k_parametro authid current_user is
                                  i_tabla_parametro in varchar2 default null,
                                  i_tipo_filtro     in varchar2 default null,
                                  -- DATO
-                                 i_tabla_dato in varchar2 default null,
-                                 i_campo      in varchar2 default null)
+                                 i_tabla_dato in varchar2 default null)
     return y_parametros;
 
   function f_procesar_parametros(i_parametros      in clob,

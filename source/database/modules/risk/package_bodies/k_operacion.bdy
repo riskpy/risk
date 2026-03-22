@@ -477,6 +477,7 @@ create or replace package body k_operacion is
                                                  i_id_operacion,
                                                  i_version,
                                                  null,
+                                                 null,
                                                  null);
     return l_lista_parametros.parametros;
   end;

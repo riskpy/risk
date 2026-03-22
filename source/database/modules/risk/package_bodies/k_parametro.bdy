@@ -27,8 +27,7 @@ create or replace package body k_parametro is
                                     i_tabla_parametro in varchar2 default null,
                                     i_tipo_filtro     in varchar2 default null,
                                     -- DATO
-                                    i_tabla_dato in varchar2 default null,
-                                    i_campo      in varchar2 default null)
+                                    i_tabla_dato in varchar2 default null)
     return y_datos_definiciones is
     l_datos_definiciones y_datos_definiciones;
   begin
@@ -84,9 +83,9 @@ create or replace package body k_parametro is
             -- PARAMETRO
             select c_tipo_definicion_parametro tipo_definicion,
                     lower(pd.id_parametro) nombre,
-                    pd.orden,
+                    pd.orden orden,
                     'S' activo,
-                    pd.tipo_dato,
+                    pd.tipo_dato tipo_dato,
                     pd.formato formato,
                     pd.longitud_maxima longitud_maxima,
                     pd.obligatorio obligatorio,
@@ -96,8 +95,25 @@ create or replace package body k_parametro is
                     pd.valores_posibles valores_posibles,
                     pd.encriptado encriptado
               from t_parametro_definiciones pd
-             where pd.tabla = i_tabla_parametro
-               and pd.tipo_filtro = nvl(i_tipo_filtro, pd.tipo_filtro)) x
+             where upper(pd.tabla) = upper(i_tabla_parametro)
+               and pd.tipo_filtro = nvl(i_tipo_filtro, pd.tipo_filtro)
+            union all
+            -- DATO
+            select c_tipo_definicion_dato tipo_definicion,
+                    lower(dd.campo) nombre,
+                    dd.orden orden,
+                    'S' activo,
+                    dd.tipo_dato tipo_dato,
+                    null formato,
+                    null longitud_maxima,
+                    'N' obligatorio,
+                    null valor_defecto,
+                    null etiqueta,
+                    null detalle,
+                    null valores_posibles,
+                    'N' encriptado
+              from t_dato_definiciones dd
+             where upper(dd.tabla) = upper(i_tabla_dato)) x
      where x.tipo_definicion = case
              when i_id_operacion is not null then
               c_tipo_definicion_operacion
@@ -467,8 +483,7 @@ create or replace package body k_parametro is
                                  i_tabla_parametro in varchar2 default null,
                                  i_tipo_filtro     in varchar2 default null,
                                  -- DATO
-                                 i_tabla_dato in varchar2 default null,
-                                 i_campo      in varchar2 default null)
+                                 i_tabla_dato in varchar2 default null)
     return y_parametros is
     l_parametros         y_parametros;
     l_parametro          y_parametro;
@@ -493,8 +508,7 @@ create or replace package body k_parametro is
                                                      i_version,
                                                      i_tabla_parametro,
                                                      i_tipo_filtro,
-                                                     i_tabla_dato,
-                                                     i_campo);
+                                                     i_tabla_dato);
   
     i := l_datos_definiciones.first;
     while i is not null loop
@@ -533,7 +547,8 @@ create or replace package body k_parametro is
                                  null,
                                  null,
                                  i_tabla_parametro,
-                                 i_tipo_filtro);
+                                 i_tipo_filtro,
+                                 null);
   end;
 
   function f_datos_valor_parametro(i_tabla        in varchar2,
