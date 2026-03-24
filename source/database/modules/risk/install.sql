@@ -69,6 +69,7 @@ prompt
 @@tables/t_departamentos.tab
 @@tables/t_dispositivo_ubicaciones.tab
 @@tables/t_dispositivos.tab
+@@tables/t_distritos.tab
 @@tables/t_documento_tipos.tab
 @@tables/t_dominios.tab
 @@tables/t_entidad_roles.tab
@@ -117,6 +118,7 @@ prompt
 @@foreign_keys/fk_departamentos.sql
 @@foreign_keys/fk_dispositivo_ubicaciones.sql
 @@foreign_keys/fk_dispositivos.sql
+@@foreign_keys/fk_distritos.sql
 @@foreign_keys/fk_dominios.sql
 @@foreign_keys/fk_entidad_roles.sql
 @@foreign_keys/fk_entidad_usuarios.sql
@@ -174,6 +176,8 @@ prompt
 @@views/t_dispositivo_ubicaciones_v.vw
 @@views/t_dispositivos_dml_v.vw
 @@views/t_dispositivos_v.vw
+@@views/t_distritos_dml_v.vw
+@@views/t_distritos_v.vw
 @@views/t_documento_tipos_dml_v.vw
 @@views/t_documento_tipos_v.vw
 @@views/t_dominios_dml_v.vw
@@ -384,6 +388,7 @@ prompt
 @@package_specs/t_departamentos_api.spc
 @@package_specs/t_dispositivo_ubicaciones_api.spc
 @@package_specs/t_dispositivos_api.spc
+@@package_specs/t_distritos_api.spc
 @@package_specs/t_documento_tipos_api.spc
 @@package_specs/t_dominios_api.spc
 @@package_specs/t_entidad_roles_api.spc
@@ -479,6 +484,7 @@ prompt
 @@package_bodies/t_departamentos_api.bdy
 @@package_bodies/t_dispositivo_ubicaciones_api.bdy
 @@package_bodies/t_dispositivos_api.bdy
+@@package_bodies/t_distritos_api.bdy
 @@package_bodies/t_documento_tipos_api.bdy
 @@package_bodies/t_dominios_api.bdy
 @@package_bodies/t_entidad_roles_api.bdy
@@ -531,6 +537,7 @@ prompt
 @@triggers/ga_departamentos.trg
 @@triggers/ga_dispositivo_ubicaciones.trg
 @@triggers/ga_dispositivos.trg
+@@triggers/ga_distritos.trg
 @@triggers/ga_documento_tipos.trg
 @@triggers/ga_dominios.trg
 @@triggers/ga_entidad_roles.trg
