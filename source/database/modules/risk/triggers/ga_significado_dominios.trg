@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_significado_dominios
-  BEFORE INSERT OR UPDATE ON risk_risk.t_significado_dominios
+  BEFORE INSERT OR UPDATE ON t_significado_dominios
   FOR EACH ROW
 BEGIN
   /*

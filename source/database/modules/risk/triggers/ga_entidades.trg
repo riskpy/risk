@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_entidades
-  BEFORE INSERT OR UPDATE ON risk_risk.t_entidades
+  BEFORE INSERT OR UPDATE ON t_entidades
   FOR EACH ROW
 BEGIN
   /*

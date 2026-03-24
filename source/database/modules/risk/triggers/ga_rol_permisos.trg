@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_rol_permisos
-  BEFORE INSERT OR UPDATE ON risk_risk.t_rol_permisos
+  BEFORE INSERT OR UPDATE ON t_rol_permisos
   FOR EACH ROW
 BEGIN
   /*

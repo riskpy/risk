@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_sesiones
-  BEFORE INSERT OR UPDATE ON risk_risk.t_sesiones
+  BEFORE INSERT OR UPDATE ON t_sesiones
   FOR EACH ROW
 BEGIN
   /*

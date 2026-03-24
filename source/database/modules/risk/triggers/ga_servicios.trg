@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_servicios
-  BEFORE INSERT OR UPDATE ON risk_risk.t_servicios
+  BEFORE INSERT OR UPDATE ON t_servicios
   FOR EACH ROW
 BEGIN
   /*

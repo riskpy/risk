@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_usuario_claves
-  BEFORE INSERT OR UPDATE ON risk_risk.t_usuario_claves
+  BEFORE INSERT OR UPDATE ON t_usuario_claves
   FOR EACH ROW
 BEGIN
   /*

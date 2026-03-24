@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_autenticacion_origenes
-  BEFORE INSERT OR UPDATE ON risk_risk.t_autenticacion_origenes
+  BEFORE INSERT OR UPDATE ON t_autenticacion_origenes
   FOR EACH ROW
 BEGIN
   /*

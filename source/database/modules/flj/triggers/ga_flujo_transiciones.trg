@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_flujo_transiciones
-  BEFORE INSERT OR UPDATE ON risk_flj.t_flujo_transiciones
+  BEFORE INSERT OR UPDATE ON t_flujo_transiciones
   FOR EACH ROW
 BEGIN
   /*

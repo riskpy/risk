@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_archivo_definiciones
-  BEFORE INSERT OR UPDATE ON risk_risk.t_archivo_definiciones
+  BEFORE INSERT OR UPDATE ON t_archivo_definiciones
   FOR EACH ROW
 BEGIN
   /*

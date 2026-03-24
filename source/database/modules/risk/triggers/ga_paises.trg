@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_paises
-  BEFORE INSERT OR UPDATE ON risk_risk.t_paises
+  BEFORE INSERT OR UPDATE ON t_paises
   FOR EACH ROW
 BEGIN
   /*

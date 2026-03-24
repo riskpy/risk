@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_dato_definiciones
-  BEFORE INSERT OR UPDATE ON risk_risk.t_dato_definiciones
+  BEFORE INSERT OR UPDATE ON t_dato_definiciones
   FOR EACH ROW
 BEGIN
   /*

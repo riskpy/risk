@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_operacion_parametros
-  BEFORE INSERT OR UPDATE ON risk_risk.t_operacion_parametros
+  BEFORE INSERT OR UPDATE ON t_operacion_parametros
   FOR EACH ROW
 BEGIN
   /*

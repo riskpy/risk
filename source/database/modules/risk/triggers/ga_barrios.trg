@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_barrios
-  BEFORE INSERT OR UPDATE ON risk_risk.t_barrios
+  BEFORE INSERT OR UPDATE ON t_barrios
   FOR EACH ROW
 BEGIN
   /*

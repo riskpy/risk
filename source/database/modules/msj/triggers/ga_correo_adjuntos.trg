@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_correo_adjuntos
-  BEFORE INSERT OR UPDATE ON risk_msj.t_correo_adjuntos
+  BEFORE INSERT OR UPDATE ON t_correo_adjuntos
   FOR EACH ROW
 BEGIN
   /*

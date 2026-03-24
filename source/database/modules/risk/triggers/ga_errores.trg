@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_errores
-  BEFORE INSERT OR UPDATE ON risk_risk.t_errores
+  BEFORE INSERT OR UPDATE ON t_errores
   FOR EACH ROW
 BEGIN
   /*

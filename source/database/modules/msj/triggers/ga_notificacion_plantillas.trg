@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_notificacion_plantillas
-  BEFORE INSERT OR UPDATE ON risk_msj.t_notificacion_plantillas
+  BEFORE INSERT OR UPDATE ON t_notificacion_plantillas
   FOR EACH ROW
 BEGIN
   /*

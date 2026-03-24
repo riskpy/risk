@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_idiomas
-  BEFORE INSERT OR UPDATE ON risk_risk.t_idiomas
+  BEFORE INSERT OR UPDATE ON t_idiomas
   FOR EACH ROW
 BEGIN
   /*

@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_flujo_instancia_historial
-  BEFORE INSERT OR UPDATE ON risk_flj.t_flujo_instancia_historial
+  BEFORE INSERT OR UPDATE ON t_flujo_instancia_historial
   FOR EACH ROW
 BEGIN
   /*

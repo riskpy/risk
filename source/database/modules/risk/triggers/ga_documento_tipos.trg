@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_documento_tipos
-  BEFORE INSERT OR UPDATE ON risk_risk.t_documento_tipos
+  BEFORE INSERT OR UPDATE ON t_documento_tipos
   FOR EACH ROW
 BEGIN
   /*

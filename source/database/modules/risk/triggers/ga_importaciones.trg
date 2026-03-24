@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_importaciones
-  BEFORE INSERT OR UPDATE ON risk_risk.t_importaciones
+  BEFORE INSERT OR UPDATE ON t_importaciones
   FOR EACH ROW
 BEGIN
   /*

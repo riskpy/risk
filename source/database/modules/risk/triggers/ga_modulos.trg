@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_modulos
-  BEFORE INSERT OR UPDATE ON risk_risk.t_modulos
+  BEFORE INSERT OR UPDATE ON t_modulos
   FOR EACH ROW
 BEGIN
   /*

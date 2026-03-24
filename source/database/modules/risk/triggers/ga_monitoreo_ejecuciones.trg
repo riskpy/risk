@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_monitoreo_ejecuciones
-  BEFORE INSERT OR UPDATE ON risk_risk.t_monitoreo_ejecuciones
+  BEFORE INSERT OR UPDATE ON t_monitoreo_ejecuciones
   FOR EACH ROW
 BEGIN
   /*

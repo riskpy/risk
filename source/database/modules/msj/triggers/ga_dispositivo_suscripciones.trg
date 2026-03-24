@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_dispositivo_suscripciones
-  BEFORE INSERT OR UPDATE ON risk_msj.t_dispositivo_suscripciones
+  BEFORE INSERT OR UPDATE ON t_dispositivo_suscripciones
   FOR EACH ROW
 BEGIN
   /*

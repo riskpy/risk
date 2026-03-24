@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_mensajeria_categorias
-  BEFORE INSERT OR UPDATE ON risk_msj.t_mensajeria_categorias
+  BEFORE INSERT OR UPDATE ON t_mensajeria_categorias
   FOR EACH ROW
 BEGIN
   /*

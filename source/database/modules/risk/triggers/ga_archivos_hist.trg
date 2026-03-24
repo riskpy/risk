@@ -1,5 +1,5 @@
 CREATE OR REPLACE TRIGGER ga_archivos_hist
-  BEFORE INSERT OR UPDATE ON risk_risk.t_archivos_hist
+  BEFORE INSERT OR UPDATE ON t_archivos_hist
   FOR EACH ROW
 BEGIN
   /*
