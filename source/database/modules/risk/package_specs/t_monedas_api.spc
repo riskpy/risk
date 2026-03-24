@@ -10,7 +10,7 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-15 15:14:01"
+    generated_at="2026-03-23 22:44:11"
     generated_by="JAVIER"
     p_table_name="T_MONEDAS"
     p_owner="RISK_RISK"
@@ -61,6 +61,14 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_id_moneda IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/ )
   RETURN VARCHAR2;
 
+  FUNCTION get_pk_by_unique_cols (
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE /*UK*/ )
+  RETURN T_MONEDAS.ID_MONEDA%TYPE;
+
+  FUNCTION get_pk_by_unique_cols (
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE /*UK*/ )
+  RETURN T_MONEDAS.ID_MONEDA%TYPE;
+
   FUNCTION create_row (
     p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE              DEFAULT NULL /*PK*/,
     p_descripcion IN T_MONEDAS.DESCRIPCION%TYPE            ,
@@ -68,7 +76,8 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_formato     IN T_MONEDAS.FORMATO%TYPE                DEFAULT NULL,
     p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE                DEFAULT NULL,
     p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE                DEFAULT NULL /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE             DEFAULT NULL )
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE            DEFAULT NULL /*UK*/,
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE            DEFAULT NULL /*UK*/ )
   RETURN T_MONEDAS.ID_MONEDA%TYPE;
 
   PROCEDURE create_row (
@@ -78,7 +87,8 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_formato     IN T_MONEDAS.FORMATO%TYPE                DEFAULT NULL,
     p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE                DEFAULT NULL,
     p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE                DEFAULT NULL /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE             DEFAULT NULL );
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE            DEFAULT NULL /*UK*/,
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE            DEFAULT NULL /*UK*/ );
 
   FUNCTION create_row (
     p_row IN T_MONEDAS%ROWTYPE )
@@ -98,6 +108,14 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_id_moneda IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/ )
   RETURN T_MONEDAS%ROWTYPE;
 
+  FUNCTION read_row (
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE /*UK*/ )
+  RETURN T_MONEDAS%ROWTYPE;
+
+  FUNCTION read_row (
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE /*UK*/ )
+  RETURN T_MONEDAS%ROWTYPE;
+
   PROCEDURE read_row (
     p_id_moneda            IN            T_MONEDAS.ID_MONEDA%TYPE /*PK*/,
     p_descripcion             OUT NOCOPY T_MONEDAS.DESCRIPCION%TYPE,
@@ -105,11 +123,12 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_formato                 OUT NOCOPY T_MONEDAS.FORMATO%TYPE,
     p_simbolo                 OUT NOCOPY T_MONEDAS.SIMBOLO%TYPE,
     p_id_pais                 OUT NOCOPY T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso              OUT NOCOPY T_MONEDAS.CODIGO_ISO%TYPE,
+    p_iso_alpha_3             OUT NOCOPY T_MONEDAS.ISO_ALPHA_3%TYPE /*UK*/,
     p_usuario_insercion       OUT NOCOPY T_MONEDAS.USUARIO_INSERCION%TYPE,
     p_fecha_insercion         OUT NOCOPY T_MONEDAS.FECHA_INSERCION%TYPE,
     p_usuario_modificacion    OUT NOCOPY T_MONEDAS.USUARIO_MODIFICACION%TYPE,
-    p_fecha_modificacion      OUT NOCOPY T_MONEDAS.FECHA_MODIFICACION%TYPE );
+    p_fecha_modificacion      OUT NOCOPY T_MONEDAS.FECHA_MODIFICACION%TYPE,
+    p_iso_numeric             OUT NOCOPY T_MONEDAS.ISO_NUMERIC%TYPE /*UK*/ );
 
   FUNCTION read_rows (
     p_ref_cursor IN t_strong_ref_cursor )
@@ -122,7 +141,8 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_formato     IN T_MONEDAS.FORMATO%TYPE,
     p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE,
     p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE )
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE /*UK*/,
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE /*UK*/ )
   RETURN T_MONEDAS.ID_MONEDA%TYPE;
 
   PROCEDURE update_row (
@@ -132,7 +152,8 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_formato     IN T_MONEDAS.FORMATO%TYPE,
     p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE,
     p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE );
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE /*UK*/,
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE /*UK*/ );
 
   FUNCTION update_row (
     p_row IN T_MONEDAS%ROWTYPE )
@@ -157,7 +178,8 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_formato     IN T_MONEDAS.FORMATO%TYPE,
     p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE,
     p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE )
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE /*UK*/,
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE /*UK*/ )
   RETURN T_MONEDAS.ID_MONEDA%TYPE;
 
   PROCEDURE create_or_update_row (
@@ -167,7 +189,8 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_formato     IN T_MONEDAS.FORMATO%TYPE,
     p_simbolo     IN T_MONEDAS.SIMBOLO%TYPE,
     p_id_pais     IN T_MONEDAS.ID_PAIS%TYPE /*FK*/,
-    p_codigo_iso  IN T_MONEDAS.CODIGO_ISO%TYPE );
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE /*UK*/,
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE /*UK*/ );
 
   FUNCTION create_or_update_row (
     p_row IN T_MONEDAS%ROWTYPE )
@@ -196,9 +219,9 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_id_moneda IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/ )
   RETURN T_MONEDAS.ID_PAIS%TYPE;
 
-  FUNCTION get_codigo_iso (
+  FUNCTION get_iso_alpha_3 (
     p_id_moneda IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/ )
-  RETURN T_MONEDAS.CODIGO_ISO%TYPE;
+  RETURN T_MONEDAS.ISO_ALPHA_3%TYPE;
 
   FUNCTION get_usuario_insercion (
     p_id_moneda IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/ )
@@ -215,6 +238,10 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
   FUNCTION get_fecha_modificacion (
     p_id_moneda IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/ )
   RETURN T_MONEDAS.FECHA_MODIFICACION%TYPE;
+
+  FUNCTION get_iso_numeric (
+    p_id_moneda IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/ )
+  RETURN T_MONEDAS.ISO_NUMERIC%TYPE;
 
   PROCEDURE set_descripcion (
     p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/,
@@ -236,9 +263,13 @@ CREATE OR REPLACE PACKAGE T_MONEDAS_API IS
     p_id_moneda IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/,
     p_id_pais   IN T_MONEDAS.ID_PAIS%TYPE );
 
-  PROCEDURE set_codigo_iso (
-    p_id_moneda  IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/,
-    p_codigo_iso IN T_MONEDAS.CODIGO_ISO%TYPE );
+  PROCEDURE set_iso_alpha_3 (
+    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/,
+    p_iso_alpha_3 IN T_MONEDAS.ISO_ALPHA_3%TYPE );
+
+  PROCEDURE set_iso_numeric (
+    p_id_moneda   IN T_MONEDAS.ID_MONEDA%TYPE /*PK*/,
+    p_iso_numeric IN T_MONEDAS.ISO_NUMERIC%TYPE );
 
   FUNCTION get_default_row
   RETURN T_MONEDAS%ROWTYPE;

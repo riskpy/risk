@@ -6,11 +6,12 @@ create table T_MONEDAS
   formato              VARCHAR2(30),
   simbolo              VARCHAR2(10),
   id_pais              NUMBER,
-  codigo_iso           VARCHAR2(3),
+  iso_alpha_3          VARCHAR2(3),
   usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
   fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
   usuario_modificacion VARCHAR2(300),
-  fecha_modificacion   TIMESTAMP(2)
+  fecha_modificacion   TIMESTAMP(2),
+  iso_numeric          NUMBER(3)
 )
 ;
 comment on table T_MONEDAS
@@ -27,8 +28,8 @@ comment on column T_MONEDAS.simbolo
   is 'Símbolo de la moneda';
 comment on column T_MONEDAS.id_pais
   is 'País de la moneda';
-comment on column T_MONEDAS.codigo_iso
-  is 'Código de la moneda según estándar ISO 4217';
+comment on column T_MONEDAS.iso_alpha_3
+  is 'Código de la moneda según estándar ISO 4217 alpha-3';
 comment on column T_MONEDAS.usuario_insercion
   is 'Usuario que realizó la creación del registro';
 comment on column T_MONEDAS.fecha_insercion
@@ -37,8 +38,14 @@ comment on column T_MONEDAS.usuario_modificacion
   is 'Usuario que realizó la última edición del registro';
 comment on column T_MONEDAS.fecha_modificacion
   is 'Fecha en que se realizó la última edición del registro';
+comment on column T_MONEDAS.iso_numeric
+  is 'Código de la moneda según estándar ISO 4217 numeric';
 alter table T_MONEDAS
   add constraint PK_MONEDAS primary key (ID_MONEDA);
+alter table T_MONEDAS
+  add constraint UK_MONEDAS_ISO_ALPHA_3 unique (ISO_ALPHA_3);
+alter table T_MONEDAS
+  add constraint UK_MONEDAS_ISO_NUMERIC unique (ISO_NUMERIC);
 alter table T_MONEDAS
   add constraint CK_MONEDAS_ACTIVO
   check (ACTIVO IN ('S', 'N'));
