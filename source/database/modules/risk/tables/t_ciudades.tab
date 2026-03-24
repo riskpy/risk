@@ -7,7 +7,8 @@ create table T_CIUDADES
   usuario_insercion    VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
   fecha_insercion      TIMESTAMP(2) default SYSTIMESTAMP not null,
   usuario_modificacion VARCHAR2(300),
-  fecha_modificacion   TIMESTAMP(2)
+  fecha_modificacion   TIMESTAMP(2),
+  id_distrito          NUMBER
 )
 ;
 comment on table T_CIUDADES
@@ -28,6 +29,8 @@ comment on column T_CIUDADES.usuario_modificacion
   is 'Usuario que realizó la última edición del registro';
 comment on column T_CIUDADES.fecha_modificacion
   is 'Fecha en que se realizó la última edición del registro';
+comment on column T_CIUDADES.id_distrito
+  is 'Distrito o zona de la ciudad';
 alter table T_CIUDADES
   add constraint PK_CIUDADES primary key (ID_CIUDAD);
 

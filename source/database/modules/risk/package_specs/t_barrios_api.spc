@@ -10,7 +10,7 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-15 15:14:02"
+    generated_at="2026-03-23 23:26:20"
     generated_by="JAVIER"
     p_table_name="T_BARRIOS"
     p_owner="RISK_RISK"
@@ -66,7 +66,8 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     p_nombre          IN T_BARRIOS.NOMBRE%TYPE                 DEFAULT NULL,
     p_id_pais         IN T_BARRIOS.ID_PAIS%TYPE                DEFAULT NULL /*FK*/,
     p_id_departamento IN T_BARRIOS.ID_DEPARTAMENTO%TYPE        DEFAULT NULL /*FK*/,
-    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE              DEFAULT NULL /*FK*/ )
+    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE              DEFAULT NULL /*FK*/,
+    p_id_distrito     IN T_BARRIOS.ID_DISTRITO%TYPE            DEFAULT NULL /*FK*/ )
   RETURN T_BARRIOS.ID_BARRIO%TYPE;
 
   PROCEDURE create_row (
@@ -74,7 +75,8 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     p_nombre          IN T_BARRIOS.NOMBRE%TYPE                 DEFAULT NULL,
     p_id_pais         IN T_BARRIOS.ID_PAIS%TYPE                DEFAULT NULL /*FK*/,
     p_id_departamento IN T_BARRIOS.ID_DEPARTAMENTO%TYPE        DEFAULT NULL /*FK*/,
-    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE              DEFAULT NULL /*FK*/ );
+    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE              DEFAULT NULL /*FK*/,
+    p_id_distrito     IN T_BARRIOS.ID_DISTRITO%TYPE            DEFAULT NULL /*FK*/ );
 
   FUNCTION create_row (
     p_row IN T_BARRIOS%ROWTYPE )
@@ -103,7 +105,8 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     p_usuario_insercion       OUT NOCOPY T_BARRIOS.USUARIO_INSERCION%TYPE,
     p_fecha_insercion         OUT NOCOPY T_BARRIOS.FECHA_INSERCION%TYPE,
     p_usuario_modificacion    OUT NOCOPY T_BARRIOS.USUARIO_MODIFICACION%TYPE,
-    p_fecha_modificacion      OUT NOCOPY T_BARRIOS.FECHA_MODIFICACION%TYPE );
+    p_fecha_modificacion      OUT NOCOPY T_BARRIOS.FECHA_MODIFICACION%TYPE,
+    p_id_distrito             OUT NOCOPY T_BARRIOS.ID_DISTRITO%TYPE /*FK*/ );
 
   FUNCTION read_rows (
     p_ref_cursor IN t_strong_ref_cursor )
@@ -114,7 +117,8 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     p_nombre          IN T_BARRIOS.NOMBRE%TYPE,
     p_id_pais         IN T_BARRIOS.ID_PAIS%TYPE /*FK*/,
     p_id_departamento IN T_BARRIOS.ID_DEPARTAMENTO%TYPE /*FK*/,
-    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE /*FK*/ )
+    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE /*FK*/,
+    p_id_distrito     IN T_BARRIOS.ID_DISTRITO%TYPE /*FK*/ )
   RETURN T_BARRIOS.ID_BARRIO%TYPE;
 
   PROCEDURE update_row (
@@ -122,7 +126,8 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     p_nombre          IN T_BARRIOS.NOMBRE%TYPE,
     p_id_pais         IN T_BARRIOS.ID_PAIS%TYPE /*FK*/,
     p_id_departamento IN T_BARRIOS.ID_DEPARTAMENTO%TYPE /*FK*/,
-    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE /*FK*/ );
+    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE /*FK*/,
+    p_id_distrito     IN T_BARRIOS.ID_DISTRITO%TYPE /*FK*/ );
 
   FUNCTION update_row (
     p_row IN T_BARRIOS%ROWTYPE )
@@ -145,7 +150,8 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     p_nombre          IN T_BARRIOS.NOMBRE%TYPE,
     p_id_pais         IN T_BARRIOS.ID_PAIS%TYPE /*FK*/,
     p_id_departamento IN T_BARRIOS.ID_DEPARTAMENTO%TYPE /*FK*/,
-    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE /*FK*/ )
+    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE /*FK*/,
+    p_id_distrito     IN T_BARRIOS.ID_DISTRITO%TYPE /*FK*/ )
   RETURN T_BARRIOS.ID_BARRIO%TYPE;
 
   PROCEDURE create_or_update_row (
@@ -153,7 +159,8 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     p_nombre          IN T_BARRIOS.NOMBRE%TYPE,
     p_id_pais         IN T_BARRIOS.ID_PAIS%TYPE /*FK*/,
     p_id_departamento IN T_BARRIOS.ID_DEPARTAMENTO%TYPE /*FK*/,
-    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE /*FK*/ );
+    p_id_ciudad       IN T_BARRIOS.ID_CIUDAD%TYPE /*FK*/,
+    p_id_distrito     IN T_BARRIOS.ID_DISTRITO%TYPE /*FK*/ );
 
   FUNCTION create_or_update_row (
     p_row IN T_BARRIOS%ROWTYPE )
@@ -194,6 +201,10 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
     p_id_barrio IN T_BARRIOS.ID_BARRIO%TYPE /*PK*/ )
   RETURN T_BARRIOS.FECHA_MODIFICACION%TYPE;
 
+  FUNCTION get_id_distrito (
+    p_id_barrio IN T_BARRIOS.ID_BARRIO%TYPE /*PK*/ )
+  RETURN T_BARRIOS.ID_DISTRITO%TYPE;
+
   PROCEDURE set_nombre (
     p_id_barrio IN T_BARRIOS.ID_BARRIO%TYPE /*PK*/,
     p_nombre    IN T_BARRIOS.NOMBRE%TYPE );
@@ -209,6 +220,10 @@ CREATE OR REPLACE PACKAGE T_BARRIOS_API IS
   PROCEDURE set_id_ciudad (
     p_id_barrio IN T_BARRIOS.ID_BARRIO%TYPE /*PK*/,
     p_id_ciudad IN T_BARRIOS.ID_CIUDAD%TYPE );
+
+  PROCEDURE set_id_distrito (
+    p_id_barrio   IN T_BARRIOS.ID_BARRIO%TYPE /*PK*/,
+    p_id_distrito IN T_BARRIOS.ID_DISTRITO%TYPE );
 
   FUNCTION get_default_row
   RETURN T_BARRIOS%ROWTYPE;

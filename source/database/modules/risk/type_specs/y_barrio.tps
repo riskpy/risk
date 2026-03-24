@@ -40,6 +40,8 @@ SOFTWARE.
   id_departamento number,
 /** Ciudad del barrio */
   id_ciudad number,
+/** Distrito o zona del barrio */
+  id_distrito number,
 
   constructor function y_barrio return self as result,
 

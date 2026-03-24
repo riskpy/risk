@@ -38,6 +38,8 @@ SOFTWARE.
   id_pais number,
 /** Departamento, estado o provincia de la ciudad */
   id_departamento number,
+/** Distrito o zona de la ciudad */
+  id_distrito number,
 
   constructor function y_ciudad return self as result,
 
