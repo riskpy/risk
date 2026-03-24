@@ -1,9 +1,5 @@
 create or replace package body k_util is
 
-  c_algoritmo constant pls_integer := as_crypto.encrypt_aes +
-                                      as_crypto.chain_cbc +
-                                      as_crypto.pad_pkcs5; -- dbms_crypto.aes_cbc_pkcs5;
-
   procedure p_generar_trigger_secuencia(i_tabla    in varchar2,
                                         i_campo    in varchar2,
                                         i_trigger  in varchar2 default null,
@@ -293,18 +289,12 @@ END;';
 
   function encrypt(i_src in varchar2) return varchar2 is
   begin
-    return rawtohex(as_crypto.encrypt(src => utl_i18n.string_to_raw(i_src,
-                                                                    'AL32UTF8'),
-                                      typ => c_algoritmo,
-                                      key => hextoraw(f_valor_parametro('CLAVE_ENCRIPTACION_DESENCRIPTACION'))));
+    return k_crypto.encrypt(i_src);
   end;
 
   function decrypt(i_src in varchar2) return varchar2 is
   begin
-    return utl_i18n.raw_to_char(as_crypto.decrypt(src => hextoraw(i_src),
-                                                  typ => c_algoritmo,
-                                                  key => hextoraw(f_valor_parametro('CLAVE_ENCRIPTACION_DESENCRIPTACION'))),
-                                'AL32UTF8');
+    return k_crypto.decrypt(i_src);
   end;
 
   function read_http_body(resp in out utl_http.resp) return clob as

@@ -1,0 +1,30 @@
+create or replace package body k_crypto wrapped 
+a000000
+369
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+abcd
+b
+584 22f
+KcvEe8tifktIuu6qY4EkMaxn80Ewg+3xD64VfI6VEIteaMR598gtvq8UdWgyVRFNzSUyFq4Q
+pbNb8AiVICBthSyvqQ4ZB8n6uf//rZ08WuhUzIUBfweATqWbM+SSNtgp9abjNYehldI7IcMv
+lSfwRqH7ohhgjFBpTtR8a97plHHQ+/2EdzQ8wsE8zdY1g91jjZII2GOFNlh8FEnBnj1UdSPy
+7JE20UwxnlFM7CUvSoJFpMzMVcX7gsMztcXA8KZdoODgOAbZLWgzUSFyUZHInHMhSuBZwj8r
+Zoeyf3JbFIgUdUaTp+gxL2qRyPFLDqhjUiQVZWJRZrLt942MUQR5iHGnKYLrFuF+zeWYZC/J
+6PW8vkREYi1Dq6LZQrgWMZsNFdpiSdIZmjj82raG/REqeNgkju1g1RvFjGMtLBB1ikHmJxd6
+XVJ3/MB9RMae/ELNNBC/x9CNUrKjiBMPDB/yR1OdfYFucPi5k3AXlk6s+SROlMz9Me71mP3k
+JGJiOmSXk1R03N6LnBFzrb7vFhynmlPX9ga5NDBbes9mJw==
+/
+

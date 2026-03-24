@@ -337,6 +337,7 @@ prompt
 @@package_specs/k_cadena.spc
 @@package_specs/k_clave.spc
 @@package_specs/k_contexto.spc
+@@package_specs/k_crypto.spc
 @@package_specs/k_dato.spc
 @@package_specs/k_dispositivo.spc
 @@package_specs/k_dominio.spc
@@ -431,6 +432,7 @@ prompt
 @@package_bodies/k_cadena.bdy
 @@package_bodies/k_clave.bdy
 @@package_bodies/k_contexto.bdy
+@@package_bodies/k_crypto.bdy
 @@package_bodies/k_dato.bdy
 @@package_bodies/k_dispositivo.bdy
 @@package_bodies/k_dominio.bdy

@@ -172,6 +172,7 @@ drop package k_autorizacion;
 drop package k_cadena;
 drop package k_clave;
 drop package k_contexto;
+drop package k_crypto;
 drop package k_dato;
 drop package k_dispositivo;
 drop package k_dominio;

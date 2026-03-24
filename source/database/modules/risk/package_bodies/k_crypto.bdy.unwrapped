@@ -1,0 +1,37 @@
+create or replace package body k_crypto is
+
+  c_algoritmo_encriptacion constant pls_integer := as_crypto.encrypt_aes +
+                                                   as_crypto.chain_cbc +
+                                                   as_crypto.pad_pkcs5; -- dbms_crypto.aes_cbc_pkcs5;
+
+  function f_clave_encriptacion return varchar2 is
+  begin
+    -- Clave para encriptacion y desencriptacion. Generar con la funcion k_clave.f_randombytes_hex
+    -- Una vez generada la clave, ofuscar el cuerpo del paquete k_crypto con la utilidad Wrapper o
+    -- con DBMS_DDL
+    return '26B9257BF16323A5919FAA48ABB7C575A50996698A0576C0DE0EE312AF6D2D60';
+  end;
+
+  function encrypt(i_src in varchar2,
+                   i_key in varchar2 default null) return varchar2 is
+  begin
+    return rawtohex(as_crypto.encrypt(src => utl_i18n.string_to_raw(i_src,
+                                                                    'AL32UTF8'),
+                                      typ => c_algoritmo_encriptacion,
+                                      key => hextoraw(nvl(i_key,
+                                                          f_clave_encriptacion))));
+  end;
+
+  function decrypt(i_src in varchar2,
+                   i_key in varchar2 default null) return varchar2 is
+  begin
+    return utl_i18n.raw_to_char(as_crypto.decrypt(src => hextoraw(i_src),
+                                                  typ => c_algoritmo_encriptacion,
+                                                  key => hextoraw(nvl(i_key,
+                                                                      f_clave_encriptacion))),
+                                'AL32UTF8');
+  end;
+
+end;
+/
+
