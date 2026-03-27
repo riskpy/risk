@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Risk.API.Models;
+using Risk.API.Msj.Models;
 
 namespace Risk.API.Services
 {

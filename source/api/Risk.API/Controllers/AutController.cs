@@ -32,6 +32,8 @@ using Newtonsoft.Json.Linq;
 using Risk.API.Attributes;
 using Risk.API.Helpers;
 using Risk.API.Models;
+using Risk.API.Msj.Helpers;
+using Risk.API.Msj.Models;
 using Risk.API.Services;
 using Risk.API.Services.Settings;
 using Risk.Common.Helpers;

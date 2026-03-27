@@ -30,6 +30,7 @@ using Risk.API.Entities;
 using Risk.API.Helpers;
 using Risk.API.Mappers;
 using Risk.API.Models;
+using Risk.API.Msj.Models;
 using Risk.API.Services.Settings;
 
 namespace Risk.API.Services

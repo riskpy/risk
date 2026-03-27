@@ -41,11 +41,13 @@ using Oracle.ManagedDataAccess.Client;
 using Risk.API.Filters;
 using Risk.API.Helpers;
 using Risk.API.Middlewares;
-using Risk.API.Models;
-using Risk.API.Senders;
+using Risk.API.Msj.Helpers;
+using Risk.API.Msj.Models;
+using Risk.API.Msj.Senders;
+using Risk.API.Msj.Services;
+using Risk.API.Msj.Workers;
 using Risk.API.Services;
 using Risk.API.Services.Settings;
-using Risk.API.Workers;
 using Risk.Common.Helpers;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
