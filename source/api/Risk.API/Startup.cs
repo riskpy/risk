@@ -39,6 +39,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Oracle.ManagedDataAccess.Client;
 using Risk.API.Filters;
+using Risk.API.Flj.Services;
 using Risk.API.Helpers;
 using Risk.API.Middlewares;
 using Risk.API.Msj.Helpers;
@@ -117,6 +118,7 @@ namespace Risk.API
             services.AddSingleton<IGenService, GenService>();
             services.AddSingleton<IGloService, GloService>();
             services.AddSingleton<IMsjService, MsjService>();
+            services.AddSingleton<IFljService, FljService>();
 
             // Add Msj helper and senders
             services.AddSingleton<IMsjHelper, MsjHelper>();
