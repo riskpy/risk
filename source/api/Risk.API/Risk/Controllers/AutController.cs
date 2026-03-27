@@ -30,16 +30,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Risk.API.Attributes;
+using Risk.API.Controllers;
 using Risk.API.Helpers;
 using Risk.API.Models;
 using Risk.API.Msj.Helpers;
 using Risk.API.Msj.Models;
-using Risk.API.Services;
+using Risk.API.Risk.Services;
 using Risk.API.Services.Settings;
 using Risk.Common.Helpers;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Risk.API.Controllers
+namespace Risk.API.Risk.Controllers
 {
     [SwaggerTag("Servicios del dominio AUTENTICACIÓN", "https://riskpy.github.io/risk/")]
     [Authorize(Roles = "ADMINISTRADOR,USUARIO,USUARIO_NUEVO")]

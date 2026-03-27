@@ -47,7 +47,7 @@ using Risk.API.Msj.Models;
 using Risk.API.Msj.Senders;
 using Risk.API.Msj.Services;
 using Risk.API.Msj.Workers;
-using Risk.API.Services;
+using Risk.API.Risk.Services;
 using Risk.API.Services.Settings;
 using Risk.Common.Helpers;
 using Swashbuckle.AspNetCore.SwaggerUI;

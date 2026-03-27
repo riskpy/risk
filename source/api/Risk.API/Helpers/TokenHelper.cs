@@ -33,12 +33,12 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Risk.API.Models;
-using Risk.API.Services;
 using Google.Apis.Auth;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Risk.Common.Helpers;
 using Risk.API.Services.Settings;
+using Risk.API.Risk.Services;
 
 namespace Risk.API.Helpers
 {

@@ -29,6 +29,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Risk.API.Extensions;
+using Risk.API.Risk.Services;
 using Risk.Common.Helpers;
 
 namespace Risk.API.Services.Settings

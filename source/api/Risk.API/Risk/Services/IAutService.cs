@@ -24,8 +24,9 @@ SOFTWARE.
 
 using Risk.API.Models;
 using Risk.API.Msj.Models;
+using Risk.API.Services;
 
-namespace Risk.API.Services
+namespace Risk.API.Risk.Services
 {
     public interface IAutService : IServiceBase
     {

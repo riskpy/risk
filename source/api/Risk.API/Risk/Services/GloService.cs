@@ -29,9 +29,10 @@ using Risk.API.Entities;
 using Risk.API.Helpers;
 using Risk.API.Mappers;
 using Risk.API.Models;
+using Risk.API.Services;
 using Risk.API.Services.Settings;
 
-namespace Risk.API.Services
+namespace Risk.API.Risk.Services
 {
     public class GloService : RiskServiceBase, IGloService
     {

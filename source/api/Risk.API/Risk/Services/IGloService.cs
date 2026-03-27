@@ -22,15 +22,16 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Newtonsoft.Json.Linq;
 using Risk.API.Models;
+using Risk.API.Services;
 
-namespace Risk.API.Services
+namespace Risk.API.Risk.Services
 {
-    public interface IApiService : IServiceBase
+    public interface IGloService : IServiceBase
     {
-        Respuesta<JObject> ProcesarServicio(string nombre, string dominio, JObject parametros = null);
-        Respuesta<Pagina<JObject>> ProcesarServicioPagina(string nombre, string dominio, PaginaParametros paginaParametros = null, JObject parametros = null);
-        Respuesta<Archivo> ProcesarReporte(string nombre, string dominio, FormatoReporte formato, JObject parametros = null);
+        Respuesta<Pagina<Pais>> ListarPaises(int? idPais = null, PaginaParametros paginaParametros = null);
+        Respuesta<Pagina<Departamento>> ListarDepartamentos(int? idDepartamento = null, int? idPais = null, PaginaParametros paginaParametros = null);
+        Respuesta<Pagina<Ciudad>> ListarCiudades(int? idCiudad = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null);
+        Respuesta<Pagina<Barrio>> ListarBarrios(int? idBarrio = null, int? idPais = null, int? idDepartamento = null, int? idCiudad = null, PaginaParametros paginaParametros = null);
     }
 }

@@ -27,7 +27,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Risk.API.Models;
-using Risk.API.Services;
+using Risk.API.Risk.Services;
 using Risk.API.Services.Settings;
 using Risk.Common.Helpers;
 

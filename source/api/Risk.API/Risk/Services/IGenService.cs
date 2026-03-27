@@ -23,14 +23,23 @@ SOFTWARE.
 */
 
 using Risk.API.Models;
+using Risk.API.Services;
 
-namespace Risk.API.Services
+namespace Risk.API.Risk.Services
 {
-    public interface IGloService : IServiceBase
+    public interface IGenService : IServiceBase
     {
-        Respuesta<Pagina<Pais>> ListarPaises(int? idPais = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Departamento>> ListarDepartamentos(int? idDepartamento = null, int? idPais = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Ciudad>> ListarCiudades(int? idCiudad = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Barrio>> ListarBarrios(int? idBarrio = null, int? idPais = null, int? idDepartamento = null, int? idCiudad = null, PaginaParametros paginaParametros = null);
+        Respuesta<Dato> VersionSistema();
+        Respuesta<Dato> VersionServicio(string servicio);
+        Respuesta<Dato> ValorParametro(string parametro);
+        Respuesta<Dato> SignificadoCodigo(string dominio, string codigo);
+        Respuesta<Pagina<Significado>> ListarSignificados(string dominio, PaginaParametros paginaParametros = null);
+        Respuesta<Pagina<Error>> ListarErrores(string clave = null, PaginaParametros paginaParametros = null);
+        Respuesta<Pagina<Aplicacion>> ListarAplicaciones(string idAplicacion = null, string claveAplicacion = null, PaginaParametros paginaParametros = null);
+        Respuesta<Archivo> RecuperarArchivo(string tabla, string campo, string referencia, int? version = null);
+        Respuesta<Dato> GuardarArchivo(string tabla, string campo, string referencia, Archivo archivo);
+        Respuesta<Dato> RecuperarTexto(string referencia);
+        Respuesta<Archivo> ReporteVersionSistema(FormatoReporte formato);
+        Respuesta<Archivo> ReporteListarSignificados(FormatoReporte formato, string dominio);
     }
 }

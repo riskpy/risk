@@ -31,9 +31,10 @@ using Risk.API.Helpers;
 using Risk.API.Mappers;
 using Risk.API.Models;
 using Risk.API.Msj.Models;
+using Risk.API.Services;
 using Risk.API.Services.Settings;
 
-namespace Risk.API.Services
+namespace Risk.API.Risk.Services
 {
     public class AutService : RiskServiceBase, IAutService
     {
