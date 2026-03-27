@@ -23,17 +23,17 @@
   <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.73.0" />
     <PackageReference Include="MailKit" Version="4.15.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.14" />
     <PackageReference Include="Microsoft.Azure.NotificationHubs" Version="4.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.14" />
     <PackageReference Include="NLog" Version="6.1.1" />
     <PackageReference Include="NLog.Telegram.NetStandart" Version="1.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="6.1.2" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.100" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="10.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="10.1.7" />
     <PackageReference Include="Twilio" Version="7.14.3" />
   </ItemGroup>
 
