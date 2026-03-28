@@ -381,6 +381,48 @@ END;';
       return null;
   end;
 
+  function f_id_pais(i_iso_alpha_2 in varchar2) return number is
+    l_id_pais number;
+  begin
+    /*
+    $if k_modulo.c_instalado_glo $then
+    begin
+      select p.id_pais
+        into l_id_pais
+        from t_paises_v p
+       where lower(p.iso_alpha_2) = lower(i_iso_alpha_2);
+    exception
+      when others then
+        null;
+    end;
+    $end
+    */
+    l_id_pais := 177; -- PY
+  
+    return l_id_pais;
+  end;
+
+  function f_id_idioma(i_iso_639_1 in varchar2) return number is
+    l_id_idioma number;
+  begin
+    /*
+    $if k_modulo.c_instalado_glo $then
+    begin
+      select i.id_idioma
+        into l_id_idioma
+        from t_idiomas_v i
+       where lower(i.iso_639_1) = lower(i_iso_639_1);
+    exception
+      when others then
+        null;
+    end;
+    $end
+    */
+    l_id_idioma := 148; -- es
+  
+    return l_id_idioma;
+  end;
+
 end;
 /
 

@@ -16,8 +16,7 @@ begin
   l_clob(3) :=q'!!';
   l_clob(4) :=q'!S!';
   l_clob(5) :=q'!GEN!';
-
-
+
   insert into t_significado_dominios_dml_v
   (
      "DOMINIO"
@@ -56,8 +55,7 @@ begin
   l_clob(4) :=q'!!';
   l_clob(5) :=q'!S!';
   l_clob(6) :=q'!!';
-
-
+
   insert into t_significados_dml_v
   (
      "DOMINIO"
@@ -83,8 +81,7 @@ begin
   l_clob(4) :=q'!!';
   l_clob(5) :=q'!S!';
   l_clob(6) :=q'!!';
-
-
+
   insert into t_significados_dml_v
   (
      "DOMINIO"
@@ -110,8 +107,7 @@ begin
   l_clob(4) :=q'!!';
   l_clob(5) :=q'!S!';
   l_clob(6) :=q'!!';
-
-
+
   insert into t_significados_dml_v
   (
      "DOMINIO"
@@ -137,8 +133,7 @@ begin
   l_clob(4) :=q'!!';
   l_clob(5) :=q'!S!';
   l_clob(6) :=q'!!';
-
-
+
   insert into t_significados_dml_v
   (
      "DOMINIO"

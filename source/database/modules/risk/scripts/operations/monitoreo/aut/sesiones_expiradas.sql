@@ -23,8 +23,7 @@ begin
   l_clob(10) :=q'!K!';
   l_clob(11) :=q'!!';
   l_clob(12) :=q'!!';
-
-
+
   insert into t_operaciones_dml_v
   (
      "ID_OPERACION"
@@ -85,8 +84,7 @@ begin
   l_clob(12) :=q'!!';
   l_clob(13) :=q'!!';
   l_clob(14) :=q'!N!';
-
-
+
   insert into t_operacion_parametros_dml_v
   (
      "ID_OPERACION"
@@ -206,8 +204,7 @@ begin
   l_clob(16) :=q'!!';
   l_clob(17) :=q'!!';
   l_clob(18) :=q'!!';
-
-
+
   insert into t_monitoreos_dml_v
   (
      "ID_MONITOREO"

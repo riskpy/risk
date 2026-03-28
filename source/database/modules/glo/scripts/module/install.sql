@@ -15,12 +15,12 @@ begin
   -- start generation of records
   -----------------------------------
 
-  l_clob(1) :=q'!RISK!';
-  l_clob(2) :=q'!RISK!';
-  l_clob(3) :=q'!Módulo principal con manejo de Operaciones (Servicios Web, Reportes, Trabajos) y sus Parámetros, Autenticación y Autorización de Usuarios, Parámetros, Significados, Archivos, Datos Adicionales, entre otros!';
+  l_clob(1) :=q'!GLO!';
+  l_clob(2) :=q'!GLOBAL!';
+  l_clob(3) :=q'!Módulo para definiciones de Globalización!';
   l_clob(4) :=q'!S!';
   l_varchar2(5) :=q'!28.03.2026 00:00:00!';
-  l_clob(6) :=q'!1.4.0!';
+  l_clob(6) :=q'!1.0.0!';
 
   insert into t_modulos_dml_v
   (
@@ -56,57 +56,11 @@ begin
   -- start generation of records
   -----------------------------------
 
-  l_clob(1) :=q'!API!';
-  l_clob(2) :=q'!OPERACIONES!';
-  l_clob(3) :=q'!Dominio de Operaciones (Servicios Web, Reportes, Trabajos) y sus Parámetros!';
+  l_clob(1) :=q'!GLO!';
+  l_clob(2) :=q'!GLOBAL!';
+  l_clob(3) :=q'!Dominio de Globalización!';
   l_clob(4) :=q'!S!';
-  l_clob(5) :=q'!RISK!';
-
-  insert into t_dominios_dml_v
-  (
-     "ID_DOMINIO"
-    ,"NOMBRE"
-    ,"DETALLE"
-    ,"ACTIVO"
-    ,"ID_MODULO"
-  )
-  values
-  (
-     to_char(l_clob(1))
-    ,to_char(l_clob(2))
-    ,to_char(l_clob(3))
-    ,to_char(l_clob(4))
-    ,to_char(l_clob(5))
-  );
-
-  l_clob(1) :=q'!AUT!';
-  l_clob(2) :=q'!AUTENTICACIÓN!';
-  l_clob(3) :=q'!Dominio de Autenticación y Autorización de Usuarios!';
-  l_clob(4) :=q'!S!';
-  l_clob(5) :=q'!RISK!';
-
-  insert into t_dominios_dml_v
-  (
-     "ID_DOMINIO"
-    ,"NOMBRE"
-    ,"DETALLE"
-    ,"ACTIVO"
-    ,"ID_MODULO"
-  )
-  values
-  (
-     to_char(l_clob(1))
-    ,to_char(l_clob(2))
-    ,to_char(l_clob(3))
-    ,to_char(l_clob(4))
-    ,to_char(l_clob(5))
-  );
-
-  l_clob(1) :=q'!GEN!';
-  l_clob(2) :=q'!GENERAL!';
-  l_clob(3) :=q'!Dominio General!';
-  l_clob(4) :=q'!S!';
-  l_clob(5) :=q'!RISK!';
+  l_clob(5) :=q'!GLO!';
 
   insert into t_dominios_dml_v
   (

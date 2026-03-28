@@ -35,6 +35,7 @@ prompt
 -- Drop users
 DROP USER &v_util_user CASCADE;
 DROP USER &v_risk_module_user CASCADE;
+DROP USER &v_glo_module_user CASCADE;
 DROP USER &v_msj_module_user CASCADE;
 DROP USER &v_flj_module_user CASCADE;
 DROP USER &v_dev_user CASCADE;

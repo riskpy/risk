@@ -57,6 +57,7 @@ prompt
 -- Create users
 CREATE USER &v_util_user NO AUTHENTICATION;
 CREATE USER &v_risk_module_user NO AUTHENTICATION;
+CREATE USER &v_glo_module_user NO AUTHENTICATION;
 CREATE USER &v_msj_module_user NO AUTHENTICATION;
 CREATE USER &v_flj_module_user NO AUTHENTICATION;
 CREATE USER &v_dev_user IDENTIFIED BY &v_password;
@@ -64,6 +65,7 @@ CREATE USER &v_access_user IDENTIFIED BY &v_password;
 
 ALTER USER &v_util_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER &v_risk_module_user GRANT CONNECT THROUGH &v_dev_user;
+ALTER USER &v_glo_module_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER &v_msj_module_user GRANT CONNECT THROUGH &v_dev_user;
 ALTER USER &v_flj_module_user GRANT CONNECT THROUGH &v_dev_user;
 
@@ -95,7 +97,7 @@ prompt -----------------------------------
 prompt
 -- Grant roles
 GRANT &v_util_role TO &v_util_user;
-GRANT &v_module_role TO &v_risk_module_user, &v_msj_module_user, &v_flj_module_user;
+GRANT &v_module_role TO &v_risk_module_user, &v_glo_module_user, &v_msj_module_user, &v_flj_module_user;
 GRANT &v_dev_role TO &v_dev_user;
 GRANT &v_access_role TO &v_access_user;
 
@@ -103,12 +105,12 @@ GRANT &v_access_role TO &v_access_user;
 GRANT UNLIMITED TABLESPACE TO &v_util_user;
 GRANT CREATE JOB TO &v_util_user;
 --
-GRANT UNLIMITED TABLESPACE TO &v_risk_module_user, &v_msj_module_user, &v_flj_module_user;
-GRANT CREATE JOB TO &v_risk_module_user, &v_msj_module_user, &v_flj_module_user;
+GRANT UNLIMITED TABLESPACE TO &v_risk_module_user, &v_glo_module_user, &v_msj_module_user, &v_flj_module_user;
+GRANT CREATE JOB TO &v_risk_module_user, &v_glo_module_user, &v_msj_module_user, &v_flj_module_user;
 -- Grant object privileges
 GRANT EXECUTE ON sys.dbms_crypto TO &v_util_user;
 --
-GRANT EXECUTE ON sys.dbms_crypto TO &v_risk_module_user, &v_msj_module_user, &v_flj_module_user;
+GRANT EXECUTE ON sys.dbms_crypto TO &v_risk_module_user, &v_glo_module_user, &v_msj_module_user, &v_flj_module_user;
 --
 GRANT SELECT  ON sys.v_$session  TO &v_dev_user;
 GRANT SELECT  ON sys.v_$sesstat  TO &v_dev_user;

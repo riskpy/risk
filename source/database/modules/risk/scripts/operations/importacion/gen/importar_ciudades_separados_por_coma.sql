@@ -249,7 +249,7 @@ begin
   l_clob(2) :=q'!,!';
   l_clob(3) :=q'!"!';
   l_varchar2(4) :=q'!!';
-  l_clob(5) :=q'!T_CIUDADES!';
+  l_clob(5) :=q'!T_CIUDADES_DML_V!';
   l_clob(6) :=q'!N!';
   l_clob(7) :=q'!!';
   l_clob(8) :=q'!!';

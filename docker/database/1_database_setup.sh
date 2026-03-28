@@ -144,6 +144,7 @@ display_elapsed_time
 modules=(
     # Module,Schema,Run Syn/Grant
     "risk,$RISK_MODULE_USER,true"
+    "glo,$GLO_MODULE_USER,true"
     "msj,$MSJ_MODULE_USER,true"
     "flj,$FLJ_MODULE_USER,true"
 )
@@ -208,7 +209,7 @@ for dir in /usr/src/risk/source/migrations/mig_*/
 do
     echo $dir;
     export SQLPATH="$dir:$SQLPATH"
-    sqlplus $RISK_DEV_USER[$RISK_MODULE_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
+    sqlplus $RISK_DEV_USER/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
 done
 
 export SQLPATH="/usr/src/risk/source/:$SQLPATH"

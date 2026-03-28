@@ -43,11 +43,6 @@ prompt
 @@scripts/operations/servicio/gen/valor_parametro.sql
 @@scripts/operations/servicio/gen/version_servicio.sql
 @@scripts/operations/servicio/gen/version_sistema.sql
-@@scripts/operations/servicio/glo/listar_barrios.sql
-@@scripts/operations/servicio/glo/listar_ciudades.sql
-@@scripts/operations/servicio/glo/listar_departamentos.sql
-@@scripts/operations/servicio/glo/listar_distritos.sql
-@@scripts/operations/servicio/glo/listar_paises.sql
 @@scripts/operations/trabajo/gen/monitoreo_conflictos_12_horas.sql
 @@scripts/operations/trabajo/gen/monitoreo_conflictos_15_minutos.sql
 @@scripts/operations/trabajo/gen/monitoreo_conflictos_2_horas.sql

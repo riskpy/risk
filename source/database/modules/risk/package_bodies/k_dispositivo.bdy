@@ -61,28 +61,12 @@ create or replace package body k_dispositivo is
   
     -- Busca el pais
     if i_pais_iso_alpha_2 is not null then
-      begin
-        select p.id_pais
-          into l_id_pais
-          from t_paises p
-         where p.iso_alpha_2 = upper(i_pais_iso_alpha_2);
-      exception
-        when others then
-          l_id_pais := null;
-      end;
+      l_id_pais := k_util.f_id_pais(i_pais_iso_alpha_2);
     end if;
   
     -- Busca el idioma
     if i_idioma_iso369_1 is not null then
-      begin
-        select i.id_idioma
-          into l_id_idioma
-          from t_idiomas i
-         where i.iso_639_1 = lower(i_idioma_iso369_1);
-      exception
-        when others then
-          l_id_idioma := null;
-      end;
+      l_id_idioma := k_util.f_id_idioma(i_idioma_iso369_1);
     end if;
   
     if l_id_dispositivo is not null then
@@ -195,11 +179,11 @@ create or replace package body k_dispositivo is
                                            a.id_aplicacion),
              d.version_aplicacion,
              (select p.iso_alpha_2
-                from t_paises p
+                from t_paises_v p
                where p.id_pais = d.id_pais),
              d.zona_horaria,
              (select i.iso_639_1
-                from t_idiomas i
+                from t_idiomas_v i
                where i.id_idioma = d.id_idioma),
              a.id_aplicacion
         into l_dispositivo.id_dispositivo,

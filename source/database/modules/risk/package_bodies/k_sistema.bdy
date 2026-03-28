@@ -204,35 +204,14 @@ create or replace package body k_sistema is
     end;
     p_definir_parametro_string(c_usuario, user);
   
-    declare
-      l_id_pais t_paises.id_pais%type;
-    begin
-      select p.id_pais
-        into l_id_pais
-        from t_paises p
-       where p.iso_alpha_2 = k_util.f_valor_parametro('ID_PAIS_ISO');
-      p_definir_parametro_number(c_id_pais, l_id_pais);
-    exception
-      when others then
-        null;
-    end;
+    p_definir_parametro_number(c_id_pais,
+                               k_util.f_id_pais(k_util.f_valor_parametro('ID_PAIS_ISO')));
   
     p_definir_parametro_string(c_zona_horaria,
                                k_util.f_valor_parametro('ZONA_HORARIA'));
   
-    declare
-      l_id_idioma t_idiomas.id_idioma%type;
-    begin
-      select i.id_idioma
-        into l_id_idioma
-        from t_idiomas i
-       where i.iso_639_1 = k_util.f_valor_parametro('ID_IDIOMA_ISO');
-      p_definir_parametro_number(c_id_idioma, l_id_idioma);
-    exception
-      when others then
-        null;
-    end;
-  
+    p_definir_parametro_number(c_id_idioma,
+                               k_util.f_id_idioma(k_util.f_valor_parametro('ID_IDIOMA_ISO')));
   end;
 
   procedure p_limpiar_parametros is

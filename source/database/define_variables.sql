@@ -50,6 +50,7 @@ DEFINE v_access_role = '&v_app_name._ACCESS_ROLE'
 -- Define users
 DEFINE v_util_user = '&v_app_name._UTIL'
 DEFINE v_risk_module_user = '&v_app_name._RISK'
+DEFINE v_glo_module_user = '&v_app_name._GLO'
 DEFINE v_msj_module_user = '&v_app_name._MSJ'
 DEFINE v_flj_module_user = '&v_app_name._FLJ'
 DEFINE v_dev_user = '&v_app_name._DEV'

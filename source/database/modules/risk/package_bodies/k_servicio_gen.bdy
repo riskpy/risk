@@ -227,8 +227,8 @@ create or replace package body k_servicio_gen is
     l_pagina    y_pagina;
     l_elementos y_objetos;
     l_elemento  y_error;
-    l_id_idioma t_idiomas.id_idioma%type;
-    l_id_pais   t_paises.id_pais%type;
+    l_id_idioma t_errores.id_idioma%type;
+    l_id_pais   t_errores.id_pais%type;
   
     cursor cr_elementos(i_clave in varchar2) is
       select a.clave, a.mensaje

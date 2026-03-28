@@ -42,8 +42,8 @@ create or replace package body k_error is
                            i_wrap_char in varchar2 default c_wrap_char)
     return varchar2 is
     l_mensaje   t_errores.mensaje%type;
-    l_id_idioma t_idiomas.id_idioma%type;
-    l_id_pais   t_paises.id_pais%type;
+    l_id_idioma t_errores.id_idioma%type;
+    l_id_pais   t_errores.id_pais%type;
   begin
     l_id_idioma := k_sistema.f_idioma;
     l_id_pais   := k_sistema.f_pais;
@@ -77,8 +77,8 @@ create or replace package body k_error is
                            i_wrap_char in varchar2 default c_wrap_char)
     return varchar2 is
     l_mensaje   t_errores.mensaje%type;
-    l_id_idioma t_idiomas.id_idioma%type;
-    l_id_pais   t_paises.id_pais%type;
+    l_id_idioma t_errores.id_idioma%type;
+    l_id_pais   t_errores.id_pais%type;
   begin
     l_id_idioma := k_sistema.f_idioma;
     l_id_pais   := k_sistema.f_pais;
@@ -109,3 +109,4 @@ create or replace package body k_error is
 
 end;
 /
+

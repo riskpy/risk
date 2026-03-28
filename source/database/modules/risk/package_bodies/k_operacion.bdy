@@ -298,42 +298,20 @@ create or replace package body k_operacion is
     if l_id_dispositivo is not null then
       l_dispositivo := k_dispositivo.f_datos_dispositivo(l_id_dispositivo);
     
-      declare
-        l_id_pais t_paises.id_pais%type;
-      begin
-        if l_dispositivo.id_pais_iso2 is not null then
-          select p.id_pais
-            into l_id_pais
-            from t_paises p
-           where p.iso_alpha_2 = l_dispositivo.id_pais_iso2;
-          k_sistema.p_definir_parametro_number(k_sistema.c_id_pais,
-                                               l_id_pais);
-        end if;
-      exception
-        when others then
-          null;
-      end;
+      if l_dispositivo.id_pais_iso2 is not null then
+        k_sistema.p_definir_parametro_number(k_sistema.c_id_pais,
+                                             k_util.f_id_pais(l_dispositivo.id_pais_iso2));
+      end if;
     
       if l_dispositivo.zona_horaria is not null then
         k_sistema.p_definir_parametro_string(k_sistema.c_zona_horaria,
                                              l_dispositivo.zona_horaria);
       end if;
     
-      declare
-        l_id_idioma t_idiomas.id_idioma%type;
-      begin
-        if l_dispositivo.id_idioma_iso369_1 is not null then
-          select i.id_idioma
-            into l_id_idioma
-            from t_idiomas i
-           where i.iso_639_1 = l_dispositivo.id_idioma_iso369_1;
-          k_sistema.p_definir_parametro_number(k_sistema.c_id_idioma,
-                                               l_id_idioma);
-        end if;
-      exception
-        when others then
-          null;
-      end;
+      if l_dispositivo.id_idioma_iso369_1 is not null then
+        k_sistema.p_definir_parametro_number(k_sistema.c_id_idioma,
+                                             k_util.f_id_idioma(l_dispositivo.id_idioma_iso369_1));
+      end if;
     end if;
   
     -- Se agregan los valores nuevos del contexto.
