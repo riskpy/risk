@@ -39,6 +39,7 @@ namespace Risk.API.Risk.Services
         private const string DOMINIO_OPERACION = "GLO";
         private const string NOMBRE_LISTAR_PAISES = "LISTAR_PAISES";
         private const string NOMBRE_LISTAR_DEPARTAMENTOS = "LISTAR_DEPARTAMENTOS";
+        private const string NOMBRE_LISTAR_DISTRITOS = "LISTAR_DISTRITOS";
         private const string NOMBRE_LISTAR_CIUDADES = "LISTAR_CIUDADES";
         private const string NOMBRE_LISTAR_BARRIOS = "LISTAR_BARRIOS";
 
@@ -92,12 +93,37 @@ namespace Risk.API.Risk.Services
             return EntitiesMapper.GetRespuestaFromEntity<Pagina<Departamento>, YPagina<YDepartamento>>(entityRsp, datos);
         }
 
-        public Respuesta<Pagina<Ciudad>> ListarCiudades(int? idCiudad = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null)
+        public Respuesta<Pagina<Distrito>> ListarDistritos(int? idDistrito = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null)
+        {
+            prms = new JObject();
+            prms.Add("id_distrito", idDistrito);
+            prms.Add("id_pais", idPais);
+            prms.Add("id_departamento", idDepartamento);
+
+            if (paginaParametros != null)
+            {
+                prms.Add("pagina_parametros", JToken.FromObject(ModelsMapper.GetEntityFromModel<PaginaParametros, YPaginaParametros>(paginaParametros)));
+            }
+
+            rsp = base.ProcesarOperacion(TipoOperacion.Servicio, NOMBRE_LISTAR_DISTRITOS, DOMINIO_OPERACION, prms);
+            var entityRsp = rsp.ToObject<YRespuesta<YPagina<YDistrito>>>();
+
+            Pagina<Distrito> datos = null;
+            if (entityRsp.Datos != null)
+            {
+                datos = EntitiesMapper.GetPaginaFromEntity<Distrito, YDistrito>(entityRsp.Datos, EntitiesMapper.GetModelListFromEntity<Distrito, YDistrito>(entityRsp.Datos.Elementos));
+            }
+
+            return EntitiesMapper.GetRespuestaFromEntity<Pagina<Distrito>, YPagina<YDistrito>>(entityRsp, datos);
+        }
+
+        public Respuesta<Pagina<Ciudad>> ListarCiudades(int? idCiudad = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null, int? idDistrito = null)
         {
             prms = new JObject();
             prms.Add("id_ciudad", idCiudad);
             prms.Add("id_pais", idPais);
             prms.Add("id_departamento", idDepartamento);
+            prms.Add("id_distrito", idDistrito);
 
             if (paginaParametros != null)
             {
@@ -116,13 +142,14 @@ namespace Risk.API.Risk.Services
             return EntitiesMapper.GetRespuestaFromEntity<Pagina<Ciudad>, YPagina<YCiudad>>(entityRsp, datos);
         }
 
-        public Respuesta<Pagina<Barrio>> ListarBarrios(int? idBarrio = null, int? idPais = null, int? idDepartamento = null, int? idCiudad = null, PaginaParametros paginaParametros = null)
+        public Respuesta<Pagina<Barrio>> ListarBarrios(int? idBarrio = null, int? idPais = null, int? idDepartamento = null, int? idCiudad = null, PaginaParametros paginaParametros = null, int? idDistrito = null)
         {
             prms = new JObject();
             prms.Add("id_barrio", idBarrio);
             prms.Add("id_pais", idPais);
             prms.Add("id_departamento", idDepartamento);
             prms.Add("id_ciudad", idCiudad);
+            prms.Add("id_distrito", idDistrito);
 
             if (paginaParametros != null)
             {

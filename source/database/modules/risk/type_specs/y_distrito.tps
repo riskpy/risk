@@ -1,3 +1,11 @@
+create or replace type y_distrito under y_objeto
+(
+/**
+Agrupa datos de Distritos o zonas.
+
+%author jtsoya539 30/3/2020 10:54:26
+*/
+
 /*
 --------------------------------- MIT License ---------------------------------
 Copyright (c) 2019 - 2026 jtsoya539, DamyGenius and RISK contributors
@@ -22,17 +30,20 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Risk.API.Models;
-using Risk.API.Services;
+/** Identificador del distrito o zona */
+  id_distrito number,
+/** Nombre del distrito o zona */
+  nombre varchar2(100),
+/** País del distrito o zona */
+  id_pais number,
+/** Departamento, estado o provincia del distrito o zona */
+  id_departamento number,
 
-namespace Risk.API.Risk.Services
-{
-    public interface IGloService : IServiceBase
-    {
-        Respuesta<Pagina<Pais>> ListarPaises(int? idPais = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Departamento>> ListarDepartamentos(int? idDepartamento = null, int? idPais = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Distrito>> ListarDistritos(int? idDistrito = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Ciudad>> ListarCiudades(int? idCiudad = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null, int? idDistrito = null);
-        Respuesta<Pagina<Barrio>> ListarBarrios(int? idBarrio = null, int? idPais = null, int? idDepartamento = null, int? idCiudad = null, PaginaParametros paginaParametros = null, int? idDistrito = null);
-    }
-}
+  constructor function y_distrito return self as result,
+
+  static function parse_json(i_json in clob) return y_objeto,
+
+  overriding member function to_json return clob
+)
+/
+

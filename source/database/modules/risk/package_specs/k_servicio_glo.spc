@@ -35,9 +35,12 @@ create or replace package k_servicio_glo is
   function listar_departamentos(i_parametros in y_parametros)
     return y_respuesta;
 
+  function listar_distritos(i_parametros in y_parametros) return y_respuesta;
+
   function listar_ciudades(i_parametros in y_parametros) return y_respuesta;
 
   function listar_barrios(i_parametros in y_parametros) return y_respuesta;
 
 end;
 /
+

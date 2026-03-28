@@ -22,17 +22,31 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
+using Newtonsoft.Json;
 using Risk.API.Models;
-using Risk.API.Services;
 
-namespace Risk.API.Risk.Services
+namespace Risk.API.Entities
 {
-    public interface IGloService : IServiceBase
+    public class YDistrito : IEntity
     {
-        Respuesta<Pagina<Pais>> ListarPaises(int? idPais = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Departamento>> ListarDepartamentos(int? idDepartamento = null, int? idPais = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Distrito>> ListarDistritos(int? idDistrito = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Ciudad>> ListarCiudades(int? idCiudad = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null, int? idDistrito = null);
-        Respuesta<Pagina<Barrio>> ListarBarrios(int? idBarrio = null, int? idPais = null, int? idDepartamento = null, int? idCiudad = null, PaginaParametros paginaParametros = null, int? idDistrito = null);
+        [JsonProperty("id_distrito")]
+        public int IdDistrito { get; set; }
+        [JsonProperty("nombre")]
+        public string Nombre { get; set; }
+        [JsonProperty("id_pais")]
+        public int IdPais { get; set; }
+        [JsonProperty("id_departamento")]
+        public int IdDepartamento { get; set; }
+
+        public IModel ConvertToModel()
+        {
+            return new Distrito
+            {
+                IdDistrito = this.IdDistrito,
+                Nombre = this.Nombre,
+                IdPais = this.IdPais,
+                IdDepartamento = this.IdDepartamento
+            };
+        }
     }
 }

@@ -286,6 +286,7 @@ drop type y_dato force;
 drop type y_datos force;
 drop type y_departamento force;
 drop type y_dispositivo force;
+drop type y_distrito force;
 drop type y_error force;
 drop type y_lista force;
 drop type y_lista_parametros force;

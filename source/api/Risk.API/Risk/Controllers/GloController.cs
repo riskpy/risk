@@ -94,11 +94,11 @@ namespace Risk.API.Risk.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("ListarCiudades")]
-        [SwaggerOperation(OperationId = "ListarCiudades", Summary = "ListarCiudades", Description = "Obtiene una lista de ciudades")]
+        [HttpGet("ListarDistritos")]
+        [SwaggerOperation(OperationId = "ListarDistritos", Summary = "ListarDistritos", Description = "Obtiene una lista de distritos")]
         [Produces(MediaTypeNames.Application.Json)]
-        [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(Respuesta<Pagina<Ciudad>>))]
-        public IActionResult ListarCiudades([FromQuery, SwaggerParameter(Description = "Identificador del país", Required = false)] int? idPais,
+        [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(Respuesta<Pagina<Distrito>>))]
+        public IActionResult ListarDistritos([FromQuery, SwaggerParameter(Description = "Identificador del país", Required = false)] int? idPais,
             [FromQuery, SwaggerParameter(Description = "Identificador del departamento", Required = false)] int? idDepartamento,
             [FromQuery, SwaggerParameter(Description = "Número de la página", Required = false)] int pagina,
             [FromQuery, SwaggerParameter(Description = "Cantidad de elementos por página", Required = false)] int porPagina,
@@ -110,7 +110,32 @@ namespace Risk.API.Risk.Controllers
                 PorPagina = porPagina,
                 NoPaginar = noPaginar
             };
-            var respuesta = _gloService.ListarCiudades(null, idPais, idDepartamento, paginaParametros);
+            var respuesta = _gloService.ListarDistritos(null, idPais, idDepartamento, paginaParametros);
+
+            respuesta.Datos = ProcesarPagina(respuesta.Datos);
+
+            return ProcesarRespuesta(respuesta);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("ListarCiudades")]
+        [SwaggerOperation(OperationId = "ListarCiudades", Summary = "ListarCiudades", Description = "Obtiene una lista de ciudades")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(Respuesta<Pagina<Ciudad>>))]
+        public IActionResult ListarCiudades([FromQuery, SwaggerParameter(Description = "Identificador del país", Required = false)] int? idPais,
+            [FromQuery, SwaggerParameter(Description = "Identificador del departamento", Required = false)] int? idDepartamento,
+            [FromQuery, SwaggerParameter(Description = "Identificador del distrito", Required = false)] int? idDistrito,
+            [FromQuery, SwaggerParameter(Description = "Número de la página", Required = false)] int pagina,
+            [FromQuery, SwaggerParameter(Description = "Cantidad de elementos por página", Required = false)] int porPagina,
+            [FromQuery, SwaggerParameter(Description = "No paginar?", Required = false)] bool noPaginar)
+        {
+            PaginaParametros paginaParametros = new PaginaParametros
+            {
+                Pagina = pagina,
+                PorPagina = porPagina,
+                NoPaginar = noPaginar
+            };
+            var respuesta = _gloService.ListarCiudades(null, idPais, idDepartamento, paginaParametros, idDistrito);
 
             respuesta.Datos = ProcesarPagina(respuesta.Datos);
 
@@ -124,6 +149,7 @@ namespace Risk.API.Risk.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, RiskConstants.SWAGGER_RESPONSE_200, typeof(Respuesta<Pagina<Barrio>>))]
         public IActionResult ListarBarrios([FromQuery, SwaggerParameter(Description = "Identificador del país", Required = false)] int? idPais,
             [FromQuery, SwaggerParameter(Description = "Identificador del departamento", Required = false)] int? idDepartamento,
+            [FromQuery, SwaggerParameter(Description = "Identificador del distrito", Required = false)] int? idDistrito,
             [FromQuery, SwaggerParameter(Description = "Identificador de la ciudad", Required = false)] int? idCiudad,
             [FromQuery, SwaggerParameter(Description = "Número de la página", Required = false)] int pagina,
             [FromQuery, SwaggerParameter(Description = "Cantidad de elementos por página", Required = false)] int porPagina,
@@ -135,7 +161,7 @@ namespace Risk.API.Risk.Controllers
                 PorPagina = porPagina,
                 NoPaginar = noPaginar
             };
-            var respuesta = _gloService.ListarBarrios(null, idPais, idDepartamento, idCiudad, paginaParametros);
+            var respuesta = _gloService.ListarBarrios(null, idPais, idDepartamento, idCiudad, paginaParametros, idDistrito);
 
             respuesta.Datos = ProcesarPagina(respuesta.Datos);
 

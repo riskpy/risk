@@ -22,17 +22,26 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Risk.API.Models;
-using Risk.API.Services;
+using Risk.API.Entities;
+using Swashbuckle.AspNetCore.Annotations;
 
-namespace Risk.API.Risk.Services
+namespace Risk.API.Models
 {
-    public interface IGloService : IServiceBase
+    [SwaggerSchema("Agrupa datos de Distritos")]
+    public class Distrito : IModel
     {
-        Respuesta<Pagina<Pais>> ListarPaises(int? idPais = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Departamento>> ListarDepartamentos(int? idDepartamento = null, int? idPais = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Distrito>> ListarDistritos(int? idDistrito = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null);
-        Respuesta<Pagina<Ciudad>> ListarCiudades(int? idCiudad = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null, int? idDistrito = null);
-        Respuesta<Pagina<Barrio>> ListarBarrios(int? idBarrio = null, int? idPais = null, int? idDepartamento = null, int? idCiudad = null, PaginaParametros paginaParametros = null, int? idDistrito = null);
+        [SwaggerSchema("Identificador del distrito")]
+        public int IdDistrito { get; set; }
+        [SwaggerSchema("Nombre del distrito")]
+        public string Nombre { get; set; }
+        [SwaggerSchema("País del distrito")]
+        public int IdPais { get; set; }
+        [SwaggerSchema("Departamento del distrito")]
+        public int IdDepartamento { get; set; }
+
+        public IEntity ConvertToEntity()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

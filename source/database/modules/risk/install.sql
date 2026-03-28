@@ -261,6 +261,7 @@ prompt
 @@type_specs/y_datos.tps
 @@type_specs/y_departamento.tps
 @@type_specs/y_dispositivo.tps
+@@type_specs/y_distrito.tps
 @@type_specs/y_error.tps
 @@type_specs/y_lista.tps
 @@type_specs/y_lista_parametros.tps
@@ -292,6 +293,7 @@ prompt
 @@type_bodies/y_dato.tpb
 @@type_bodies/y_departamento.tpb
 @@type_bodies/y_dispositivo.tpb
+@@type_bodies/y_distrito.tpb
 @@type_bodies/y_error.tpb
 @@type_bodies/y_lista.tpb
 @@type_bodies/y_lista_parametros.tpb
