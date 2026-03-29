@@ -54,6 +54,10 @@ prompt
 @@ins_t_rol_usuarios.sql
 @@ins_t_archivos.sql
 
+@@../../create_private_synonyms.sql
+@@../../grant_objects.sql
+@@../../compile_schema.sql
+
 prompt
 prompt Registering migration...
 prompt -----------------------------------

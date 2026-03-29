@@ -50,6 +50,10 @@ prompt -----------------------------------
 prompt
 @@upd_t_modulos.sql
 
+@@../../create_private_synonyms.sql
+@@../../grant_objects.sql
+@@../../compile_schema.sql
+
 prompt
 prompt Registering migration...
 prompt -----------------------------------

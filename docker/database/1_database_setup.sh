@@ -133,10 +133,6 @@ display_elapsed_time
 
 # Install dependencies
 sqlplus $RISK_DEV_USER[$RISK_UTIL_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install_dependencies.sql
-
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_private_synonyms.sql $RISK_APP_NAME
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql $RISK_APP_NAME
-
 echo "BUILDER: Dependencies installation completed"
 display_elapsed_time
 
@@ -193,11 +189,6 @@ done
 echo "BUILDER: Modules installation completed"
 display_elapsed_time
 
-# Compile all schemas
-echo "BUILDER: Compiling schemas"
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @compile_schema.sql
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects_access_role.sql $RISK_APP_NAME
-
 # Install migrations
 echo "BUILDER: Migrations installation started"
 for dir in /usr/src/risk/source/migrations/mig_*/
@@ -206,14 +197,12 @@ do
     export SQLPATH="$dir:$SQLPATH"
     sqlplus $RISK_DEV_USER/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
 done
-
-export SQLPATH="/usr/src/risk/source/:$SQLPATH"
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_private_synonyms.sql $RISK_APP_NAME
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql $RISK_APP_NAME
-
-sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @compile_schema.sql
 echo "BUILDER: Migrations installation completed"
 display_elapsed_time
+
+# Grant privileges
+echo "BUILDER: Granting privileges"
+sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects_access_role.sql $RISK_APP_NAME
 
 # Wait for utPLSQL installation to complete
 if [ "${SKIP_TESTS_INSTALL}" != "true" ]; then

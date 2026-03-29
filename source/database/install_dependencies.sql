@@ -68,6 +68,10 @@ prompt
 @@dependencies/om_tapigen_install.sql
 @@dependencies/plex_install.sql
 
+@@create_private_synonyms.sql
+@@grant_objects.sql
+@@compile_schema.sql
+
 prompt
 prompt ===================================
 prompt Installation completed
