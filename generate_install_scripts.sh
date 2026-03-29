@@ -76,6 +76,7 @@ prompt
 INSTALL_EOF
 
         # Add module-specific content
+        echo "@@../../define_variables.sql" >> "$module_dir/install.sql"
         echo "@@../../set_compiler_flags.sql $module_name" >> "$module_dir/install.sql"
 
         # Sequences
@@ -284,8 +285,10 @@ INSTALL_EOF
 
         # Compile schema
         echo "" >> "$module_dir/install.sql"
-        echo "@@../../create_private_synonyms.sql" >> "$module_dir/install.sql"
-        echo "@@../../grant_objects.sql" >> "$module_dir/install.sql"
+        echo "set define on" >> "$module_dir/install.sql"
+        echo "@@../../create_private_synonyms.sql &v_app_name" >> "$module_dir/install.sql"
+        echo "@@../../grant_objects.sql &v_app_name" >> "$module_dir/install.sql"
+        echo "set define off" >> "$module_dir/install.sql"
         echo "@@../../compile_schema.sql" >> "$module_dir/install.sql"
 
         # Running scripts

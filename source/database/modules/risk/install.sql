@@ -43,6 +43,7 @@ prompt ===================================
 prompt Installation started
 prompt ===================================
 prompt
+@@../../define_variables.sql
 @@../../set_compiler_flags.sql risk
 
 prompt
@@ -571,8 +572,10 @@ prompt
 @@triggers/t_usuario_claves_ioiud.trg
 @@triggers/t_usuarios_ioiud.trg
 
-@@../../create_private_synonyms.sql
-@@../../grant_objects.sql
+set define on
+@@../../create_private_synonyms.sql &v_app_name
+@@../../grant_objects.sql &v_app_name
+set define off
 @@../../compile_schema.sql
 
 prompt

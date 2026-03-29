@@ -132,7 +132,7 @@ echo "BUILDER: Schemas creation completed"
 display_elapsed_time
 
 # Install dependencies
-sqlplus $RISK_DEV_USER[$RISK_UTIL_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install_dependencies.sql
+sqlplus $RISK_DEV_USER[$RISK_UTIL_USER]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install_dependencies.sql $RISK_APP_NAME
 echo "BUILDER: Dependencies installation completed"
 display_elapsed_time
 
@@ -184,7 +184,7 @@ for module in "${modules[@]}"; do
     fi
 
     export SQLPATH="/usr/src/risk/source/modules/$modulename/:$SQLPATH"
-    sqlplus $RISK_DEV_USER[$moduleschema]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
+    sqlplus $RISK_DEV_USER[$moduleschema]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql $RISK_APP_NAME
 done
 echo "BUILDER: Modules installation completed"
 display_elapsed_time

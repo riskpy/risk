@@ -61,6 +61,7 @@ for /d %%d in ("%BASE_DIR%\*") do (
     echo prompt Installation started
     echo prompt ===================================
     echo prompt
+    echo @@../../define_variables.sql
     echo @@../../set_compiler_flags.sql %%~nxd
 
     echo.
@@ -232,8 +233,10 @@ for /d %%d in ("%BASE_DIR%\*") do (
     )
     
     echo.
-    echo @@../../create_private_synonyms.sql
-    echo @@../../grant_objects.sql
+    echo set define on
+    echo @@../../create_private_synonyms.sql ^&v_app_name
+    echo @@../../grant_objects.sql ^&v_app_name
+    echo set define off
     echo @@../../compile_schema.sql
 
     echo.

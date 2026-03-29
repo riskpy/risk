@@ -43,6 +43,7 @@ prompt ===================================
 prompt Installation started
 prompt ===================================
 prompt
+@@../../define_variables.sql
 @@../../set_compiler_flags.sql flj
 
 prompt
@@ -175,8 +176,10 @@ prompt
 @@triggers/t_flujo_transiciones_ioiud.trg
 @@triggers/t_flujos_ioiud.trg
 
-@@../../create_private_synonyms.sql
-@@../../grant_objects.sql
+set define on
+@@../../create_private_synonyms.sql &v_app_name
+@@../../grant_objects.sql &v_app_name
+set define off
 @@../../compile_schema.sql
 
 prompt

@@ -43,6 +43,8 @@ prompt ===================================
 prompt Installation started
 prompt ===================================
 prompt
+@@define_variables.sql
+set define off
 
 prompt
 prompt Installing dependencies...
@@ -68,8 +70,10 @@ prompt
 @@dependencies/om_tapigen_install.sql
 @@dependencies/plex_install.sql
 
-@@create_private_synonyms.sql
-@@grant_objects.sql
+set define on
+@@create_private_synonyms.sql &v_app_name
+@@grant_objects.sql &v_app_name
+set define off
 @@compile_schema.sql
 
 prompt
