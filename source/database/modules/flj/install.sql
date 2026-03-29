@@ -175,6 +175,8 @@ prompt
 @@triggers/t_flujo_transiciones_ioiud.trg
 @@triggers/t_flujos_ioiud.trg
 
+@@../../create_private_synonyms.sql
+@@../../grant_objects.sql
 @@../../compile_schema.sql
 
 prompt

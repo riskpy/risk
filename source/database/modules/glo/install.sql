@@ -170,6 +170,8 @@ prompt
 @@triggers/t_monedas_ioiud.trg
 @@triggers/t_paises_ioiud.trg
 
+@@../../create_private_synonyms.sql
+@@../../grant_objects.sql
 @@../../compile_schema.sql
 
 prompt

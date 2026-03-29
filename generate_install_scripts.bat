@@ -232,6 +232,8 @@ for /d %%d in ("%BASE_DIR%\*") do (
     )
     
     echo.
+    echo @@../../create_private_synonyms.sql
+    echo @@../../grant_objects.sql
     echo @@../../compile_schema.sql
 
     echo.

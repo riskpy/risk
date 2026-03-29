@@ -571,6 +571,8 @@ prompt
 @@triggers/t_usuario_claves_ioiud.trg
 @@triggers/t_usuarios_ioiud.trg
 
+@@../../create_private_synonyms.sql
+@@../../grant_objects.sql
 @@../../compile_schema.sql
 
 prompt

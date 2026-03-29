@@ -189,11 +189,6 @@ for module in "${modules[@]}"; do
 
     export SQLPATH="/usr/src/risk/source/modules/$modulename/:$SQLPATH"
     sqlplus $RISK_DEV_USER[$moduleschema]/$RISK_DB_PASSWORD@//localhost/$DB_SERVICE_NAME @install.sql
-
-    if [ "$runsyngrant" == "true" ]; then
-        sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @create_private_synonyms.sql $RISK_APP_NAME
-        sqlplus sys/$ORACLE_PASSWORD@//localhost/$DB_SERVICE_NAME as sysdba @grant_objects.sql $RISK_APP_NAME
-    fi
 done
 echo "BUILDER: Modules installation completed"
 display_elapsed_time

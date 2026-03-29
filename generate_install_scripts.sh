@@ -284,6 +284,8 @@ INSTALL_EOF
 
         # Compile schema
         echo "" >> "$module_dir/install.sql"
+        echo "@@../../create_private_synonyms.sql" >> "$module_dir/install.sql"
+        echo "@@../../grant_objects.sql" >> "$module_dir/install.sql"
         echo "@@../../compile_schema.sql" >> "$module_dir/install.sql"
 
         # Running scripts

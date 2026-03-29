@@ -384,7 +384,6 @@ END;';
   function f_id_pais(i_iso_alpha_2 in varchar2) return number is
     l_id_pais number;
   begin
-    /*
     $if k_modulo.c_instalado_glo $then
     begin
       select p.id_pais
@@ -396,8 +395,6 @@ END;';
         null;
     end;
     $end
-    */
-    l_id_pais := 177; -- PY
   
     return l_id_pais;
   end;
@@ -405,7 +402,6 @@ END;';
   function f_id_idioma(i_iso_639_1 in varchar2) return number is
     l_id_idioma number;
   begin
-    /*
     $if k_modulo.c_instalado_glo $then
     begin
       select i.id_idioma
@@ -417,8 +413,6 @@ END;';
         null;
     end;
     $end
-    */
-    l_id_idioma := 148; -- es
   
     return l_id_idioma;
   end;

@@ -26,6 +26,7 @@ set define on
 
 --accept v_module char default 'risk'
 DEFINE v_module = '&1'
+UNDEFINE 1
 
 prompt - Set compiler flags
 declare

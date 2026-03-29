@@ -196,6 +196,8 @@ prompt
 @@triggers/t_notificaciones_ioiud.trg
 @@triggers/t_usuario_suscripciones_ioiud.trg
 
+@@../../create_private_synonyms.sql
+@@../../grant_objects.sql
 @@../../compile_schema.sql
 
 prompt
