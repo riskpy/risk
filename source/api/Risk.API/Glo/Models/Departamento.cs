@@ -22,28 +22,25 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Newtonsoft.Json;
+using Risk.API.Entities;
 using Risk.API.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
-namespace Risk.API.Entities
+namespace Risk.API.Glo.Models
 {
-    public class YDepartamento : IEntity
+    [SwaggerSchema("Agrupa datos de Departamentos")]
+    public class Departamento : IModel
     {
-        [JsonProperty("id_departamento")]
+        [SwaggerSchema("Identificador del departamento")]
         public int IdDepartamento { get; set; }
-        [JsonProperty("nombre")]
+        [SwaggerSchema("Nombre del departamento")]
         public string Nombre { get; set; }
-        [JsonProperty("id_pais")]
+        [SwaggerSchema("País del departamento")]
         public int IdPais { get; set; }
 
-        public IModel ConvertToModel()
+        public IEntity ConvertToEntity()
         {
-            return new Departamento
-            {
-                IdDepartamento = this.IdDepartamento,
-                Nombre = this.Nombre,
-                IdPais = this.IdPais
-            };
+            throw new System.NotImplementedException();
         }
     }
 }

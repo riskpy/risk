@@ -23,29 +23,34 @@ SOFTWARE.
 */
 
 using Newtonsoft.Json;
+using Risk.API.Entities;
+using Risk.API.Glo.Models;
 using Risk.API.Models;
 
-namespace Risk.API.Entities
+namespace Risk.API.Glo.Entities
 {
-    public class YCiudad : IEntity
+    public class YPais : IEntity
     {
-        [JsonProperty("id_ciudad")]
-        public int IdCiudad { get; set; }
-        [JsonProperty("nombre")]
-        public string Nombre { get; set; }
         [JsonProperty("id_pais")]
         public int IdPais { get; set; }
-        [JsonProperty("id_departamento")]
-        public int IdDepartamento { get; set; }
+        [JsonProperty("nombre")]
+        public string Nombre { get; set; }
+        [JsonProperty("iso_alpha_2")]
+        public string IsoAlpha2 { get; set; }
+        [JsonProperty("iso_alpha_3")]
+        public string IsoAlpha3 { get; set; }
+        [JsonProperty("iso_numeric")]
+        public int IsoNumeric { get; set; }
 
         public IModel ConvertToModel()
         {
-            return new Ciudad
+            return new Pais
             {
-                IdCiudad = this.IdCiudad,
-                Nombre = this.Nombre,
                 IdPais = this.IdPais,
-                IdDepartamento = this.IdDepartamento
+                Nombre = this.Nombre,
+                IsoAlpha2 = this.IsoAlpha2,
+                IsoAlpha3 = this.IsoAlpha3,
+                IsoNumeric = this.IsoNumeric
             };
         }
     }

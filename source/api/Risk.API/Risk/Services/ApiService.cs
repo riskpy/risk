@@ -39,7 +39,7 @@ namespace Risk.API.Risk.Services
     {
         private const string DOMINIO_OPERACION = "API";
 
-        public ApiService(ILogger<GenService> logger, ISettingsService settingsService, IHttpContextAccessor httpContextAccessor, IDbConnectionFactory dbConnectionFactory)
+        public ApiService(ILogger<ApiService> logger, ISettingsService settingsService, IHttpContextAccessor httpContextAccessor, IDbConnectionFactory dbConnectionFactory)
             : base(logger, settingsService, httpContextAccessor, dbConnectionFactory)
         {
         }

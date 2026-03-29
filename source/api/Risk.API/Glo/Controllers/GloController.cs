@@ -27,13 +27,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Risk.API.Controllers;
+using Risk.API.Glo.Models;
+using Risk.API.Glo.Services;
 using Risk.API.Models;
-using Risk.API.Risk.Services;
 using Risk.API.Services.Settings;
 using Risk.Common.Helpers;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Risk.API.Risk.Controllers
+namespace Risk.API.Glo.Controllers
 {
     [SwaggerTag("Servicios del dominio GLOBAL", "https://riskpy.github.io/risk/")]
     [Authorize(Roles = "ADMINISTRADOR,USUARIO,USUARIO_NUEVO")]

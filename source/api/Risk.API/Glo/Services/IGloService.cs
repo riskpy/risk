@@ -22,24 +22,18 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Risk.API.Entities;
-using Swashbuckle.AspNetCore.Annotations;
+using Risk.API.Glo.Models;
+using Risk.API.Models;
+using Risk.API.Services;
 
-namespace Risk.API.Models
+namespace Risk.API.Glo.Services
 {
-    [SwaggerSchema("Agrupa datos de Departamentos")]
-    public class Departamento : IModel
+    public interface IGloService : IServiceBase
     {
-        [SwaggerSchema("Identificador del departamento")]
-        public int IdDepartamento { get; set; }
-        [SwaggerSchema("Nombre del departamento")]
-        public string Nombre { get; set; }
-        [SwaggerSchema("País del departamento")]
-        public int IdPais { get; set; }
-
-        public IEntity ConvertToEntity()
-        {
-            throw new System.NotImplementedException();
-        }
+        Respuesta<Pagina<Pais>> ListarPaises(int? idPais = null, PaginaParametros paginaParametros = null);
+        Respuesta<Pagina<Departamento>> ListarDepartamentos(int? idDepartamento = null, int? idPais = null, PaginaParametros paginaParametros = null);
+        Respuesta<Pagina<Distrito>> ListarDistritos(int? idDistrito = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null);
+        Respuesta<Pagina<Ciudad>> ListarCiudades(int? idCiudad = null, int? idPais = null, int? idDepartamento = null, PaginaParametros paginaParametros = null, int? idDistrito = null);
+        Respuesta<Pagina<Barrio>> ListarBarrios(int? idBarrio = null, int? idPais = null, int? idDepartamento = null, int? idCiudad = null, PaginaParametros paginaParametros = null, int? idDistrito = null);
     }
 }

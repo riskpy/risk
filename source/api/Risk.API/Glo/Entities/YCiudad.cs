@@ -22,26 +22,33 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
+using Newtonsoft.Json;
 using Risk.API.Entities;
-using Swashbuckle.AspNetCore.Annotations;
+using Risk.API.Glo.Models;
+using Risk.API.Models;
 
-namespace Risk.API.Models
+namespace Risk.API.Glo.Entities
 {
-    [SwaggerSchema("Agrupa datos de Ciudades")]
-    public class Ciudad : IModel
+    public class YCiudad : IEntity
     {
-        [SwaggerSchema("Identificador de la ciudad")]
+        [JsonProperty("id_ciudad")]
         public int IdCiudad { get; set; }
-        [SwaggerSchema("Nombre de la ciudad")]
+        [JsonProperty("nombre")]
         public string Nombre { get; set; }
-        [SwaggerSchema("País de la ciudad")]
+        [JsonProperty("id_pais")]
         public int IdPais { get; set; }
-        [SwaggerSchema("Departamento de la ciudad")]
+        [JsonProperty("id_departamento")]
         public int IdDepartamento { get; set; }
 
-        public IEntity ConvertToEntity()
+        public IModel ConvertToModel()
         {
-            throw new System.NotImplementedException();
+            return new Ciudad
+            {
+                IdCiudad = this.IdCiudad,
+                Nombre = this.Nombre,
+                IdPais = this.IdPais,
+                IdDepartamento = this.IdDepartamento
+            };
         }
     }
 }

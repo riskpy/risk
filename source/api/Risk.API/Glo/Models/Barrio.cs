@@ -22,31 +22,29 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Newtonsoft.Json;
+using Risk.API.Entities;
 using Risk.API.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
-namespace Risk.API.Entities
+namespace Risk.API.Glo.Models
 {
-    public class YDistrito : IEntity
+    [SwaggerSchema("Agrupa datos de Barrios")]
+    public class Barrio : IModel
     {
-        [JsonProperty("id_distrito")]
-        public int IdDistrito { get; set; }
-        [JsonProperty("nombre")]
+        [SwaggerSchema("Identificador del barrio")]
+        public int IdBarrio { get; set; }
+        [SwaggerSchema("Nombre del barrio")]
         public string Nombre { get; set; }
-        [JsonProperty("id_pais")]
+        [SwaggerSchema("País del barrio")]
         public int IdPais { get; set; }
-        [JsonProperty("id_departamento")]
+        [SwaggerSchema("Departamento del barrio")]
         public int IdDepartamento { get; set; }
+        [SwaggerSchema("Ciudad del barrio")]
+        public int IdCiudad { get; set; }
 
-        public IModel ConvertToModel()
+        public IEntity ConvertToEntity()
         {
-            return new Distrito
-            {
-                IdDistrito = this.IdDistrito,
-                Nombre = this.Nombre,
-                IdPais = this.IdPais,
-                IdDepartamento = this.IdDepartamento
-            };
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -23,20 +23,21 @@ SOFTWARE.
 */
 
 using Risk.API.Entities;
+using Risk.API.Models;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Risk.API.Models
+namespace Risk.API.Glo.Models
 {
-    [SwaggerSchema("Agrupa datos de Distritos")]
-    public class Distrito : IModel
+    [SwaggerSchema("Agrupa datos de Ciudades")]
+    public class Ciudad : IModel
     {
-        [SwaggerSchema("Identificador del distrito")]
-        public int IdDistrito { get; set; }
-        [SwaggerSchema("Nombre del distrito")]
+        [SwaggerSchema("Identificador de la ciudad")]
+        public int IdCiudad { get; set; }
+        [SwaggerSchema("Nombre de la ciudad")]
         public string Nombre { get; set; }
-        [SwaggerSchema("País del distrito")]
+        [SwaggerSchema("País de la ciudad")]
         public int IdPais { get; set; }
-        [SwaggerSchema("Departamento del distrito")]
+        [SwaggerSchema("Departamento de la ciudad")]
         public int IdDepartamento { get; set; }
 
         public IEntity ConvertToEntity()
