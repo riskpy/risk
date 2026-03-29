@@ -178,13 +178,9 @@ create or replace package body k_dispositivo is
                                            'PLATAFORMA_NOTIFICACION',
                                            a.id_aplicacion),
              d.version_aplicacion,
-             (select p.iso_alpha_2
-                from t_paises_v p
-               where p.id_pais = d.id_pais),
+             k_util.f_codigo_iso_pais(d.id_pais),
              d.zona_horaria,
-             (select i.iso_639_1
-                from t_idiomas_v i
-               where i.id_idioma = d.id_idioma),
+             k_util.f_codigo_iso_idioma(d.id_idioma),
              a.id_aplicacion
         into l_dispositivo.id_dispositivo,
              l_dispositivo.token_dispositivo,

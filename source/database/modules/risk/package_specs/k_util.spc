@@ -123,7 +123,11 @@ create or replace package k_util is
 
   function f_id_pais(i_iso_alpha_2 in varchar2) return number;
 
+  function f_codigo_iso_pais(i_id_pais in number) return varchar2;
+
   function f_id_idioma(i_iso_639_1 in varchar2) return number;
+
+  function f_codigo_iso_idioma(i_id_idioma in number) return varchar2;
 
 end;
 /

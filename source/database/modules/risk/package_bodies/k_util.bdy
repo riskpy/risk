@@ -399,6 +399,24 @@ END;';
     return l_id_pais;
   end;
 
+  function f_codigo_iso_pais(i_id_pais in number) return varchar2 is
+    l_codigo_iso varchar2(100);
+  begin
+    $if k_modulo.c_instalado_glo $then
+    begin
+      select p.iso_alpha_2
+        into l_codigo_iso
+        from t_paises_v p
+       where p.id_pais = i_id_pais;
+    exception
+      when others then
+        null;
+    end;
+    $end
+  
+    return l_codigo_iso;
+  end;
+
   function f_id_idioma(i_iso_639_1 in varchar2) return number is
     l_id_idioma number;
   begin
@@ -415,6 +433,24 @@ END;';
     $end
   
     return l_id_idioma;
+  end;
+
+  function f_codigo_iso_idioma(i_id_idioma in number) return varchar2 is
+    l_codigo_iso varchar2(100);
+  begin
+    $if k_modulo.c_instalado_glo $then
+    begin
+      select i.iso_639_1
+        into l_codigo_iso
+        from t_idiomas_v i
+       where i.id_idioma = i_id_idioma;
+    exception
+      when others then
+        null;
+    end;
+    $end
+  
+    return l_codigo_iso;
   end;
 
 end;
