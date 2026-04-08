@@ -25,10 +25,10 @@ SOFTWARE.
 using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using Risk.API.Models;
+using Risk.API.Risk.Models;
 using Risk.API.Msj.Models;
 using Risk.API.Msj.Services;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Services.Settings;
 using Risk.Common.Helpers;
 
 namespace Risk.API.Msj.Helpers

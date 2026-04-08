@@ -28,7 +28,7 @@ using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Risk.API.Msj.Helpers;
 using Risk.API.Msj.Models;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Services.Settings;
 
 namespace Risk.API.Msj.Senders
 {

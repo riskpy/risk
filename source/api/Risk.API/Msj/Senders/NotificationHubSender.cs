@@ -28,7 +28,7 @@ using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Risk.API.Msj.Models;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Services.Settings;
 
 namespace Risk.API.Msj.Senders
 {

@@ -24,7 +24,7 @@ SOFTWARE.
 
 using System.Collections.Generic;
 using Microsoft.Azure.NotificationHubs;
-using Risk.API.Models;
+using Risk.API.Risk.Models;
 using Risk.API.Risk.Services;
 using Risk.Common.Helpers;
 

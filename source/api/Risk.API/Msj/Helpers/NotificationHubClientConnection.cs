@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 using Microsoft.Azure.NotificationHubs;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Services.Settings;
 
 namespace Risk.API.Msj.Helpers
 {

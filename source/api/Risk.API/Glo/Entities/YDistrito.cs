@@ -23,9 +23,9 @@ SOFTWARE.
 */
 
 using Newtonsoft.Json;
-using Risk.API.Entities;
+using Risk.API.Common.Entities;
+using Risk.API.Common.Models;
 using Risk.API.Glo.Models;
-using Risk.API.Models;
 
 namespace Risk.API.Glo.Entities
 {

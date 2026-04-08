@@ -1,0 +1,75 @@
+/*
+--------------------------------- MIT License ---------------------------------
+Copyright (c) 2019 - 2026 jtsoya539, DamyGenius and RISK contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-------------------------------------------------------------------------------
+*/
+
+using System.Collections.Generic;
+using Risk.API.Common.Attributes;
+using Risk.API.Common.Entities;
+using Risk.API.Common.Mappers;
+using Risk.API.Common.Models;
+using Risk.API.Risk.Entities;
+using Risk.API.Risk.Models.Enums;
+
+namespace Risk.API.Risk.Models
+{
+    public class Dispositivo : IModel
+    {
+        public long IdDispositivo { get; set; }
+        public string TokenDispositivo { get; set; }
+        public string NombreSistemaOperativo { get; set; }
+        public string VersionSistemaOperativo { get; set; }
+        public TipoDispositivo Tipo { get; set; }
+        public string NombreNavegador { get; set; }
+        public string VersionNavegador { get; set; }
+        public string TokenNotificacion { get; set; }
+        public string PlataformaNotificacion { get; set; }
+        public string VersionAplicacion { get; set; }
+        public string IdPaisIso2 { get; set; }
+        public string ZonaHoraria { get; set; }
+        public string IdiomaIso { get; set; }
+        public List<Plantilla> Plantillas { get; set; }
+        public List<Dato> Suscripciones { get; set; }
+
+        public IEntity ConvertToEntity()
+        {
+            return new YDispositivo
+            {
+                IdDispositivo = this.IdDispositivo,
+                TokenDispositivo = this.TokenDispositivo,
+                NombreSistemaOperativo = this.NombreSistemaOperativo,
+                VersionSistemaOperativo = this.VersionSistemaOperativo,
+                Tipo = this.Tipo.GetStringValue(),
+                NombreNavegador = this.NombreNavegador,
+                VersionNavegador = this.VersionNavegador,
+                TokenNotificacion = this.TokenNotificacion,
+                PlataformaNotificacion = this.PlataformaNotificacion,
+                VersionAplicacion = this.VersionAplicacion,
+                IdPaisIso2 = this.IdPaisIso2,
+                ZonaHoraria = this.ZonaHoraria,
+                IdiomaIso = this.IdiomaIso,
+                Plantillas = ModelsMapper.GetEntityListFromModel<Plantilla, YPlantilla>(this.Plantillas),
+                Suscripciones = ModelsMapper.GetEntityListFromModel<Dato, YDato>(this.Suscripciones)
+            };
+        }
+    }
+}

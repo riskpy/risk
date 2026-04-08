@@ -23,8 +23,9 @@ SOFTWARE.
 */
 
 using Newtonsoft.Json.Linq;
-using Risk.API.Models;
-using Risk.API.Services;
+using Risk.API.Risk.Models;
+using Risk.API.Risk.Models.Enums;
+using Risk.API.Common.Services;
 
 namespace Risk.API.Risk.Services
 {

@@ -24,9 +24,9 @@ SOFTWARE.
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Risk.API.Helpers;
-using Risk.API.Services;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Helpers;
+using Risk.API.Common.Services;
+using Risk.API.Common.Services.Settings;
 
 namespace Risk.API.Flj.Services
 {

@@ -25,15 +25,17 @@ SOFTWARE.
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
-using Risk.API.Attributes;
-using Risk.API.Entities;
-using Risk.API.Helpers;
-using Risk.API.Mappers;
-using Risk.API.Models;
+using Risk.API.Common.Attributes;
+using Risk.API.Common.Entities;
+using Risk.API.Common.Helpers;
+using Risk.API.Common.Mappers;
+using Risk.API.Risk.Models;
+using Risk.API.Risk.Models.Enums;
+using Risk.API.Risk.Entities;
 using Risk.API.Msj.Entities;
 using Risk.API.Msj.Models;
-using Risk.API.Services;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Services;
+using Risk.API.Common.Services.Settings;
 
 namespace Risk.API.Msj.Services
 {

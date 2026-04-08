@@ -23,8 +23,9 @@ SOFTWARE.
 */
 
 using System.Collections.Generic;
-using Risk.API.Entities;
-using Risk.API.Models;
+using Risk.API.Common.Entities;
+using Risk.API.Common.Models;
+using Risk.API.Risk.Models;
 
 namespace Risk.API.Msj.Models
 {

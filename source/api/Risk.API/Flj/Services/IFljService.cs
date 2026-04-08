@@ -22,7 +22,7 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Risk.API.Services;
+using Risk.API.Common.Services;
 
 namespace Risk.API.Flj.Services
 {

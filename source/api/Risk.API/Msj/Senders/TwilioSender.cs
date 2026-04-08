@@ -25,7 +25,7 @@ SOFTWARE.
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Risk.API.Msj.Models;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Services.Settings;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;

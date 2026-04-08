@@ -26,11 +26,13 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Risk.API.Attributes;
-using Risk.API.Controllers;
-using Risk.API.Models;
+using Risk.API.Common.Attributes;
+using Risk.API.Common.Controllers;
+using Risk.API.Risk.Models;
+using Risk.API.Risk.Models.RequestBodies;
+using Risk.API.Risk.Models.Enums;
 using Risk.API.Risk.Services;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Services.Settings;
 using Risk.Common.Helpers;
 using Swashbuckle.AspNetCore.Annotations;
 

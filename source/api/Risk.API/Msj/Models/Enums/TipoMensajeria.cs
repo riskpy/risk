@@ -22,7 +22,7 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Risk.API.Attributes;
+using Risk.API.Common.Attributes;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Risk.API.Msj.Models

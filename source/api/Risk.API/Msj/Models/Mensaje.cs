@@ -22,8 +22,8 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-using Risk.API.Entities;
-using Risk.API.Models;
+using Risk.API.Common.Entities;
+using Risk.API.Common.Models;
 
 namespace Risk.API.Msj.Models
 {

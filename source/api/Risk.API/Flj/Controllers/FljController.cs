@@ -24,9 +24,9 @@ SOFTWARE.
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Risk.API.Controllers;
+using Risk.API.Common.Controllers;
 using Risk.API.Flj.Services;
-using Risk.API.Services.Settings;
+using Risk.API.Common.Services.Settings;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Risk.API.Flj.Controllers
