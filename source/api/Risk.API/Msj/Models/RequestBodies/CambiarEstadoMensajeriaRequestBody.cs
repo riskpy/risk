@@ -22,7 +22,9 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 */
 
-namespace Risk.API.Msj.Models
+using Risk.API.Msj.Models.Enums;
+
+namespace Risk.API.Msj.Models.RequestBodies
 {
     public class CambiarEstadoMensajeriaRequestBody
     {

@@ -34,6 +34,8 @@ using Risk.API.Msj.Services;
 using Risk.API.Common.Services.Settings;
 using Risk.Common.Helpers;
 using Swashbuckle.AspNetCore.Annotations;
+using Risk.API.Msj.Models.RequestBodies;
+using Risk.API.Msj.Models.Enums;
 
 namespace Risk.API.Msj.Controllers
 {

@@ -29,7 +29,6 @@ using Risk.API.Common.Attributes;
 using Risk.API.Risk.Entities;
 using Risk.API.Common.Helpers;
 using Risk.API.Common.Mappers;
-using Risk.API.Common.Models;
 using Risk.API.Risk.Models;
 using Risk.API.Risk.Models.Enums;
 using Risk.API.Common.Services;

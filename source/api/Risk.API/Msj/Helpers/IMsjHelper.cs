@@ -24,6 +24,7 @@ SOFTWARE.
 
 using System.Collections.Generic;
 using Risk.API.Msj.Models;
+using Risk.API.Msj.Models.Enums;
 
 namespace Risk.API.Msj.Helpers
 {

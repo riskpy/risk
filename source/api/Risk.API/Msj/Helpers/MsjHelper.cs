@@ -30,6 +30,7 @@ using Risk.API.Msj.Models;
 using Risk.API.Msj.Services;
 using Risk.API.Common.Services.Settings;
 using Risk.Common.Helpers;
+using Risk.API.Msj.Models.Enums;
 
 namespace Risk.API.Msj.Helpers
 {

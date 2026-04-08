@@ -25,7 +25,7 @@ SOFTWARE.
 using Risk.API.Common.Attributes;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Risk.API.Msj.Models
+namespace Risk.API.Msj.Models.Enums
 {
     [SwaggerSchema("Estados de Mensajería")]
     public enum EstadoMensajeria

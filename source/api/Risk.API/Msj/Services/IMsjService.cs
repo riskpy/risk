@@ -25,6 +25,7 @@ SOFTWARE.
 using Risk.API.Risk.Models;
 using Risk.API.Msj.Models;
 using Risk.API.Common.Services;
+using Risk.API.Msj.Models.Enums;
 
 namespace Risk.API.Msj.Services
 {

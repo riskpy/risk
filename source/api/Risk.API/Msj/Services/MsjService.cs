@@ -26,7 +26,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Risk.API.Common.Attributes;
-using Risk.API.Common.Entities;
 using Risk.API.Common.Helpers;
 using Risk.API.Common.Mappers;
 using Risk.API.Risk.Models;
@@ -36,6 +35,7 @@ using Risk.API.Msj.Entities;
 using Risk.API.Msj.Models;
 using Risk.API.Common.Services;
 using Risk.API.Common.Services.Settings;
+using Risk.API.Msj.Models.Enums;
 
 namespace Risk.API.Msj.Services
 {
