@@ -5,7 +5,7 @@ create table T_MENSAJES_RECIBIDOS
   numero_telefono_destino VARCHAR2(40) not null,
   contenido               VARCHAR2(160) not null,
   telefonia               VARCHAR2(3) default 'TIG' not null,
-  fecha_recepcion         TIMESTAMP(2) WITH TIME ZONE default current_timestamp not null,
+  fecha_recepcion         TIMESTAMP(2) default systimestamp not null,
   id_usuario              NUMBER,
   usuario_insercion       VARCHAR2(300) default SUBSTR(USER, 1, 300) not null,
   fecha_insercion         TIMESTAMP(2) default SYSTIMESTAMP not null,

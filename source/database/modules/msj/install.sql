@@ -73,7 +73,10 @@ prompt -----------------------------------
 prompt
 @@foreign_keys/fk_correo_adjuntos.sql
 @@foreign_keys/fk_correo_plantillas.sql
+@@foreign_keys/fk_correos.sql
 @@foreign_keys/fk_mensaje_plantillas.sql
+@@foreign_keys/fk_mensajes.sql
+@@foreign_keys/fk_notificaciones.sql
 
 prompt
 prompt Creating views...

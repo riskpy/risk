@@ -10,7 +10,7 @@ CREATE OR REPLACE PACKAGE T_MENSAJES_RECIBIDOS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-15 15:14:06"
+    generated_at="2026-04-08 22:14:56"
     generated_by="JAVIER"
     p_table_name="T_MENSAJES_RECIBIDOS"
     p_owner="RISK_MSJ"
@@ -67,7 +67,7 @@ CREATE OR REPLACE PACKAGE T_MENSAJES_RECIBIDOS_API IS
     p_numero_telefono_destino IN T_MENSAJES_RECIBIDOS.NUMERO_TELEFONO_DESTINO%TYPE   ,
     p_contenido               IN T_MENSAJES_RECIBIDOS.CONTENIDO%TYPE                 ,
     p_telefonia               IN T_MENSAJES_RECIBIDOS.TELEFONIA%TYPE                 DEFAULT 'TIG' ,
-    p_fecha_recepcion         IN T_MENSAJES_RECIBIDOS.FECHA_RECEPCION%TYPE           DEFAULT current_timestamp ,
+    p_fecha_recepcion         IN T_MENSAJES_RECIBIDOS.FECHA_RECEPCION%TYPE           DEFAULT systimestamp ,
     p_id_usuario              IN T_MENSAJES_RECIBIDOS.ID_USUARIO%TYPE                DEFAULT NULL )
   RETURN T_MENSAJES_RECIBIDOS.ID_MENSAJE%TYPE;
 
@@ -77,7 +77,7 @@ CREATE OR REPLACE PACKAGE T_MENSAJES_RECIBIDOS_API IS
     p_numero_telefono_destino IN T_MENSAJES_RECIBIDOS.NUMERO_TELEFONO_DESTINO%TYPE   ,
     p_contenido               IN T_MENSAJES_RECIBIDOS.CONTENIDO%TYPE                 ,
     p_telefonia               IN T_MENSAJES_RECIBIDOS.TELEFONIA%TYPE                 DEFAULT 'TIG' ,
-    p_fecha_recepcion         IN T_MENSAJES_RECIBIDOS.FECHA_RECEPCION%TYPE           DEFAULT current_timestamp ,
+    p_fecha_recepcion         IN T_MENSAJES_RECIBIDOS.FECHA_RECEPCION%TYPE           DEFAULT systimestamp ,
     p_id_usuario              IN T_MENSAJES_RECIBIDOS.ID_USUARIO%TYPE                DEFAULT NULL );
 
   FUNCTION create_row (

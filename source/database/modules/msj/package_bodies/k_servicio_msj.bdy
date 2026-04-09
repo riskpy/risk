@@ -39,13 +39,13 @@ create or replace package body k_servicio_msj is
     cursor cr_elementos is
       select id_correo,
              id_usuario,
-             mensaje_to,
-             mensaje_subject,
-             mensaje_body,
-             mensaje_from,
-             mensaje_reply_to,
-             mensaje_cc,
-             mensaje_bcc,
+             destinatario,
+             asunto,
+             contenido,
+             remitente,
+             destino_respuesta,
+             destinatario_cc,
+             destinatario_bcc,
              estado,
              fecha_envio,
              respuesta_envio
@@ -53,8 +53,7 @@ create or replace package body k_servicio_msj is
        where estado in ('P', 'R')
       -- P-PENDIENTE DE ENVÍO
       -- R-PROCESADO CON ERROR
-       order by nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
-                id_correo
+       order by k_mensajeria.c_prioridad_media, id_correo
          for update of estado;
   begin
     -- Inicializa respuesta
@@ -68,13 +67,13 @@ create or replace package body k_servicio_msj is
       for ele in cr_elementos loop
         l_elemento                  := new y_correo();
         l_elemento.id_correo        := ele.id_correo;
-        l_elemento.mensaje_to       := ele.mensaje_to;
-        l_elemento.mensaje_subject  := ele.mensaje_subject;
-        l_elemento.mensaje_body     := ele.mensaje_body;
-        l_elemento.mensaje_from     := ele.mensaje_from;
-        l_elemento.mensaje_reply_to := ele.mensaje_reply_to;
-        l_elemento.mensaje_cc       := ele.mensaje_cc;
-        l_elemento.mensaje_bcc      := ele.mensaje_bcc;
+        l_elemento.destinatario      := ele.destinatario;
+        l_elemento.asunto            := ele.asunto;
+        l_elemento.contenido         := ele.contenido;
+        l_elemento.remitente         := ele.remitente;
+        l_elemento.destino_respuesta := ele.destino_respuesta;
+        l_elemento.destinatario_cc   := ele.destinatario_cc;
+        l_elemento.destinatario_bcc  := ele.destinatario_bcc;
         l_elemento.adjuntos         := lf_adjuntos(ele.id_correo);
       
         l_elementos.extend;
@@ -117,8 +116,7 @@ create or replace package body k_servicio_msj is
        where estado in ('P', 'R')
       -- P-PENDIENTE DE ENVÍO
       -- R-PROCESADO CON ERROR
-       order by nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
-                id_mensaje
+       order by k_mensajeria.c_prioridad_media, id_mensaje
          for update of estado;
   begin
     -- Inicializa respuesta
@@ -180,8 +178,7 @@ create or replace package body k_servicio_msj is
        where estado in ('P', 'R')
       -- P-PENDIENTE DE ENVÍO
       -- R-PROCESADO CON ERROR
-       order by nvl(prioridad_envio, k_mensajeria.c_prioridad_media),
-                id_notificacion
+       order by k_mensajeria.c_prioridad_media, id_notificacion
          for update of estado;
   begin
     -- Inicializa respuesta

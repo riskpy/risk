@@ -1,0 +1,3 @@
+alter table T_MENSAJES
+  add constraint FK_MENSAJES_CATEGORIAS foreign key (ID_CATEGORIA)
+  references T_MENSAJERIA_CATEGORIAS (ID_CATEGORIA);

@@ -33,19 +33,19 @@ SOFTWARE.
 /** Identificador del correo electrónico */
   id_correo number,
 /** Campo To del mensaje */
-  mensaje_to varchar2(4000),
+  destinatario varchar2(2000),
 /** Campo Subject del mensaje */
-  mensaje_subject varchar2(2000),
+  asunto varchar2(2000),
 /** Cuerpo del mensaje */
-  mensaje_body clob,
+  contenido clob,
 /** Campo From del mensaje */
-  mensaje_from varchar2(2000),
+  remitente varchar2(1000),
 /** Campo Reply-To del mensaje */
-  mensaje_reply_to varchar2(2000),
+  destino_respuesta varchar2(1000),
 /** Campo Cc del mensaje */
-  mensaje_cc varchar2(4000),
+  destinatario_cc varchar2(2000),
 /** Campo Bcc del mensaje */
-  mensaje_bcc varchar2(4000),
+  destinatario_bcc varchar2(2000),
 /** Archivos adjuntos */
   adjuntos y_objetos,
 

@@ -4,7 +4,7 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
   - generator: OM_TAPIGEN
   - generator_version: 0.6.3
   - generator_action: COMPILE_API
-  - generated_at: 2026-03-15 15:14:05
+  - generated_at: 2026-04-08 22:14:56
   - generated_by: JAVIER
   */
 
@@ -72,10 +72,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     p_numero_telefono         IN T_MENSAJES.NUMERO_TELEFONO%TYPE           ,
     p_contenido               IN T_MENSAJES.CONTENIDO%TYPE                 ,
     p_estado                  IN T_MENSAJES.ESTADO%TYPE                    DEFAULT 'P' ,
+    p_id_categoria            IN T_MENSAJES.ID_CATEGORIA%TYPE               /*FK*/,
+    p_telefonia               IN T_MENSAJES.TELEFONIA%TYPE                 DEFAULT 'TIG' ,
     p_fecha_envio             IN T_MENSAJES.FECHA_ENVIO%TYPE               DEFAULT NULL,
-    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE           DEFAULT NULL,
     p_cantidad_intentos_envio IN T_MENSAJES.CANTIDAD_INTENTOS_ENVIO%TYPE   DEFAULT NULL,
-    p_prioridad_envio         IN T_MENSAJES.PRIORIDAD_ENVIO%TYPE           DEFAULT NULL )
+    p_id_externo_envio        IN T_MENSAJES.ID_EXTERNO_ENVIO%TYPE          DEFAULT NULL,
+    p_codigo_respuesta_envio  IN T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE    DEFAULT NULL,
+    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE           DEFAULT NULL,
+    p_id_persona              IN T_MENSAJES.ID_PERSONA%TYPE                DEFAULT NULL,
+    p_id_ejecucion            IN T_MENSAJES.ID_EJECUCION%TYPE              DEFAULT NULL,
+    p_id_programacion         IN T_MENSAJES.ID_PROGRAMACION%TYPE           DEFAULT NULL )
   RETURN T_MENSAJES.ID_MENSAJE%TYPE
   IS
     v_return T_MENSAJES.ID_MENSAJE%TYPE; 
@@ -86,10 +92,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       NUMERO_TELEFONO,
       CONTENIDO,
       ESTADO,
+      ID_CATEGORIA /*FK*/,
+      TELEFONIA,
       FECHA_ENVIO,
-      RESPUESTA_ENVIO,
       CANTIDAD_INTENTOS_ENVIO,
-      PRIORIDAD_ENVIO,
+      ID_EXTERNO_ENVIO,
+      CODIGO_RESPUESTA_ENVIO,
+      RESPUESTA_ENVIO,
+      ID_PERSONA,
+      ID_EJECUCION,
+      ID_PROGRAMACION,
       USUARIO_INSERCION,
       FECHA_INSERCION )
     VALUES (
@@ -98,10 +110,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_numero_telefono,
       p_contenido,
       p_estado,
+      p_id_categoria,
+      p_telefonia,
       p_fecha_envio,
-      p_respuesta_envio,
       p_cantidad_intentos_envio,
-      p_prioridad_envio,
+      p_id_externo_envio,
+      p_codigo_respuesta_envio,
+      p_respuesta_envio,
+      p_id_persona,
+      p_id_ejecucion,
+      p_id_programacion,
       substr(coalesce(k_sistema.f_usuario, user), 1, 300),
       systimestamp )
     RETURN 
@@ -117,10 +135,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     p_numero_telefono         IN T_MENSAJES.NUMERO_TELEFONO%TYPE           ,
     p_contenido               IN T_MENSAJES.CONTENIDO%TYPE                 ,
     p_estado                  IN T_MENSAJES.ESTADO%TYPE                    DEFAULT 'P' ,
+    p_id_categoria            IN T_MENSAJES.ID_CATEGORIA%TYPE               /*FK*/,
+    p_telefonia               IN T_MENSAJES.TELEFONIA%TYPE                 DEFAULT 'TIG' ,
     p_fecha_envio             IN T_MENSAJES.FECHA_ENVIO%TYPE               DEFAULT NULL,
-    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE           DEFAULT NULL,
     p_cantidad_intentos_envio IN T_MENSAJES.CANTIDAD_INTENTOS_ENVIO%TYPE   DEFAULT NULL,
-    p_prioridad_envio         IN T_MENSAJES.PRIORIDAD_ENVIO%TYPE           DEFAULT NULL )
+    p_id_externo_envio        IN T_MENSAJES.ID_EXTERNO_ENVIO%TYPE          DEFAULT NULL,
+    p_codigo_respuesta_envio  IN T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE    DEFAULT NULL,
+    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE           DEFAULT NULL,
+    p_id_persona              IN T_MENSAJES.ID_PERSONA%TYPE                DEFAULT NULL,
+    p_id_ejecucion            IN T_MENSAJES.ID_EJECUCION%TYPE              DEFAULT NULL,
+    p_id_programacion         IN T_MENSAJES.ID_PROGRAMACION%TYPE           DEFAULT NULL )
   IS
   BEGIN
     INSERT INTO T_MENSAJES (
@@ -129,10 +153,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       NUMERO_TELEFONO,
       CONTENIDO,
       ESTADO,
+      ID_CATEGORIA /*FK*/,
+      TELEFONIA,
       FECHA_ENVIO,
-      RESPUESTA_ENVIO,
       CANTIDAD_INTENTOS_ENVIO,
-      PRIORIDAD_ENVIO,
+      ID_EXTERNO_ENVIO,
+      CODIGO_RESPUESTA_ENVIO,
+      RESPUESTA_ENVIO,
+      ID_PERSONA,
+      ID_EJECUCION,
+      ID_PROGRAMACION,
       USUARIO_INSERCION,
       FECHA_INSERCION )
     VALUES (
@@ -141,10 +171,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_numero_telefono,
       p_contenido,
       p_estado,
+      p_id_categoria,
+      p_telefonia,
       p_fecha_envio,
-      p_respuesta_envio,
       p_cantidad_intentos_envio,
-      p_prioridad_envio,
+      p_id_externo_envio,
+      p_codigo_respuesta_envio,
+      p_respuesta_envio,
+      p_id_persona,
+      p_id_ejecucion,
+      p_id_programacion,
       substr(coalesce(k_sistema.f_usuario, user), 1, 300),
       systimestamp );
   END create_row;
@@ -160,10 +196,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_numero_telefono         => p_row.NUMERO_TELEFONO,
       p_contenido               => p_row.CONTENIDO,
       p_estado                  => p_row.ESTADO,
+      p_id_categoria            => p_row.ID_CATEGORIA /*FK*/,
+      p_telefonia               => p_row.TELEFONIA,
       p_fecha_envio             => p_row.FECHA_ENVIO,
-      p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
       p_cantidad_intentos_envio => p_row.CANTIDAD_INTENTOS_ENVIO,
-      p_prioridad_envio         => p_row.PRIORIDAD_ENVIO );
+      p_id_externo_envio        => p_row.ID_EXTERNO_ENVIO,
+      p_codigo_respuesta_envio  => p_row.CODIGO_RESPUESTA_ENVIO,
+      p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
+      p_id_persona              => p_row.ID_PERSONA,
+      p_id_ejecucion            => p_row.ID_EJECUCION,
+      p_id_programacion         => p_row.ID_PROGRAMACION );
   END create_row;
 
   PROCEDURE create_row (
@@ -176,10 +218,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_numero_telefono         => p_row.NUMERO_TELEFONO,
       p_contenido               => p_row.CONTENIDO,
       p_estado                  => p_row.ESTADO,
+      p_id_categoria            => p_row.ID_CATEGORIA /*FK*/,
+      p_telefonia               => p_row.TELEFONIA,
       p_fecha_envio             => p_row.FECHA_ENVIO,
-      p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
       p_cantidad_intentos_envio => p_row.CANTIDAD_INTENTOS_ENVIO,
-      p_prioridad_envio         => p_row.PRIORIDAD_ENVIO );
+      p_id_externo_envio        => p_row.ID_EXTERNO_ENVIO,
+      p_codigo_respuesta_envio  => p_row.CODIGO_RESPUESTA_ENVIO,
+      p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
+      p_id_persona              => p_row.ID_PERSONA,
+      p_id_ejecucion            => p_row.ID_EJECUCION,
+      p_id_programacion         => p_row.ID_PROGRAMACION );
   END create_row;
 
   FUNCTION create_rows (
@@ -195,10 +243,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       NUMERO_TELEFONO,
       CONTENIDO,
       ESTADO,
+      ID_CATEGORIA /*FK*/,
+      TELEFONIA,
       FECHA_ENVIO,
-      RESPUESTA_ENVIO,
       CANTIDAD_INTENTOS_ENVIO,
-      PRIORIDAD_ENVIO,
+      ID_EXTERNO_ENVIO,
+      CODIGO_RESPUESTA_ENVIO,
+      RESPUESTA_ENVIO,
+      ID_PERSONA,
+      ID_EJECUCION,
+      ID_PROGRAMACION,
       USUARIO_INSERCION,
       FECHA_INSERCION )
     VALUES (
@@ -207,10 +261,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_rows_tab(i).NUMERO_TELEFONO,
       p_rows_tab(i).CONTENIDO,
       p_rows_tab(i).ESTADO,
+      p_rows_tab(i).ID_CATEGORIA,
+      p_rows_tab(i).TELEFONIA,
       p_rows_tab(i).FECHA_ENVIO,
-      p_rows_tab(i).RESPUESTA_ENVIO,
       p_rows_tab(i).CANTIDAD_INTENTOS_ENVIO,
-      p_rows_tab(i).PRIORIDAD_ENVIO,
+      p_rows_tab(i).ID_EXTERNO_ENVIO,
+      p_rows_tab(i).CODIGO_RESPUESTA_ENVIO,
+      p_rows_tab(i).RESPUESTA_ENVIO,
+      p_rows_tab(i).ID_PERSONA,
+      p_rows_tab(i).ID_EJECUCION,
+      p_rows_tab(i).ID_PROGRAMACION,
       substr(coalesce(k_sistema.f_usuario, user), 1, 300),
       systimestamp )
     RETURN 
@@ -219,10 +279,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       NUMERO_TELEFONO,
       CONTENIDO,
       ESTADO,
+      ID_CATEGORIA /*FK*/,
+      TELEFONIA,
       FECHA_ENVIO,
-      RESPUESTA_ENVIO,
       CANTIDAD_INTENTOS_ENVIO,
-      PRIORIDAD_ENVIO,
+      ID_EXTERNO_ENVIO,
+      CODIGO_RESPUESTA_ENVIO,
+      RESPUESTA_ENVIO,
+      ID_PERSONA,
+      ID_EJECUCION,
+      ID_PROGRAMACION,
       USUARIO_INSERCION,
       FECHA_INSERCION,
       USUARIO_MODIFICACION,
@@ -242,10 +308,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       NUMERO_TELEFONO,
       CONTENIDO,
       ESTADO,
+      ID_CATEGORIA /*FK*/,
+      TELEFONIA,
       FECHA_ENVIO,
-      RESPUESTA_ENVIO,
       CANTIDAD_INTENTOS_ENVIO,
-      PRIORIDAD_ENVIO,
+      ID_EXTERNO_ENVIO,
+      CODIGO_RESPUESTA_ENVIO,
+      RESPUESTA_ENVIO,
+      ID_PERSONA,
+      ID_EJECUCION,
+      ID_PROGRAMACION,
       USUARIO_INSERCION,
       FECHA_INSERCION )
     VALUES (
@@ -254,10 +326,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_rows_tab(i).NUMERO_TELEFONO,
       p_rows_tab(i).CONTENIDO,
       p_rows_tab(i).ESTADO,
+      p_rows_tab(i).ID_CATEGORIA,
+      p_rows_tab(i).TELEFONIA,
       p_rows_tab(i).FECHA_ENVIO,
-      p_rows_tab(i).RESPUESTA_ENVIO,
       p_rows_tab(i).CANTIDAD_INTENTOS_ENVIO,
-      p_rows_tab(i).PRIORIDAD_ENVIO,
+      p_rows_tab(i).ID_EXTERNO_ENVIO,
+      p_rows_tab(i).CODIGO_RESPUESTA_ENVIO,
+      p_rows_tab(i).RESPUESTA_ENVIO,
+      p_rows_tab(i).ID_PERSONA,
+      p_rows_tab(i).ID_EJECUCION,
+      p_rows_tab(i).ID_PROGRAMACION,
       substr(coalesce(k_sistema.f_usuario, user), 1, 300),
       systimestamp );
   END create_rows;
@@ -284,10 +362,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     p_numero_telefono            OUT NOCOPY T_MENSAJES.NUMERO_TELEFONO%TYPE,
     p_contenido                  OUT NOCOPY T_MENSAJES.CONTENIDO%TYPE,
     p_estado                     OUT NOCOPY T_MENSAJES.ESTADO%TYPE,
+    p_id_categoria               OUT NOCOPY T_MENSAJES.ID_CATEGORIA%TYPE /*FK*/,
+    p_telefonia                  OUT NOCOPY T_MENSAJES.TELEFONIA%TYPE,
     p_fecha_envio                OUT NOCOPY T_MENSAJES.FECHA_ENVIO%TYPE,
-    p_respuesta_envio            OUT NOCOPY T_MENSAJES.RESPUESTA_ENVIO%TYPE,
     p_cantidad_intentos_envio    OUT NOCOPY T_MENSAJES.CANTIDAD_INTENTOS_ENVIO%TYPE,
-    p_prioridad_envio            OUT NOCOPY T_MENSAJES.PRIORIDAD_ENVIO%TYPE,
+    p_id_externo_envio           OUT NOCOPY T_MENSAJES.ID_EXTERNO_ENVIO%TYPE,
+    p_codigo_respuesta_envio     OUT NOCOPY T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE,
+    p_respuesta_envio            OUT NOCOPY T_MENSAJES.RESPUESTA_ENVIO%TYPE,
+    p_id_persona                 OUT NOCOPY T_MENSAJES.ID_PERSONA%TYPE,
+    p_id_ejecucion               OUT NOCOPY T_MENSAJES.ID_EJECUCION%TYPE,
+    p_id_programacion            OUT NOCOPY T_MENSAJES.ID_PROGRAMACION%TYPE,
     p_usuario_insercion          OUT NOCOPY T_MENSAJES.USUARIO_INSERCION%TYPE,
     p_fecha_insercion            OUT NOCOPY T_MENSAJES.FECHA_INSERCION%TYPE,
     p_usuario_modificacion       OUT NOCOPY T_MENSAJES.USUARIO_MODIFICACION%TYPE,
@@ -301,10 +385,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     p_numero_telefono         := v_row.NUMERO_TELEFONO; 
     p_contenido               := v_row.CONTENIDO; 
     p_estado                  := v_row.ESTADO; 
+    p_id_categoria            := v_row.ID_CATEGORIA; 
+    p_telefonia               := v_row.TELEFONIA; 
     p_fecha_envio             := v_row.FECHA_ENVIO; 
-    p_respuesta_envio         := v_row.RESPUESTA_ENVIO; 
     p_cantidad_intentos_envio := v_row.CANTIDAD_INTENTOS_ENVIO; 
-    p_prioridad_envio         := v_row.PRIORIDAD_ENVIO; 
+    p_id_externo_envio        := v_row.ID_EXTERNO_ENVIO; 
+    p_codigo_respuesta_envio  := v_row.CODIGO_RESPUESTA_ENVIO; 
+    p_respuesta_envio         := v_row.RESPUESTA_ENVIO; 
+    p_id_persona              := v_row.ID_PERSONA; 
+    p_id_ejecucion            := v_row.ID_EJECUCION; 
+    p_id_programacion         := v_row.ID_PROGRAMACION; 
     p_usuario_insercion       := v_row.USUARIO_INSERCION; 
     p_fecha_insercion         := v_row.FECHA_INSERCION; 
     p_usuario_modificacion    := v_row.USUARIO_MODIFICACION; 
@@ -333,10 +423,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     p_numero_telefono         IN T_MENSAJES.NUMERO_TELEFONO%TYPE,
     p_contenido               IN T_MENSAJES.CONTENIDO%TYPE,
     p_estado                  IN T_MENSAJES.ESTADO%TYPE,
+    p_id_categoria            IN T_MENSAJES.ID_CATEGORIA%TYPE /*FK*/,
+    p_telefonia               IN T_MENSAJES.TELEFONIA%TYPE,
     p_fecha_envio             IN T_MENSAJES.FECHA_ENVIO%TYPE,
-    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE,
     p_cantidad_intentos_envio IN T_MENSAJES.CANTIDAD_INTENTOS_ENVIO%TYPE,
-    p_prioridad_envio         IN T_MENSAJES.PRIORIDAD_ENVIO%TYPE )
+    p_id_externo_envio        IN T_MENSAJES.ID_EXTERNO_ENVIO%TYPE,
+    p_codigo_respuesta_envio  IN T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE,
+    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE,
+    p_id_persona              IN T_MENSAJES.ID_PERSONA%TYPE,
+    p_id_ejecucion            IN T_MENSAJES.ID_EJECUCION%TYPE,
+    p_id_programacion         IN T_MENSAJES.ID_PROGRAMACION%TYPE )
   RETURN T_MENSAJES.ID_MENSAJE%TYPE
   IS
     v_return T_MENSAJES.ID_MENSAJE%TYPE; 
@@ -348,10 +444,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       NUMERO_TELEFONO         = p_numero_telefono,
       CONTENIDO               = p_contenido,
       ESTADO                  = p_estado,
+      ID_CATEGORIA            = p_id_categoria /*FK*/,
+      TELEFONIA               = p_telefonia,
       FECHA_ENVIO             = p_fecha_envio,
-      RESPUESTA_ENVIO         = p_respuesta_envio,
       CANTIDAD_INTENTOS_ENVIO = p_cantidad_intentos_envio,
-      PRIORIDAD_ENVIO         = p_prioridad_envio,
+      ID_EXTERNO_ENVIO        = p_id_externo_envio,
+      CODIGO_RESPUESTA_ENVIO  = p_codigo_respuesta_envio,
+      RESPUESTA_ENVIO         = p_respuesta_envio,
+      ID_PERSONA              = p_id_persona,
+      ID_EJECUCION            = p_id_ejecucion,
+      ID_PROGRAMACION         = p_id_programacion,
       USUARIO_MODIFICACION    = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
       FECHA_MODIFICACION      = systimestamp
     WHERE
@@ -369,10 +471,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     p_numero_telefono         IN T_MENSAJES.NUMERO_TELEFONO%TYPE,
     p_contenido               IN T_MENSAJES.CONTENIDO%TYPE,
     p_estado                  IN T_MENSAJES.ESTADO%TYPE,
+    p_id_categoria            IN T_MENSAJES.ID_CATEGORIA%TYPE /*FK*/,
+    p_telefonia               IN T_MENSAJES.TELEFONIA%TYPE,
     p_fecha_envio             IN T_MENSAJES.FECHA_ENVIO%TYPE,
-    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE,
     p_cantidad_intentos_envio IN T_MENSAJES.CANTIDAD_INTENTOS_ENVIO%TYPE,
-    p_prioridad_envio         IN T_MENSAJES.PRIORIDAD_ENVIO%TYPE )
+    p_id_externo_envio        IN T_MENSAJES.ID_EXTERNO_ENVIO%TYPE,
+    p_codigo_respuesta_envio  IN T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE,
+    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE,
+    p_id_persona              IN T_MENSAJES.ID_PERSONA%TYPE,
+    p_id_ejecucion            IN T_MENSAJES.ID_EJECUCION%TYPE,
+    p_id_programacion         IN T_MENSAJES.ID_PROGRAMACION%TYPE )
   IS
   BEGIN
     UPDATE
@@ -382,10 +490,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       NUMERO_TELEFONO         = p_numero_telefono,
       CONTENIDO               = p_contenido,
       ESTADO                  = p_estado,
+      ID_CATEGORIA            = p_id_categoria /*FK*/,
+      TELEFONIA               = p_telefonia,
       FECHA_ENVIO             = p_fecha_envio,
-      RESPUESTA_ENVIO         = p_respuesta_envio,
       CANTIDAD_INTENTOS_ENVIO = p_cantidad_intentos_envio,
-      PRIORIDAD_ENVIO         = p_prioridad_envio,
+      ID_EXTERNO_ENVIO        = p_id_externo_envio,
+      CODIGO_RESPUESTA_ENVIO  = p_codigo_respuesta_envio,
+      RESPUESTA_ENVIO         = p_respuesta_envio,
+      ID_PERSONA              = p_id_persona,
+      ID_EJECUCION            = p_id_ejecucion,
+      ID_PROGRAMACION         = p_id_programacion,
       USUARIO_MODIFICACION    = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
       FECHA_MODIFICACION      = systimestamp
     WHERE
@@ -403,10 +517,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_numero_telefono         => p_row.NUMERO_TELEFONO,
       p_contenido               => p_row.CONTENIDO,
       p_estado                  => p_row.ESTADO,
+      p_id_categoria            => p_row.ID_CATEGORIA /*FK*/,
+      p_telefonia               => p_row.TELEFONIA,
       p_fecha_envio             => p_row.FECHA_ENVIO,
-      p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
       p_cantidad_intentos_envio => p_row.CANTIDAD_INTENTOS_ENVIO,
-      p_prioridad_envio         => p_row.PRIORIDAD_ENVIO );
+      p_id_externo_envio        => p_row.ID_EXTERNO_ENVIO,
+      p_codigo_respuesta_envio  => p_row.CODIGO_RESPUESTA_ENVIO,
+      p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
+      p_id_persona              => p_row.ID_PERSONA,
+      p_id_ejecucion            => p_row.ID_EJECUCION,
+      p_id_programacion         => p_row.ID_PROGRAMACION );
   END update_row;
 
   PROCEDURE update_row (
@@ -419,10 +539,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_numero_telefono         => p_row.NUMERO_TELEFONO,
       p_contenido               => p_row.CONTENIDO,
       p_estado                  => p_row.ESTADO,
+      p_id_categoria            => p_row.ID_CATEGORIA /*FK*/,
+      p_telefonia               => p_row.TELEFONIA,
       p_fecha_envio             => p_row.FECHA_ENVIO,
-      p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
       p_cantidad_intentos_envio => p_row.CANTIDAD_INTENTOS_ENVIO,
-      p_prioridad_envio         => p_row.PRIORIDAD_ENVIO );
+      p_id_externo_envio        => p_row.ID_EXTERNO_ENVIO,
+      p_codigo_respuesta_envio  => p_row.CODIGO_RESPUESTA_ENVIO,
+      p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
+      p_id_persona              => p_row.ID_PERSONA,
+      p_id_ejecucion            => p_row.ID_EJECUCION,
+      p_id_programacion         => p_row.ID_PROGRAMACION );
   END update_row;
 
   PROCEDURE update_rows (
@@ -437,10 +563,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         NUMERO_TELEFONO         = p_rows_tab(i).NUMERO_TELEFONO,
         CONTENIDO               = p_rows_tab(i).CONTENIDO,
         ESTADO                  = p_rows_tab(i).ESTADO,
+        ID_CATEGORIA            = p_rows_tab(i).ID_CATEGORIA /*FK*/,
+        TELEFONIA               = p_rows_tab(i).TELEFONIA,
         FECHA_ENVIO             = p_rows_tab(i).FECHA_ENVIO,
-        RESPUESTA_ENVIO         = p_rows_tab(i).RESPUESTA_ENVIO,
         CANTIDAD_INTENTOS_ENVIO = p_rows_tab(i).CANTIDAD_INTENTOS_ENVIO,
-        PRIORIDAD_ENVIO         = p_rows_tab(i).PRIORIDAD_ENVIO,
+        ID_EXTERNO_ENVIO        = p_rows_tab(i).ID_EXTERNO_ENVIO,
+        CODIGO_RESPUESTA_ENVIO  = p_rows_tab(i).CODIGO_RESPUESTA_ENVIO,
+        RESPUESTA_ENVIO         = p_rows_tab(i).RESPUESTA_ENVIO,
+        ID_PERSONA              = p_rows_tab(i).ID_PERSONA,
+        ID_EJECUCION            = p_rows_tab(i).ID_EJECUCION,
+        ID_PROGRAMACION         = p_rows_tab(i).ID_PROGRAMACION,
         USUARIO_MODIFICACION    = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
         FECHA_MODIFICACION      = systimestamp
       WHERE
@@ -471,10 +603,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     p_numero_telefono         IN T_MENSAJES.NUMERO_TELEFONO%TYPE,
     p_contenido               IN T_MENSAJES.CONTENIDO%TYPE,
     p_estado                  IN T_MENSAJES.ESTADO%TYPE,
+    p_id_categoria            IN T_MENSAJES.ID_CATEGORIA%TYPE /*FK*/,
+    p_telefonia               IN T_MENSAJES.TELEFONIA%TYPE,
     p_fecha_envio             IN T_MENSAJES.FECHA_ENVIO%TYPE,
-    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE,
     p_cantidad_intentos_envio IN T_MENSAJES.CANTIDAD_INTENTOS_ENVIO%TYPE,
-    p_prioridad_envio         IN T_MENSAJES.PRIORIDAD_ENVIO%TYPE )
+    p_id_externo_envio        IN T_MENSAJES.ID_EXTERNO_ENVIO%TYPE,
+    p_codigo_respuesta_envio  IN T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE,
+    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE,
+    p_id_persona              IN T_MENSAJES.ID_PERSONA%TYPE,
+    p_id_ejecucion            IN T_MENSAJES.ID_EJECUCION%TYPE,
+    p_id_programacion         IN T_MENSAJES.ID_PROGRAMACION%TYPE )
   RETURN T_MENSAJES.ID_MENSAJE%TYPE
   IS
   BEGIN
@@ -488,10 +626,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         p_numero_telefono         => p_numero_telefono,
         p_contenido               => p_contenido,
         p_estado                  => p_estado,
+        p_id_categoria            => p_id_categoria /*FK*/,
+        p_telefonia               => p_telefonia,
         p_fecha_envio             => p_fecha_envio,
-        p_respuesta_envio         => p_respuesta_envio,
         p_cantidad_intentos_envio => p_cantidad_intentos_envio,
-        p_prioridad_envio         => p_prioridad_envio );
+        p_id_externo_envio        => p_id_externo_envio,
+        p_codigo_respuesta_envio  => p_codigo_respuesta_envio,
+        p_respuesta_envio         => p_respuesta_envio,
+        p_id_persona              => p_id_persona,
+        p_id_ejecucion            => p_id_ejecucion,
+        p_id_programacion         => p_id_programacion );
     ELSE
       RETURN create_row (
         p_id_mensaje              => p_id_mensaje /*PK*/ /*GENERATED BY DEFAULT ON NULL AS IDENTITY*/,
@@ -499,10 +643,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         p_numero_telefono         => p_numero_telefono,
         p_contenido               => p_contenido,
         p_estado                  => p_estado,
+        p_id_categoria            => p_id_categoria /*FK*/,
+        p_telefonia               => p_telefonia,
         p_fecha_envio             => p_fecha_envio,
-        p_respuesta_envio         => p_respuesta_envio,
         p_cantidad_intentos_envio => p_cantidad_intentos_envio,
-        p_prioridad_envio         => p_prioridad_envio );
+        p_id_externo_envio        => p_id_externo_envio,
+        p_codigo_respuesta_envio  => p_codigo_respuesta_envio,
+        p_respuesta_envio         => p_respuesta_envio,
+        p_id_persona              => p_id_persona,
+        p_id_ejecucion            => p_id_ejecucion,
+        p_id_programacion         => p_id_programacion );
     END IF;
   END create_or_update_row;
 
@@ -512,10 +662,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     p_numero_telefono         IN T_MENSAJES.NUMERO_TELEFONO%TYPE,
     p_contenido               IN T_MENSAJES.CONTENIDO%TYPE,
     p_estado                  IN T_MENSAJES.ESTADO%TYPE,
+    p_id_categoria            IN T_MENSAJES.ID_CATEGORIA%TYPE /*FK*/,
+    p_telefonia               IN T_MENSAJES.TELEFONIA%TYPE,
     p_fecha_envio             IN T_MENSAJES.FECHA_ENVIO%TYPE,
-    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE,
     p_cantidad_intentos_envio IN T_MENSAJES.CANTIDAD_INTENTOS_ENVIO%TYPE,
-    p_prioridad_envio         IN T_MENSAJES.PRIORIDAD_ENVIO%TYPE )
+    p_id_externo_envio        IN T_MENSAJES.ID_EXTERNO_ENVIO%TYPE,
+    p_codigo_respuesta_envio  IN T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE,
+    p_respuesta_envio         IN T_MENSAJES.RESPUESTA_ENVIO%TYPE,
+    p_id_persona              IN T_MENSAJES.ID_PERSONA%TYPE,
+    p_id_ejecucion            IN T_MENSAJES.ID_EJECUCION%TYPE,
+    p_id_programacion         IN T_MENSAJES.ID_PROGRAMACION%TYPE )
   IS
   BEGIN
     IF row_exists(
@@ -528,10 +684,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         p_numero_telefono         => p_numero_telefono,
         p_contenido               => p_contenido,
         p_estado                  => p_estado,
+        p_id_categoria            => p_id_categoria /*FK*/,
+        p_telefonia               => p_telefonia,
         p_fecha_envio             => p_fecha_envio,
-        p_respuesta_envio         => p_respuesta_envio,
         p_cantidad_intentos_envio => p_cantidad_intentos_envio,
-        p_prioridad_envio         => p_prioridad_envio );
+        p_id_externo_envio        => p_id_externo_envio,
+        p_codigo_respuesta_envio  => p_codigo_respuesta_envio,
+        p_respuesta_envio         => p_respuesta_envio,
+        p_id_persona              => p_id_persona,
+        p_id_ejecucion            => p_id_ejecucion,
+        p_id_programacion         => p_id_programacion );
     ELSE
       create_row (
         p_id_mensaje              => p_id_mensaje /*PK*/ /*GENERATED BY DEFAULT ON NULL AS IDENTITY*/,
@@ -539,10 +701,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         p_numero_telefono         => p_numero_telefono,
         p_contenido               => p_contenido,
         p_estado                  => p_estado,
+        p_id_categoria            => p_id_categoria /*FK*/,
+        p_telefonia               => p_telefonia,
         p_fecha_envio             => p_fecha_envio,
-        p_respuesta_envio         => p_respuesta_envio,
         p_cantidad_intentos_envio => p_cantidad_intentos_envio,
-        p_prioridad_envio         => p_prioridad_envio );
+        p_id_externo_envio        => p_id_externo_envio,
+        p_codigo_respuesta_envio  => p_codigo_respuesta_envio,
+        p_respuesta_envio         => p_respuesta_envio,
+        p_id_persona              => p_id_persona,
+        p_id_ejecucion            => p_id_ejecucion,
+        p_id_programacion         => p_id_programacion );
     END IF;
   END create_or_update_row;
 
@@ -561,10 +729,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         p_numero_telefono         => p_row.NUMERO_TELEFONO,
         p_contenido               => p_row.CONTENIDO,
         p_estado                  => p_row.ESTADO,
+        p_id_categoria            => p_row.ID_CATEGORIA /*FK*/,
+        p_telefonia               => p_row.TELEFONIA,
         p_fecha_envio             => p_row.FECHA_ENVIO,
-        p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
         p_cantidad_intentos_envio => p_row.CANTIDAD_INTENTOS_ENVIO,
-        p_prioridad_envio         => p_row.PRIORIDAD_ENVIO );
+        p_id_externo_envio        => p_row.ID_EXTERNO_ENVIO,
+        p_codigo_respuesta_envio  => p_row.CODIGO_RESPUESTA_ENVIO,
+        p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
+        p_id_persona              => p_row.ID_PERSONA,
+        p_id_ejecucion            => p_row.ID_EJECUCION,
+        p_id_programacion         => p_row.ID_PROGRAMACION );
     ELSE
       RETURN create_row (
         p_id_mensaje              => p_row.ID_MENSAJE /*PK*/ /*GENERATED BY DEFAULT ON NULL AS IDENTITY*/,
@@ -572,10 +746,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         p_numero_telefono         => p_row.NUMERO_TELEFONO,
         p_contenido               => p_row.CONTENIDO,
         p_estado                  => p_row.ESTADO,
+        p_id_categoria            => p_row.ID_CATEGORIA /*FK*/,
+        p_telefonia               => p_row.TELEFONIA,
         p_fecha_envio             => p_row.FECHA_ENVIO,
-        p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
         p_cantidad_intentos_envio => p_row.CANTIDAD_INTENTOS_ENVIO,
-        p_prioridad_envio         => p_row.PRIORIDAD_ENVIO );
+        p_id_externo_envio        => p_row.ID_EXTERNO_ENVIO,
+        p_codigo_respuesta_envio  => p_row.CODIGO_RESPUESTA_ENVIO,
+        p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
+        p_id_persona              => p_row.ID_PERSONA,
+        p_id_ejecucion            => p_row.ID_EJECUCION,
+        p_id_programacion         => p_row.ID_PROGRAMACION );
     END IF;
   END create_or_update_row;
 
@@ -593,10 +773,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         p_numero_telefono         => p_row.NUMERO_TELEFONO,
         p_contenido               => p_row.CONTENIDO,
         p_estado                  => p_row.ESTADO,
+        p_id_categoria            => p_row.ID_CATEGORIA /*FK*/,
+        p_telefonia               => p_row.TELEFONIA,
         p_fecha_envio             => p_row.FECHA_ENVIO,
-        p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
         p_cantidad_intentos_envio => p_row.CANTIDAD_INTENTOS_ENVIO,
-        p_prioridad_envio         => p_row.PRIORIDAD_ENVIO );
+        p_id_externo_envio        => p_row.ID_EXTERNO_ENVIO,
+        p_codigo_respuesta_envio  => p_row.CODIGO_RESPUESTA_ENVIO,
+        p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
+        p_id_persona              => p_row.ID_PERSONA,
+        p_id_ejecucion            => p_row.ID_EJECUCION,
+        p_id_programacion         => p_row.ID_PROGRAMACION );
     ELSE
       create_row (
         p_id_mensaje              => p_row.ID_MENSAJE /*PK*/ /*GENERATED BY DEFAULT ON NULL AS IDENTITY*/,
@@ -604,10 +790,16 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
         p_numero_telefono         => p_row.NUMERO_TELEFONO,
         p_contenido               => p_row.CONTENIDO,
         p_estado                  => p_row.ESTADO,
+        p_id_categoria            => p_row.ID_CATEGORIA /*FK*/,
+        p_telefonia               => p_row.TELEFONIA,
         p_fecha_envio             => p_row.FECHA_ENVIO,
-        p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
         p_cantidad_intentos_envio => p_row.CANTIDAD_INTENTOS_ENVIO,
-        p_prioridad_envio         => p_row.PRIORIDAD_ENVIO );
+        p_id_externo_envio        => p_row.ID_EXTERNO_ENVIO,
+        p_codigo_respuesta_envio  => p_row.CODIGO_RESPUESTA_ENVIO,
+        p_respuesta_envio         => p_row.RESPUESTA_ENVIO,
+        p_id_persona              => p_row.ID_PERSONA,
+        p_id_ejecucion            => p_row.ID_EJECUCION,
+        p_id_programacion         => p_row.ID_PROGRAMACION );
     END IF;
   END create_or_update_row;
 
@@ -647,6 +839,24 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_id_mensaje => p_id_mensaje ).ESTADO;
   END get_estado;
 
+  FUNCTION get_id_categoria (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
+  RETURN T_MENSAJES.ID_CATEGORIA%TYPE
+  IS
+  BEGIN
+    RETURN read_row (
+      p_id_mensaje => p_id_mensaje ).ID_CATEGORIA;
+  END get_id_categoria;
+
+  FUNCTION get_telefonia (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
+  RETURN T_MENSAJES.TELEFONIA%TYPE
+  IS
+  BEGIN
+    RETURN read_row (
+      p_id_mensaje => p_id_mensaje ).TELEFONIA;
+  END get_telefonia;
+
   FUNCTION get_fecha_envio (
     p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
   RETURN T_MENSAJES.FECHA_ENVIO%TYPE
@@ -655,15 +865,6 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     RETURN read_row (
       p_id_mensaje => p_id_mensaje ).FECHA_ENVIO;
   END get_fecha_envio;
-
-  FUNCTION get_respuesta_envio (
-    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
-  RETURN T_MENSAJES.RESPUESTA_ENVIO%TYPE
-  IS
-  BEGIN
-    RETURN read_row (
-      p_id_mensaje => p_id_mensaje ).RESPUESTA_ENVIO;
-  END get_respuesta_envio;
 
   FUNCTION get_cantidad_intentos_envio (
     p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
@@ -674,14 +875,59 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       p_id_mensaje => p_id_mensaje ).CANTIDAD_INTENTOS_ENVIO;
   END get_cantidad_intentos_envio;
 
-  FUNCTION get_prioridad_envio (
+  FUNCTION get_id_externo_envio (
     p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
-  RETURN T_MENSAJES.PRIORIDAD_ENVIO%TYPE
+  RETURN T_MENSAJES.ID_EXTERNO_ENVIO%TYPE
   IS
   BEGIN
     RETURN read_row (
-      p_id_mensaje => p_id_mensaje ).PRIORIDAD_ENVIO;
-  END get_prioridad_envio;
+      p_id_mensaje => p_id_mensaje ).ID_EXTERNO_ENVIO;
+  END get_id_externo_envio;
+
+  FUNCTION get_codigo_respuesta_envio (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
+  RETURN T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE
+  IS
+  BEGIN
+    RETURN read_row (
+      p_id_mensaje => p_id_mensaje ).CODIGO_RESPUESTA_ENVIO;
+  END get_codigo_respuesta_envio;
+
+  FUNCTION get_respuesta_envio (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
+  RETURN T_MENSAJES.RESPUESTA_ENVIO%TYPE
+  IS
+  BEGIN
+    RETURN read_row (
+      p_id_mensaje => p_id_mensaje ).RESPUESTA_ENVIO;
+  END get_respuesta_envio;
+
+  FUNCTION get_id_persona (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
+  RETURN T_MENSAJES.ID_PERSONA%TYPE
+  IS
+  BEGIN
+    RETURN read_row (
+      p_id_mensaje => p_id_mensaje ).ID_PERSONA;
+  END get_id_persona;
+
+  FUNCTION get_id_ejecucion (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
+  RETURN T_MENSAJES.ID_EJECUCION%TYPE
+  IS
+  BEGIN
+    RETURN read_row (
+      p_id_mensaje => p_id_mensaje ).ID_EJECUCION;
+  END get_id_ejecucion;
+
+  FUNCTION get_id_programacion (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
+  RETURN T_MENSAJES.ID_PROGRAMACION%TYPE
+  IS
+  BEGIN
+    RETURN read_row (
+      p_id_mensaje => p_id_mensaje ).ID_PROGRAMACION;
+  END get_id_programacion;
 
   FUNCTION get_usuario_insercion (
     p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/ )
@@ -779,6 +1025,36 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       ID_MENSAJE = p_id_mensaje;
   END set_estado;
 
+  PROCEDURE set_id_categoria (
+    p_id_mensaje   IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
+    p_id_categoria IN T_MENSAJES.ID_CATEGORIA%TYPE )
+  IS
+  BEGIN
+    UPDATE
+      T_MENSAJES
+    SET
+      ID_CATEGORIA         = p_id_categoria /*FK*/,
+      USUARIO_MODIFICACION = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
+      FECHA_MODIFICACION   = systimestamp
+    WHERE
+      ID_MENSAJE = p_id_mensaje;
+  END set_id_categoria;
+
+  PROCEDURE set_telefonia (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
+    p_telefonia  IN T_MENSAJES.TELEFONIA%TYPE )
+  IS
+  BEGIN
+    UPDATE
+      T_MENSAJES
+    SET
+      TELEFONIA            = p_telefonia,
+      USUARIO_MODIFICACION = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
+      FECHA_MODIFICACION   = systimestamp
+    WHERE
+      ID_MENSAJE = p_id_mensaje;
+  END set_telefonia;
+
   PROCEDURE set_fecha_envio (
     p_id_mensaje  IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
     p_fecha_envio IN T_MENSAJES.FECHA_ENVIO%TYPE )
@@ -793,21 +1069,6 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
     WHERE
       ID_MENSAJE = p_id_mensaje;
   END set_fecha_envio;
-
-  PROCEDURE set_respuesta_envio (
-    p_id_mensaje      IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
-    p_respuesta_envio IN T_MENSAJES.RESPUESTA_ENVIO%TYPE )
-  IS
-  BEGIN
-    UPDATE
-      T_MENSAJES
-    SET
-      RESPUESTA_ENVIO      = p_respuesta_envio,
-      USUARIO_MODIFICACION = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
-      FECHA_MODIFICACION   = systimestamp
-    WHERE
-      ID_MENSAJE = p_id_mensaje;
-  END set_respuesta_envio;
 
   PROCEDURE set_cantidad_intentos_envio (
     p_id_mensaje              IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
@@ -824,20 +1085,95 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
       ID_MENSAJE = p_id_mensaje;
   END set_cantidad_intentos_envio;
 
-  PROCEDURE set_prioridad_envio (
-    p_id_mensaje      IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
-    p_prioridad_envio IN T_MENSAJES.PRIORIDAD_ENVIO%TYPE )
+  PROCEDURE set_id_externo_envio (
+    p_id_mensaje       IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
+    p_id_externo_envio IN T_MENSAJES.ID_EXTERNO_ENVIO%TYPE )
   IS
   BEGIN
     UPDATE
       T_MENSAJES
     SET
-      PRIORIDAD_ENVIO      = p_prioridad_envio,
+      ID_EXTERNO_ENVIO     = p_id_externo_envio,
       USUARIO_MODIFICACION = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
       FECHA_MODIFICACION   = systimestamp
     WHERE
       ID_MENSAJE = p_id_mensaje;
-  END set_prioridad_envio;
+  END set_id_externo_envio;
+
+  PROCEDURE set_codigo_respuesta_envio (
+    p_id_mensaje             IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
+    p_codigo_respuesta_envio IN T_MENSAJES.CODIGO_RESPUESTA_ENVIO%TYPE )
+  IS
+  BEGIN
+    UPDATE
+      T_MENSAJES
+    SET
+      CODIGO_RESPUESTA_ENVIO = p_codigo_respuesta_envio,
+      USUARIO_MODIFICACION   = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
+      FECHA_MODIFICACION     = systimestamp
+    WHERE
+      ID_MENSAJE = p_id_mensaje;
+  END set_codigo_respuesta_envio;
+
+  PROCEDURE set_respuesta_envio (
+    p_id_mensaje      IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
+    p_respuesta_envio IN T_MENSAJES.RESPUESTA_ENVIO%TYPE )
+  IS
+  BEGIN
+    UPDATE
+      T_MENSAJES
+    SET
+      RESPUESTA_ENVIO      = p_respuesta_envio,
+      USUARIO_MODIFICACION = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
+      FECHA_MODIFICACION   = systimestamp
+    WHERE
+      ID_MENSAJE = p_id_mensaje;
+  END set_respuesta_envio;
+
+  PROCEDURE set_id_persona (
+    p_id_mensaje IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
+    p_id_persona IN T_MENSAJES.ID_PERSONA%TYPE )
+  IS
+  BEGIN
+    UPDATE
+      T_MENSAJES
+    SET
+      ID_PERSONA           = p_id_persona,
+      USUARIO_MODIFICACION = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
+      FECHA_MODIFICACION   = systimestamp
+    WHERE
+      ID_MENSAJE = p_id_mensaje;
+  END set_id_persona;
+
+  PROCEDURE set_id_ejecucion (
+    p_id_mensaje   IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
+    p_id_ejecucion IN T_MENSAJES.ID_EJECUCION%TYPE )
+  IS
+  BEGIN
+    UPDATE
+      T_MENSAJES
+    SET
+      ID_EJECUCION         = p_id_ejecucion,
+      USUARIO_MODIFICACION = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
+      FECHA_MODIFICACION   = systimestamp
+    WHERE
+      ID_MENSAJE = p_id_mensaje;
+  END set_id_ejecucion;
+
+  PROCEDURE set_id_programacion (
+    p_id_mensaje      IN T_MENSAJES.ID_MENSAJE%TYPE /*PK*/,
+    p_id_programacion IN T_MENSAJES.ID_PROGRAMACION%TYPE )
+  IS
+  BEGIN
+    UPDATE
+      T_MENSAJES
+    SET
+      ID_PROGRAMACION      = p_id_programacion,
+      USUARIO_MODIFICACION = substr(coalesce(k_sistema.f_usuario, user), 1, 300),
+      FECHA_MODIFICACION   = systimestamp
+    WHERE
+      ID_MENSAJE = p_id_mensaje;
+  END set_id_programacion;
 
   FUNCTION get_default_row
   RETURN T_MENSAJES%ROWTYPE
@@ -846,6 +1182,7 @@ CREATE OR REPLACE PACKAGE BODY T_MENSAJES_API IS
   BEGIN
     v_row.ID_MENSAJE        := NULL /*PK*/;
     v_row.ESTADO            := 'P' ;
+    v_row.TELEFONIA         := 'TIG' ;
     v_row.USUARIO_INSERCION := SUBSTR(USER, 1, 300) ;
     v_row.FECHA_INSERCION   := SYSTIMESTAMP ;
     RETURN v_row;

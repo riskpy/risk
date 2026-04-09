@@ -10,7 +10,7 @@ CREATE OR REPLACE PACKAGE T_MENSAJERIA_CATEGORIAS_API IS
     generator="OM_TAPIGEN"
     generator_version="0.6.3"
     generator_action="COMPILE_API"
-    generated_at="2026-03-15 15:14:05"
+    generated_at="2026-04-08 22:14:55"
     generated_by="JAVIER"
     p_table_name="T_MENSAJERIA_CATEGORIAS"
     p_owner="RISK_MSJ"
