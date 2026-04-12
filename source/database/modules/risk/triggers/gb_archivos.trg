@@ -48,14 +48,16 @@ begin
   
     -- Valida registro relacionado
     if l_nombre_referencia is not null then
-      execute immediate 'DECLARE
+      begin
+        execute immediate 'DECLARE
   l_existe VARCHAR2(1) := ''N'';
 BEGIN
   BEGIN
     SELECT ''S''
       INTO l_existe
       FROM ' || :new.tabla || '
-     WHERE to_char(' || l_nombre_referencia || ') = :1;
+     WHERE to_char(' || l_nombre_referencia ||
+                          ') = :1;
   EXCEPTION
     WHEN no_data_found THEN
       l_existe := ''N'';
@@ -66,7 +68,42 @@ BEGIN
   END;
   :2 := l_existe;
 END;'
-        using in :new.referencia, out l_existe_registro;
+          using in :new.referencia, out l_existe_registro;
+      exception
+        when others then
+          if dbms_utility.format_error_stack like '%ORA-00942%' then
+            -- ORA-00942: table or view does not exist
+            begin
+              execute immediate 'DECLARE
+  l_existe VARCHAR2(1) := ''N'';
+BEGIN
+  BEGIN
+    SELECT ''S''
+      INTO l_existe
+      FROM ' || :new.tabla || '_V' || '
+     WHERE to_char(' || l_nombre_referencia ||
+                                ') = :1;
+  EXCEPTION
+    WHEN no_data_found THEN
+      l_existe := ''N'';
+    WHEN too_many_rows THEN
+      l_existe := ''S'';
+    WHEN OTHERS THEN
+      l_existe := ''N'';
+  END;
+  :2 := l_existe;
+END;'
+                using in :new.referencia, out l_existe_registro;
+            exception
+              when others then
+                raise_application_error(-20000,
+                                        'Error al validar registro relacionado');
+            end;
+          else
+            raise_application_error(-20000,
+                                    'Error al validar registro relacionado');
+          end if;
+      end;
     
       if l_existe_registro = 'N' then
         raise_application_error(-20000, 'Registro relacionado inexistente');
@@ -118,3 +155,4 @@ END;'
 
 end;
 /
+

@@ -92,6 +92,12 @@ create or replace package k_mensajeria is
                                i_pie        in varchar2 default null)
     return clob;
 
+  function f_correo_tabla_html_clob(i_tabla      in clob,
+                                    i_titulo     in varchar2 default null,
+                                    i_encabezado in varchar2 default null,
+                                    i_pie        in varchar2 default null)
+    return clob;
+
   function f_correo_tabla_aux_html(i_tabla       in varchar2,
                                    i_tabla_aux_1 in varchar2 default null,
                                    i_tabla_aux_2 in varchar2 default null,
@@ -171,12 +177,6 @@ create or replace package k_mensajeria is
                                  i_token_notificacion in varchar2 default null,
                                  i_dispositivo_seguro in varchar2 default null)
     return pls_integer;
-
-  function f_correo_tabla_html_clob(i_tabla      in clob,
-                                    i_titulo     in varchar2 default null,
-                                    i_encabezado in varchar2 default null,
-                                    i_pie        in varchar2 default null)
-    return clob;
 
   function f_clob_replace(i_clob        in clob,
                           i_search      in varchar2,

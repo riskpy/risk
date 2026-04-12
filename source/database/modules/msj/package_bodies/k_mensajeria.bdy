@@ -212,6 +212,38 @@ create or replace package body k_mensajeria is
     return l_html;
   end;
 
+  function f_correo_tabla_html_clob(i_tabla      in clob,
+                                    i_titulo     in varchar2 default null,
+                                    i_encabezado in varchar2 default null,
+                                    i_pie        in varchar2 default null)
+    return clob is
+    l_html    clob;
+    l_tabla   clob;
+    l_archivo y_archivo;
+  begin
+    l_archivo := k_archivo.f_recuperar_archivo(k_archivo.c_carpeta_textos,
+                                               'ARCHIVO',
+                                               'email-table-inlined.html');
+  
+    if l_archivo.contenido is null or
+       dbms_lob.getlength(l_archivo.contenido) = 0 then
+      raise_application_error(-20000, 'Template de correo no definido');
+    end if;
+  
+    l_html := k_util.blob_to_clob(l_archivo.contenido);
+  
+    -- Reemplaza CRLF por <br> en el contenido (ahora con CLOB)
+    l_tabla := replace(i_tabla, utl_tcp.crlf, '<br>');
+  
+    l_html := replace(l_html, '&TITULO_TABLA', i_titulo);
+    l_html := f_clob_replace(l_html, '&TABLA', l_tabla);
+    l_html := replace(l_html, '&PIE_TABLA', i_pie);
+    l_html := replace(l_html, '&TITULO', i_titulo);
+    l_html := replace(l_html, '&ENCABEZADO', i_encabezado);
+  
+    return l_html;
+  end;
+
   function f_correo_tabla_aux_html(i_tabla       in varchar2,
                                    i_tabla_aux_1 in varchar2 default null,
                                    i_tabla_aux_2 in varchar2 default null,
@@ -682,33 +714,6 @@ create or replace package body k_mensajeria is
       l_rsp := utl_call_stack.error_number(1);
       rollback;
       return l_rsp;
-  end;
-
-  function f_correo_tabla_html_clob(i_tabla      in clob,
-                                    i_titulo     in varchar2 default null,
-                                    i_encabezado in varchar2 default null,
-                                    i_pie        in varchar2 default null)
-    return clob is
-    l_html    clob;
-    l_tabla   clob;
-    l_archivo y_archivo;
-  begin
-    l_archivo := k_archivo.f_recuperar_archivo(k_archivo.c_carpeta_textos,
-                                               'ARCHIVO',
-                                               'email-table-inlined.html');
-    if l_archivo.contenido is null or
-       dbms_lob.getlength(l_archivo.contenido) = 0 then
-      raise_application_error(-20000, 'Template de correo no definido');
-    end if;
-    l_html := k_util.blob_to_clob(l_archivo.contenido);
-    -- Reemplaza CRLF por <br> en el contenido (ahora con CLOB)
-    l_tabla := replace(i_tabla, utl_tcp.crlf, '<br>');
-    l_html  := replace(l_html, '&TITULO_TABLA', i_titulo);
-    l_html  := f_clob_replace(l_html, '&TABLA', l_tabla);
-    l_html  := replace(l_html, '&PIE_TABLA', i_pie);
-    l_html  := replace(l_html, '&TITULO', i_titulo);
-    l_html  := replace(l_html, '&ENCABEZADO', i_encabezado);
-    return l_html;
   end;
 
   function f_clob_replace(i_clob        in clob,

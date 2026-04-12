@@ -73,7 +73,7 @@ create or replace package body k_monitoreo is
                                    i_datos        in clob,
                                    i_conflicto    in boolean) is
     pragma autonomous_transaction;
-    l_timestamp t_monitoreo_ejecuciones.fecha_fin_ejecucion%type := current_timestamp;
+    l_timestamp t_monitoreo_ejecuciones.fecha_fin_ejecucion%type := systimestamp;
   begin
     insert into t_monitoreo_ejecuciones
       (id_monitoreo_ejecucion,
@@ -224,7 +224,7 @@ create or replace package body k_monitoreo is
   begin
     k_sistema.p_configurar_modificacion(k_operacion.c_aplicacion_monitoreo);
   
-    g_ini_timestamp := current_timestamp;
+    g_ini_timestamp := systimestamp;
   
     g_est_modulo := ''; --TODO: pae_cnf.fu_obt_est_modulo(c_cod_modulo);
   
@@ -675,7 +675,7 @@ SELECT ''#'' || m.id_monitoreo_ejecucion "Id_Ejecucion",
     
       -- Envía SMS de monitoreo
       for c in c_usuarios(i_id_monitoreo) loop
-        /*if k_mensajeria.f_enviar_mensaje(i_id_plantilla    => c_plantilla_monitoreo,
+        if k_mensajeria.f_enviar_mensaje(i_id_plantilla    => c_plantilla_monitoreo,
                                          i_datos_extra     => l_datos_extra.to_clob,
                                          i_id_usuario      => c.id_usuario,
                                          i_numero_telefono => c.numero_telefono) <>
@@ -685,8 +685,7 @@ SELECT ''#'' || m.id_monitoreo_ejecucion "Id_Ejecucion",
                                i_id_monitoreo || ' por sms al usuario: ' ||
                                c.alias || ' con nro. de telefono: ' ||
                                c.numero_telefono);
-        end if;*/
-        null;
+        end if;
       end loop;
     end if;
     $end
@@ -790,7 +789,7 @@ SELECT ''MON-'' || m.id_monitoreo "Id",
     
       -- Envía PUSH de monitoreo
       for c in c_usuarios(i_id_monitoreo) loop
-        /*if k_mensajeria.f_enviar_notificacion(i_id_plantilla       => c_plantilla_monitoreo,
+        if k_mensajeria.f_enviar_notificacion(i_id_plantilla       => c_plantilla_monitoreo,
                                               i_datos_extra        => l_datos_extra.to_clob,
                                               i_id_usuario         => c.id_usuario,
                                               i_dispositivo_seguro => 'N') <>
@@ -799,8 +798,7 @@ SELECT ''MON-'' || m.id_monitoreo "Id",
                                ' - Error en envio de MON- ' ||
                                i_id_monitoreo || ' por push al usuario: ' ||
                                c.alias);
-        end if;*/
-        null;
+        end if;
       end loop;
     end if;
     $end

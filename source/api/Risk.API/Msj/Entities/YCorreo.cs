@@ -37,20 +37,20 @@ namespace Risk.API.Msj.Entities
     {
         [JsonProperty("id_correo")]
         public long IdCorreo { get; set; }
-        [JsonProperty("mensaje_to")]
-        public string MensajeTo { get; set; }
-        [JsonProperty("mensaje_subject")]
-        public string MensajeSubject { get; set; }
-        [JsonProperty("mensaje_body")]
-        public string MensajeBody { get; set; }
-        [JsonProperty("mensaje_from")]
-        public string MensajeFrom { get; set; }
-        [JsonProperty("mensaje_reply_to")]
-        public string MensajeReplyTo { get; set; }
-        [JsonProperty("mensaje_cc")]
-        public string MensajeCc { get; set; }
-        [JsonProperty("mensaje_bcc")]
-        public string MensajeBcc { get; set; }
+        [JsonProperty("destinatario")]
+        public string Destinatario { get; set; }
+        [JsonProperty("asunto")]
+        public string Asunto { get; set; }
+        [JsonProperty("contenido")]
+        public string Contenido { get; set; }
+        [JsonProperty("remitente")]
+        public string Remitente { get; set; }
+        [JsonProperty("destino_respuesta")]
+        public string DestinoRespuesta { get; set; }
+        [JsonProperty("destinatario_cc")]
+        public string DestinatarioCc { get; set; }
+        [JsonProperty("destinatario_bcc")]
+        public string DestinatarioBcc { get; set; }
         [JsonProperty("adjuntos")]
         public List<YArchivo> Adjuntos { get; set; }
 
@@ -59,13 +59,13 @@ namespace Risk.API.Msj.Entities
             return new Correo
             {
                 IdCorreo = this.IdCorreo,
-                MensajeTo = this.MensajeTo,
-                MensajeSubject = this.MensajeSubject,
-                MensajeBody = this.MensajeBody,
-                MensajeFrom = this.MensajeFrom,
-                MensajeReplyTo = this.MensajeReplyTo,
-                MensajeCc = this.MensajeCc,
-                MensajeBcc = this.MensajeBcc,
+                Destinatario = this.Destinatario,
+                Asunto = this.Asunto,
+                Contenido = this.Contenido,
+                Remitente = this.Remitente,
+                DestinoRespuesta = this.DestinoRespuesta,
+                DestinatarioCc = this.DestinatarioCc,
+                DestinatarioBcc = this.DestinatarioBcc,
                 Adjuntos = EntitiesMapper.GetModelListFromEntity<Archivo, YArchivo>(this.Adjuntos)
             };
         }

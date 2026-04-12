@@ -38,49 +38,49 @@ namespace Risk.API.Msj.Helpers
             var message = new MimeMessage();
 
             // From
-            message.From.Add(new MailboxAddress(msj.MensajeFrom, msj.MensajeFrom));
+            message.From.Add(new MailboxAddress(msj.Remitente, msj.Remitente));
 
             // https://stackoverflow.com/a/59993188
             // To
-            foreach (string address in msj.MensajeTo.Replace(";", ",").Split(",")) // Split on ,
+            foreach (string address in msj.Destinatario.Replace(";", ",").Split(",")) // Split on ,
             {
                 message.To.Add(new MailboxAddress(address.Trim(), address.Trim()));
             }
 
             // ReplyTo
-            if (!string.IsNullOrEmpty(msj.MensajeReplyTo))
+            if (!string.IsNullOrEmpty(msj.DestinoRespuesta))
             {
-                foreach (string address in msj.MensajeReplyTo.Replace(";", ",").Split(",")) // Split on ,
+                foreach (string address in msj.DestinoRespuesta.Replace(";", ",").Split(",")) // Split on ,
                 {
                     message.ReplyTo.Add(new MailboxAddress(address.Trim(), address.Trim()));
                 }
             }
 
             // Cc
-            if (!string.IsNullOrEmpty(msj.MensajeCc))
+            if (!string.IsNullOrEmpty(msj.DestinatarioCc))
             {
-                foreach (string address in msj.MensajeCc.Replace(";", ",").Split(",")) // Split on ,
+                foreach (string address in msj.DestinatarioCc.Replace(";", ",").Split(",")) // Split on ,
                 {
                     message.Cc.Add(new MailboxAddress(address.Trim(), address.Trim()));
                 }
             }
 
             // Bcc
-            if (!string.IsNullOrEmpty(msj.MensajeBcc))
+            if (!string.IsNullOrEmpty(msj.DestinatarioBcc))
             {
-                foreach (string address in msj.MensajeBcc.Replace(";", ",").Split(",")) // Split on ,
+                foreach (string address in msj.DestinatarioBcc.Replace(";", ",").Split(",")) // Split on ,
                 {
                     message.Bcc.Add(new MailboxAddress(address.Trim(), address.Trim()));
                 }
             }
 
-            message.Subject = msj.MensajeSubject;
+            message.Subject = msj.Asunto;
 
             var multipart = new Multipart("mixed");
 
             // Body
             string subtype;
-            if (HtmlHelper.IsHtml(msj.MensajeBody))
+            if (HtmlHelper.IsHtml(msj.Contenido))
             {
                 subtype = "html";
             }
@@ -90,7 +90,7 @@ namespace Risk.API.Msj.Helpers
             }
             var body = new TextPart(subtype)
             {
-                Text = msj.MensajeBody
+                Text = msj.Contenido
             };
             multipart.Add(body);
 

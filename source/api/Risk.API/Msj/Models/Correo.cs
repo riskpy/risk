@@ -32,13 +32,13 @@ namespace Risk.API.Msj.Models
     public class Correo : IModel
     {
         public long IdCorreo { get; set; }
-        public string MensajeTo { get; set; }
-        public string MensajeSubject { get; set; }
-        public string MensajeBody { get; set; }
-        public string MensajeFrom { get; set; }
-        public string MensajeReplyTo { get; set; }
-        public string MensajeCc { get; set; }
-        public string MensajeBcc { get; set; }
+        public string Destinatario { get; set; }
+        public string Asunto { get; set; }
+        public string Contenido { get; set; }
+        public string Remitente { get; set; }
+        public string DestinoRespuesta { get; set; }
+        public string DestinatarioCc { get; set; }
+        public string DestinatarioBcc { get; set; }
         public List<Archivo> Adjuntos { get; set; }
 
         public IEntity ConvertToEntity()

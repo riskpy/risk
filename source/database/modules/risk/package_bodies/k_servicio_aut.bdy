@@ -789,11 +789,13 @@ create or replace package body k_servicio_aut is
   end;
 
   function generar_otp(i_parametros in y_parametros) return y_respuesta is
-    l_rsp    y_respuesta;
-    l_dato   y_dato;
-    l_secret varchar2(100);
-    l_otp    varchar2(100);
-    l_body   clob;
+    l_rsp         y_respuesta;
+    l_dato        y_dato;
+    l_secret      varchar2(100);
+    l_otp         varchar2(100);
+    l_body        clob;
+    l_plantilla   varchar2(20) := 'PLANTILLA_DEMO';
+    l_datos_extra json_object_t := new json_object_t;
   begin
     -- Inicializa respuesta
     l_rsp  := new y_respuesta();
@@ -834,17 +836,16 @@ create or replace package body k_servicio_aut is
                                              'Clave de validación',
                                              'Clave de validación');
       
-        if k_mensajeria.f_enviar_correo('Clave de validación',
-                                        l_body,
+        l_datos_extra.put('asunto', 'Clave de validación');
+        l_datos_extra.put('contenido', l_body);
+      
+        if k_mensajeria.f_enviar_correo(l_plantilla,
+                                        l_datos_extra.to_clob,
                                         null,
                                         k_operacion.f_valor_parametro_string(i_parametros,
                                                                              'destino'),
                                         null,
-                                        null,
-                                        null,
-                                        null,
-                                        k_mensajeria.c_prioridad_urgente) <>
-           k_mensajeria.c_ok then
+                                        null) <> k_mensajeria.c_ok then
           k_operacion.p_respuesta_error(l_rsp,
                                         'aut0001',
                                         'Error al enviar Mail');
@@ -978,3 +979,4 @@ create or replace package body k_servicio_aut is
 
 end;
 /
+
