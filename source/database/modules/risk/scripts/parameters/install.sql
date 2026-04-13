@@ -8,6 +8,7 @@ prompt
 @@scripts/parameters/t_aplicacion_parametros/api/tiempo_expiracion_refresh_token.sql
 @@scripts/parameters/t_aplicacion_parametros/api/version_actual.sql
 @@scripts/parameters/t_aplicacion_parametros/api/version_minima.sql
+@@scripts/parameters/t_parametros/api/atributos_clob_a_blob_utf8.sql
 @@scripts/parameters/t_parametros/api/paginacion_cantidad_defecto_por_pagina.sql
 @@scripts/parameters/t_parametros/api/paginacion_cantidad_maxima_por_pagina.sql
 @@scripts/parameters/t_parametros/api/reporte_formato_salida_defecto.sql
@@ -30,4 +31,10 @@ prompt
 @@scripts/parameters/t_parametros/gen/auditoria_usuarios_permitidos.sql
 @@scripts/parameters/t_parametros/gen/base_datos_produccion.sql
 @@scripts/parameters/t_parametros/gen/charset_exportacion_scripts.sql
+@@scripts/parameters/t_parametros/gen/nombre_entidad.sql
+@@scripts/parameters/t_parametros/gen/nombre_fantasia_entidad.sql
 @@scripts/parameters/t_parametros/gen/nombre_sistema.sql
+@@scripts/parameters/t_parametros/gen/numero_telefono_corto_entidad.sql
+@@scripts/parameters/t_parametros/gen/numero_telefono_entidad.sql
+@@scripts/parameters/t_parametros/gen/numero_whatsapp_entidad.sql
+@@scripts/parameters/t_parametros/gen/url_logo_entidad.sql

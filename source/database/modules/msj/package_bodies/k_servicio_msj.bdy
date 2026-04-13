@@ -65,8 +65,8 @@ create or replace package body k_servicio_msj is
     -- Sólo si está activo el envío
     if k_util.string_to_bool(k_util.f_valor_parametro('ENVIO_CORREOS_ACTIVO')) then
       for ele in cr_elementos loop
-        l_elemento                  := new y_correo();
-        l_elemento.id_correo        := ele.id_correo;
+        l_elemento                   := new y_correo();
+        l_elemento.id_correo         := ele.id_correo;
         l_elemento.destinatario      := ele.destinatario;
         l_elemento.asunto            := ele.asunto;
         l_elemento.contenido         := ele.contenido;
@@ -74,7 +74,7 @@ create or replace package body k_servicio_msj is
         l_elemento.destino_respuesta := ele.destino_respuesta;
         l_elemento.destinatario_cc   := ele.destinatario_cc;
         l_elemento.destinatario_bcc  := ele.destinatario_bcc;
-        l_elemento.adjuntos         := lf_adjuntos(ele.id_correo);
+        l_elemento.adjuntos          := lf_adjuntos(ele.id_correo);
       
         l_elementos.extend;
         l_elementos(l_elementos.count) := l_elemento;
