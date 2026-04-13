@@ -2,6 +2,8 @@ create or replace package body k_objeto_util is
 
   g_cola y_tipo_objetos;
 
+  g_atributos_clob_a_blob_utf8 varchar2(1000) := upper(k_util.f_valor_parametro('ATRIBUTOS_CLOB_A_BLOB_UTF8'));
+
   /**
     Retorna la lista de atributos de un tipo de objeto
   
@@ -33,7 +35,8 @@ create or replace package body k_objeto_util is
                                all_coll_types c
                          where (a.attr_type_owner = b.owner or
                                a.attr_type_owner = 'PUBLIC' or
-                               a.attr_type_owner is null)
+                               a.attr_type_owner like k_util.f_valor_parametro('NOMBRE_SISTEMA') ||
+                               '\_%' escape '\' or a.attr_type_owner is null)
                            and a.attr_type_name = b.type_name(+)
                               --
                            and b.typecode(+) in ('COLLECTION', 'OBJECT')
@@ -287,14 +290,21 @@ END;';
                                 'DATE',
                                 'TIMESTAMP') then
       
-        if l_atributo.tipo in ('CLOB') and
-           upper(l_atributo.nombre) = 'INFO_ADICIONAL' then
-          l_sql        := l_sql || 'o.' || l_atributo.nombre;
-          l_sql_campos := l_sql_campos || '  l_json_object.put(''' ||
-                          l_atributo.nombre ||
-                          ''', k_util.clob_to_blob(l_objeto.' ||
-                          l_atributo.nombre || ', ''AL32UTF8''));' ||
-                          chr(10);
+        if l_atributo.tipo in ('CLOB') then
+          if k_cadena.f_buscar_cadena(upper(l_atributo.nombre),
+                                      g_atributos_clob_a_blob_utf8) = 'S' then
+            l_sql        := l_sql || 'o.' || l_atributo.nombre;
+            l_sql_campos := l_sql_campos || '  l_json_object.put(''' ||
+                            l_atributo.nombre ||
+                            ''', k_util.clob_to_blob(l_objeto.' ||
+                            l_atributo.nombre || ', ''AL32UTF8''));' ||
+                            chr(10);
+          else
+            l_sql        := l_sql || 'o.' || l_atributo.nombre;
+            l_sql_campos := l_sql_campos || '  l_json_object.put(''' ||
+                            l_atributo.nombre || ''', l_objeto.' ||
+                            l_atributo.nombre || ');' || chr(10);
+          end if;
         else
           l_sql        := l_sql || 'o.' || l_atributo.nombre;
           l_sql_campos := l_sql_campos || '  l_json_object.put(''' ||
