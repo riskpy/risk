@@ -83,7 +83,7 @@ begin
   -----------------------------------
 
   l_clob(1) :=q'!DIRECCION_CORREO_REMITENTE!';
-  l_clob(2) :=q'!!';
+  l_clob(2) :=q'!demouser@risk.com!';
 
   insert into t_parametros_dml_v
   (

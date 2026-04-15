@@ -52,7 +52,8 @@ namespace Risk.API.Msj.Senders
             mailboxFromAddress = _settingsService.MsjConfigurationGmailMailboxFromAddress;
 
             smtpClient = new SmtpClient();
-            smtpClient.Connect("mail.smtpbucket.com", 8025, SecureSocketOptions.Auto);
+            smtpClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
+            smtpClient.Connect("mokapi", 25, SecureSocketOptions.Auto);
 
             userName = _settingsService.MsjConfigurationGmailUserName;
             password = _settingsService.MsjConfigurationGmailPassword;

@@ -61,7 +61,14 @@ namespace Risk.API.Msj.Workers
 
                 if (mensajes.Any())
                 {
-                    await _msjSender.Configurar();
+                    try
+                    {
+                        await _msjSender.Configurar();
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.LogError($"Error al configurar sender en {this.GetType().Name}: {e.Message}");
+                    }
 
                     foreach (var item in mensajes)
                     {
