@@ -78,7 +78,7 @@ create or replace package k_cadena is
   %param i_encapsulador_final Caracter delimitador final. Por defecto ' '
   %return Tabla de cadenas
   */
-  function f_extraer_cadenas(i_texto                in varchar2,
+  function f_extraer_cadenas(i_texto                in clob,
                              i_encapsulador_inicial in varchar2 := ':',
                              i_encapsulador_final   in varchar2 := ' ',
                              i_limpio               in varchar2 := 'N')

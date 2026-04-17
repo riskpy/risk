@@ -117,7 +117,7 @@ create or replace package body k_cadena is
     return l_valor;
   end;
 
-  function f_extraer_cadenas(i_texto                in varchar2,
+  function f_extraer_cadenas(i_texto                in clob,
                              i_encapsulador_inicial in varchar2 := ':',
                              i_encapsulador_final   in varchar2 := ' ',
                              i_limpio               in varchar2 := 'N')
