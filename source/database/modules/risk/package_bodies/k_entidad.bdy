@@ -125,7 +125,9 @@ create or replace package body k_entidad is
   end;
 
   function f_validar_alias(i_alias  varchar2,
-                           i_origen in varchar2 default null) return boolean is
+                           i_origen     in varchar2 default null,
+                           i_id_externo in varchar2 default null)
+    return boolean is
     l_alias_valido    boolean := true;
     l_origen          t_entidades.origen%type;
     l_prefijo_dominio t_autenticacion_origenes.prefijo_dominio%type;
@@ -150,25 +152,30 @@ create or replace package body k_entidad is
       l_alias_valido := i_alias like l_prefijo_dominio || '%';
     end if;
   
+    if l_alias_valido and l_prefijo_dominio is not null and
+       i_id_externo is not null then
+      l_alias_valido := i_alias = l_prefijo_dominio || i_id_externo;
+    end if;
+
     return l_alias_valido;
   end;
 
   procedure p_validar_alias(i_alias  varchar2,
-                            i_origen in varchar2 default null) is
+                            i_origen     in varchar2 default null,
+                            i_id_externo in varchar2 default null) is
   begin
-    if not f_validar_alias(i_alias, i_origen) then
-      if nvl(i_origen, k_autenticacion.c_origen_risk) =
+    if not f_validar_alias(i_alias, i_origen, i_id_externo) then
+      raise_application_error(-20000,
+                              case when
+                              nvl(i_origen, k_autenticacion.c_origen_risk) =
          k_autenticacion.c_origen_risk then
-        raise_application_error(-20000,
                                 'Caracteres no permitidos en la Entidad: ' ||
                                 regexp_replace(i_alias,
                                                trim(translate(k_util.f_valor_parametro('REGEXP_VALIDAR_ALIAS_ENTIDAD'),
                                                               '^$',
                                                               '  ')),
-                                               ''));
-      else
-        raise_application_error(-20000, 'Alias de entidad inválido');
-      end if;
+                                             '') else
+                              'Alias de entidad inválido' end);
     end if;
   end;
 

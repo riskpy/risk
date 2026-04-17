@@ -46,10 +46,13 @@ create or replace package k_entidad is
   function f_origen(i_id_entidad in number) return varchar2;
 
   function f_validar_alias(i_alias  varchar2,
-                           i_origen in varchar2 default null) return boolean;
+                           i_origen     in varchar2 default null,
+                           i_id_externo in varchar2 default null)
+    return boolean;
 
   procedure p_validar_alias(i_alias  varchar2,
-                            i_origen in varchar2 default null);
+                            i_origen     in varchar2 default null,
+                            i_id_externo in varchar2 default null);
 
   function f_grupo_usuario(i_id_entidad in number,
                            i_id_usuario in number) return varchar2;

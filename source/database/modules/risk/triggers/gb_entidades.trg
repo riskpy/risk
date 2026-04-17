@@ -29,8 +29,9 @@ begin
   -- Valida alias de entidad
   if inserting or
      (updating and (nvl(:new.alias, 'X') <> nvl(:old.alias, 'X') or
-     nvl(:new.origen, 'X') <> nvl(:old.origen, 'X'))) then
-    k_entidad.p_validar_alias(:new.alias, :new.origen);
+     nvl(:new.origen, 'X') <> nvl(:old.origen, 'X') or
+     nvl(:new.id_externo, 'X') <> nvl(:old.id_externo, 'X'))) then
+    k_entidad.p_validar_alias(:new.alias, :new.origen, :new.id_externo);
   end if;
 
   $if k_modulo.c_instalado_msj $then
