@@ -159,7 +159,7 @@ create or replace package body k_parametro is
         if i_parametro_definicion.encriptado = 'S' then
           begin
             l_valor := anydata.convertvarchar2(k_util.decrypt(case
-                                                                when l_json_element is null then
+                                                                when l_json_element is null or l_json_element.is_null then
                                                                  null
                                                                 else
                                                                  l_json_element.to_clob
@@ -178,7 +178,7 @@ create or replace package body k_parametro is
           end;
         else
           l_valor := anydata.convertvarchar2(case
-                                               when l_json_element is null then
+                                               when l_json_element is null or l_json_element.is_null then
                                                 null
                                                else
                                                 l_json_element.to_clob
@@ -225,7 +225,7 @@ create or replace package body k_parametro is
         end if;
       
         l_valor := anydata.convertnumber(case
-                                           when l_json_element is null then
+                                           when l_json_element is null or l_json_element.is_null then
                                             null
                                            else
                                             l_json_element.to_number
@@ -271,7 +271,7 @@ create or replace package body k_parametro is
         end if;
       
         l_valor := anydata.convertnumber(sys.diutil.bool_to_int(case
-                                                                  when l_json_element is null then
+                                                                  when l_json_element is null or l_json_element.is_null then
                                                                    null
                                                                   else
                                                                    l_json_element.to_boolean
@@ -300,7 +300,7 @@ create or replace package body k_parametro is
         end if;
       
         l_valor := anydata.convertdate(case
-                                         when l_json_element is null then
+                                         when l_json_element is null or l_json_element.is_null then
                                           null
                                          else
                                           l_json_element.to_date
@@ -408,7 +408,7 @@ create or replace package body k_parametro is
         if i_parametro_definicion.encriptado = 'S' then
           begin
             l_valor := anydata.convertclob(k_util.decrypt(case
-                                                            when l_json_element is null then
+                                                            when l_json_element is null or l_json_element.is_null then
                                                              null
                                                             else
                                                              l_json_element.to_clob
@@ -427,7 +427,7 @@ create or replace package body k_parametro is
           end;
         else
           l_valor := anydata.convertclob(case
-                                           when l_json_element is null then
+                                           when l_json_element is null or l_json_element.is_null then
                                             null
                                            else
                                             l_json_element.to_clob
