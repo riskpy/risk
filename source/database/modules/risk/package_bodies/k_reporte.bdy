@@ -2,13 +2,27 @@ create or replace package body k_reporte is
 
   procedure lp_registrar_ejecucion(i_id_reporte in number) is
     pragma autonomous_transaction;
+    l_id_reporte t_reportes.id_reporte%type;
   begin
+    -- Intenta bloquear la fila sin esperar.
+    select id_reporte
+      into l_id_reporte
+      from t_reportes
+     where id_reporte = i_id_reporte
+       for update nowait;
+  
+    -- Solo llega al UPDATE si obtuvo el lock.
     update t_reportes
        set cantidad_ejecuciones   = nvl(cantidad_ejecuciones, 0) + 1,
            fecha_ultima_ejecucion = sysdate
-     where id_reporte = i_id_reporte;
+     where id_reporte = l_id_reporte;
+  
     commit;
   exception
+    when k_operacion.ex_registro_bloqueado then
+      rollback;
+    when no_data_found then
+      rollback;
     when others then
       rollback;
   end;
@@ -16,15 +30,26 @@ create or replace package body k_reporte is
   procedure p_registrar_sql_ejecucion(i_id_reporte in number,
                                       i_sql        in clob) is
     pragma autonomous_transaction;
+    l_id_reporte t_reportes.id_reporte%type;
   begin
-    k_sistema.p_definir_parametro_string(k_operacion.c_sql_ejecucion,
-                                         i_sql);
+    -- Intenta bloquear la fila sin esperar.
+    select id_reporte
+      into l_id_reporte
+      from t_reportes
+     where id_reporte = i_id_reporte
+       for update nowait;
   
+    -- Solo llega al UPDATE si obtuvo el lock.
     update t_reportes
        set sql_ultima_ejecucion = i_sql
-     where id_reporte = i_id_reporte;
+     where id_reporte = l_id_reporte;
+  
     commit;
   exception
+    when k_operacion.ex_registro_bloqueado then
+      rollback;
+    when no_data_found then
+      rollback;
     when others then
       rollback;
   end;
@@ -581,6 +606,8 @@ create or replace package body k_reporte is
     l_consulta_sql := 'SELECT * FROM (' || l_consulta_sql || ')' ||
                       k_operacion.f_filtros_sql(i_parametros);
     -- Registra SQL
+    k_sistema.p_definir_parametro_string(k_operacion.c_sql_ejecucion,
+                                         l_consulta_sql);
     p_registrar_sql_ejecucion(i_id_reporte, l_consulta_sql);
   
     return f_reporte_sql(l_consulta_sql, l_formato);
@@ -735,6 +762,8 @@ create or replace package body k_reporte is
       end if;
     
       -- Registra SQL
+      k_sistema.p_definir_parametro_string(k_operacion.c_sql_ejecucion,
+                                           l_sentencia);
       p_registrar_sql_ejecucion(i_id_reporte, l_sentencia);
     
       l_rsp.lugar := 'Procesando reporte';
@@ -894,3 +923,4 @@ create or replace package body k_reporte is
 
 end;
 /
+

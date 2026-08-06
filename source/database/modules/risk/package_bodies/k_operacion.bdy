@@ -1,5 +1,8 @@
 create or replace package body k_operacion is
 
+  g_expresion_regular t_parametros.valor%type := nvl(k_util.f_valor_parametro('EXPRESION_REGULAR_PARAMETRO_DINAMICO'),
+                                                     q'[:[A-Za-z_][A-Za-z0-9_]*(?=(?:[^']|'[^']*')*$)]');
+
   procedure p_crear_parametro(i_id_operacion     in t_operacion_parametros.id_operacion %type,
                               i_nombre           in t_operacion_parametros.nombre%type,
                               i_tipo_dato        in t_operacion_parametros.tipo_dato%type,
@@ -54,7 +57,8 @@ create or replace package body k_operacion is
                             i_contexto         in clob default null,
                             i_version          in varchar2 default null) is
     pragma autonomous_transaction;
-    l_nivel_log t_operaciones.nivel_log%type;
+    l_nivel_log         t_operaciones.nivel_log%type;
+    l_fecha_hora_actual t_operacion_logs.fecha_hora_inicio%type;
   begin
     begin
       select nivel_log
@@ -70,23 +74,27 @@ create or replace package body k_operacion is
        nvl(i_codigo_respuesta, c_ok) = c_ok) or
        (l_nivel_log > cg_nivel_log_off and
        nvl(i_codigo_respuesta, c_ok) <> c_ok) then
+      l_fecha_hora_actual := systimestamp;
+    
       if io_id_log is not null then
         -- Actualiza log
         update t_operacion_logs l
-           set l.id_operacion = i_id_operacion,
-               l.contexto     = i_contexto,
-               l.version      = substr(i_version, 1, 100),
-               l.parametros   = i_parametros,
-               l.respuesta    = i_respuesta,
-               --l.fecha_hora_inicio = null,
-               l.fecha_hora_fin = current_timestamp,
-               l.duracion       = current_timestamp -
-                                  nvl(l.fecha_hora_inicio, current_timestamp),
-               l.sql_ejecucion  = k_sistema.f_valor_parametro_string(k_operacion.c_sql_ejecucion),
-               l.id_usuario     = k_sistema.f_id_usuario,
-               l.id_entidad     = k_sistema.f_id_entidad,
-               l.id_sesion      = k_sistema.f_valor_parametro_number(k_sistema.c_id_sesion),
-               l.id_dispositivo = k_sistema.f_valor_parametro_number(k_sistema.c_id_dispositivo)
+           set l.id_operacion      = i_id_operacion,
+               l.contexto          = i_contexto,
+               l.version           = substr(i_version, 1, 100),
+               l.parametros        = i_parametros,
+               l.respuesta         = i_respuesta,
+               l.fecha_hora_inicio = nvl(l.fecha_hora_inicio,
+                                         l_fecha_hora_actual),
+               l.fecha_hora_fin    = l_fecha_hora_actual,
+               l.duracion          = l_fecha_hora_actual -
+                                     nvl(l.fecha_hora_inicio,
+                                         l_fecha_hora_actual),
+               l.sql_ejecucion     = k_sistema.f_valor_parametro_clob(k_operacion.c_sql_ejecucion),
+               l.id_usuario        = k_sistema.f_id_usuario,
+               l.id_entidad        = k_sistema.f_id_entidad,
+               l.id_sesion         = k_sistema.f_valor_parametro_number(k_sistema.c_id_sesion),
+               l.id_dispositivo    = k_sistema.f_valor_parametro_number(k_sistema.c_id_dispositivo)
          where l.id_operacion_log = io_id_log;
       else
         -- Inserta log
@@ -110,11 +118,11 @@ create or replace package body k_operacion is
            substr(i_version, 1, 100),
            i_parametros,
            i_respuesta,
-           current_timestamp,
-           case when i_respuesta is not null then current_timestamp else null end,
+           l_fecha_hora_actual,
+           case when i_respuesta is not null then l_fecha_hora_actual else null end,
            case when i_respuesta is not null then
-           current_timestamp - current_timestamp else null end,
-           k_sistema.f_valor_parametro_string(k_operacion.c_sql_ejecucion),
+           l_fecha_hora_actual - l_fecha_hora_actual else null end,
+           k_sistema.f_valor_parametro_clob(k_operacion.c_sql_ejecucion),
            k_sistema.f_id_usuario,
            k_sistema.f_id_entidad,
            k_sistema.f_valor_parametro_number(k_sistema.c_id_sesion),
@@ -778,7 +786,7 @@ create or replace package body k_operacion is
   
     -- Validar parámetros dinámicos no reemplazados
     if i_consulta_sql is not null then
-      if regexp_count(l_consulta_modificada, ':[A-Za-z_][A-Za-z0-9_]*') > 0 then
+      if regexp_count(l_consulta_modificada, g_expresion_regular) > 0 then
         raise_application_error(-20001,
                                 'Existen parámetros dinámicos sin reemplazar en la consulta');
       end if;

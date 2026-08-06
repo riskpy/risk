@@ -2,13 +2,27 @@ create or replace package body k_servicio is
 
   procedure lp_registrar_ejecucion(i_id_servicio in number) is
     pragma autonomous_transaction;
+    l_id_servicio t_servicios.id_servicio%type;
   begin
+    -- Intenta bloquear la fila sin esperar.
+    select id_servicio
+      into l_id_servicio
+      from t_servicios
+     where id_servicio = i_id_servicio
+       for update nowait;
+  
+    -- Solo llega al UPDATE si obtuvo el lock.
     update t_servicios
        set cantidad_ejecuciones   = nvl(cantidad_ejecuciones, 0) + 1,
            fecha_ultima_ejecucion = sysdate
-     where id_servicio = i_id_servicio;
+     where id_servicio = l_id_servicio;
+  
     commit;
   exception
+    when k_operacion.ex_registro_bloqueado then
+      rollback;
+    when no_data_found then
+      rollback;
     when others then
       rollback;
   end;
@@ -16,15 +30,26 @@ create or replace package body k_servicio is
   procedure lp_registrar_sql_ejecucion(i_id_servicio in number,
                                        i_sql         in clob) is
     pragma autonomous_transaction;
+    l_id_servicio t_servicios.id_servicio%type;
   begin
-    k_sistema.p_definir_parametro_string(k_operacion.c_sql_ejecucion,
-                                         i_sql);
+    -- Intenta bloquear la fila sin esperar.
+    select id_servicio
+      into l_id_servicio
+      from t_servicios
+     where id_servicio = i_id_servicio
+       for update nowait;
   
+    -- Solo llega al UPDATE si obtuvo el lock.
     update t_servicios
        set sql_ultima_ejecucion = i_sql
-     where id_servicio = i_id_servicio;
+     where id_servicio = l_id_servicio;
+  
     commit;
   exception
+    when k_operacion.ex_registro_bloqueado then
+      rollback;
+    when no_data_found then
+      rollback;
     when others then
       rollback;
   end;
@@ -312,6 +337,8 @@ create or replace package body k_servicio is
     end;
   
     -- Registra SQL
+    k_sistema.p_definir_parametro_clob(k_operacion.c_sql_ejecucion,
+                                       l_consulta_final);
     lp_registrar_sql_ejecucion(i_id_servicio, l_consulta_final);
   
     -- ========================================================
@@ -559,6 +586,8 @@ create or replace package body k_servicio is
       end if;
     
       -- Registra SQL
+      k_sistema.p_definir_parametro_clob(k_operacion.c_sql_ejecucion,
+                                         l_sentencia);
       lp_registrar_sql_ejecucion(i_id_servicio, l_sentencia);
     
       l_rsp.lugar := 'Procesando servicio';
@@ -716,3 +745,4 @@ create or replace package body k_servicio is
 
 end;
 /
+

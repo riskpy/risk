@@ -70,9 +70,11 @@ create or replace package k_operacion is
   c_aplicacion_monitoreo constant t_aplicaciones.nombre%type := 'MONITOREO';
 
   -- Excepciones
+  ex_registro_bloqueado       exception;
   ex_servicio_no_implementado exception;
   ex_error_parametro          exception;
   ex_error_general            exception;
+  pragma exception_init(ex_registro_bloqueado, -54); -- ORA-00054
   pragma exception_init(ex_servicio_no_implementado, -6550);
 
   procedure p_crear_parametro(i_id_operacion     in t_operacion_parametros.id_operacion %type,
