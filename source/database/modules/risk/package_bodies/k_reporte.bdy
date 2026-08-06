@@ -174,6 +174,14 @@ create or replace package body k_reporte is
         as_pdf.write('Código: ' || i_respuesta.codigo);
         as_pdf.write(utl_tcp.crlf);
         as_pdf.write('Mensaje: ' || i_respuesta.mensaje);
+        if not k_sistema.f_es_produccion then
+          as_pdf.write(utl_tcp.crlf);
+          as_pdf.write('Mensaje BD: ' || i_respuesta.mensaje_bd);
+          as_pdf.write(utl_tcp.crlf);
+          as_pdf.write('Tipo Error: ' || i_respuesta.tipo_error);
+          as_pdf.write(utl_tcp.crlf);
+          as_pdf.write('Lugar: ' || i_respuesta.lugar);
+        end if;
         l_archivo.contenido := as_pdf.get_pdf;
       
       when c_formato_docx then
@@ -182,13 +190,24 @@ create or replace package body k_reporte is
           l_document  pls_integer;
           l_paragraph pls_integer;
         begin
-          l_document          := zt_word.f_new_document;
-          l_paragraph         := zt_word.f_new_paragraph(p_doc_id => l_document,
-                                                         p_text   => 'Código: ' ||
-                                                                     i_respuesta.codigo);
-          l_paragraph         := zt_word.f_new_paragraph(p_doc_id => l_document,
-                                                         p_text   => 'Mensaje: ' ||
-                                                                     i_respuesta.mensaje);
+          l_document  := zt_word.f_new_document;
+          l_paragraph := zt_word.f_new_paragraph(p_doc_id => l_document,
+                                                 p_text   => 'Código: ' ||
+                                                             i_respuesta.codigo);
+          l_paragraph := zt_word.f_new_paragraph(p_doc_id => l_document,
+                                                 p_text   => 'Mensaje: ' ||
+                                                             i_respuesta.mensaje);
+          if not k_sistema.f_es_produccion then
+            l_paragraph := zt_word.f_new_paragraph(p_doc_id => l_document,
+                                                   p_text   => 'Mensaje BD: ' ||
+                                                               i_respuesta.mensaje_bd);
+            l_paragraph := zt_word.f_new_paragraph(p_doc_id => l_document,
+                                                   p_text   => 'Tipo Error: ' ||
+                                                               i_respuesta.tipo_error);
+            l_paragraph := zt_word.f_new_paragraph(p_doc_id => l_document,
+                                                   p_text   => 'Lugar: ' ||
+                                                               i_respuesta.lugar);
+          end if;
           l_archivo.contenido := zt_word.f_make_document(l_document);
         end;
       
@@ -208,6 +227,26 @@ create or replace package body k_reporte is
                                                   p_bold => true));
         as_xlsx.cell(2, 1, i_respuesta.codigo);
         as_xlsx.cell(2, 2, i_respuesta.mensaje);
+        if not k_sistema.f_es_produccion then
+          as_xlsx.cell(1,
+                       3,
+                       'Mensaje BD',
+                       p_fontid => as_xlsx.get_font(p_name => 'Calibri',
+                                                    p_bold => true));
+          as_xlsx.cell(1,
+                       4,
+                       'Tipo Error',
+                       p_fontid => as_xlsx.get_font(p_name => 'Calibri',
+                                                    p_bold => true));
+          as_xlsx.cell(1,
+                       5,
+                       'Lugar',
+                       p_fontid => as_xlsx.get_font(p_name => 'Calibri',
+                                                    p_bold => true));
+          as_xlsx.cell(2, 3, i_respuesta.mensaje_bd);
+          as_xlsx.cell(2, 4, i_respuesta.tipo_error);
+          as_xlsx.cell(2, 5, i_respuesta.lugar);
+        end if;
         -- as_xlsx.set_column_width(2, 100);
         l_archivo.contenido := as_xlsx.finish;
       
@@ -216,9 +255,14 @@ create or replace package body k_reporte is
         declare
           l_txt clob;
         begin
-          l_txt               := 'Código: ' || i_respuesta.codigo ||
-                                 utl_tcp.crlf || 'Mensaje: ' ||
-                                 i_respuesta.mensaje;
+          l_txt := 'Código: ' || i_respuesta.codigo || utl_tcp.crlf ||
+                   'Mensaje: ' || i_respuesta.mensaje;
+          if not k_sistema.f_es_produccion then
+            l_txt := l_txt || utl_tcp.crlf || 'Mensaje BD: ' ||
+                     i_respuesta.mensaje_bd || utl_tcp.crlf ||
+                     'Tipo Error: ' || i_respuesta.tipo_error ||
+                     utl_tcp.crlf || 'Lugar: ' || i_respuesta.lugar;
+          end if;
           l_archivo.contenido := k_util.clob_to_blob(l_txt);
         end;
       
@@ -242,6 +286,17 @@ create or replace package body k_reporte is
         htp.header(1, k_html.f_escapar_texto('Mensaje'));
         htp.p('<p>' || k_html.f_escapar_texto(i_respuesta.mensaje) ||
               '</p>');
+        if not k_sistema.f_es_produccion then
+          htp.header(1, k_html.f_escapar_texto('Mensaje BD'));
+          htp.p('<p>' || k_html.f_escapar_texto(i_respuesta.mensaje_bd) ||
+                '</p>');
+          htp.header(1, k_html.f_escapar_texto('Tipo Error'));
+          htp.p('<p>' || k_html.f_escapar_texto(i_respuesta.tipo_error) ||
+                '</p>');
+          htp.header(1, k_html.f_escapar_texto('Lugar'));
+          htp.p('<p>' || k_html.f_escapar_texto(i_respuesta.lugar) ||
+                '</p>');
+        end if;
         htp.bodyclose;
         htp.htmlclose;
         l_archivo.contenido := k_util.clob_to_blob(k_html.f_html);
@@ -605,9 +660,10 @@ create or replace package body k_reporte is
   
     l_consulta_sql := 'SELECT * FROM (' || l_consulta_sql || ')' ||
                       k_operacion.f_filtros_sql(i_parametros);
+  
     -- Registra SQL
-    k_sistema.p_definir_parametro_string(k_operacion.c_sql_ejecucion,
-                                         l_consulta_sql);
+    k_sistema.p_definir_parametro_clob(k_operacion.c_sql_ejecucion,
+                                       l_consulta_sql);
     p_registrar_sql_ejecucion(i_id_reporte, l_consulta_sql);
   
     return f_reporte_sql(l_consulta_sql, l_formato);
@@ -762,8 +818,8 @@ create or replace package body k_reporte is
       end if;
     
       -- Registra SQL
-      k_sistema.p_definir_parametro_string(k_operacion.c_sql_ejecucion,
-                                           l_sentencia);
+      k_sistema.p_definir_parametro_clob(k_operacion.c_sql_ejecucion,
+                                         l_sentencia);
       p_registrar_sql_ejecucion(i_id_reporte, l_sentencia);
     
       l_rsp.lugar := 'Procesando reporte';

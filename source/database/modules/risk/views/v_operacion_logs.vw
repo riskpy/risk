@@ -3,6 +3,7 @@ select l.id_operacion_log,
        l.id_operacion,
        s.nombre nombre_operacion,
        s.dominio dominio_operacion,
+       s.tipo,
        s.nombre_programa_implementacion,
        l.version,
        l.fecha_hora_inicio,
@@ -52,6 +53,7 @@ comment on column V_OPERACION_LOGS.ID_OPERACION_LOG is 'Identificador del log';
 comment on column V_OPERACION_LOGS.ID_OPERACION is 'Identificador de la operación';
 comment on column V_OPERACION_LOGS.NOMBRE_OPERACION is 'Nombre de la operación';
 comment on column V_OPERACION_LOGS.DOMINIO_OPERACION is 'Dominio de la operación';
+comment on column V_OPERACION_LOGS.TIPO is 'Tipo de la operación';
 comment on column V_OPERACION_LOGS.NOMBRE_PROGRAMA_IMPLEMENTACION is 'Nombre del programa de implementación de la operación';
 comment on column V_OPERACION_LOGS.VERSION is 'Versión de la operación';
 comment on column V_OPERACION_LOGS.FECHA_HORA_INICIO is 'Fecha/hora de inicio de la ejecución de la operación';
@@ -87,4 +89,4 @@ comment on column V_OPERACION_LOGS.CTX_ID_ENTIDAD is 'Contexto de la operación: 
 comment on column V_OPERACION_LOGS.CTX_DATO_USUARIO is 'Contexto de la operación: dato_usuario';
 comment on column V_OPERACION_LOGS.CTX_ENTIDAD is 'Contexto de la operación: entidad';
 comment on column V_OPERACION_LOGS.CTX_ID_APLICACION is 'Contexto de la operación: id_aplicacion';
-
+/
