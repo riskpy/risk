@@ -35,20 +35,20 @@ services:
       redis:
         condition: service_started
 
-  frontend:
-    image: riskpy/risk-frontend:latest
-    build:
-      context: .
-      dockerfile: ./Dockerfile.frontend
-    pull_policy: build
-    ports:
-      - 8181:8181
-    env_file:
-      - ./docker/common.env
-      - ./docker/frontend/.env
-    depends_on:
-      database:
-        condition: service_healthy
+  #frontend:
+  #  image: riskpy/risk-frontend:latest
+  #  build:
+  #    context: .
+  #    dockerfile: ./Dockerfile.frontend
+  #  pull_policy: build
+  #  ports:
+  #    - 8181:8181
+  #  env_file:
+  #    - ./docker/common.env
+  #    - ./docker/frontend/.env
+  #  depends_on:
+  #    database:
+  #      condition: service_healthy
 
   mokapi:
     image: mokapi/mokapi:latest
